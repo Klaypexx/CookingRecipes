@@ -15,10 +15,6 @@ public class UserConfiguration: IEntityTypeConfiguration<User>
         builder.ToTable("user");
         builder.HasKey(a => a.Id);
 
-        builder.Property(a => a.Id)
-            .HasColumnName("user_id")
-            .ValueGeneratedNever();
-
         builder.Property(a => a.Name)
             .HasColumnName("name")
             .IsRequired(true);

@@ -15,19 +15,21 @@ namespace Infrastructure.Migrations
                 name: "tag",
                 columns: table => new
                 {
-                    tag_id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tag", x => x.tag_id);
+                    table.PrimaryKey("PK_tag", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "user",
                 columns: table => new
                 {
-                    user_id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -35,48 +37,50 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user", x => x.user_id);
+                    table.PrimaryKey("PK_user", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "recipe",
                 columns: table => new
                 {
-                    recipe_id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    time = table.Column<DateTime>(type: "datetime2", nullable: true),
                     portion = table.Column<int>(type: "int", nullable: true),
-                    like = table.Column<int>(type: "int", nullable: false),
+                    like = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_recipe", x => x.recipe_id);
+                    table.PrimaryKey("PK_recipe", x => x.Id);
                     table.ForeignKey(
                         name: "FK_recipe_user_UserId",
                         column: x => x.UserId,
                         principalTable: "user",
-                        principalColumn: "user_id");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "ingredient",
                 columns: table => new
                 {
-                    ingredient_id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     product = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RecipeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ingredient", x => x.ingredient_id);
+                    table.PrimaryKey("PK_ingredient", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ingredient_recipe_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "recipe",
-                        principalColumn: "recipe_id");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -93,13 +97,13 @@ namespace Infrastructure.Migrations
                         name: "FK_RecipeTag_recipe_RecipesId",
                         column: x => x.RecipesId,
                         principalTable: "recipe",
-                        principalColumn: "recipe_id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RecipeTag_tag_TagsId",
                         column: x => x.TagsId,
                         principalTable: "tag",
-                        principalColumn: "tag_id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -117,13 +121,13 @@ namespace Infrastructure.Migrations
                         name: "FK_RecipeUser_recipe_FavouritesId",
                         column: x => x.FavouritesId,
                         principalTable: "recipe",
-                        principalColumn: "recipe_id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RecipeUser_user_FavouritedById",
                         column: x => x.FavouritedById,
                         principalTable: "user",
-                        principalColumn: "user_id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -131,18 +135,19 @@ namespace Infrastructure.Migrations
                 name: "step",
                 columns: table => new
                 {
-                    step_id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RecipeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_step", x => x.step_id);
+                    table.PrimaryKey("PK_step", x => x.Id);
                     table.ForeignKey(
                         name: "FK_step_recipe_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "recipe",
-                        principalColumn: "recipe_id");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

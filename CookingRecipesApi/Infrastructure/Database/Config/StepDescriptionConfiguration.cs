@@ -15,10 +15,6 @@ public class StepDescriptionConfiguration: IEntityTypeConfiguration<StepDescript
         builder.ToTable("step");
         builder.HasKey(a => a.Id);
 
-        builder.Property(a => a.Id)
-            .HasColumnName("step_id")
-            .ValueGeneratedNever();
-
         builder.Property(a => a.Description)
            .HasColumnName("name")
            .IsRequired(true);

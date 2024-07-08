@@ -11,7 +11,7 @@ class HotelManagementDbContextFactory : IDesignTimeDbContextFactory<AppDbContext
     {
         //IConfiguration config = GetConfig();
         string connectionString = "Server=SANCHEZ_\\SQLEXPRESS;Database=CookingRecipes;Trusted_Connection=true;TrustServerCertificate=True;";
-        var optionalBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        DbContextOptionsBuilder<AppDbContext> optionalBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
         optionalBuilder.UseSqlServer(connectionString,
             ob => ob.MigrationsAssembly("Infrastructure.Migrations"));

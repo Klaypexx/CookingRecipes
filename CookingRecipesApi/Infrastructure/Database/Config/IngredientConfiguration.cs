@@ -15,10 +15,6 @@ public class IngredientConfiguration: IEntityTypeConfiguration<Ingredient>
         builder.ToTable("ingredient");
         builder.HasKey(a => a.Id);
 
-        builder.Property(a => a.Id)
-            .HasColumnName("ingredient_id")
-            .ValueGeneratedNever();
-
         builder.Property(a => a.Name)
             .HasColumnName("name")
             .IsRequired(true);

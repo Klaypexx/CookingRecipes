@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240708223239_InitialCreate")]
+    [Migration("20240708230156_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -28,8 +28,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Auth.Entities.User", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AvatarPath")
                         .HasColumnType("nvarchar(max)")
@@ -61,8 +63,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("ingredient_id");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -87,16 +91,16 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("recipe_id");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CookingTime")
-                        .IsRequired()
                         .HasColumnType("datetime2")
                         .HasColumnName("time");
 
                     b.Property<int?>("Like")
-                        .IsRequired()
                         .HasColumnType("int")
                         .HasColumnName("like");
 
@@ -126,8 +130,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.StepDescription", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("step_id");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -147,8 +153,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("tag_id");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()

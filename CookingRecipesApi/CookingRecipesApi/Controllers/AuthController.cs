@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
 
     [HttpGet]
     [Route("username")]
-    public async Task<IActionResult> GetUserByUsername([FromBody] string userName)
+    public async Task<IActionResult> GetUserByUsername([FromHeader] string userName)
     {
         User user = await _authService.GetUserByUsername(userName);
         return Ok(user);
