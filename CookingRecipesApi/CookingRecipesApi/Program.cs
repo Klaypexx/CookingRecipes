@@ -1,7 +1,9 @@
+using Application.Auth.Repositories;
 using Application.Foundation.Entities;
 using Application.Users.Entities;
 using Application.Users.Services;
 using Infrastructure;
+using Infrastructure.Auth.Repositories;
 using Infrastructure.Database;
 using Infrastructure.Foundation;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +19,12 @@ IServiceCollection services = builder.Services;
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-services.AddDatabaseFoundations(configuration);
+services.AddScoped<IUserRepository, UserRepository>();
+services.AddScoped<IAuthService, AuthService>();
+
+string connectionString = configuration.GetConnectionString("CookingRecipes");
+
+services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
