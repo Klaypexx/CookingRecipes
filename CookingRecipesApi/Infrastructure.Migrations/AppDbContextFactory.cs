@@ -5,18 +5,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Migrations;
 
-class HotelManagementDbContextFactory : IDesignTimeDbContextFactory<HotelManagementDbContext>
+class HotelManagementDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
-    public HotelManagementDbContext CreateDbContext(string[] args)
+    public AppDbContext CreateDbContext(string[] args)
     {
         //IConfiguration config = GetConfig();
-        string connectionString = "Server=SANCHEZ_\\SQLEXPRESS;Database=HotelManagement;Trusted_Connection=true;TrustServerCertificate=True;";
-        var optionalBuilder = new DbContextOptionsBuilder<HotelManagementDbContext>();
+        string connectionString = "Server=SANCHEZ_\\SQLEXPRESS;Database=CookingRecipes;Trusted_Connection=true;TrustServerCertificate=True;";
+        var optionalBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
         optionalBuilder.UseSqlServer(connectionString,
             ob => ob.MigrationsAssembly("Infrastructure.Migrations"));
 
-        return new HotelManagementDbContext(optionalBuilder.Options);
+        return new AppDbContext(optionalBuilder.Options);
     }
 
     /*private static IConfiguration GetConfig()

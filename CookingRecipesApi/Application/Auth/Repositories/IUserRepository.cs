@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Database.Config
+namespace Application.Auth.Repositories
 {
-    public class UserConfiguration
+    internal interface IUserRepository
     {
     }
 }
