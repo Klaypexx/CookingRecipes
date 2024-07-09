@@ -1,20 +1,21 @@
 ﻿using Domain.Recipes.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace Infrastructure.Database.Config;
-public class TagConfiguration : IEntityTypeConfiguration<Tag>
+
+public class StepConfiguration : IEntityTypeConfiguration<Step>
 {
-    public void Configure( EntityTypeBuilder<Tag> builder )
+    public void Configure( EntityTypeBuilder<Step> builder )
     {
-        builder.ToTable( "tag" );
+        builder.ToTable( "step" );
         builder.HasKey( x => x.Id );
 
-        builder.Property( x => x.Name )
+        builder.Property( x => x.Description )
            .HasColumnName( "name" )
            .IsRequired( true );
 
-        builder.HasMany( x => x.Recipes )
-          .WithMany( x => x.Tags );
+        builder.HasOne( x => x.Recipe )
+          .WithMany( x => x.Steps );
+
     }
 }

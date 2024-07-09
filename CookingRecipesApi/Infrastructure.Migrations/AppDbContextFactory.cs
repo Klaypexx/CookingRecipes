@@ -1,22 +1,21 @@
 ﻿using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Migrations;
 
 class HotelManagementDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
-    public AppDbContext CreateDbContext(string[] args)
+    public AppDbContext CreateDbContext( string[] args )
     {
         //IConfiguration config = GetConfig();
         string connectionString = "Server=SANCHEZ_\\SQLEXPRESS;Database=CookingRecipes;Trusted_Connection=true;TrustServerCertificate=True;";
         DbContextOptionsBuilder<AppDbContext> optionalBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
-        optionalBuilder.UseSqlServer(connectionString,
-            ob => ob.MigrationsAssembly("Infrastructure.Migrations"));
+        optionalBuilder.UseSqlServer( connectionString,
+            ob => ob.MigrationsAssembly( "Infrastructure.Migrations" ) );
 
-        return new AppDbContext(optionalBuilder.Options);
+        return new AppDbContext( optionalBuilder.Options );
     }
 
     /*private static IConfiguration GetConfig()

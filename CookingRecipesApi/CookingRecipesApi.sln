@@ -5,13 +5,18 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookingRecipesApi", "CookingRecipesApi\CookingRecipesApi.csproj", "{4113FE12-4061-4F21-B442-E324E21CBB5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{1D0C269D-B012-4668-ADF8-8CE907EDA0E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{1D0C269D-B012-4668-ADF8-8CE907EDA0E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{7E39F4B9-4C4C-4D50-AB6E-7DE72B67F17E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{7E39F4B9-4C4C-4D50-AB6E-7DE72B67F17E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{9DE1CBED-2904-4ECF-97C6-3A9EBD249CAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{9DE1CBED-2904-4ECF-97C6-3A9EBD249CAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Migrations", "Infrastructure.Migrations\Infrastructure.Migrations.csproj", "{D02E6719-5549-4029-A88B-BBF0BF4D2991}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Migrations", "Infrastructure.Migrations\Infrastructure.Migrations.csproj", "{D02E6719-5549-4029-A88B-BBF0BF4D2991}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{93C895AC-FB03-408E-9862-86B3B232743C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

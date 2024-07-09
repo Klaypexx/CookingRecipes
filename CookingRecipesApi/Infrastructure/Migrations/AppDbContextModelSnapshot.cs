@@ -93,8 +93,11 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CookingTime")
-                        .HasColumnType("datetime2")
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly?>("CookingTime")
+                        .HasColumnType("time")
                         .HasColumnName("time");
 
                     b.Property<int?>("Like")
@@ -114,17 +117,14 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("recipe", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Recipes.Entities.StepDescription", b =>
+            modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -206,17 +206,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
-                    b.HasOne("Domain.Auth.Entities.User", "User")
+                    b.HasOne("Domain.Auth.Entities.User", "Author")
                         .WithMany("Recipes")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("AuthorId");
 
-                    b.Navigation("User");
+                    b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Domain.Recipes.Entities.StepDescription", b =>
+            modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
-                        .WithMany("StepDescriptions")
+                        .WithMany("Steps")
                         .HasForeignKey("RecipeId");
 
                     b.Navigation("Recipe");
@@ -261,7 +261,7 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Ingredients");
 
-                    b.Navigation("StepDescriptions");
+                    b.Navigation("Steps");
                 });
 #pragma warning restore 612, 618
         }

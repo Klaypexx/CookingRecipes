@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240708230156_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240709214950_TimeChange")]
+    partial class TimeChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,8 +96,11 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CookingTime")
-                        .HasColumnType("datetime2")
+                    b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly?>("CookingTime")
+                        .HasColumnType("time")
                         .HasColumnName("time");
 
                     b.Property<int?>("Like")
@@ -117,12 +120,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("recipe", (string)null);
                 });
@@ -209,11 +209,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
-                    b.HasOne("Domain.Auth.Entities.User", "User")
+                    b.HasOne("Domain.Auth.Entities.User", "Author")
                         .WithMany("Recipes")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("AuthorId");
 
-                    b.Navigation("User");
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
