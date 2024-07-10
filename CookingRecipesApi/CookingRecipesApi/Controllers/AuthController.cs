@@ -30,6 +30,15 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
+    [HttpPost]
+    [Route( "login" )]
+    public async Task<IResult> Login( [FromBody] LoginDto body )
+    {
+        string token = await _authService.Login( body.UserName, body.Password );
+
+        return Results.Ok( token );
+    }
+
     [HttpGet]
     [Route( "user" )]
     public async Task<IActionResult> GetUserByUsername( [FromHeader] string userName )

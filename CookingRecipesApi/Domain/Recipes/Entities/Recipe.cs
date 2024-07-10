@@ -3,7 +3,7 @@
 namespace Domain.Recipes.Entities;
 public class Recipe
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     public string Name { get; set; }
     public string ShortDescription { get; set; }
     public TimeOnly? CookingTime { get; set; }

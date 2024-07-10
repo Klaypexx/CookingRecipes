@@ -21,11 +21,6 @@ public class UserRepository : IUserRepository
     {
         return await _entities
             .Where( u => u.UserName == username )
-            .FirstOrDefaultAsync();
-    }
-
-    public async Task<User> GetUser( int userId )
-    {
-        return await _entities.FindAsync( userId );
+            .FirstOrDefaultAsync() ?? throw new Exception();
     }
 }
