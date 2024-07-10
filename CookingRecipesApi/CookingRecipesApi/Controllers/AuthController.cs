@@ -1,6 +1,8 @@
-﻿using Application.Users.Entities;
+﻿using Application.Auth.Entities;
+using Application.Users.Entities;
 using CookingRecipesApi.Dto.AuthDto;
 using Domain.Auth.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
@@ -10,10 +12,14 @@ namespace CookingRecipesApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly IPasswordHasher _passwordHasher;
+    private readonly ITokenService _tokenService;
 
-    public AuthController( IAuthService authService )
+    public AuthController( IAuthService authService, IPasswordHasher passwordHasher, ITokenService tokenService )
     {
         _authService = authService;
+        _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
     }
 
     [HttpPost]
@@ -34,13 +40,22 @@ public class AuthController : ControllerBase
     [Route( "login" )]
     public async Task<IResult> Login( [FromBody] LoginDto body )
     {
-        string token = await _authService.Login( body.UserName, body.Password );
+        User user = await _authService.GetUserByUsername( body.UserName );
+        bool result = _passwordHasher.Verify( body.Password, user.Password );
+
+        if ( !result )
+        {
+            throw new Exception( "Failed to login" );
+        }
+
+        string token = _tokenService.GenerateJwtToken( user );
 
         return Results.Ok( token );
     }
 
     [HttpGet]
     [Route( "user" )]
+    [Authorize]
     public async Task<IActionResult> GetUserByUsername( [FromHeader] string userName )
     {
         User user = await _authService.GetUserByUsername( userName );

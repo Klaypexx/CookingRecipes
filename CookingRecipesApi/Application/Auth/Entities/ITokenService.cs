@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Domain.Auth.Entities;
 
 namespace Application.Auth.Entities;
-public interface ITokenProvider
+public interface ITokenService
 {
     string GenerateJwtToken( User user );
     /*string GenerateRefreshToken();*/

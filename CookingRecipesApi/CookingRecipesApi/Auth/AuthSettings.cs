@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Auth;
+﻿namespace CookingRecipesApi.Auth;
 
 public class AuthSettings
 {

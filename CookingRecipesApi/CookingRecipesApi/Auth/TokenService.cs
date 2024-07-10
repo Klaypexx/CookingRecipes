@@ -7,13 +7,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure.Auth;
+namespace CookingRecipesApi.Auth;
 
-public class TokenProvider : ITokenProvider
+public class TokenService : ITokenService
 {
     private readonly AuthSettings _authSettings;
 
-    public TokenProvider( AuthSettings authSettings )
+    public TokenService( AuthSettings authSettings )
     {
         _authSettings = authSettings;
     }

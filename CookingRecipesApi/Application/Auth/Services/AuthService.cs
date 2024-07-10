@@ -10,14 +10,12 @@ public class AuthService : IAuthService
     private IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private IPasswordHasher _passwordHasher;
-    private readonly ITokenProvider _tokenService;
 
-    public AuthService( IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, ITokenProvider tokenService )
+    public AuthService( IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher )
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
-        _tokenService = tokenService;
     }
 
     public async Task<User> GetUserByUsername( string username )
@@ -31,20 +29,5 @@ public class AuthService : IAuthService
         user.Id = Guid.NewGuid().ToString();
         await _userRepository.AddUser( user );
         await _unitOfWork.Save();
-    }
-
-    public async Task<string> Login( string userName, string password )
-    {
-        User user = await _userRepository.GetByUsername( userName );
-        bool result = _passwordHasher.Verify( password, user.Password );
-
-        if ( !result )
-        {
-            throw new Exception( "Failed to login" );
-        }
-
-        string token = _tokenService.GenerateJwtToken( user );
-
-        return token;
     }
 }

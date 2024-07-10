@@ -3,11 +3,14 @@ using Application.Auth.Repositories;
 using Application.Foundation.Entities;
 using Application.Users.Entities;
 using Application.Users.Services;
+using CookingRecipesApi.Auth;
 using Infrastructure.Auth;
 using Infrastructure.Auth.Repositories;
 using Infrastructure.Database;
 using Infrastructure.Foundation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder( args );
 
@@ -19,7 +22,7 @@ IServiceCollection services = builder.Services;
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
-services.AddScoped<ITokenProvider, TokenProvider>();
+services.AddScoped<ITokenService, TokenService>();
 
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IAuthService, AuthService>();
@@ -35,6 +38,27 @@ services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
+services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
+        .AddJwtBearer( options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = authSettings.Issuer,
+
+                ValidateAudience = true,
+                ValidAudience = authSettings.Audience,
+
+                ValidateLifetime = true,
+
+                IssuerSigningKey = TokenService.GetSymmetricSecurityKey( authSettings.Key ),
+                ValidateIssuerSigningKey = true,
+
+                RequireExpirationTime = true,
+            };
+        } );
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,6 +70,7 @@ if ( app.Environment.IsDevelopment() )
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
