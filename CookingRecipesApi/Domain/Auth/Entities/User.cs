@@ -7,7 +7,14 @@ public class User
     public string Name { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
+    public string RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
     public string AvatarPath { get; set; }
     public List<Recipe> Recipes { get; set; }
     public List<Recipe> Favourites { get; set; }
+    public void SetRefreshToken( string token, int expiration )
+    {
+        RefreshToken = token;
+        RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes( expiration );
+    }
 }

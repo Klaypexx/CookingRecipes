@@ -23,6 +23,11 @@ public class AuthService : IAuthService
         return await _userRepository.GetByUsername( username );
     }
 
+    public async Task<User> GetUserByToken( string token )
+    {
+        return await _userRepository.GetByRefreshToken( token );
+    }
+
     public async Task RegisterUser( User user )
     {
         user.Password = _passwordHasher.Generate( user.Password );

@@ -49,6 +49,7 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
                 ValidAudience = authSettings.Audience,
 
                 ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
 
                 IssuerSigningKey = TokenService.GetSymmetricSecurityKey( authSettings.Key ),
                 ValidateIssuerSigningKey = true,

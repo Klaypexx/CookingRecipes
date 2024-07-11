@@ -9,5 +9,5 @@ namespace Application.Auth.Entities;
 public interface ITokenService
 {
     string GenerateJwtToken( User user );
-    /*string GenerateRefreshToken();*/
+    string GenerateRefreshToken();
 }

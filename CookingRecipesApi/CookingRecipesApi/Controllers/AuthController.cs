@@ -1,5 +1,8 @@
-﻿using Application.Auth.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Application.Auth.Entities;
+using Application.Foundation.Entities;
 using Application.Users.Entities;
+using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using Domain.Auth.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +17,16 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly AuthSettings _authSettings;
 
-    public AuthController( IAuthService authService, IPasswordHasher passwordHasher, ITokenService tokenService )
+    public AuthController( IAuthService authService, IPasswordHasher passwordHasher, ITokenService tokenService, IUnitOfWork unitOfWork, AuthSettings authSettings )
     {
         _authService = authService;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
+        _unitOfWork = unitOfWork;
+        _authSettings = authSettings;
     }
 
     [HttpPost]
@@ -49,9 +56,49 @@ public class AuthController : ControllerBase
         }
 
         string token = _tokenService.GenerateJwtToken( user );
+        string refreshToken = _tokenService.GenerateRefreshToken();
+        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
+        await _unitOfWork.Save();
+
         /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
 
-        return Results.Ok( token );
+        TokenDto response = new()
+        {
+            AccessToken = token,
+            RefreshToken = refreshToken
+        };
+        return Results.Ok( response );
+    }
+
+    [HttpPost]
+    [Route( "refresh" )]
+    public async Task<IActionResult> Refresh( [FromBody] RefreshTokenDto body )
+    {
+        User user = await _authService.GetUserByToken( body.RefreshToken );
+
+        if ( user is null )
+        {
+            return BadRequest( new Exception( "Токен обновления не существует" ) );
+        }
+
+        if ( user.RefreshTokenExpiryTime <= DateTime.UtcNow )
+        {
+            return BadRequest( new Exception( "Срок действия токена обновления истек" ) );
+        }
+
+        string jwtToken = _tokenService.GenerateJwtToken( user );
+        string refreshToken = _tokenService.GenerateRefreshToken();
+
+        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
+        await _unitOfWork.Save();
+
+        TokenDto response = new()
+        {
+            AccessToken = jwtToken,
+            RefreshToken = refreshToken
+        };
+
+        return Ok( response );
     }
 
     [HttpGet]

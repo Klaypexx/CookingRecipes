@@ -41,13 +41,13 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken( jwt );
     }
 
-    /*public string GenerateRefreshToken()
+    public string GenerateRefreshToken()
     {
         var randomNumber = new byte[ 32 ];
         RandomNumberGenerator rng = RandomNumberGenerator.Create();
         rng.GetBytes( randomNumber );
         return Convert.ToBase64String( randomNumber );
-    }*/
+    }
 
     public static SymmetricSecurityKey GetSymmetricSecurityKey( string key )
     {
