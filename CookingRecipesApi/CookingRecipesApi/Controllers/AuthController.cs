@@ -1,6 +1,11 @@
-﻿using Application.Users.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Application.Auth.Entities;
+using Application.Foundation.Entities;
+using Application.Users.Entities;
+using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using Domain.Auth.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
@@ -10,10 +15,18 @@ namespace CookingRecipesApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly IPasswordHasher _passwordHasher;
+    private readonly ITokenService _tokenService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly AuthSettings _authSettings;
 
-    public AuthController( IAuthService authService )
+    public AuthController( IAuthService authService, IPasswordHasher passwordHasher, ITokenService tokenService, IUnitOfWork unitOfWork, AuthSettings authSettings )
     {
         _authService = authService;
+        _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
+        _unitOfWork = unitOfWork;
+        _authSettings = authSettings;
     }
 
     [HttpPost]
@@ -30,8 +43,67 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
+    [HttpPost]
+    [Route( "login" )]
+    public async Task<IResult> Login( [FromBody] LoginDto body )
+    {
+        User user = await _authService.GetUserByUsername( body.UserName );
+        bool result = _passwordHasher.Verify( body.Password, user.Password );
+
+        if ( !result )
+        {
+            throw new Exception( "Failed to login" );
+        }
+
+        string token = _tokenService.GenerateJwtToken( user );
+        string refreshToken = _tokenService.GenerateRefreshToken();
+        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
+        await _unitOfWork.Save();
+
+        /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
+
+        TokenDto response = new()
+        {
+            AccessToken = token,
+            RefreshToken = refreshToken
+        };
+        return Results.Ok( response );
+    }
+
+    [HttpPost]
+    [Route( "refresh" )]
+    public async Task<IActionResult> Refresh( [FromBody] RefreshTokenDto body )
+    {
+        User user = await _authService.GetUserByToken( body.RefreshToken );
+
+        if ( user is null )
+        {
+            return BadRequest( new Exception( "Токен обновления не существует" ) );
+        }
+
+        if ( user.RefreshTokenExpiryTime <= DateTime.UtcNow )
+        {
+            return BadRequest( new Exception( "Срок действия токена обновления истек" ) );
+        }
+
+        string jwtToken = _tokenService.GenerateJwtToken( user );
+        string refreshToken = _tokenService.GenerateRefreshToken();
+
+        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
+        await _unitOfWork.Save();
+
+        TokenDto response = new()
+        {
+            AccessToken = jwtToken,
+            RefreshToken = refreshToken
+        };
+
+        return Ok( response );
+    }
+
     [HttpGet]
     [Route( "user" )]
+    [Authorize]
     public async Task<IActionResult> GetUserByUsername( [FromHeader] string userName )
     {
         User user = await _authService.GetUserByUsername( userName );

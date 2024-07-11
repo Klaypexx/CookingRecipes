@@ -21,11 +21,13 @@ public class UserRepository : IUserRepository
     {
         return await _entities
             .Where( u => u.UserName == username )
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync() ?? throw new Exception();
     }
 
-    public async Task<User> GetUser( int userId )
+    public async Task<User> GetByRefreshToken( string token )
     {
-        return await _entities.FindAsync( userId );
+        return await _entities
+            .Where( u => u.RefreshToken == token )
+            .FirstOrDefaultAsync();
     }
 }

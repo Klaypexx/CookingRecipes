@@ -10,6 +10,10 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
         builder.ToTable( "step" );
         builder.HasKey( x => x.Id );
 
+        builder.Property( x => x.StepNumber )
+           .HasColumnName( "step_number" )
+           .IsRequired( true );
+
         builder.Property( x => x.Description )
            .HasColumnName( "name" )
            .IsRequired( true );

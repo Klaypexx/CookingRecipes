@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,7 @@ namespace Infrastructure.Migrations
                 name: "tag",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -28,11 +27,12 @@ namespace Infrastructure.Migrations
                 name: "user",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    refresh_token = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    refresh_token_expiry_time = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     avatar = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -44,21 +44,20 @@ namespace Infrastructure.Migrations
                 name: "recipe",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    time = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    time = table.Column<TimeOnly>(type: "time", nullable: true),
                     portion = table.Column<int>(type: "int", nullable: true),
                     like = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_recipe", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_recipe_user_UserId",
-                        column: x => x.UserId,
+                        name: "FK_recipe_user_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "user",
                         principalColumn: "Id");
                 });
@@ -67,11 +66,10 @@ namespace Infrastructure.Migrations
                 name: "ingredient",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     product = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: true)
+                    RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,8 +85,8 @@ namespace Infrastructure.Migrations
                 name: "RecipeTag",
                 columns: table => new
                 {
-                    RecipesId = table.Column<int>(type: "int", nullable: false),
-                    TagsId = table.Column<int>(type: "int", nullable: false)
+                    RecipesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TagsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,8 +109,8 @@ namespace Infrastructure.Migrations
                 name: "RecipeUser",
                 columns: table => new
                 {
-                    FavouritedById = table.Column<int>(type: "int", nullable: false),
-                    FavouritesId = table.Column<int>(type: "int", nullable: false)
+                    FavouritedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FavouritesId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,10 +133,9 @@ namespace Infrastructure.Migrations
                 name: "step",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: true)
+                    RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -156,9 +153,9 @@ namespace Infrastructure.Migrations
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_recipe_UserId",
+                name: "IX_recipe_AuthorId",
                 table: "recipe",
-                column: "UserId");
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeTag_TagsId",
