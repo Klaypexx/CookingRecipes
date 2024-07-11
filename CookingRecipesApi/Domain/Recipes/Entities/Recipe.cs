@@ -5,10 +5,11 @@ public class Recipe
 {
     public string Id { get; set; }
     public string Name { get; set; }
-    public string ShortDescription { get; set; }
+    public string Description { get; set; }
     public TimeOnly? CookingTime { get; set; }
     public int? Portion { get; set; }
-    public int? Like { get; set; }
+    public Like LikesCount { get; set; }
+    public Favourite FavouritesCount { get; set; }
     public List<Tag> Tags { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public List<Step> Steps { get; set; }

@@ -4,6 +4,7 @@ using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240711213721_Likes")]
+    partial class Likes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,22 +68,6 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("user", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Recipes.Entities.Favourite", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Count")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("count");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("favourite", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
@@ -169,10 +156,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("RecipeId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("int")
-                        .HasColumnName("step_number");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
@@ -240,12 +223,6 @@ namespace Infrastructure.Migrations
                         .WithMany("Recipes")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Domain.Recipes.Entities.Favourite", "FavouritesCount")
-                        .WithOne("Recipe")
-                        .HasForeignKey("Domain.Recipes.Entities.Recipe", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Recipes.Entities.Like", "LikesCount")
                         .WithOne("Recipe")
                         .HasForeignKey("Domain.Recipes.Entities.Recipe", "Id")
@@ -253,8 +230,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
-
-                    b.Navigation("FavouritesCount");
 
                     b.Navigation("LikesCount");
                 });
@@ -301,11 +276,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Auth.Entities.User", b =>
                 {
                     b.Navigation("Recipes");
-                });
-
-            modelBuilder.Entity("Domain.Recipes.Entities.Favourite", b =>
-                {
-                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
