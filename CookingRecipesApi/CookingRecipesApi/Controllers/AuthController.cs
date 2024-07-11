@@ -49,6 +49,7 @@ public class AuthController : ControllerBase
         }
 
         string token = _tokenService.GenerateJwtToken( user );
+        /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
 
         return Results.Ok( token );
     }
