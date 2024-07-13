@@ -11,7 +11,7 @@ public class User
     public DateTime RefreshTokenExpiryTime { get; set; }
     public string AvatarPath { get; set; }
     public List<Recipe> Recipes { get; set; }
-    public List<Recipe> Favourites { get; set; }
+    public List<FavouriteRecipe> FavouriteRecipes { get; set; }
     public void SetRefreshToken( string token, int expiration )
     {
         RefreshToken = token;

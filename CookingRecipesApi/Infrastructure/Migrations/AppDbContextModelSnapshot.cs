@@ -67,20 +67,19 @@ namespace Infrastructure.Migrations
                     b.ToTable("user", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Recipes.Entities.Favourite", b =>
+            modelBuilder.Entity("Domain.Recipes.Entities.FavouriteRecipe", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Count")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("count");
+                    b.Property<string>("RecipeId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "RecipeId");
 
-                    b.ToTable("favourite", (string)null);
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("FavouriteRecipe");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
@@ -156,6 +155,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("recipe", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Recipes.Entities.RecipeTag", b =>
+                {
+                    b.Property<string>("RecipeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TagId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RecipeId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("RecipeTag");
+                });
+
             modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
                 {
                     b.Property<string>("Id")
@@ -195,34 +209,23 @@ namespace Infrastructure.Migrations
                     b.ToTable("tag", (string)null);
                 });
 
-            modelBuilder.Entity("RecipeTag", b =>
+            modelBuilder.Entity("Domain.Recipes.Entities.FavouriteRecipe", b =>
                 {
-                    b.Property<string>("RecipesId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
+                        .WithMany("FavouritedBy")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("TagsId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasOne("Domain.Auth.Entities.User", "User")
+                        .WithMany("FavouriteRecipes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("RecipesId", "TagsId");
+                    b.Navigation("Recipe");
 
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("RecipeTag");
-                });
-
-            modelBuilder.Entity("RecipeUser", b =>
-                {
-                    b.Property<string>("FavouritedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FavouritesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FavouritedById", "FavouritesId");
-
-                    b.HasIndex("FavouritesId");
-
-                    b.ToTable("RecipeUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
@@ -240,12 +243,6 @@ namespace Infrastructure.Migrations
                         .WithMany("Recipes")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Domain.Recipes.Entities.Favourite", "FavouritesCount")
-                        .WithOne("Recipe")
-                        .HasForeignKey("Domain.Recipes.Entities.Recipe", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Recipes.Entities.Like", "LikesCount")
                         .WithOne("Recipe")
                         .HasForeignKey("Domain.Recipes.Entities.Recipe", "Id")
@@ -254,9 +251,26 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("Author");
 
-                    b.Navigation("FavouritesCount");
-
                     b.Navigation("LikesCount");
+                });
+
+            modelBuilder.Entity("Domain.Recipes.Entities.RecipeTag", b =>
+                {
+                    b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
+                        .WithMany("Tags")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Recipes.Entities.Tag", "Tag")
+                        .WithMany("Recipes")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
@@ -268,44 +282,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("RecipeTag", b =>
-                {
-                    b.HasOne("Domain.Recipes.Entities.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Recipes.Entities.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RecipeUser", b =>
-                {
-                    b.HasOne("Domain.Auth.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("FavouritedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Recipes.Entities.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("FavouritesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Auth.Entities.User", b =>
                 {
-                    b.Navigation("Recipes");
-                });
+                    b.Navigation("FavouriteRecipes");
 
-            modelBuilder.Entity("Domain.Recipes.Entities.Favourite", b =>
-                {
-                    b.Navigation("Recipe");
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
@@ -315,9 +296,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
+                    b.Navigation("FavouritedBy");
+
                     b.Navigation("Ingredients");
 
                     b.Navigation("Steps");
+
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("Domain.Recipes.Entities.Tag", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

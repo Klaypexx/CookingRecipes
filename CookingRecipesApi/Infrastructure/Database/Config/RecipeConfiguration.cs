@@ -34,12 +34,9 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             .WithOne( x => x.Recipe )
             .HasForeignKey<Recipe>( x => x.Id );
 
-        builder.HasOne( x => x.FavouritesCount )
-           .WithOne( x => x.Recipe )
-           .HasForeignKey<Recipe>( x => x.Id );
-
         builder.HasMany( x => x.Tags )
-           .WithMany( x => x.Recipes );
+            .WithOne( x => x.Recipe )
+            .HasForeignKey( x => x.RecipeId );
 
         builder.HasMany( x => x.Ingredients )
            .WithOne( x => x.Recipe );
@@ -51,6 +48,7 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             .WithMany( x => x.Recipes );
 
         builder.HasMany( x => x.FavouritedBy )
-            .WithMany( x => x.Favourites );
+            .WithOne( x => x.Recipe )
+            .HasForeignKey( x => x.RecipeId );
     }
 }

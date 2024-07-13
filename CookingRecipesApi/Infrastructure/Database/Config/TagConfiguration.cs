@@ -15,6 +15,7 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
            .IsRequired( true );
 
         builder.HasMany( x => x.Recipes )
-          .WithMany( x => x.Tags );
+            .WithOne( x => x.Tag )
+            .HasForeignKey( x => x.TagId );
     }
 }

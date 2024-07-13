@@ -9,11 +9,10 @@ public class Recipe
     public TimeOnly? CookingTime { get; set; }
     public int? Portion { get; set; }
     public Like LikesCount { get; set; }
-    public Favourite FavouritesCount { get; set; }
-    public List<Tag> Tags { get; set; }
+    public List<RecipeTag> Tags { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public List<Step> Steps { get; set; }
     public User Author { get; set; }
-    public List<User> FavouritedBy { get; set; }
+    public List<FavouriteRecipe> FavouritedBy { get; set; }
 
 }

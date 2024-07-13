@@ -12,6 +12,18 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "like",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    count = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_like", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tag",
                 columns: table => new
                 {
@@ -32,7 +44,7 @@ namespace Infrastructure.Migrations
                     username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     refresh_token = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
-                    refresh_token_expiry_time = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    refresh_token_expiry_time = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     avatar = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -49,17 +61,46 @@ namespace Infrastructure.Migrations
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     time = table.Column<TimeOnly>(type: "time", nullable: true),
                     portion = table.Column<int>(type: "int", nullable: true),
-                    like = table.Column<int>(type: "int", nullable: true),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_recipe", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_recipe_like_Id",
+                        column: x => x.Id,
+                        principalTable: "like",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_recipe_user_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "user",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FavouriteRecipe",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavouriteRecipe", x => new { x.UserId, x.RecipeId });
+                    table.ForeignKey(
+                        name: "FK_FavouriteRecipe_recipe_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "recipe",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FavouriteRecipe_user_UserId",
+                        column: x => x.UserId,
+                        principalTable: "user",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,46 +126,22 @@ namespace Infrastructure.Migrations
                 name: "RecipeTag",
                 columns: table => new
                 {
-                    RecipesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TagsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TagId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RecipeTag", x => new { x.RecipesId, x.TagsId });
+                    table.PrimaryKey("PK_RecipeTag", x => new { x.RecipeId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_RecipeTag_recipe_RecipesId",
-                        column: x => x.RecipesId,
+                        name: "FK_RecipeTag_recipe_RecipeId",
+                        column: x => x.RecipeId,
                         principalTable: "recipe",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeTag_tag_TagsId",
-                        column: x => x.TagsId,
+                        name: "FK_RecipeTag_tag_TagId",
+                        column: x => x.TagId,
                         principalTable: "tag",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RecipeUser",
-                columns: table => new
-                {
-                    FavouritedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FavouritesId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeUser", x => new { x.FavouritedById, x.FavouritesId });
-                    table.ForeignKey(
-                        name: "FK_RecipeUser_recipe_FavouritesId",
-                        column: x => x.FavouritesId,
-                        principalTable: "recipe",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RecipeUser_user_FavouritedById",
-                        column: x => x.FavouritedById,
-                        principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -134,6 +151,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    step_number = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -148,6 +166,11 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_FavouriteRecipe_RecipeId",
+                table: "FavouriteRecipe",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ingredient_RecipeId",
                 table: "ingredient",
                 column: "RecipeId");
@@ -158,14 +181,9 @@ namespace Infrastructure.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeTag_TagsId",
+                name: "IX_RecipeTag_TagId",
                 table: "RecipeTag",
-                column: "TagsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RecipeUser_FavouritesId",
-                table: "RecipeUser",
-                column: "FavouritesId");
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_step_RecipeId",
@@ -183,13 +201,13 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "FavouriteRecipe");
+
+            migrationBuilder.DropTable(
                 name: "ingredient");
 
             migrationBuilder.DropTable(
                 name: "RecipeTag");
-
-            migrationBuilder.DropTable(
-                name: "RecipeUser");
 
             migrationBuilder.DropTable(
                 name: "step");
@@ -199,6 +217,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "recipe");
+
+            migrationBuilder.DropTable(
+                name: "like");
 
             migrationBuilder.DropTable(
                 name: "user");

@@ -42,7 +42,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany( x => x.Recipes )
            .WithOne( x => x.Author );
 
-        builder.HasMany( x => x.Favourites )
-           .WithMany( x => x.FavouritedBy );
+        builder.HasMany( u => u.FavouriteRecipes )
+            .WithOne( fr => fr.User )
+            .HasForeignKey( fr => fr.UserId );
     }
 }

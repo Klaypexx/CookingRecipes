@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Auth.Entities;
 
 namespace Domain.Recipes.Entities;
-public class Favourite
+public class RecipeTag
 {
-    public string Id { get; set; }
-    public int Count { get; set; }
+    public string RecipeId { get; set; }
+    public string TagId { get; set; }
     public Recipe Recipe { get; set; }
+    public Tag Tag { get; set; }
 }
