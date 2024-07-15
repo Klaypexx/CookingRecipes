@@ -57,6 +57,7 @@ public class AuthController : ControllerBase
 
         string token = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
+        _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();
 
@@ -72,9 +73,10 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route( "refresh" )]
-    public async Task<IActionResult> Refresh( [FromBody] RefreshTokenDto body )
+    public async Task<IActionResult> Refresh()
     {
-        User user = await _authService.GetUserByToken( body.RefreshToken );
+        HttpContext.Request.Cookies.TryGetValue( "refreshToken", out string cookieRefreshToken );
+        User user = await _authService.GetUserByToken( cookieRefreshToken );
 
         if ( user is null )
         {
@@ -88,6 +90,8 @@ public class AuthController : ControllerBase
 
         string jwtToken = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
+
+        _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
 
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();

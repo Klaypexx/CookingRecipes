@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Auth.Entities;
+﻿using Domain.Auth.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Auth.Entities;
 public interface ITokenService
 {
     string GenerateJwtToken( User user );
     string GenerateRefreshToken();
+    void SetRefreshTokenInsideCookie( string refreshToken, HttpContext context );
 }

@@ -53,4 +53,17 @@ public class TokenService : ITokenService
     {
         return new SymmetricSecurityKey( Encoding.ASCII.GetBytes( key ) );
     }
+
+    public void SetRefreshTokenInsideCookie( string refreshToken, HttpContext context )
+    {
+        context.Response.Cookies.Append( "refreshToken", refreshToken,
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddMinutes( _authSettings.RefreshLifeTime ),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+            } );
+    }
 }
