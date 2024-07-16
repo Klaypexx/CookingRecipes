@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
             throw new Exception( "Failed to login" );
         }
 
-        string token = _tokenService.GenerateJwtToken( user );
+        string jwtToken = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
         _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
@@ -65,8 +65,7 @@ public class AuthController : ControllerBase
 
         TokenDto response = new()
         {
-            AccessToken = token,
-            RefreshToken = refreshToken
+            AccessToken = jwtToken
         };
         return Results.Ok( response );
     }
@@ -98,8 +97,7 @@ public class AuthController : ControllerBase
 
         TokenDto response = new()
         {
-            AccessToken = jwtToken,
-            RefreshToken = refreshToken
+            AccessToken = jwtToken
         };
 
         return Ok( response );
