@@ -55,20 +55,14 @@ public class AuthController : ControllerBase
             throw new Exception( "Failed to login" );
         }
 
-        string token = _tokenService.GenerateJwtToken( user );
+        string jwtToken = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
         _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();
 
         /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
-
-        TokenDto response = new()
-        {
-            AccessToken = token,
-            RefreshToken = refreshToken
-        };
-        return Results.Ok( response );
+        return Results.Ok( jwtToken );
     }
 
     [HttpPost]
@@ -96,13 +90,7 @@ public class AuthController : ControllerBase
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();
 
-        TokenDto response = new()
-        {
-            AccessToken = jwtToken,
-            RefreshToken = refreshToken
-        };
-
-        return Ok( response );
+        return Ok( jwtToken );
     }
 
     [HttpGet]
