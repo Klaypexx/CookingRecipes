@@ -9,6 +9,7 @@ using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
 using Infrastructure.Foundation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -68,6 +69,16 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
             };*/
         } );
 
+services.AddCors( options =>
+{
+    options.AddDefaultPolicy( policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyOrigin();
+        policy.AllowAnyMethod();
+    } );
+} );
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,6 +92,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
