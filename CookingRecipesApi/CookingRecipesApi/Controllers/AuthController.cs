@@ -62,16 +62,7 @@ public class AuthController : ControllerBase
         await _unitOfWork.Save();
 
         /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
-<<<<<<< HEAD
-
-        TokenDto response = new()
-        {
-            AccessToken = jwtToken
-        };
-        return Results.Ok( response );
-=======
         return Results.Ok( jwtToken );
->>>>>>> 6f791653750dedbf90a13deac0951df54d001bb7
     }
 
     [HttpPost]
@@ -99,16 +90,7 @@ public class AuthController : ControllerBase
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();
 
-<<<<<<< HEAD
-        TokenDto response = new()
-        {
-            AccessToken = jwtToken
-        };
-
-        return Ok( response );
-=======
         return Ok( jwtToken );
->>>>>>> 6f791653750dedbf90a13deac0951df54d001bb7
     }
 
     [HttpGet]

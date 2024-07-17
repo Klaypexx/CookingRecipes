@@ -1,44 +1,68 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from 'react'
 import './App.css'
-import { loginAPI, registerAPI } from './Services/AuthService'
-import { useEffect } from 'react';
+import AuthService from './Services/AuthService'
+import { useAuthStore } from './Stores/useAuthStore';
+
 
 function App() {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-    if (user && token) {
-      setUser(JSON.parse(user));
-      setToken(token);
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-    }
-    setIsReady(true);
-  }, []);
+    console.log(token);
+  }, [token])
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+    await AuthService.login(userName, password)
+      .then((data) => console.log(data))
+  }
 
   return (
     <>
+      <h3>Login</h3>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <form onSubmit={handleLogin}>
+          <br />
+          <input
+            type="username"
+            placeholder="username"
+            required
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+          <br />
+          <br />
+          <input
+            type="password"
+            placeholder="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <br />
+          <button type="submit">Signup</button>
+        </form>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <p>Регистрация</p>
-        <button onClick={() => registerAPI("Dmitri", 'Sanchezz', '12345')}>
-        </button>
-        <p>Логин</p>
-        <button onClick={() => loginAPI('Sanchezz', '12345')}>
-        </button>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      {/* <h3>Get User Data</h3>
+      <div>
+        <form onSubmit={getUserName}>
+          <h3>Signup Form</h3>
+          <br />
+          <input
+            type="username"
+            placeholder="username"
+            required
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+          <br />
+          <button type="submit">Signup</button>
+        </form>
+      </div> */}
     </>
   )
 }
