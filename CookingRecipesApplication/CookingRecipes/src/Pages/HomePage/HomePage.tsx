@@ -1,9 +1,9 @@
-import React from "react";
+import Preview from "../../Components/Preview/Preview"
 
 const HomePage = () => {
     return (
       <>
-        
+        <Preview />
       </>
     );
 }

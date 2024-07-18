@@ -4,7 +4,7 @@ import TokenService from "./TokenService";
 const endpoints = {
     login: '/users/login',
     register: '/users/registers'
-  };
+};
 
 const register = async (username: string, password: string) => {
   return await api.post(endpoints.register, {
@@ -22,12 +22,12 @@ const login = async (username: string, password: string) => {
     if (response.data) {
         TokenService.setToken(response.data);
     }
-    return response;
+    
 };
 
-// const logout = () => {
-//   TokenService.removeUser();
-// };
+const logout = () => {
+  TokenService.removeToken();
+};
 
 // const getCurrentUser = () => {
 //   return JSON.parse(localStorage.getItem("user"));
@@ -35,7 +35,8 @@ const login = async (username: string, password: string) => {
 
 const AuthService = {
   register,
-  login
+  login,
+  logout
 };
 
 export default AuthService;

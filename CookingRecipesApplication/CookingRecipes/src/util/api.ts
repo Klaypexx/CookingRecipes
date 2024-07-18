@@ -5,6 +5,7 @@ const api = axios.create({
   baseURL: "http://localhost:5014",
   headers: {
     "Content-Type": "application/json",
+    'Access-Control-Allow-Origin': '*',
   },
 });
 
@@ -12,6 +13,7 @@ api.interceptors.request.use(
   (config) => {
     const token = TokenService.getAccessToken();
     if (token) {
+      console.log(token);
       config.headers["Authorization"] = 'Bearer ' + token; 
     }
     return config;
@@ -34,7 +36,7 @@ api.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const rs = await api.post("/refresh");
+          const rs = await api.post("/users/refresh");
 
           const { accessToken } = rs.data;
           TokenService.updateAccessToken(accessToken);

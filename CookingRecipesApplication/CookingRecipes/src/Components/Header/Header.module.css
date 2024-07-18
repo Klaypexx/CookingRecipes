@@ -1,0 +1,101 @@
+.container {
+    /* max-width: 1200px; */
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between
+}
+
+.navigation {
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+
+.imageLogo {
+    height: 29px;
+    width: 99px;
+}
+
+.containerButtons {
+    display: flex;
+    align-items: center;
+    margin-left: 80px;
+}
+
+.headerText {
+    color: rgb(145, 150, 161);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.headerTextActive {
+    color: rgb(58, 60, 65);
+}
+
+.headerText:not(:first-child) {
+    margin-left: 40px;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.userAvatar {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: rgb(253, 177, 0);
+    margin-right: 14px;
+}
+
+.userAvatarImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 16px;
+    width: 16px;
+}
+
+.avatarText {
+    color: rgb(253, 177, 0);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0%;
+    text-align: left;
+}
+
+.authContainer {
+    display: flex;
+    align-items: center;
+}
+
+.authText {
+    color: rgb(253, 177, 0);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 25px;
+}
+
+.line {
+    border: 1px solid rgba(253, 177, 0, 0.72);
+    width: 0px;
+    height: 18px;
+    margin-right: 25px;
+}
+
+.exit {
+    width: 25px;
+    height: 25px;
+}

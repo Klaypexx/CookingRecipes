@@ -4,6 +4,7 @@ using Application.Foundation.Entities;
 using Application.Users.Entities;
 using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
+using CookingRecipesApi.Utilities;
 using Domain.Auth.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -100,5 +101,13 @@ public class AuthController : ControllerBase
     {
         User user = await _authService.GetUserByUsername( userName );
         return Ok( user );
+    }
+
+    [HttpGet]
+    [Route( "username" )]
+    [Authorize]
+    public IActionResult GetUsername()
+    {
+        return Ok( new UserDto() { UserName = User.GetUserName() } );
     }
 }
