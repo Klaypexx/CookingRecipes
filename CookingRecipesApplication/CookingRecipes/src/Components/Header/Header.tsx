@@ -2,20 +2,23 @@ import styles from "./Header.module.css"
 import logo from "../../resources/img/Logo.png"
 import userIcon from "../../resources/icons/user.svg"
 import exitIcon from "../../resources/icons/exit.svg"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import classNames from "classnames"
 import { useAuthStore } from "../../Stores/useAuthStore"
 import { useEffect, useState } from "react"
 import UserService from "../../Services/UserService"
-import AuthService from "../../Services/AuthService"
+import AuthModal from "../Modal/AuthModal"
+import useModalStore from "../../Stores/useModalStore"
+import LogoutModal from "../Modal/LogoutModal"
 
 const Header = () => {
     const [userName, setUserName] = useState('');
     const token = useAuthStore((state) => state.token);
-    const navigate = useNavigate();
+    const {isAuth, isLogout, setAuth, setLogout} = useModalStore();
 
     useEffect(() => {
         if (token) {
+            console.log(token)
             const getUsername = async () => {
                 const response = await UserService.username();
                 const { userName } = response; 
@@ -25,14 +28,12 @@ const Header = () => {
         }
     }, [token])
 
-    const handleLogin = async () => {
-        await AuthService.login('Дмитрий', '12345')
-        navigate(0);
+    const handleLogin = () => {
+        setAuth(isAuth);
     }
 
-    const handleLogout = async () => {
-        await AuthService.logout();
-        navigate(0);
+    const handleLogout = () => {
+        setLogout(isLogout);
     }
 
     return (
@@ -67,20 +68,20 @@ const Header = () => {
                         {[styles.headerTextActive]: isActive}
                     )
                  }
-                    to={'/'}
+                    to={'/secret'}
                 >
                 Избранное
                 </NavLink>
               </div>
             </div>
 
-            <div className={styles.avatar}>
+            <div className={styles.authContainer}>
                 <div className={styles.userAvatar}>
                     <img src={userIcon} alt="User Icon" className={styles.userAvatarImg}/>
                 </div>
-                {token ? 
+                {userName ? 
                     (
-                        <div className={styles.authContainer}>
+                        <div className={styles.authBlock}>
                             <p className={styles.authText}>Привет, {userName}</p>
                             <div className={styles.line}></div>
                             <img src={exitIcon} alt="" className={styles.exit} onClick={handleLogout}/>
@@ -92,6 +93,13 @@ const Header = () => {
             </div>
 
           </div>
+          {isAuth ? 
+            <AuthModal />
+          :null}
+
+          {isLogout ?
+            <LogoutModal />
+          :null}
         </header>
     )
 }

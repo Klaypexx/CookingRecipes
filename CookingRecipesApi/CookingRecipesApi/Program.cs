@@ -69,14 +69,16 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
             };*/
         } );
 
-services.AddCors( options =>
+builder.Services.AddCors( options =>
 {
-    options.AddDefaultPolicy( policy =>
-    {
-        policy.AllowAnyHeader();
-        policy.AllowAnyOrigin();
-        policy.AllowAnyMethod();
-    } );
+    options.AddPolicy( "MyPolicy",
+        policy =>
+        {
+            policy.WithOrigins( "http://localhost:5173" ) // Укажите ваш фронтенд
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // Разрешает использование учетных данных
+        } );
 } );
 
 WebApplication app = builder.Build();
@@ -90,7 +92,7 @@ if ( app.Environment.IsDevelopment() )
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors( "MyPolicy" );
 
 app.UseAuthentication();
 app.UseAuthorization();

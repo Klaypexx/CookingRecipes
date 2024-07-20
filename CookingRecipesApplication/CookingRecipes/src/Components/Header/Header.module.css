@@ -25,8 +25,6 @@
 
 .headerText {
     color: rgb(145, 150, 161);
-    font-family: Montserrat;
-    font-size: 18px;
     font-weight: 400;
     line-height: 22px;
 }
@@ -39,10 +37,9 @@
     margin-left: 40px;
 }
 
-.avatar {
+.authContainer {
     display: flex;
     align-items: center;
-    cursor: pointer;
 }
 
 .userAvatar {
@@ -67,23 +64,20 @@
 
 .avatarText {
     color: rgb(253, 177, 0);
-    font-family: Montserrat;
-    font-size: 18px;
     font-weight: 600;
     line-height: 22px;
     letter-spacing: 0%;
     text-align: left;
+    cursor: pointer;
 }
 
-.authContainer {
+.authBlock {
     display: flex;
     align-items: center;
 }
 
 .authText {
     color: rgb(253, 177, 0);
-    font-family: Montserrat;
-    font-size: 18px;
     font-weight: 600;
     margin-right: 25px;
 }
@@ -98,4 +92,5 @@
 .exit {
     width: 25px;
     height: 25px;
+    cursor: pointer;
 }

@@ -59,8 +59,8 @@ public class TokenService : ITokenService
         context.Response.Cookies.Append( "refreshToken", refreshToken,
             new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddMinutes( _authSettings.RefreshLifeTime ),
-                HttpOnly = true,
+                Expires = DateTimeOffset.Now.AddMinutes( _authSettings.RefreshLifeTime ),
+                HttpOnly = false,
                 IsEssential = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,

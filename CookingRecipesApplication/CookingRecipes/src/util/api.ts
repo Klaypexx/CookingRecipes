@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import TokenService from "../Services/TokenService";
+import AuthService from "../Services/AuthService";
 
 const api = axios.create({
   baseURL: "http://localhost:5014",
@@ -7,49 +9,68 @@ const api = axios.create({
     "Content-Type": "application/json",
     'Access-Control-Allow-Origin': '*',
   },
+  withCredentials: true, 
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = TokenService.getAccessToken();
-    if (token) {
-      console.log(token);
-      config.headers["Authorization"] = 'Bearer ' + token; 
+// Создайте функцию для настройки интерсепторов
+export const setupInterceptors = (navigate: any) => {
+  api.interceptors.request.use(
+    (config) => {
+      const token = TokenService.getAccessToken();
+      if (token) {
+        config.headers["Authorization"] = 'Bearer ' + token; 
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  );
 
-api.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  async (err) => {
-    const originalConfig = err.config;
-    // originalConfig.url !== "/auth/signin" && 
-    if (err.response) {
-      // Access Token was expired
-      if (err.response.status === 401 && !originalConfig._retry) {
-        originalConfig._retry = true;
+  api.interceptors.response.use(
+    (res) => {
+      return res;
+    },
+    async (err) => {
+      const token = TokenService.getAccessToken();
+      const originalConfig = err.config;
 
-        try {
-          const rs = await api.post("/users/refresh");
+      if (!err.response) {
+        alert("Не удалось подключиться к серверу. Пожалуйста, проверьте ваше интернет-соединение или попробуйте позже.");
+        if (token) {
+          TokenService.removeToken();
+        }
+        navigate(0);
+      }
 
-          const { accessToken } = rs.data;
-          TokenService.updateAccessToken(accessToken);
+      if (err.response) {
+        if (err.response.status === 400) {
+          console.log("Плохой запрос")
+          if (token) {
+            TokenService.removeToken();
+          }
+          navigate(0);
+        }
 
-          return api(originalConfig);
-        } catch (_error) {
-          return Promise.reject(_error);
+        if (err.response.status === 401 && !originalConfig._retry) {
+          originalConfig._retry = true;
+
+          try {
+            console.log("Я в ревреше")
+            const rs = await AuthService.refresh();
+            const accessToken = rs.data;
+            TokenService.updateAccessToken(accessToken);
+            return api(originalConfig);
+          } catch (_error) {
+            TokenService.removeToken();
+            // navigate(0); // Перенаправляем на страницу логина
+            console.log(_error);
+          }
         }
       }
+      return Promise.reject(err);
     }
-
-    return Promise.reject(err);
-  }
-);
+  );
+};
 
 export default api;

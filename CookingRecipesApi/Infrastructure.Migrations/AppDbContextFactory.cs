@@ -10,7 +10,7 @@ class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     public AppDbContext CreateDbContext( string[] args )
     {
         IConfiguration config = GetConfig();
-        string connectionString = config.GetConnectionString( "CookingRecipes" ); ;
+        string connectionString = config.GetConnectionString( "CookingRecipes"); ;
         DbContextOptionsBuilder<AppDbContext> optionalBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
         optionalBuilder.UseSqlServer( connectionString,

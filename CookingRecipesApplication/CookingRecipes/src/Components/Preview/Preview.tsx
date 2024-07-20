@@ -1,25 +1,50 @@
 import styles from "./Preview.module.css"
 import headerPreview from "../../resources/img/headerPreview.png"
 import plusImg from "../../resources/icons/plus-white.svg"
-import { Link } from "react-router-dom"
+import Button from "../Button/Button"
+import useModalStore from "../../Stores/useModalStore"
+import LoginModal from "../Modal/LoginModal"
+import { useAuthStore } from "../../Stores/useAuthStore"
+import RegisterModal from "../Modal/RegisterModal"
 
 const Preview = () => {
+    const {isRegister, isLogin, setLogin} = useModalStore();
+    const token = useAuthStore((state) => state.token)
+    const handleLogin = () => {
+        setLogin(isLogin);
+    }
+
     return (
         <section>
             <div className={styles.previewBlock}>
-                <h3 className={styles.headText}>Готовь и делись рецептами</h3>
+                <h1 className={styles.headText}>Готовь и делись рецептами</h1>
                 <p className={styles.subheadingText}>Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.</p>
                 <div className={styles.links}>
-                    <Link to={"/"} className={styles.newRecipeButton} style={{ backgroundColor: 'rgb(253, 177, 0)'}}>
+                    <Button 
+                        primary
+                        navigation="/" 
+                        buttonText="Добавить рецепт">
                         <img src={plusImg} className={styles.plus} />
-                        <p className={styles.newRecipeText}>Добавить рецпт</p>
-                    </Link>
-                    <Link to={"/"} className={styles.signUpButton}>
-                        <p className={styles.signUpText}>Войти</p>
-                    </Link>
+                    </Button>
+                    {token ? null : 
+                        <Button 
+                            navigation="/"
+                            newStyle={{width: "216px"}}
+                            buttonText="Войти"
+                            onClick={handleLogin}>
+                        </Button>
+                    }
                 </div>
             </div>
             <img src={headerPreview} alt="" className={styles.headerPreview}/>
+
+            {isLogin ?
+                <LoginModal />  
+            :null}
+
+            {isRegister ?
+                <RegisterModal />  
+            :null}
         </section>
     )
 }

@@ -69,6 +69,12 @@ button,input,optgroup,select,textarea {
   font-size: 100%;
   line-height: 1.15;
   margin: 0;
+  padding: 0;              
+  border: none;      
+  font: inherit;        
+  color: inherit;         
+  background-color: transparent; 
+  cursor: pointer; 
 }
 button,input {
   overflow: visible;
@@ -138,4 +144,33 @@ template {
 }
 [hidden] {
   display: none;
+}
+
+p, h1, h2, h3, h4, a {
+  font-family: Montserrat;
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  color: rgb(37, 41, 45);
+  font-weight: 700;
+}
+
+h1 { 
+  font-size: 72px;
+  line-height: 88px;
+}
+
+h2 {
+  font-size: 42px;
+  line-height: 62px;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+p, a {
+  font-size: 18px;
 }
