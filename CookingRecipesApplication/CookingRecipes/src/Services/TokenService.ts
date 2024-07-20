@@ -1,15 +1,17 @@
 const getAccessToken = () => {
-    if (typeof Storage === 'undefined') {
+  if (typeof Storage === 'undefined') {
       return new Error('Storage type not valid');
-    }
-    return localStorage.getItem('token');
-  };
+  }
+  const token = localStorage.getItem('token');
+  if (!token) {
+      console.warn('Токен отсутствует');
+  }
+  return token;
+};
 
 const updateAccessToken = (newToken: string): void => {
     if (typeof Storage === 'undefined') return;
-    let token = localStorage.getItem('token');
-    token = newToken;
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', newToken); // Сразу обновляем токен
 };
 
 const setToken = (token: string) => {

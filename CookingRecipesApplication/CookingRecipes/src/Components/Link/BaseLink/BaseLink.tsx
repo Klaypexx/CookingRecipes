@@ -1,23 +1,23 @@
 import React, { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Button.module.css'
+import styles from './BaseLink.module.css'
 import classNames from 'classnames';
 
-interface ButtonProps {
+interface LinkProps {
   primary?: boolean;
   navigation?: string;
   newStyle?: CSSProperties,
-  buttonText?: string;
+  linkText?: string;
   onClick?: () => void;
   children?: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({ primary, navigation, newStyle, buttonText, onClick, children }) => {
+const BaseLink: React.FC<LinkProps> = ({ primary, navigation, newStyle, linkText, onClick, children }) => {
 
   const classList = classNames
     (
-        primary ? styles.buttonPrimary : styles.buttonSecondary,
-        styles.baseButton
+        primary ? styles.linkPrimary : styles.linkSecondary,
+        styles.baseLink
     )
 
   const textClassList = classNames
@@ -34,9 +34,9 @@ const Button: React.FC<ButtonProps> = ({ primary, navigation, newStyle, buttonTe
   return (
     <Link to={navigation ? navigation : "/"} className={classList} style={styleList} onClick={onClick}>
       {children}
-      {buttonText ? <p className={textClassList}>{buttonText}</p> : null}
+      {linkText ? <p className={textClassList}>{linkText}</p> : null}
     </Link>
   );
 };
 
-export default Button;
+export default BaseLink;

@@ -60,7 +60,7 @@ public class TokenService : ITokenService
             new CookieOptions
             {
                 Expires = DateTimeOffset.Now.AddMinutes( _authSettings.RefreshLifeTime ),
-                HttpOnly = false,
+                HttpOnly = true,
                 IsEssential = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,

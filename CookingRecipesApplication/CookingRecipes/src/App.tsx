@@ -2,13 +2,13 @@
 import { useEffect } from 'react';
 import Header from './Components/Header/Header';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { setupInterceptors } from './util/api';
+import { navigation } from './util/api';
 
 function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setupInterceptors(navigate); // Передаем navigate в интерсепторы
+    navigation(navigate); // Передаем navigate в интерсепторы
   }, [navigate]);
 
   return (

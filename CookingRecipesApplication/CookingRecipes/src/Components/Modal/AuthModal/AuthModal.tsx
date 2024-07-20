@@ -1,8 +1,9 @@
-import BaseModal from "./BaseModal";
+import BaseModal from "../BaseModal/BaseModal";
 import styles from "./AuthModal.module.css"
-import LoginModal from "./LoginModal";
-import RegisterModal from "./RegisterModal";
-import useModalStore from "../../Stores/useModalStore";
+import LoginModal from "../LoginModal/LoginModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import useModalStore from "../../../Stores/useModalStore";
+import LinkBlock from "../../Link/LinkBlock/LinkBlock";
 
 const AuthModal = () => {
     const {isAuth, isLogin, isRegister, setAuth, setLogin, setRegister} = useModalStore()
@@ -18,8 +19,9 @@ const AuthModal = () => {
 
     return (
         <>
-            <BaseModal haederText="Войдите в профиль" btnPrimaryText="Войти" btnSecondaryText="Регистрация" onClickPrimary={handlerLogin} onClickSecondary={handlerRegister}>
+            <BaseModal haederText="Войдите в профиль">
                 <p className={styles.authText}>Добавлять рецепты могут только зарегистрированные пользователи.</p>
+                <LinkBlock linkPrimaryText="Войти" linkSecondaryText="Регистрация" onClickPrimary={handlerLogin} onClickSecondary={handlerRegister}/>
             </BaseModal>
             
             {isLogin ? 

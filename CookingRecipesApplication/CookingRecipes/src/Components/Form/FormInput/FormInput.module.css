@@ -1,0 +1,29 @@
+.baseBoxStyle {
+    margin-bottom: 20px;
+}
+
+.baseFieldStyle {
+    box-sizing: border-box;
+    display: block;
+    width: 580px;
+    height: 50px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    border-radius: 16px;
+    color: rgba(37, 41, 45, 0.5);
+    font-size: 16px;
+    font-weight: 400;
+    font-family: Montserrat;
+    margin: 0;
+    padding: 26px;
+}
+
+.baseErrorStyle {
+    color: rgba(37, 41, 45, 0.3);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.smallBox {
+    width: 278px;
+}

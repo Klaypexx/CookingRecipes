@@ -3,12 +3,13 @@ import TokenService from "./TokenService";
 
 const endpoints = {
     login: '/users/login',
-    register: '/users/registers',
+    register: '/users/register',
     refresh: '/users/refresh'
 };
 
-const register = async (username: string, password: string) => {
+const register = async (name: string, username: string, password: string) => {
   return await api.post(endpoints.register, {
+    name,
     username,
     password
   });

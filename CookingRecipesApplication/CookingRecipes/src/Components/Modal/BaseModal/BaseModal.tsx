@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from "classnames";
-import closeIcon from "../../resources/icons/close.svg"
-import useModalStore from "../../Stores/useModalStore";
-import Button from "../Button/Button";
+import closeIcon from "../../../resources/icons/close.svg"
+import useModalStore from "../../../Stores/useModalStore";
 import styles from "./BaseModal.module.css"
 
 interface ModalProps {
@@ -10,14 +9,10 @@ interface ModalProps {
     headerClassName?: string | string[];
     haederText?: string;
     hasAccountText?: string;
-    btnPrimaryText: string;
-    btnSecondaryText: string;
-    onClickPrimary?: () => void;
-    onClickSecondary?: () => void;
     children?: React.ReactNode;
 }
 
-const BaseModal: React.FC<ModalProps> = ({primary, headerClassName, haederText, hasAccountText, btnPrimaryText, btnSecondaryText, onClickPrimary, onClickSecondary, children}) => {
+const BaseModal: React.FC<ModalProps> = ({primary, headerClassName, haederText, hasAccountText, children}) => {
     const {isLogin, isRegister, setLogin, setRegister, unsetAll} = useModalStore();
 
     const onWrapperClick = (event: any) => {
@@ -43,10 +38,6 @@ const BaseModal: React.FC<ModalProps> = ({primary, headerClassName, haederText, 
                         </button>
                         <h3 className={classNames(headerClassName)}>{haederText}</h3>
                         {children}
-                        <div className={styles.buttonBlock}>
-                            <Button primary buttonText={btnPrimaryText} onClick={onClickPrimary}></Button>
-                            <Button buttonText={btnSecondaryText} onClick={onClickSecondary}></Button>
-                        </div>
                         {primary ? 
                             <div className={styles.accountBlock}>
                                 <p className={styles.hasAccount} onClick={handlerRedirection}>{hasAccountText}</p>

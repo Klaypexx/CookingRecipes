@@ -4,13 +4,13 @@ import {
   Outlet,
   useLocation,
 } from 'react-router-dom';
-import { useAuthStore } from '../Stores/useAuthStore';
+import TokenService from '../Services/TokenService';
 
 function ProtectedRoute({
   redirectPath = '/',
   children,
 }: any) {
-  const token = useAuthStore((state) => state.token);
+  const token = TokenService.getAccessToken();
   const location = useLocation();
 
   if (!token) {

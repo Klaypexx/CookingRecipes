@@ -1,11 +1,11 @@
 import styles from "./Preview.module.css"
 import headerPreview from "../../resources/img/headerPreview.png"
 import plusImg from "../../resources/icons/plus-white.svg"
-import Button from "../Button/Button"
+import BaseLink from "../Link/BaseLink/BaseLink"
 import useModalStore from "../../Stores/useModalStore"
-import LoginModal from "../Modal/LoginModal"
+import LoginModal from "../Modal/LoginModal/LoginModal"
 import { useAuthStore } from "../../Stores/useAuthStore"
-import RegisterModal from "../Modal/RegisterModal"
+import RegisterModal from "../Modal/RegisterModal/RegisterModal"
 
 const Preview = () => {
     const {isRegister, isLogin, setLogin} = useModalStore();
@@ -20,19 +20,19 @@ const Preview = () => {
                 <h1 className={styles.headText}>Готовь и делись рецептами</h1>
                 <p className={styles.subheadingText}>Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.</p>
                 <div className={styles.links}>
-                    <Button 
+                    <BaseLink 
                         primary
                         navigation="/" 
-                        buttonText="Добавить рецепт">
+                        linkText="Добавить рецепт">
                         <img src={plusImg} className={styles.plus} />
-                    </Button>
+                    </BaseLink>
                     {token ? null : 
-                        <Button 
+                        <BaseLink 
                             navigation="/"
                             newStyle={{width: "216px"}}
-                            buttonText="Войти"
+                            linkText="Войти"
                             onClick={handleLogin}>
-                        </Button>
+                        </BaseLink>
                     }
                 </div>
             </div>
