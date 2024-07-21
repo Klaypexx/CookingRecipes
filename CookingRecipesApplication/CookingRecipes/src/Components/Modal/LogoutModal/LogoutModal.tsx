@@ -13,8 +13,8 @@ const LogoutModal = () => {
         unsetAll();
     }
 
-    const handleLogout = () => {
-        AuthService.logout();
+    const handleLogout = async () => {
+        await AuthService.logout();
         navigate(0);
     }
 

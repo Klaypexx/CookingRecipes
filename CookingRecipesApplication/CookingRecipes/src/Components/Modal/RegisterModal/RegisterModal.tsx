@@ -1,4 +1,4 @@
-import ButtonBlock from "../../../Button/ButtonBlock/ButtonBlock";
+import ButtonBlock from "../../Button/ButtonBlock/ButtonBlock";
 import AuthService from "../../../Services/AuthService";
 import useModalStore from "../../../Stores/useModalStore";
 import BaseForm from "../../Form/BaseForm/BaseForm";

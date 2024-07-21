@@ -1,14 +1,15 @@
 section {
+    position: relative;
     display: flex;
     justify-content: space-between;
-    width: 1230px;
 }
 
 .headerPreview {
-    position: relative;
+    position: absolute;
     width: 602px;
     height: 800px;
-    transform: translate(200px,-100px);
+    left: 827px;
+    top: -80px;
     z-index: -1;
 }
 

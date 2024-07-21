@@ -19,7 +19,6 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = TokenService.getAccessToken();
-    console.log(token)
     if (token) {
       config.headers["Authorization"] = 'Bearer ' + token; 
     }
@@ -43,12 +42,12 @@ api.interceptors.response.use(
       if (token) {
         TokenService.removeToken();
       }
-      navigation(0)
+      location.reload();
     }
 
     if (err.response) {
       if (err.response.status === 400) {
-        console.log("Перехватил ошибку 400")
+        console.error("Ошибка 400:", err.response.data);
       }
 
       if (err.response.status === 401 && !originalConfig._retry) {
@@ -61,7 +60,7 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           TokenService.removeToken();
-          navigation(0)
+          location.reload();
         }
       }
     }

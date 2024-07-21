@@ -94,6 +94,27 @@ public class AuthController : ControllerBase
         return Ok( jwtToken );
     }
 
+    [HttpPost]
+    [Route( "logout" )]
+    public async Task<IActionResult> Logout()
+    {
+        HttpContext.Request.Cookies.TryGetValue( "refreshToken", out string cookieRefreshToken );
+        User user = await _authService.GetUserByToken( cookieRefreshToken );
+
+        if ( user == null )
+        {
+            return BadRequest( new Exception( "Токен обновления не существует" ) );
+        }
+
+        user.SetRefreshToken( "", 0 );
+        await _unitOfWork.Save();
+
+        HttpContext.Response.Cookies.Delete( "refreshToken" );
+
+        return Ok();
+    }
+
+
     [HttpGet]
     [Route( "user" )]
     [Authorize]

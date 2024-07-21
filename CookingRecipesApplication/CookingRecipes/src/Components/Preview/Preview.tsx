@@ -4,12 +4,12 @@ import plusImg from "../../resources/icons/plus-white.svg"
 import BaseLink from "../Link/BaseLink/BaseLink"
 import useModalStore from "../../Stores/useModalStore"
 import LoginModal from "../Modal/LoginModal/LoginModal"
-import { useAuthStore } from "../../Stores/useAuthStore"
 import RegisterModal from "../Modal/RegisterModal/RegisterModal"
+import TokenService from "../../Services/TokenService"
 
 const Preview = () => {
     const {isRegister, isLogin, setLogin} = useModalStore();
-    const token = useAuthStore((state) => state.token)
+    const token = TokenService.getAccessToken();
     const handleLogin = () => {
         setLogin(isLogin);
     }

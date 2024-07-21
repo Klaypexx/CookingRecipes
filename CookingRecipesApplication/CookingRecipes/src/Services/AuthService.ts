@@ -4,7 +4,8 @@ import TokenService from "./TokenService";
 const endpoints = {
     login: '/users/login',
     register: '/users/register',
-    refresh: '/users/refresh'
+    refresh: '/users/refresh',
+    logout: '/users/logout'
 };
 
 const register = async (name: string, username: string, password: string) => {
@@ -42,8 +43,10 @@ const checkAuth = async () => {
   return response;
 }
 
-const logout = () => {
+const logout = async () => {
+  const response = await api.post(endpoints.logout);
   TokenService.removeToken();
+  return response;
 };
 
 // const getCurrentUser = () => {
