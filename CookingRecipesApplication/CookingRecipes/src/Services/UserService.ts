@@ -5,9 +5,11 @@ const endpoints = {
 };
 
 const username = async () => {
-  const response = await api
+    const response = await api
         .get(endpoints.username);
-    return response.data;
+    if (response.data && response.data !== undefined) {
+        return response.data;
+    }
 };
 
 const UserService = {

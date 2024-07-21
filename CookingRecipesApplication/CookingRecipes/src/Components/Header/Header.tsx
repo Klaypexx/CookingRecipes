@@ -17,19 +17,15 @@ const Header = () => {
     const token = TokenService.getAccessToken();
     
     useEffect(() => {
-        const fetchUsername = async () => {
-            if (token) {
-                try {
-                    const response = await UserService.username();
-                    const { userName } = response; 
-                    setUserName(userName);
-                } catch (error) {
-                    console.error("Ошибка при получении имени пользователя:", error);
-                }
+        if (token) {
+            const fetchUsername = async () => {
+                const response = await UserService.username();
+                const { userName } = response; 
+                setUserName(userName);
             }
+            fetchUsername();
         };
     
-        fetchUsername();
     }, [token]);
 
     const handleLogin = () => {

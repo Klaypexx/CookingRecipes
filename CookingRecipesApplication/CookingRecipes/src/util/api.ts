@@ -19,6 +19,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = TokenService.getAccessToken();
+    console.log(token)
     if (token) {
       config.headers["Authorization"] = 'Bearer ' + token; 
     }
@@ -47,9 +48,7 @@ api.interceptors.response.use(
 
     if (err.response) {
       if (err.response.status === 400) {
-        if (token) {
-          TokenService.removeToken();
-        }
+        console.log("Перехватил ошибку 400")
       }
 
       if (err.response.status === 401 && !originalConfig._retry) {
@@ -65,7 +64,6 @@ api.interceptors.response.use(
           navigation(0)
         }
       }
-      return;
     }
     return Promise.reject(err);
   }
