@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import api from "../util/api";
 import TokenService from "./TokenService";
 
@@ -9,25 +10,40 @@ const endpoints = {
 };
 
 const register = async (name: string, username: string, password: string) => {
-  const response = await api.post(endpoints.register, {
-    name,
-    username,
-    password
-  });
-  return response;
+  try {
+    const response = await api.post(endpoints.register, {
+      name,
+      username,
+      password
+    });
+    return { success: true, response };
+  } 
+  catch (error) {
+    if (error instanceof AxiosError) {
+      return { success: false, message: error.response?.data?.message || 'Произошла ошибка при входе' };
+    }
+    return { success: false, message: 'Произошла неизвестная ошибка при входе' };
+  }
+  
 };
 
 const login = async (username: string, password: string) => {
-  const response = await api
-        .post(endpoints.login, {
-            username,
-            password
-        });
+  try {
+    const response = await api.post(endpoints.login, {
+      username,
+      password,
+    });
     if (response.data) {
-        TokenService.setToken(response.data);
+      TokenService.setToken(response.data);
     }
-    return response;
-    
+    return { success: true, response }; // Возвращаем успешный ответ
+  } 
+  catch (error) {
+    if (error instanceof AxiosError) {
+      return { success: false, message: error.response?.data?.message || 'Произошла ошибка при входе' };
+    }
+    return { success: false, message: 'Произошла неизвестная ошибка при входе' };
+  }
 };
 
 const refresh = async () => {

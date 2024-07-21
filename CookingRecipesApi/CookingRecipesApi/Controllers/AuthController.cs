@@ -49,7 +49,7 @@ public class AuthController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( validationResult.ToDictionary() );
+            return BadRequest( new { message = validationResult.ToDictionary() } );
         }
 
         User user = new()
@@ -65,7 +65,7 @@ public class AuthController : ControllerBase
         }
         catch ( Exception exception )
         {
-            return BadRequest( exception.Message );
+            return BadRequest( new { message = exception.Message } );
         }
 
         return Ok();
@@ -79,21 +79,21 @@ public class AuthController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( validationResult.ToDictionary() );
+            return BadRequest( new { message = validationResult.ToDictionary() } );
         }
 
         User user = await _authService.GetUserByUsername( body.UserName );
 
         if ( user is null )
         {
-            return BadRequest( "Пользователь не найден" );
+            return BadRequest( new { message = "Пользователь не найден" } );
         }
 
         bool result = _passwordHasher.Verify( body.Password, user.Password );
 
         if ( !result )
         {
-            return BadRequest( "Неверный пароль" );
+            return BadRequest( new { message = "Неверный пароль" } );
         }
 
         string jwtToken = _tokenService.GenerateJwtToken( user );
@@ -115,12 +115,12 @@ public class AuthController : ControllerBase
 
         if ( user is null )
         {
-            return BadRequest( new Exception( "Токен обновления не существует" ) );
+            return BadRequest( "Токен обновления не существует" );
         }
 
         if ( user.RefreshTokenExpiryTime <= DateTime.UtcNow )
         {
-            return BadRequest( new Exception( "Срок действия токена обновления истек" ) );
+            return BadRequest( "Срок действия токена обновления истек" );
         }
 
         string jwtToken = _tokenService.GenerateJwtToken( user );
@@ -143,7 +143,7 @@ public class AuthController : ControllerBase
 
         if ( user == null )
         {
-            return BadRequest( new Exception( "Токен обновления не существует" ) );
+            return BadRequest( "Токен обновления не существует" );
         }
 
         user.SetRefreshToken( "", 0 );

@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import Header from './Components/Header/Header';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { navigation } from './util/api';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ function App() {
     <>
       <Header />
       <Outlet />
+      <ToastContainer />
     </>
   );
 }

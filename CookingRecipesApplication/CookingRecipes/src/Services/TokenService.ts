@@ -10,7 +10,9 @@ const getAccessToken = () => {
 };
 
 const updateAccessToken = (newToken: string): void => {
-    if (typeof Storage === 'undefined') return;
+    if (typeof Storage === 'undefined') {
+      throw new Error('No valid storage type found');
+    }
     localStorage.setItem('token', newToken); // Сразу обновляем токен
 };
 
@@ -22,7 +24,9 @@ const setToken = (token: string) => {
   };
 
 const removeToken = () => {
-  if (typeof Storage === 'undefined') return;
+  if (typeof Storage === 'undefined') {
+    throw new Error('No valid storage type found');
+  }
   localStorage.removeItem('token');
 }
 

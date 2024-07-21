@@ -58,7 +58,7 @@ const Header = () => {
                         {[styles.headerTextActive]: isActive}
                     )
                  }
-                    to={'/'}
+                    to={'/recipes'}
                 >
                 Рецепты
                 </NavLink>
@@ -68,7 +68,7 @@ const Header = () => {
                         {[styles.headerTextActive]: isActive}
                     )
                  }
-                    to={'/secret'}
+                    to={'/favourites'}
                 >
                 Избранное
                 </NavLink>
@@ -79,7 +79,7 @@ const Header = () => {
                 <div className={styles.userAvatar}>
                     <img src={userIcon} alt="User Icon" className={styles.userAvatarImg}/>
                 </div>
-                {userName ? 
+                {token ? 
                     (
                         <div className={styles.authBlock}>
                             <p className={styles.authText}>Привет, {userName}</p>

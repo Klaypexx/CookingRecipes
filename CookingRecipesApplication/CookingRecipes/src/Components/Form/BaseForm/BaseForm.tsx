@@ -8,10 +8,11 @@ interface FormProps {
     initialValues: any,
     validationSchema: any,
     handleSubmit: any;
+    errorText?: string;
     children?: React.ReactNode;
 } 
 
-const BaseForm: React.FC<FormProps> = ({ initialValues, validationSchema, handleSubmit, children }) => {
+const BaseForm: React.FC<FormProps> = ({ initialValues, validationSchema, handleSubmit, errorText, children }) => {
   return (
     <Formik
       initialValues={initialValues}
@@ -20,6 +21,9 @@ const BaseForm: React.FC<FormProps> = ({ initialValues, validationSchema, handle
     >
       {() => (
         <Form className={classNames(styles.baseFormStyle)}>
+          {errorText ? 
+            <h4 className={styles.errorText}>{errorText}</h4>
+          : null}
           {children}
         </Form>
       )}

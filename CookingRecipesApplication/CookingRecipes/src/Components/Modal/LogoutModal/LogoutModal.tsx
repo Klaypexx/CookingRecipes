@@ -1,12 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import AuthService from "../../../Services/AuthService";
 import useModalStore from "../../../Stores/useModalStore";
 import BaseModal from "../BaseModal/BaseModal"
 import styles from "./LogoutModule.module.css"
 import LinkBlock from "../../Link/LinkBlock/LinkBlock";
+import { successToast } from "../../Toast/Toast";
 
 const LogoutModal = () => {
-    const navigate = useNavigate();
     const {unsetAll} = useModalStore();
 
     const handleExit = () => {
@@ -15,7 +14,8 @@ const LogoutModal = () => {
 
     const handleLogout = async () => {
         await AuthService.logout();
-        navigate(0);
+        unsetAll();
+        successToast("Вы успешно вышли из системы!")
     }
 
     return (

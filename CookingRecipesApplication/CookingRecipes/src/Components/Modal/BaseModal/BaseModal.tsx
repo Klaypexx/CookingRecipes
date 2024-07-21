@@ -15,9 +15,9 @@ interface ModalProps {
 const BaseModal: React.FC<ModalProps> = ({primary, headerClassName, haederText, hasAccountText, children}) => {
     const {isLogin, isRegister, setLogin, setRegister, unsetAll} = useModalStore();
 
-    const onWrapperClick = (event: any) => {
-        if (event.target.classList.contains(styles.modalWrapper)) handleExit();
-    };
+    // const onWrapperClick = (event: any) => {
+    //     if (event.target.classList.contains(styles.modalWrapper)) handleExit();
+    // };
 
     const handleExit = () => {
         unsetAll();
@@ -31,7 +31,7 @@ const BaseModal: React.FC<ModalProps> = ({primary, headerClassName, haederText, 
     return (
         <>
             <div className={styles.modal}>
-                <div className={styles.modalWrapper} onClick={onWrapperClick}>
+                <div className={styles.modalWrapper} >
                     <div className={styles.modalContent}>
                         <button className={styles.modalCloseButton} onClick={handleExit}>
                             <img src={closeIcon} alt="closeIcon" className={styles.modalIcon}/>

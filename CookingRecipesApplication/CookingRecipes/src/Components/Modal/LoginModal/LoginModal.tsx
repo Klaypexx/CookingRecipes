@@ -5,6 +5,8 @@ import BaseForm from "../../Form/BaseForm/BaseForm";
 import FormInput from "../../Form/FormInput/FormInput";
 import BaseModal from "../BaseModal/BaseModal"
 import * as Yup from 'yup';
+import { useState } from "react";
+import { successToast } from "../../Toast/Toast";
 
 interface LoginValues {
     username: string,
@@ -13,16 +15,24 @@ interface LoginValues {
 
 const LoginModal = () => {
     const {unsetAll} = useModalStore();
+    const [errorText, setErrorText] = useState('');
+
 
     const handleLogin = async (values: LoginValues) => {
-        const response = await AuthService.login(values.username, values.password);
-        if (response.status == 200) {
-            unsetAll();
+        const result = await AuthService.login(values.username, values.password);
+        
+        if (!result.success) {
+          setErrorText(result.message); 
+          return;
         }
-        if (response.status == 400) {
-            console.log(response.statusText);
+
+        if (result.response && result.response.status === 200) {
+        successToast("Вы успешно вошли в систему!");
+          unsetAll();
+        } else {
+          setErrorText(result.message); 
         }
-    }
+    };
     
     const handleExit = () => {
         unsetAll();
@@ -54,6 +64,7 @@ const LoginModal = () => {
                         initialValues={initialValues}
                         validationSchema={validationSchema}
                         handleSubmit={handleLogin}
+                        errorText={errorText}
                     >
                         <FormInput margin name="username" type="text" placeholder="Логин"/>
                         <FormInput name="password" type="password" placeholder="Пароль"/>

@@ -6,6 +6,8 @@ import FormInput from "../../Form/FormInput/FormInput";
 import BaseModal from "../BaseModal/BaseModal"
 import * as Yup from 'yup';
 import styles from "./RegisterModal.module.css"
+import { useState } from "react";
+import { successToast } from "../../Toast/Toast";
 
 interface RegisterValues {
     name: string,
@@ -16,13 +18,22 @@ interface RegisterValues {
 
 const RegisterModal = () => {
     const {isLogin, setLogin, unsetAll} = useModalStore();
+    const [errorText, setErrorText] = useState('');
 
-    const handleLogin = async (values: RegisterValues) => {
-        const response = await AuthService.register(values.name, values.username, values.password);
-        if (response.status == 200) {
+    const handleRegister = async (values: RegisterValues) => {
+        const result = await AuthService.register(values.name, values.username, values.password);
+        
+        if (!result.success) {
+            setErrorText(result.message); 
+            return;
+        }
+
+        if (result.response && result.response.status === 200) {
             unsetAll();
             setLogin(isLogin);
-            
+            successToast("Вы успешно зарегестрировались!")
+        } else {
+            setErrorText(result.message); 
         }
     }
 
@@ -62,7 +73,8 @@ const RegisterModal = () => {
                 <BaseForm
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    handleSubmit={handleLogin}
+                    handleSubmit={handleRegister}
+                    errorText={errorText}
                 >
                     <FormInput margin name="name" type="text" placeholder="Имя"/>
                     <FormInput margin name="username" type="text" placeholder="Логин"/>

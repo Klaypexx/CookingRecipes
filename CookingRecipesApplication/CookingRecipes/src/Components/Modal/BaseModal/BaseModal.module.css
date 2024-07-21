@@ -58,4 +58,5 @@
     display: inline-block;
     border-bottom: 2px dashed rgb(253, 177, 0); 
     padding-bottom: 4px; 
+    cursor: pointer;
 }

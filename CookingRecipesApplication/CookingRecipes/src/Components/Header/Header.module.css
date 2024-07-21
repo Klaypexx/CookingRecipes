@@ -30,7 +30,7 @@
 }
 
 .headerTextActive {
-    color: rgb(58, 60, 65);
+    color: black;
 }
 
 .headerText:not(:first-child) {
