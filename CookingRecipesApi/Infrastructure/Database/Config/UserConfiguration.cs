@@ -32,10 +32,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired( true )
             .HasDefaultValueSql( "GETDATE()" );
 
-        builder.Property( x => x.AvatarPath )
-           .HasColumnName( "avatar" )
-           .IsRequired( false );
-
         builder.HasIndex( x => x.UserName )
             .IsUnique();
 
@@ -43,6 +39,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
            .WithOne( x => x.Author );
 
         builder.HasMany( u => u.FavouriteRecipes )
+            .WithOne( fr => fr.User )
+            .HasForeignKey( fr => fr.UserId );
+
+        builder.HasMany( u => u.Likes )
             .WithOne( fr => fr.User )
             .HasForeignKey( fr => fr.UserId );
     }

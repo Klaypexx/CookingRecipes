@@ -10,6 +10,7 @@ const username = async () => {
     if (response.data && response.data !== undefined) {
         return response.data;
     }
+    return response.statusText;
 };
 
 const UserService = {

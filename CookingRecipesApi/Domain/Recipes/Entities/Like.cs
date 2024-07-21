@@ -1,7 +1,10 @@
-﻿namespace Domain.Recipes.Entities;
+﻿using Domain.Auth.Entities;
+
+namespace Domain.Recipes.Entities;
 public class Like
 {
-    public string Id { get; set; }
-    public int Count { get; set; }
+    public string UserId { get; set; }
+    public string RecipeId { get; set; }
+    public User User { get; set; }
     public Recipe Recipe { get; set; }
 }

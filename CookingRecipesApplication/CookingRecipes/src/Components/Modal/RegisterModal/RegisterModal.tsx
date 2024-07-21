@@ -40,7 +40,7 @@ const RegisterModal = () => {
       const validationSchema = Yup.object({
         name: Yup.string()
           .required('Имя обязательно')
-          .min(2, 'Минимум 2 символа'),
+          .min(3, 'Минимум 3 символа'),
         username: Yup.string()
           .required('Логин обязателен')
           .min(3, 'Минимум 3 символа'),

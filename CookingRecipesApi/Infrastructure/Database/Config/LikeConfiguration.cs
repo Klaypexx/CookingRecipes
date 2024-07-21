@@ -13,15 +13,12 @@ public class LikeConfiguration : IEntityTypeConfiguration<Like>
 {
     public void Configure( EntityTypeBuilder<Like> builder )
     {
-        builder.ToTable( "like" );
-        builder.HasKey( x => x.Id );
-
-        builder.Property( x => x.Count )
-            .HasColumnName( "count" )
-            .IsRequired( true )
-            .HasDefaultValue( 0 );
-
+        builder.HasKey( x => new { x.UserId, x.RecipeId } );
+        builder.HasOne( x => x.User )
+            .WithMany( x => x.Likes )
+            .HasForeignKey( x => x.UserId );
         builder.HasOne( x => x.Recipe )
-            .WithOne( x => x.LikesCount );
+            .WithMany( x => x.LikesCount )
+            .HasForeignKey( x => x.RecipeId );
     }
 }

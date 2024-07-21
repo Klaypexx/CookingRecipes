@@ -27,10 +27,6 @@ namespace Infrastructure.Migrations.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AvatarPath")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("avatar");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -109,18 +105,17 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Count")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("count");
+                    b.Property<string>("RecipeId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "RecipeId");
 
-                    b.ToTable("like", (string)null);
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Like");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
@@ -130,6 +125,10 @@ namespace Infrastructure.Migrations.Migrations
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("avatar");
 
                     b.Property<TimeOnly?>("CookingTime")
                         .HasColumnType("time")
@@ -237,21 +236,32 @@ namespace Infrastructure.Migrations.Migrations
                     b.Navigation("Recipe");
                 });
 
+            modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
+                {
+                    b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
+                        .WithMany("LikesCount")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Auth.Entities.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
                     b.HasOne("Domain.Auth.Entities.User", "Author")
                         .WithMany("Recipes")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("Domain.Recipes.Entities.Like", "LikesCount")
-                        .WithOne("Recipe")
-                        .HasForeignKey("Domain.Recipes.Entities.Recipe", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Author");
-
-                    b.Navigation("LikesCount");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.RecipeTag", b =>
@@ -286,12 +296,9 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     b.Navigation("FavouriteRecipes");
 
-                    b.Navigation("Recipes");
-                });
+                    b.Navigation("Likes");
 
-            modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
-                {
-                    b.Navigation("Recipe");
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
@@ -299,6 +306,8 @@ namespace Infrastructure.Migrations.Migrations
                     b.Navigation("FavouritedBy");
 
                     b.Navigation("Ingredients");
+
+                    b.Navigation("LikesCount");
 
                     b.Navigation("Steps");
 

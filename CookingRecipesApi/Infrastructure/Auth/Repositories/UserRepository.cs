@@ -21,7 +21,7 @@ public class UserRepository : IUserRepository
     {
         return await _entities
             .Where( u => u.UserName == username )
-            .FirstOrDefaultAsync() ?? throw new Exception();
+            .FirstOrDefaultAsync();
     }
 
     public async Task<User> GetByRefreshToken( string token )

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Application.Auth.Entities;
+﻿using Application.Auth.Entities;
 using Application.Foundation.Entities;
 using Application.Users.Entities;
 using CookingRecipesApi.Auth;
@@ -8,6 +7,8 @@ using CookingRecipesApi.Utilities;
 using Domain.Auth.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -20,40 +21,79 @@ public class AuthController : ControllerBase
     private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly AuthSettings _authSettings;
+    private readonly IValidator<RegisterDto> _registerDtoValidator;
+    private readonly IValidator<LoginDto> _loginDtoValidator;
 
-    public AuthController( IAuthService authService, IPasswordHasher passwordHasher, ITokenService tokenService, IUnitOfWork unitOfWork, AuthSettings authSettings )
+    public AuthController( IAuthService authService,
+        IPasswordHasher passwordHasher,
+        ITokenService tokenService,
+        IUnitOfWork unitOfWork,
+        AuthSettings authSettings,
+        IValidator<RegisterDto> registerDtoValidator,
+        IValidator<LoginDto> loginDtoValidator )
     {
         _authService = authService;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
         _unitOfWork = unitOfWork;
         _authSettings = authSettings;
+        _registerDtoValidator = registerDtoValidator;
+        _loginDtoValidator = loginDtoValidator;
     }
 
     [HttpPost]
     [Route( "register" )]
     public async Task<IActionResult> Register( [FromBody] RegisterDto body )
     {
+        ValidationResult validationResult = await _registerDtoValidator.ValidateAsync( body );
+
+        if ( !validationResult.IsValid )
+        {
+            return BadRequest( validationResult.ToDictionary() );
+        }
+
         User user = new()
         {
             Name = body.Name,
             UserName = body.UserName,
             Password = body.Password
         };
-        await _authService.RegisterUser( user );
+
+        try
+        {
+            await _authService.RegisterUser( user );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( exception.Message );
+        }
+
         return Ok();
     }
 
     [HttpPost]
     [Route( "login" )]
-    public async Task<IResult> Login( [FromBody] LoginDto body )
+    public async Task<IActionResult> Login( [FromBody] LoginDto body )
     {
+        ValidationResult validationResult = await _loginDtoValidator.ValidateAsync( body );
+
+        if ( !validationResult.IsValid )
+        {
+            return BadRequest( validationResult.ToDictionary() );
+        }
+
         User user = await _authService.GetUserByUsername( body.UserName );
+
+        if ( user is null )
+        {
+            return BadRequest( "Пользователь не найден" );
+        }
+
         bool result = _passwordHasher.Verify( body.Password, user.Password );
 
         if ( !result )
         {
-            throw new Exception( "Failed to login" );
+            return BadRequest( "Неверный пароль" );
         }
 
         string jwtToken = _tokenService.GenerateJwtToken( user );
@@ -63,7 +103,7 @@ public class AuthController : ControllerBase
         await _unitOfWork.Save();
 
         /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
-        return Results.Ok( jwtToken );
+        return Ok( jwtToken );
     }
 
     [HttpPost]

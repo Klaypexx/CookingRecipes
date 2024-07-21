@@ -9,11 +9,12 @@ const endpoints = {
 };
 
 const register = async (name: string, username: string, password: string) => {
-  return await api.post(endpoints.register, {
+  const response = await api.post(endpoints.register, {
     name,
     username,
     password
   });
+  return response;
 };
 
 const login = async (username: string, password: string) => {

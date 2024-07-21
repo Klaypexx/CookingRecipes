@@ -46,9 +46,6 @@ api.interceptors.response.use(
     }
 
     if (err.response) {
-      if (err.response.status === 400) {
-        console.error("Ошибка 400:", err.response.data);
-      }
 
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;

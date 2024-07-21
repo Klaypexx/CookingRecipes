@@ -3,9 +3,9 @@ const getAccessToken = () => {
       return new Error('Storage type not valid');
   }
   const token = localStorage.getItem('token');
-  if (!token) {
-      console.warn('Токен отсутствует');
-  }
+  // if (!token) {
+  //     console.warn('Токен отсутствует');
+  // }
   return token;
 };
 

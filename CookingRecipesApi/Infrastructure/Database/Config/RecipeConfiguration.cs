@@ -18,6 +18,10 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             .HasColumnName( "description" )
             .IsRequired( false );
 
+        builder.Property( x => x.Avatar )
+            .HasColumnName( "avatar" )
+            .IsRequired( false );
+
         builder.Property( x => x.CookingTime )
             .HasColumnName( "time" )
             .IsRequired( false );
@@ -29,10 +33,6 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
         builder.Property( x => x.Portion )
            .HasColumnName( "portion" )
            .IsRequired( false );
-
-        builder.HasOne( x => x.LikesCount )
-            .WithOne( x => x.Recipe )
-            .HasForeignKey<Recipe>( x => x.Id );
 
         builder.HasMany( x => x.Tags )
             .WithOne( x => x.Recipe )
@@ -48,6 +48,10 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             .WithMany( x => x.Recipes );
 
         builder.HasMany( x => x.FavouritedBy )
+            .WithOne( x => x.Recipe )
+            .HasForeignKey( x => x.RecipeId );
+
+        builder.HasMany( x => x.LikesCount )
             .WithOne( x => x.Recipe )
             .HasForeignKey( x => x.RecipeId );
     }

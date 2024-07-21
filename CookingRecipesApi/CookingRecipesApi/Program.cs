@@ -4,12 +4,13 @@ using Application.Foundation.Entities;
 using Application.Users.Entities;
 using Application.Users.Services;
 using CookingRecipesApi.Auth;
+using CookingRecipesApi.Dto.AuthDto;
+using FluentValidation;
 using Infrastructure.Auth.Repositories;
 using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
 using Infrastructure.Foundation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,6 +32,9 @@ services.AddScoped( sp => authSettings );
 
 string connectionString = configuration.GetConnectionString( "CookingRecipes" );
 services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
+
+services.AddValidatorsFromAssemblyContaining<RegisterDto>();
+services.AddValidatorsFromAssemblyContaining<LoginDto>();
 
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -68,6 +72,7 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
                 }
             };*/
         } );
+
 
 builder.Services.AddCors( options =>
 {

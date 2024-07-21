@@ -19,6 +19,9 @@ const LoginModal = () => {
         if (response.status == 200) {
             unsetAll();
         }
+        if (response.status == 400) {
+            console.log(response.statusText);
+        }
     }
     
     const handleExit = () => {
@@ -33,10 +36,12 @@ const LoginModal = () => {
     const validationSchema = Yup.object({
         username: Yup.string()
           .required('Логин обязателен')
-          .min(3, 'Минимум 3 символа'),
+          .min(3, 'Минимум 3 символа')
+          .max(25, 'Максимум 25 символов'),
         password: Yup.string()
           .required('Пароль обязателен')
-          .min(8, 'Минимум 8 символов'),
+          .max(8, 'Минимум 8 символов')
+          .max(25, 'Максимум 25 символов'),
       });
 
     return (
