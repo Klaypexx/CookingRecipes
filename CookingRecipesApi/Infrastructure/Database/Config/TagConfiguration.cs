@@ -8,7 +8,12 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
     public void Configure( EntityTypeBuilder<Tag> builder )
     {
         builder.ToTable( "tag" );
+
         builder.HasKey( x => x.Id );
+
+        builder.Property( a => a.Id )
+            .HasColumnName( "id_tag" )
+            .ValueGeneratedNever();
 
         builder.Property( x => x.Name )
            .HasColumnName( "name" )

@@ -8,9 +8,11 @@ public class FavouriteRecipeConfiguration : IEntityTypeConfiguration<FavouriteRe
     public void Configure( EntityTypeBuilder<FavouriteRecipe> builder )
     {
         builder.HasKey( x => new { x.UserId, x.RecipeId } );
+
         builder.HasOne( x => x.User )
             .WithMany( x => x.FavouriteRecipes )
             .HasForeignKey( x => x.UserId );
+
         builder.HasOne( x => x.Recipe )
             .WithMany( x => x.FavouritedBy )
             .HasForeignKey( x => x.RecipeId );

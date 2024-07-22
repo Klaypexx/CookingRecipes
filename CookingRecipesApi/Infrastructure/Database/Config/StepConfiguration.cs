@@ -8,7 +8,12 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
     public void Configure( EntityTypeBuilder<Step> builder )
     {
         builder.ToTable( "step" );
+
         builder.HasKey( x => x.Id );
+
+        builder.Property( a => a.Id )
+            .HasColumnName( "id_step" )
+            .ValueGeneratedNever();
 
         builder.Property( x => x.StepNumber )
            .HasColumnName( "step_number" )

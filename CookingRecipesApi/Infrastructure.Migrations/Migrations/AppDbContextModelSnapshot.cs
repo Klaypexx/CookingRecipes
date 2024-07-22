@@ -25,7 +25,8 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Auth.Entities.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_user");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -66,22 +67,25 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.FavouriteRecipe", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_user");
 
                     b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_recipe");
 
                     b.HasKey("UserId", "RecipeId");
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("FavouriteRecipe");
+                    b.ToTable("favourite_recipe");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_ingredient");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -106,22 +110,25 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_user");
 
                     b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_recipe");
 
                     b.HasKey("UserId", "RecipeId");
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Like");
+                    b.ToTable("like");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_recipe");
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
@@ -157,22 +164,25 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.RecipeTag", b =>
                 {
                     b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_recipe");
 
                     b.Property<string>("TagId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_tag");
 
                     b.HasKey("RecipeId", "TagId");
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("RecipeTag");
+                    b.ToTable("recipe_tag");
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_step");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -196,7 +206,8 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.Tag", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("id_tag");
 
                     b.Property<string>("Name")
                         .IsRequired()

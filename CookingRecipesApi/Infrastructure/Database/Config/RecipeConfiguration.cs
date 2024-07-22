@@ -8,7 +8,12 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
     public void Configure( EntityTypeBuilder<Recipe> builder )
     {
         builder.ToTable( "recipe" );
+
         builder.HasKey( x => x.Id );
+
+        builder.Property( a => a.Id )
+            .HasColumnName( "id_recipe" )
+            .ValueGeneratedNever();
 
         builder.Property( x => x.Name )
             .HasColumnName( "name" )

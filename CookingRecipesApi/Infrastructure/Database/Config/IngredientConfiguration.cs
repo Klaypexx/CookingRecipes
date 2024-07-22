@@ -8,7 +8,12 @@ public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
     public void Configure( EntityTypeBuilder<Ingredient> builder )
     {
         builder.ToTable( "ingredient" );
+
         builder.HasKey( x => x.Id );
+
+        builder.Property( a => a.Id )
+            .HasColumnName( "id_ingredient" )
+            .ValueGeneratedNever();
 
         builder.Property( x => x.Name )
             .HasColumnName( "name" )
