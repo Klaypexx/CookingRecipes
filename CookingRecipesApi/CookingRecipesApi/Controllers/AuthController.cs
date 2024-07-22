@@ -49,7 +49,7 @@ public class AuthController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( new { message = validationResult.ToDictionary() } );
+            return BadRequest( new { message = validationResult.ToString() } );
         }
 
         User user = new()
@@ -79,7 +79,7 @@ public class AuthController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( new { message = validationResult.ToDictionary() } );
+            return BadRequest( new { message = validationResult.ToString() } );
         }
 
         User user = await _authService.GetUserByUsername( body.UserName );

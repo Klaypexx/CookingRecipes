@@ -57,7 +57,8 @@ const RegisterModal = () => {
           .min(3, 'Минимум 3 символа'),
         password: Yup.string()
           .required('Пароль обязателен')
-          .min(8, 'Минимум 8 символов'),
+          .min(8, 'Минимум 8 символов')
+          .max(25, 'Максимум 25 символов'),
         confirmPassword: Yup.string()
           .oneOf([Yup.ref('password')], 'Пароли должны совпадать')
           .required('Подтверждение пароля обязательно'),

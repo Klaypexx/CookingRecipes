@@ -8,18 +8,18 @@ public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
         RuleFor( loginDto => loginDto.UserName )
             .MinimumLength( 3 )
-            .WithMessage( "логин должен включать не менее 3 символов" )
+            .WithMessage( "Логин должен включать не менее 3 символов" )
             .MaximumLength( 25 )
-            .WithMessage( "логин должен включать не более 25 символов" )
+            .WithMessage( "Логин должен включать не более 25 символов" )
             .NotEmpty()
-            .WithMessage( "логин не может быть пустым" );
+            .WithMessage( "Логин не может быть пустым" );
 
         RuleFor( loginDto => loginDto.Password )
             .NotEmpty()
-            .WithMessage( "пароль не может быть пустым" )
+            .WithMessage( "Пароль не может быть пустым" )
             .MinimumLength( 8 )
-            .WithMessage( "пароль должен включать не менее 8 символов" )
+            .WithMessage( "Пароль должен включать не менее 8 символов" )
             .MaximumLength( 25 )
-            .WithMessage( "пароль должен включать не более 25 символов" );
+            .WithMessage( "Пароль должен включать не более 25 символов" );
     }
 }

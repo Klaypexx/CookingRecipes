@@ -14,30 +14,30 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
 
         RuleFor( registerDto => registerDto.Name )
             .MinimumLength( 3 )
-            .WithMessage( "имя пользователя должно включать не менее 3 символов" )
+            .WithMessage( "Имя пользователя должно включать не менее 3 символов" )
             .MaximumLength( 25 )
-            .WithMessage( "имя пользователя должно включать не более 25 символов" )
+            .WithMessage( "Имя пользователя должно включать не более 25 символов" )
             .NotEmpty()
-            .WithMessage( "имя пользователя не может быть пустым" );
+            .WithMessage( "Имя пользователя не может быть пустым" );
 
         RuleFor( registerDto => registerDto.UserName )
             .MinimumLength( 3 )
-            .WithMessage( "логин пользователя должен включать не менее 3 символов" )
+            .WithMessage( "Логин пользователя должен включать не менее 3 символов" )
             .MaximumLength( 25 )
-            .WithMessage( "логин пользователя должен включать не более 25 символов" )
+            .WithMessage( "Логин пользователя должен включать не более 25 символов" )
             .NotEmpty()
-            .WithMessage( "логин пользователя не может быть пустым" );
+            .WithMessage( "Логин пользователя не может быть пустым" );
 
         RuleFor( item => item )
             .MustAsync( async ( item, cancellation ) => await _authValidationRules.IsUniqueUsername( item.UserName ) )
-            .WithMessage( item => "логин пользователя должен быть уникальным" );
+            .WithMessage( item => "Логин пользователя должен быть уникальным" );
 
         RuleFor( registerDto => registerDto.Password )
             .NotEmpty()
-            .WithMessage( "пароль не может быть пустым" )
+            .WithMessage( "Пароль не может быть пустым" )
             .MinimumLength( 8 )
-            .WithMessage( "пароль должен включать не менее 8 символов" )
+            .WithMessage( "Пароль должен включать не менее 8 символов" )
             .MaximumLength( 25 )
-            .WithMessage( "пароль должен включать не более 25 символов" );
+            .WithMessage( "Пароль должен включать не более 25 символов" );
     }
 }
