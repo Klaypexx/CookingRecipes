@@ -2,7 +2,7 @@ import styles from "./Header.module.css"
 import logo from "../../resources/img/Logo.png"
 import userIcon from "../../resources/icons/user.svg"
 import exitIcon from "../../resources/icons/exit.svg"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import classNames from "classnames"
 import { useEffect, useState } from "react"
 import UserService from "../../Services/UserService"
@@ -40,7 +40,9 @@ const Header = () => {
         <header>
           <div className={styles.container}>
             <div className={styles.navigation}>
-              <img src={logo} alt="header_logo" className={styles.imageLogo} /> 
+              <Link to={"/"}>
+                <img src={logo} alt="header_logo" className={styles.imageLogo} /> 
+              </Link>
               <div className={styles.containerButtons}>
                 <NavLink className={({isActive}) => 
                     classNames(

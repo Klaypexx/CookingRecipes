@@ -22,7 +22,7 @@ const Preview = () => {
                 <div className={styles.links}>
                     <BaseLink 
                         primary
-                        navigation="/" 
+                        navigation="/recipe/create" 
                         linkText="Добавить рецепт">
                         <img src={plusImg} className={styles.plus} />
                     </BaseLink>

@@ -102,7 +102,6 @@ public class AuthController : ControllerBase
         user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();
 
-        /*HttpContext.Response.Cookies.Append( "jwt_token", token );*/
         return Ok( jwtToken );
     }
 

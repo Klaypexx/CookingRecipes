@@ -10,7 +10,6 @@ public class Recipe
     public TimeOnly? CookingTime { get; set; }
     public int? Portion { get; set; }
     public string Avatar { get; set; }
-    [Column( "id_user" )]
     public string AuthorId { get; set; }
     public List<Like> LikesCount { get; set; }
     public List<RecipeTag> Tags { get; set; }

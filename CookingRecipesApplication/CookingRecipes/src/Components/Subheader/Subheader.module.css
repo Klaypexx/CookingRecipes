@@ -1,0 +1,32 @@
+.backward {
+    margin-top: 49px !important;
+}
+
+.subheaderContainer {
+    margin-top: 82px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.backwardBox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 11px;
+}
+
+.arrow {
+    width: 18px;
+    height: 12px;
+    margin-right: 13px;
+}
+
+.backwardText {
+    color: rgb(253, 177, 0);
+    font-weight: 500;
+}
+
+.subheadBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

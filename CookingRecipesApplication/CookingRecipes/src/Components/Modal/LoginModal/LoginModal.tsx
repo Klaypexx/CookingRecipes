@@ -22,15 +22,15 @@ const LoginModal = () => {
         const result = await AuthService.login(values.username, values.password);
         
         if (!result.success) {
-          setErrorText(result.message); 
-          return;
+            setErrorText(result.message); 
+            return;
         }
 
         if (result.response && result.response.status === 200) {
-        successToast("Вы успешно вошли в систему!");
-          unsetAll();
+            successToast("Вы успешно вошли в систему!");
+            unsetAll();
         } else {
-          setErrorText(result.message); 
+            setErrorText(result.message); 
         }
     };
     

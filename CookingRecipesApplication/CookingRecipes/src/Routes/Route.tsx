@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import HomePage from "../Pages/HomePage/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
+import CreateRecipe from "../Pages/CreateRecipe/CreateRecipe";
 
 export const router = createBrowserRouter([
     {
@@ -12,9 +13,7 @@ export const router = createBrowserRouter([
             {
                 path: "recipes",
                 element: (
-                    <ProtectedRoute>
-                        <HomePage />
-                    </ProtectedRoute>
+                    <HomePage />
                 )
             },
             {
@@ -25,7 +24,21 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            { path: "*", element: <Navigate to="/" replace /> }
         ]
-    }
+    }, 
+    {
+        path: "/recipe",
+        element: <App />,
+        children: [
+            {
+                path: "create",
+                element: (
+                    <ProtectedRoute>
+                        <CreateRecipe />
+                    </ProtectedRoute>
+                )
+            },
+        ]
+    },
+    { path: "*", element: <Navigate to="/home" replace /> }
 ])
