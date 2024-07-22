@@ -24,7 +24,8 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
            .IsRequired( true );
 
         builder.HasOne( x => x.Recipe )
-          .WithMany( x => x.Steps );
+          .WithMany( x => x.Steps )
+          .HasForeignKey( x => x.RecipeId );
 
     }
 }

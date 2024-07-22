@@ -1,4 +1,5 @@
-﻿using Domain.Auth.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Auth.Entities;
 
 namespace Domain.Recipes.Entities;
 public class Recipe
@@ -9,6 +10,8 @@ public class Recipe
     public TimeOnly? CookingTime { get; set; }
     public int? Portion { get; set; }
     public string Avatar { get; set; }
+    [Column( "id_user" )]
+    public string AuthorId { get; set; }
     public List<Like> LikesCount { get; set; }
     public List<RecipeTag> Tags { get; set; }
     public List<Ingredient> Ingredients { get; set; }

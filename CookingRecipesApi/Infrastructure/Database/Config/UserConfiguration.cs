@@ -41,7 +41,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsUnique();
 
         builder.HasMany( x => x.Recipes )
-           .WithOne( x => x.Author );
+           .WithOne( x => x.Author )
+           .HasForeignKey( x => x.AuthorId );
 
         builder.HasMany( u => u.FavouriteRecipes )
             .WithOne( fr => fr.User )

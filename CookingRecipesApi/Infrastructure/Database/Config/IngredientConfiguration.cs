@@ -24,6 +24,7 @@ public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
             .IsRequired( true );
 
         builder.HasOne( x => x.Recipe )
-           .WithMany( x => x.Ingredients );
+           .WithMany( x => x.Ingredients )
+            .HasForeignKey( x => x.RecipeId );
     }
 }

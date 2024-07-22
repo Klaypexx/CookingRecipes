@@ -49,14 +49,14 @@ namespace Infrastructure.Migrations.Migrations
                     time = table.Column<TimeOnly>(type: "time", nullable: true),
                     portion = table.Column<int>(type: "int", nullable: true),
                     avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    id_user = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_recipe", x => x.id_recipe);
                     table.ForeignKey(
-                        name: "FK_recipe_user_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_recipe_user_id_user",
+                        column: x => x.id_user,
                         principalTable: "user",
                         principalColumn: "id_user");
                 });
@@ -92,14 +92,14 @@ namespace Infrastructure.Migrations.Migrations
                     id_ingredient = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     product = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ingredient", x => x.id_ingredient);
                     table.ForeignKey(
-                        name: "FK_ingredient_recipe_RecipeId",
-                        column: x => x.RecipeId,
+                        name: "FK_ingredient_recipe_id_recipe",
+                        column: x => x.id_recipe,
                         principalTable: "recipe",
                         principalColumn: "id_recipe");
                 });
@@ -159,14 +159,14 @@ namespace Infrastructure.Migrations.Migrations
                     id_step = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     step_number = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecipeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_step", x => x.id_step);
                     table.ForeignKey(
-                        name: "FK_step_recipe_RecipeId",
-                        column: x => x.RecipeId,
+                        name: "FK_step_recipe_id_recipe",
+                        column: x => x.id_recipe,
                         principalTable: "recipe",
                         principalColumn: "id_recipe");
                 });
@@ -177,9 +177,9 @@ namespace Infrastructure.Migrations.Migrations
                 column: "id_recipe");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ingredient_RecipeId",
+                name: "IX_ingredient_id_recipe",
                 table: "ingredient",
-                column: "RecipeId");
+                column: "id_recipe");
 
             migrationBuilder.CreateIndex(
                 name: "IX_like_id_recipe",
@@ -187,9 +187,9 @@ namespace Infrastructure.Migrations.Migrations
                 column: "id_recipe");
 
             migrationBuilder.CreateIndex(
-                name: "IX_recipe_AuthorId",
+                name: "IX_recipe_id_user",
                 table: "recipe",
-                column: "AuthorId");
+                column: "id_user");
 
             migrationBuilder.CreateIndex(
                 name: "IX_recipe_tag_id_tag",
@@ -197,9 +197,9 @@ namespace Infrastructure.Migrations.Migrations
                 column: "id_tag");
 
             migrationBuilder.CreateIndex(
-                name: "IX_step_RecipeId",
+                name: "IX_step_id_recipe",
                 table: "step",
-                column: "RecipeId");
+                column: "id_recipe");
 
             migrationBuilder.CreateIndex(
                 name: "IX_user_username",
