@@ -1,0 +1,18 @@
+.formSection {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.inputFormSize {
+    width: 647px;
+}
+
+.mainFormBlock {
+    max-width: 647px;
+    margin: 50px auto 53px auto;
+}
+
+.textareaFormSize {
+    width: 647px;
+    height: 117px;
+}

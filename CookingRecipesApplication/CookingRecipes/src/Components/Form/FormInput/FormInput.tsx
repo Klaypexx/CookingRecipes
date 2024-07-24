@@ -6,15 +6,16 @@ interface ButtonProps {
     margin?: boolean;
     small?: boolean
     type?: string
+    as?: string;
     className?: string;
     name: string;
     placeholder: string;
   }
 
-const FormInput: React.FC<ButtonProps> = ({ margin, small, type, className, name, placeholder }) => {
+const FormInput: React.FC<ButtonProps> = ({ margin, type, as, className, name, placeholder }) => {
     return (
-        <div className={classNames(margin ? styles.baseBoxStyle : undefined, small ? styles.smallBox : undefined)}>
-            <Field name={name} type={type} placeholder={placeholder} className={classNames(className, styles.baseFieldStyle, small ? styles.smallBox : undefined )}/>
+        <div className={classNames(margin ? styles.marginBox : undefined, styles.baseBoxStyle, className)}>
+            <Field name={name} type={type} as={as} placeholder={placeholder} className={classNames(className, styles.baseFieldStyle )}/>
             <ErrorMessage name={name} component="div" className={styles.baseErrorStyle}/>
         </div>
     )

@@ -40,7 +40,7 @@ const Header = () => {
         <header>
           <div className={styles.container}>
             <div className={styles.navigation}>
-              <Link to={"/"}>
+              <Link to={"/"} state={{ from: location.pathname }}>
                 <img src={logo} alt="header_logo" className={styles.imageLogo} /> 
               </Link>
               <div className={styles.containerButtons}>
@@ -51,6 +51,7 @@ const Header = () => {
                     )
                  }
                     to={'/'}
+                    state={{ from: location.pathname }}
                 >
                 Главная
                 </NavLink>
@@ -61,6 +62,7 @@ const Header = () => {
                     )
                  }
                     to={'/recipes'}
+                    state={{ from: location.pathname }}
                 >
                 Рецепты
                 </NavLink>
@@ -71,6 +73,7 @@ const Header = () => {
                     )
                  }
                     to={'/favourites'}
+                    state={{ from: location.pathname }}
                 >
                 Избранное
                 </NavLink>

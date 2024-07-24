@@ -72,16 +72,17 @@ const RegisterModal = () => {
                 hasAccountText="У меня уже есть аккаунт" 
             >
                 <BaseForm
+                    primary
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    handleSubmit={handleRegister}
+                    onSubmit={handleRegister}
                     errorText={errorText}
                 >
                     <FormInput margin name="name" type="text" placeholder="Имя"/>
                     <FormInput margin name="username" type="text" placeholder="Логин"/>
                     <div className={styles.smallnputBox}>
-                        <FormInput margin small name="password" type="password" placeholder="Пароль"/>
-                        <FormInput small name="confirmPassword" type="password" placeholder="Повторит пароль"/>
+                        <FormInput margin className={styles.smallInput} name="password" type="password" placeholder="Пароль"/>
+                        <FormInput className={styles.smallInput} name="confirmPassword" type="password" placeholder="Повторит пароль"/>
                     </div>
                     <ButtonBlock 
                         primaryButtonText="Зарегистрировться" 

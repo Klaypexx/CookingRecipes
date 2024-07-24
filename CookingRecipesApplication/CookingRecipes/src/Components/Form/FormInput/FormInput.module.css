@@ -1,5 +1,6 @@
 .baseBoxStyle {
-    margin-bottom: 20px;
+    width: 580px;
+    height: 50px;
 }
 
 .baseFieldStyle {
@@ -15,6 +16,11 @@
     font-family: Montserrat;
     margin: 0;
     padding: 26px;
+    resize: none;
+}
+
+.marginBox {
+    margin-bottom: 20px;
 }
 
 .baseErrorStyle {

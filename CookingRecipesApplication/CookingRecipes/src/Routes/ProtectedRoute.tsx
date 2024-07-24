@@ -22,8 +22,8 @@ function ProtectedRoute({
   }, [token]);
 
   if (!token) {
-    // warnToast("Вы не вошли в систему")
-    return <Navigate to={redirectPath} replace state={{ from: location }} />;
+    // Перенаправляем на страницу, откуда был отправлен запрос
+    return <Navigate to={location.state?.from || redirectPath} replace />;
   }
 
   return children || <Outlet />;

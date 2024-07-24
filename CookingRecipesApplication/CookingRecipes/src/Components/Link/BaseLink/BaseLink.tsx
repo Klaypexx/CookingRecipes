@@ -32,7 +32,7 @@ const BaseLink: React.FC<LinkProps> = ({ primary, navigation, newStyle, linkText
   }
 
   return (
-    <Link to={navigation ? navigation : "/"} className={classList} style={styleList} onClick={onClick}>
+    <Link to={navigation ? navigation : location.pathname} state={{ from: location.pathname }} className={classList} style={styleList} onClick={onClick}>
       {children}
       {linkText ? <p className={textClassList}>{linkText}</p> : null}
     </Link>

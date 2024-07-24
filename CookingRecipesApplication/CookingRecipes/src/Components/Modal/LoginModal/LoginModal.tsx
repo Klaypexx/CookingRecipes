@@ -57,13 +57,15 @@ const LoginModal = () => {
     return (
         <>
             <BaseModal 
-                primary haederText="Войти" 
+                primary 
+                haederText="Войти" 
                 hasAccountText="У меня еще нет аккаунта"  
             >
                     <BaseForm
+                        primary
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        handleSubmit={handleLogin}
+                        onSubmit={handleLogin}
                         errorText={errorText}
                     >
                         <FormInput margin name="username" type="text" placeholder="Логин"/>

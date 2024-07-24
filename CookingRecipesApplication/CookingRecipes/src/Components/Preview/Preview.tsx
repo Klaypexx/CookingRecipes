@@ -15,7 +15,7 @@ const Preview = () => {
     }
 
     return (
-        <section>
+        <section className={styles.previewSection}>
             <div className={styles.previewBlock}>
                 <h1 className={styles.headText}>Готовь и делись рецептами</h1>
                 <p className={styles.subheadingText}>Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.</p>
@@ -28,7 +28,6 @@ const Preview = () => {
                     </BaseLink>
                     {token ? null : 
                         <BaseLink 
-                            navigation="/"
                             newStyle={{width: "216px"}}
                             linkText="Войти"
                             onClick={handleLogin}>

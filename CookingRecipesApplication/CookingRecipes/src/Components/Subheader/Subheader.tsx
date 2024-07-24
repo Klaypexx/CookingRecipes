@@ -6,6 +6,7 @@ import BaseButton from "../Button/BaseButton/BaseButton";
 
 interface SubheaderProps {
     backward?: boolean;
+    type?: "button" | "reset" | "submit" | undefined;
     headerText: string;
     btn?: boolean;
     buttonText?: string;
@@ -13,17 +14,16 @@ interface SubheaderProps {
     children?: React.ReactNode;
 }
 
-const Subheader: React.FC<SubheaderProps> = ({ backward, headerText, btn, buttonText, onClick, children }) => {
+const Subheader: React.FC<SubheaderProps> = ({ backward, type, headerText, btn, buttonText, onClick, children }) => {
     const classList = classNames(
         backward ? styles.backward : undefined,
         styles.subheaderContainer
     );
 
     return (
-        <section>
             <div className={classList}>
                 {backward && (
-                    <NavLink to={"/"} className={styles.backwardBox}>
+                    <NavLink to={"/"} state={{ from: location.pathname }} className={styles.backwardBox}>
                         <img src={arrow} alt="backward arrow" className={styles.arrow} />
                         <p className={styles.backwardText}>Назад</p>
                     </NavLink>
@@ -31,13 +31,12 @@ const Subheader: React.FC<SubheaderProps> = ({ backward, headerText, btn, button
                 <div className={styles.subheadBox}>
                     <h2>{headerText}</h2>
                     {btn && (
-                        <BaseButton primary buttonText={buttonText} onClick={onClick}>
+                        <BaseButton primary type={type} buttonText={buttonText} onClick={onClick} >
                             {children}
                         </BaseButton>
                     )}
                 </div>
-            </div>в
-        </section>
+            </div>
     );
 }
 
