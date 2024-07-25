@@ -10,7 +10,10 @@ interface TagsInputProps {
 const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
   const [currentTags, setCurrentTags] = useState<string[]>(tags);
 
-  const handleInputKeyPress = (arrayHelpers: FieldArrayRenderProps, event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyPress = (
+    arrayHelpers: FieldArrayRenderProps,
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ): void => {
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
       const inputValue = (event.target as HTMLInputElement).value.trim(); // Get input value
@@ -18,16 +21,11 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
       if (inputValue) {
         arrayHelpers.push(inputValue); // Add the tag to the array
         setCurrentTags([...currentTags, inputValue]); // Update local state
-        // (event.target as HTMLInputElement).value = ''; // Clear the input
+        (event.target as HTMLInputElement).value = ''; // Clear the input
         console.log('Enter pressed in input');
       }
     }
   };
-
-  const handleRemoveKeyPress = (
-    arrayHelpers: FieldArrayRenderProps,
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) => {};
 
   return (
     <FieldArray
@@ -56,7 +54,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
             className="input"
             type="text"
             placeholder="Press enter to add tags"
-            onKeyDown={(e) => handleInputKeyPress(arrayHelpers, e)}
+            onKeyPress={(e) => handleInputKeyPress(arrayHelpers, e)}
           />
         </div>
       )}

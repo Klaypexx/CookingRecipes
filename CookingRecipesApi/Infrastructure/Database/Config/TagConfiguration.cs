@@ -12,8 +12,7 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.HasKey( x => x.Id );
 
         builder.Property( a => a.Id )
-            .HasColumnName( "id_tag" )
-            .ValueGeneratedNever();
+            .HasColumnName( "id_tag" );
 
         builder.Property( x => x.Name )
            .HasColumnName( "name" )

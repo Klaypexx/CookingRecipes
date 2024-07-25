@@ -12,8 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey( x => x.Id );
 
         builder.Property( a => a.Id )
-            .HasColumnName( "id_user" )
-            .ValueGeneratedNever();
+            .HasColumnName( "id_user" );
 
         builder.Property( x => x.Name )
             .HasColumnName( "name" )

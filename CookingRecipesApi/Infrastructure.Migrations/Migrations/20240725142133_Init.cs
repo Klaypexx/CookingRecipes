@@ -15,7 +15,8 @@ namespace Infrastructure.Migrations.Migrations
                 name: "tag",
                 columns: table => new
                 {
-                    id_tag = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id_tag = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -27,7 +28,8 @@ namespace Infrastructure.Migrations.Migrations
                 name: "user",
                 columns: table => new
                 {
-                    id_user = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id_user = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -43,13 +45,14 @@ namespace Infrastructure.Migrations.Migrations
                 name: "recipe",
                 columns: table => new
                 {
-                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id_recipe = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     time = table.Column<TimeOnly>(type: "time", nullable: false),
                     portion = table.Column<int>(type: "int", nullable: false),
                     avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    id_author = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    id_author = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,8 +69,8 @@ namespace Infrastructure.Migrations.Migrations
                 name: "favourite_recipe",
                 columns: table => new
                 {
-                    id_user = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    id_user = table.Column<int>(type: "int", nullable: false),
+                    id_recipe = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,10 +93,11 @@ namespace Infrastructure.Migrations.Migrations
                 name: "ingredient",
                 columns: table => new
                 {
-                    id_ingredient = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id_ingredient = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     product = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    id_recipe = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,15 +106,16 @@ namespace Infrastructure.Migrations.Migrations
                         name: "FK_ingredient_recipe_id_recipe",
                         column: x => x.id_recipe,
                         principalTable: "recipe",
-                        principalColumn: "id_recipe");
+                        principalColumn: "id_recipe",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "like",
                 columns: table => new
                 {
-                    id_user = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    id_user = table.Column<int>(type: "int", nullable: false),
+                    id_recipe = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,8 +138,8 @@ namespace Infrastructure.Migrations.Migrations
                 name: "recipe_tag",
                 columns: table => new
                 {
-                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    id_tag = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    id_recipe = table.Column<int>(type: "int", nullable: false),
+                    id_tag = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,10 +162,11 @@ namespace Infrastructure.Migrations.Migrations
                 name: "step",
                 columns: table => new
                 {
-                    id_step = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id_step = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     step_number = table.Column<int>(type: "int", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    id_recipe = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,7 +175,8 @@ namespace Infrastructure.Migrations.Migrations
                         name: "FK_step_recipe_id_recipe",
                         column: x => x.id_recipe,
                         principalTable: "recipe",
-                        principalColumn: "id_recipe");
+                        principalColumn: "id_recipe",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

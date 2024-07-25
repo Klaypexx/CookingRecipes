@@ -12,8 +12,7 @@ public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
         builder.HasKey( x => x.Id );
 
         builder.Property( a => a.Id )
-            .HasColumnName( "id_ingredient" )
-            .ValueGeneratedNever();
+            .HasColumnName( "id_ingredient" );
 
         builder.Property( x => x.Name )
             .HasColumnName( "name" )

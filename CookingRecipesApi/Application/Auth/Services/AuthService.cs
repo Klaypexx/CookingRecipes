@@ -31,7 +31,6 @@ public class AuthService : IAuthService
     public async Task RegisterUser( User user )
     {
         user.Password = _passwordHasher.Generate( user.Password );
-        user.Id = Guid.NewGuid().ToString();
         await _userRepository.AddUser( user );
         await _unitOfWork.Save();
     }

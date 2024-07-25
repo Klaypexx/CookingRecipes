@@ -12,8 +12,7 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
         builder.HasKey( x => x.Id );
 
         builder.Property( a => a.Id )
-            .HasColumnName( "id_step" )
-            .ValueGeneratedNever();
+            .HasColumnName( "id_step" );
 
         builder.Property( x => x.StepNumber )
            .HasColumnName( "step_number" )

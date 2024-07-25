@@ -24,9 +24,12 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Auth.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("id_user");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -66,12 +69,12 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.FavouriteRecipe", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
                         .HasColumnName("id_user");
 
-                    b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int")
                         .HasColumnName("id_recipe");
 
                     b.HasKey("UserId", "RecipeId");
@@ -83,9 +86,12 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("id_ingredient");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -97,8 +103,8 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("product");
 
-                    b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int")
                         .HasColumnName("id_recipe");
 
                     b.HasKey("Id");
@@ -110,12 +116,12 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
                         .HasColumnName("id_user");
 
-                    b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int")
                         .HasColumnName("id_recipe");
 
                     b.HasKey("UserId", "RecipeId");
@@ -127,13 +133,15 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("id_recipe");
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int")
                         .HasColumnName("id_author");
 
                     b.Property<string>("Avatar")
@@ -169,12 +177,12 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.RecipeTag", b =>
                 {
-                    b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int")
                         .HasColumnName("id_recipe");
 
-                    b.Property<string>("TagId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("TagId")
+                        .HasColumnType("int")
                         .HasColumnName("id_tag");
 
                     b.HasKey("RecipeId", "TagId");
@@ -186,17 +194,20 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("id_step");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<string>("RecipeId")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int")
                         .HasColumnName("id_recipe");
 
                     b.Property<int>("StepNumber")
@@ -212,9 +223,12 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Tag", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("id_tag");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -249,7 +263,9 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Recipe");
                 });
@@ -307,7 +323,9 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("Steps")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Recipe");
                 });
