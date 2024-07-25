@@ -1,49 +1,24 @@
-import React, { useState } from 'react';
-import './TagsInput.css';
+import React from 'react';
+import styles from './TagsInput.module.css';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
 
 // Define the props interface
 interface TagsInputProps {
-  tags: string[];
+  name: string; // Change to accept the name prop for Formik
 }
 
-const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
-  const [currentTags, setCurrentTags] = useState<string[]>(tags);
-
-  const handleInputKeyPress = (
-    arrayHelpers: FieldArrayRenderProps,
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ): void => {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent form submission
-      const inputValue = (event.target as HTMLInputElement).value.trim(); // Get input value
-
-      if (inputValue) {
-        arrayHelpers.push(inputValue); // Add the tag to the array
-        setCurrentTags([...currentTags, inputValue]); // Update local state
-        (event.target as HTMLInputElement).value = ''; // Clear the input
-        console.log('Enter pressed in input');
-      }
-    }
-  };
-
+const TagsInput: React.FC<TagsInputProps> = ({ name }) => {
   return (
     <FieldArray
-      name="tags"
-      render={(arrayHelpers) => (
-        <div className="tags-input">
-          <ul id="tags">
-            {currentTags && currentTags.length > 0
-              ? currentTags.map((tag, index) => (
-                  <li key={index} className="tag">
-                    <span className="tag-title">{tag}</span>
-                    <span
-                      className="tag-close-icon"
-                      onClick={() => {
-                        arrayHelpers.remove(index); // Remove the tag
-                        setCurrentTags(currentTags.filter((_, i) => i !== index)); // Update local state
-                      }}
-                    >
+      name={name}
+      render={(arrayHelpers: FieldArrayRenderProps) => (
+        <div className={styles.tagsInput}>
+          <ul className={styles.tagsBox}>
+            {arrayHelpers.form.values[name] && arrayHelpers.form.values[name].length > 0
+              ? arrayHelpers.form.values[name].map((tag: string, index: number) => (
+                  <li key={index} className={styles.tag}>
+                    <span className={styles.tagTitle}>{tag}</span>
+                    <span className={styles.tagCloseIcon} onClick={() => arrayHelpers.remove(index)}>
                       x
                     </span>
                   </li>
@@ -51,10 +26,19 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
               : null}
           </ul>
           <input
-            className="input"
+            className={styles.input}
             type="text"
-            placeholder="Press enter to add tags"
-            onKeyPress={(e) => handleInputKeyPress(arrayHelpers, e)}
+            placeholder="Добавить теги"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                const inputValue = (e.target as HTMLInputElement).value.trim();
+                if (inputValue) {
+                  arrayHelpers.push(inputValue);
+                  (e.target as HTMLInputElement).value = '';
+                }
+              }
+            }}
           />
         </div>
       )}
