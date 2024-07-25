@@ -1,18 +1,40 @@
 .formSection {
-    max-width: 1200px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .inputFormSize {
-    width: 647px;
+  width: 647px;
 }
 
 .mainFormBlock {
-    max-width: 647px;
-    margin: 50px auto 53px auto;
+  max-width: 647px;
+  margin: 49px auto 53px 53px;
 }
 
 .textareaFormSize {
-    width: 647px;
-    height: 117px;
+  width: 647px;
+  height: 117px;
+}
+
+.optionContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.optionBox {
+  display: flex;
+  align-items: center;
+}
+
+.optionForm {
+  box-sizing: border-box;
+  padding: 11px 18px;
+  width: 220px;
+  margin-right: 11px;
+  color: rgba(37, 41, 45, 0.5);
+}
+
+.optionText {
+  font-size: 16px;
 }

@@ -11,6 +11,8 @@ interface FormValues {
   recipeName: string;
   description: string;
   tags: string[];
+  cookingTime: string;
+  portion: string;
 }
 
 const CreateRecipe: React.FC = () => {
@@ -18,17 +20,19 @@ const CreateRecipe: React.FC = () => {
     recipeName: '',
     description: '',
     tags: [],
+    cookingTime: '',
+    portion: '',
   };
 
   const handleSubmit = (values: FormValues) => {
-    console.log(values.tags);
+    console.log(values);
   };
 
   return (
     <section className={styles.formSection}>
       <BaseForm initialValues={initialValues} onSubmit={handleSubmit}>
         <Subheader backward btn type="submit" buttonText="Опубликовать" headerText="Добавить новый рецепт" />
-        <BaseCard>
+        <BaseCard margin>
           <div className={styles.mainFormBlock}>
             <FormInput
               className={styles.inputFormSize}
@@ -45,6 +49,32 @@ const CreateRecipe: React.FC = () => {
               placeholder="Краткое описание рецепта (150 символов)"
             />
             <TagsInput name="tags" />
+            <div className={styles.optionContainer}>
+              <div className={styles.optionBox}>
+                <FormInput select as="select" name="cookingTime" className={styles.optionForm}>
+                  <option value="">Время готовки</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="60">60</option>
+                </FormInput>
+                <p className={styles.optionText}>Минут</p>
+              </div>
+              <div className={styles.optionBox}>
+                <FormInput select as="select" name="portion" className={styles.optionForm}>
+                  <option value="">Порций в блюде</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </FormInput>
+                <p className={styles.optionText}>Персон</p>
+              </div>
+            </div>
           </div>
         </BaseCard>
       </BaseForm>

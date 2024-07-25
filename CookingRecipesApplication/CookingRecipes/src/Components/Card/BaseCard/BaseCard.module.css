@@ -1,28 +1,33 @@
 .cardContainer {
-    position: relative;
-    width: 100%;
-    height: 430px;
-    display: flex;
-    z-index: 10;
+  position: relative;
+  width: 100%;
+  min-height: 430px;
+  display: flex;
+  z-index: 10;
+}
+
+.margin {
+  margin-bottom: 40px;
 }
 
 .cardPhoto {
-    position: relative;
-    width: 430px;
-    border-radius: 72px 0px 72px 0px;
-    background: rgb(255, 239, 204);
-    z-index: 10;
+  position: relative;
+  width: 430px;
+  max-height: 433px;
+  border-radius: 72px 0px 72px 0px;
+  background: rgb(255, 239, 204);
+  z-index: 10;
 }
 
 .cardBackground {
-    position: absolute;
-    width: 430px;
-    height: 100%;
-    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
-    z-index: 1;
+  position: absolute;
+  width: 430px;
+  min-height: 100%;
+  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+  z-index: 1;
 }
 
 .cardInformation {
-    width: 770px;
-    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+  width: 770px;
+  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
 }
