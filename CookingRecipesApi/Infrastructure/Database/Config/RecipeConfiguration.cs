@@ -21,7 +21,7 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 
         builder.Property( x => x.Description )
             .HasColumnName( "description" )
-            .IsRequired( false );
+            .IsRequired( true );
 
         builder.Property( x => x.Avatar )
             .HasColumnName( "avatar" )
@@ -29,15 +29,15 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 
         builder.Property( x => x.CookingTime )
             .HasColumnName( "time" )
-            .IsRequired( false );
+            .IsRequired( true );
 
         builder.Property( x => x.Portion )
            .HasColumnName( "portion" )
-           .IsRequired( false );
+           .IsRequired( true );
 
-        builder.Property( x => x.Portion )
-           .HasColumnName( "portion" )
-           .IsRequired( false );
+        builder.Property( x => x.AuthorId )
+           .HasColumnName( "id_author" )
+           .IsRequired( true );
 
         builder.HasMany( x => x.Tags )
             .WithOne( x => x.Recipe )

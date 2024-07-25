@@ -45,20 +45,21 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    time = table.Column<TimeOnly>(type: "time", nullable: true),
-                    portion = table.Column<int>(type: "int", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    time = table.Column<TimeOnly>(type: "time", nullable: false),
+                    portion = table.Column<int>(type: "int", nullable: false),
                     avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    id_user = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    id_author = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_recipe", x => x.id_recipe);
                     table.ForeignKey(
-                        name: "FK_recipe_user_id_user",
-                        column: x => x.id_user,
+                        name: "FK_recipe_user_id_author",
+                        column: x => x.id_author,
                         principalTable: "user",
-                        principalColumn: "id_user");
+                        principalColumn: "id_user",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,13 +77,13 @@ namespace Infrastructure.Migrations.Migrations
                         column: x => x.id_recipe,
                         principalTable: "recipe",
                         principalColumn: "id_recipe",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_favourite_recipe_user_id_user",
                         column: x => x.id_user,
                         principalTable: "user",
                         principalColumn: "id_user",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,13 +120,13 @@ namespace Infrastructure.Migrations.Migrations
                         column: x => x.id_recipe,
                         principalTable: "recipe",
                         principalColumn: "id_recipe",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_like_user_id_user",
                         column: x => x.id_user,
                         principalTable: "user",
                         principalColumn: "id_user",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,7 +159,7 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     id_step = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     step_number = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     id_recipe = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -187,9 +188,9 @@ namespace Infrastructure.Migrations.Migrations
                 column: "id_recipe");
 
             migrationBuilder.CreateIndex(
-                name: "IX_recipe_id_user",
+                name: "IX_recipe_id_author",
                 table: "recipe",
-                column: "id_user");
+                column: "id_author");
 
             migrationBuilder.CreateIndex(
                 name: "IX_recipe_tag_id_tag",

@@ -20,8 +20,11 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
            .IsRequired( true );
 
         builder.Property( x => x.Description )
-           .HasColumnName( "name" )
+           .HasColumnName( "description" )
            .IsRequired( true );
+
+        builder.Property( x => x.RecipeId )
+            .HasColumnName( "id_recipe" );
 
         builder.HasOne( x => x.Recipe )
           .WithMany( x => x.Steps )

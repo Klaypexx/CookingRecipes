@@ -8,12 +8,9 @@ using Domain.Auth.Entities;
 
 namespace Domain.Recipes.Entities;
 
-[Table( "recipe_tag" )]
 public class RecipeTag
 {
-    [Column( "id_recipe" )]
     public string RecipeId { get; set; }
-    [Column( "id_tag" )]
     public string TagId { get; set; }
     public Recipe Recipe { get; set; }
     public Tag Tag { get; set; }

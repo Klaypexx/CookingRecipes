@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import "./TagsInput.css";
-import { FieldArray, FieldArrayRenderProps } from "formik";
+import React, { useState } from 'react';
+import './TagsInput.css';
+import { FieldArray, FieldArrayRenderProps } from 'formik';
 
 // Define the props interface
 interface TagsInputProps {
@@ -10,22 +10,24 @@ interface TagsInputProps {
 const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
   const [currentTags, setCurrentTags] = useState<string[]>(tags);
 
-  const handleInputKeyPress = (
-    arrayHelpers: FieldArrayRenderProps,
-    event: React.KeyboardEvent<HTMLInputElement>
-  ): void => {
-    if (event.key === "Enter") {
+  const handleInputKeyPress = (arrayHelpers: FieldArrayRenderProps, event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission
       const inputValue = (event.target as HTMLInputElement).value.trim(); // Get input value
 
       if (inputValue) {
         arrayHelpers.push(inputValue); // Add the tag to the array
         setCurrentTags([...currentTags, inputValue]); // Update local state
-        (event.target as HTMLInputElement).value = ""; // Clear the input
-        console.log("Enter pressed in input");
+        // (event.target as HTMLInputElement).value = ''; // Clear the input
+        console.log('Enter pressed in input');
       }
     }
   };
+
+  const handleRemoveKeyPress = (
+    arrayHelpers: FieldArrayRenderProps,
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {};
 
   return (
     <FieldArray
@@ -41,9 +43,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
                       className="tag-close-icon"
                       onClick={() => {
                         arrayHelpers.remove(index); // Remove the tag
-                        setCurrentTags(
-                          currentTags.filter((_, i) => i !== index)
-                        ); // Update local state
+                        setCurrentTags(currentTags.filter((_, i) => i !== index)); // Update local state
                       }}
                     >
                       x
@@ -56,7 +56,7 @@ const TagsInput: React.FC<TagsInputProps> = ({ tags }) => {
             className="input"
             type="text"
             placeholder="Press enter to add tags"
-            onKeyPress={(e) => handleInputKeyPress(arrayHelpers, e)}
+            onKeyDown={(e) => handleInputKeyPress(arrayHelpers, e)}
           />
         </div>
       )}

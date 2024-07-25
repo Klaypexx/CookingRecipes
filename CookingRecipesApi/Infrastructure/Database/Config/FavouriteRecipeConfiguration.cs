@@ -7,14 +7,24 @@ public class FavouriteRecipeConfiguration : IEntityTypeConfiguration<FavouriteRe
 {
     public void Configure( EntityTypeBuilder<FavouriteRecipe> builder )
     {
+        builder.ToTable( "favourite_recipe" );
+
         builder.HasKey( x => new { x.UserId, x.RecipeId } );
+
+        builder.Property( x => x.UserId )
+            .HasColumnName( "id_user" );
+
+        builder.Property( x => x.RecipeId )
+            .HasColumnName( "id_recipe" );
 
         builder.HasOne( x => x.User )
             .WithMany( x => x.FavouriteRecipes )
-            .HasForeignKey( x => x.UserId );
+            .HasForeignKey( x => x.UserId )
+            .OnDelete( DeleteBehavior.Restrict );
 
         builder.HasOne( x => x.Recipe )
             .WithMany( x => x.FavouritedBy )
-            .HasForeignKey( x => x.RecipeId );
+            .HasForeignKey( x => x.RecipeId )
+            .OnDelete( DeleteBehavior.Restrict );
     }
 }

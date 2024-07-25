@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240722122603_Init")]
+    [Migration("20240725135402_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -81,7 +81,7 @@ namespace Infrastructure.Migrations.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("favourite_recipe");
+                    b.ToTable("favourite_recipe", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Ingredient", b =>
@@ -125,7 +125,7 @@ namespace Infrastructure.Migrations.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("like");
+                    b.ToTable("like", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
@@ -135,18 +135,21 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnName("id_recipe");
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)")
-                        .HasColumnName("id_user");
+                        .HasColumnName("id_author");
 
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("avatar");
 
                     b.Property<TimeOnly?>("CookingTime")
+                        .IsRequired()
                         .HasColumnType("time")
                         .HasColumnName("time");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
@@ -156,6 +159,7 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnName("name");
 
                     b.Property<int?>("Portion")
+                        .IsRequired()
                         .HasColumnType("int")
                         .HasColumnName("portion");
 
@@ -180,7 +184,7 @@ namespace Infrastructure.Migrations.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("recipe_tag");
+                    b.ToTable("recipe_tag", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Recipes.Entities.Step", b =>
@@ -192,7 +196,7 @@ namespace Infrastructure.Migrations.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
+                        .HasColumnName("description");
 
                     b.Property<string>("RecipeId")
                         .HasColumnType("nvarchar(450)")
@@ -230,13 +234,13 @@ namespace Infrastructure.Migrations.Migrations
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("FavouritedBy")
                         .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Auth.Entities.User", "User")
                         .WithMany("FavouriteRecipes")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Recipe");
@@ -258,13 +262,13 @@ namespace Infrastructure.Migrations.Migrations
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("LikesCount")
                         .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Auth.Entities.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Recipe");
@@ -276,7 +280,9 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     b.HasOne("Domain.Auth.Entities.User", "Author")
                         .WithMany("Recipes")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
                 });

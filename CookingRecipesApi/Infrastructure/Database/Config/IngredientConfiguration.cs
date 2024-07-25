@@ -23,6 +23,9 @@ public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
             .HasColumnName( "product" )
             .IsRequired( true );
 
+        builder.Property( a => a.RecipeId )
+            .HasColumnName( "id_recipe" );
+
         builder.HasOne( x => x.Recipe )
            .WithMany( x => x.Ingredients )
             .HasForeignKey( x => x.RecipeId );
