@@ -1,11 +1,11 @@
 ﻿using Application.Auth.Services;
 
 namespace Infrastructure.Auth.Utils;
-public class PasswordHasher : IPasswordHasher
+public static class PasswordHasher
 {
-    public string Generate( string password ) =>
+    public static string GeneratePasswordHash( string password ) =>
         BCrypt.Net.BCrypt.EnhancedHashPassword( password );
 
-    public bool Verify( string password, string hashedPassword ) =>
+    public static bool VerifyPasswordHash( string password, string hashedPassword ) =>
         BCrypt.Net.BCrypt.EnhancedVerify( password, hashedPassword );
 }

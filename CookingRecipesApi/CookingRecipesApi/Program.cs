@@ -21,7 +21,6 @@ IServiceCollection services = builder.Services;
 // Add services to the container.
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<IUnitOfWork, UnitOfWork>();
-services.AddScoped<IPasswordHasher, PasswordHasher>();
 services.AddScoped<ITokenService, TokenService>();
 
 services.AddScoped<IUserRepository, UserRepository>();
