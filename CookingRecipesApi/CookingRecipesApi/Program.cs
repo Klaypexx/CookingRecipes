@@ -1,12 +1,11 @@
 using Application.Auth.Repositories;
 using Application.Auth.Services;
-using Application.Foundation.Entities;
+using Application.Foundation;
 using Application.Users.Services;
 using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using FluentValidation;
 using Infrastructure.Auth.Repositories;
-using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
 using Infrastructure.Foundation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

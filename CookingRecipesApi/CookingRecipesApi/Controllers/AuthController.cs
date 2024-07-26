@@ -1,5 +1,4 @@
-﻿using Application.Foundation.Entities;
-using CookingRecipesApi.Auth;
+﻿using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Utilities;
 using Domain.Auth.Entities;
@@ -9,6 +8,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Application.Auth.Services;
 using Infrastructure.Auth.Utils;
+using Application.Foundation;
 
 namespace CookingRecipesApi.Controllers;
 

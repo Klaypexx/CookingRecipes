@@ -1,6 +1,4 @@
-﻿using Application.Auth.Services;
-
-namespace Infrastructure.Auth.Utils;
+﻿namespace Infrastructure.Auth.Utils;
 public static class PasswordHasher
 {
     public static string GeneratePasswordHash( string password ) =>

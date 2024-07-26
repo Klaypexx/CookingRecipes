@@ -54,11 +54,11 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
             .WithMany( x => x.Recipes )
             .HasForeignKey( x => x.AuthorId );
 
-        builder.HasMany( x => x.FavouritedBy )
+        builder.HasMany( x => x.FavouriteRecipes )
             .WithOne( x => x.Recipe )
             .HasForeignKey( x => x.RecipeId );
 
-        builder.HasMany( x => x.LikesCount )
+        builder.HasMany( x => x.Likes )
             .WithOne( x => x.Recipe )
             .HasForeignKey( x => x.RecipeId );
     }

@@ -1,4 +1,4 @@
-﻿using Application.Foundation.Entities;
+﻿using Application.Foundation;
 using Infrastructure.Database;
 
 namespace Infrastructure.Foundation
@@ -7,7 +7,7 @@ namespace Infrastructure.Foundation
     {
         private readonly AppDbContext _context;
 
-        public UnitOfWork(AppDbContext context)
+        public UnitOfWork( AppDbContext context )
         {
             _context = context;
         }

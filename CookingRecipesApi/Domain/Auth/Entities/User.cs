@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Recipes.Entities;
+﻿using Domain.Recipes.Entities;
 
 namespace Domain.Auth.Entities;
 public class User

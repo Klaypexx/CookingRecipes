@@ -1,5 +1,4 @@
 ﻿using Application.Auth.Services;
-using Domain.Auth;
 using Domain.Auth.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

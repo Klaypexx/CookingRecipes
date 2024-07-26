@@ -1,13 +1,13 @@
 ﻿using Application.Auth.Repositories;
 using Application.Auth.Services;
-using Application.Foundation.Entities;
+using Application.Foundation;
 using Domain.Auth.Entities;
 using Infrastructure.Auth.Utils;
 
 namespace Application.Users.Services;
 public class AuthService : IAuthService
 {
-    private IUserRepository _userRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public AuthService( IUserRepository userRepository, IUnitOfWork unitOfWork )

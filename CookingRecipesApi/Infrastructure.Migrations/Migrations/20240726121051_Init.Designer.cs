@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240725142133_Init")]
+    [Migration("20240726121051_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -246,7 +246,7 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.FavouriteRecipe", b =>
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
-                        .WithMany("FavouritedBy")
+                        .WithMany("FavouriteRecipes")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -276,7 +276,7 @@ namespace Infrastructure.Migrations.Migrations
             modelBuilder.Entity("Domain.Recipes.Entities.Like", b =>
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
-                        .WithMany("LikesCount")
+                        .WithMany("Likes")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -344,11 +344,11 @@ namespace Infrastructure.Migrations.Migrations
 
             modelBuilder.Entity("Domain.Recipes.Entities.Recipe", b =>
                 {
-                    b.Navigation("FavouritedBy");
+                    b.Navigation("FavouriteRecipes");
 
                     b.Navigation("Ingredients");
 
-                    b.Navigation("LikesCount");
+                    b.Navigation("Likes");
 
                     b.Navigation("Steps");
 

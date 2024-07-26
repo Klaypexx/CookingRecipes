@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Recipes.Entities;
+﻿using Domain.Recipes.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,7 +23,7 @@ public class LikeConfiguration : IEntityTypeConfiguration<Like>
             .OnDelete( DeleteBehavior.Restrict );
 
         builder.HasOne( x => x.Recipe )
-            .WithMany( x => x.LikesCount )
+            .WithMany( x => x.Likes )
             .HasForeignKey( x => x.RecipeId )
             .OnDelete( DeleteBehavior.Restrict );
     }

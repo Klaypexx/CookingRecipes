@@ -23,7 +23,7 @@ public class FavouriteRecipeConfiguration : IEntityTypeConfiguration<FavouriteRe
             .OnDelete( DeleteBehavior.Restrict );
 
         builder.HasOne( x => x.Recipe )
-            .WithMany( x => x.FavouritedBy )
+            .WithMany( x => x.FavouriteRecipes )
             .HasForeignKey( x => x.RecipeId )
             .OnDelete( DeleteBehavior.Restrict );
     }
