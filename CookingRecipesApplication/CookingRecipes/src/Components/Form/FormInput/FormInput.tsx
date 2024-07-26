@@ -11,6 +11,7 @@ interface ButtonProps {
   className?: string;
   name: string;
   placeholder?: string;
+  maxLength?: number;
   styles?: string;
   children?: React.ReactNode;
 }
@@ -23,6 +24,7 @@ const FormInput: React.FC<ButtonProps> = ({
   className,
   name,
   placeholder,
+  maxLength,
   styles,
   children,
 }) => {
@@ -34,6 +36,7 @@ const FormInput: React.FC<ButtonProps> = ({
         type={type}
         as={as}
         placeholder={placeholder}
+        maxLength={maxLength}
         className={classNames(className, style.baseFieldStyle, select ? style.selectField : undefined)}
         styles={styles}
       >

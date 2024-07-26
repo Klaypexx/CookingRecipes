@@ -7,12 +7,19 @@ import Subheader from '../../Components/Subheader/Subheader';
 import styles from './CreateRecipe.module.css';
 
 // Define the shape of the form values
+interface Ingredients {
+  header: string;
+  products: string;
+}
+
 interface FormValues {
   recipeName: string;
   description: string;
   tags: string[];
   cookingTime: string;
   portion: string;
+  step: string;
+  ingredient: Ingredients;
 }
 
 const CreateRecipe: React.FC = () => {
@@ -22,6 +29,11 @@ const CreateRecipe: React.FC = () => {
     tags: [],
     cookingTime: '',
     portion: '',
+    step: '',
+    ingredient: {
+      header: '',
+      products: '',
+    },
   };
 
   const handleSubmit = (values: FormValues) => {
@@ -47,6 +59,7 @@ const CreateRecipe: React.FC = () => {
               as="textarea"
               name="description"
               placeholder="Краткое описание рецепта (150 символов)"
+              maxLength={150}
             />
             <TagsInput name="tags" />
             <div className={styles.optionContainer}>
