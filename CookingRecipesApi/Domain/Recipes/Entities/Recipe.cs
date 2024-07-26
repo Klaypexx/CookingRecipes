@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Auth.Entities;
+﻿using Domain.Auth.Entities;
 
 namespace Domain.Recipes.Entities;
 public class Recipe

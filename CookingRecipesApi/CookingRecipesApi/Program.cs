@@ -1,7 +1,6 @@
-using Application.Auth.Entities;
 using Application.Auth.Repositories;
+using Application.Auth.Services;
 using Application.Foundation.Entities;
-using Application.Users.Entities;
 using Application.Users.Services;
 using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
@@ -37,7 +36,7 @@ services.AddValidatorsFromAssemblyContaining<RegisterDto>();
 services.AddValidatorsFromAssemblyContaining<LoginDto>();
 
 services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
@@ -61,16 +60,6 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
 
                 RequireExpirationTime = true,
             };
-
-            // Токен в куки
-            /*options.Events = new JwtBearerEvents
-            {
-                OnMessageReceived = context =>
-                {
-                    context.Token = context.Request.Cookies[ "jwt_token" ];
-                    return Task.CompletedTask;
-                }
-            };*/
         } );
 
 

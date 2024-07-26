@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Auth.Entities;
+namespace Application.Auth.Services;
 public interface IPasswordHasher
 {
     string Generate( string password );
-    public bool Verify( string password, string hashedPassword );
+    bool Verify( string password, string hashedPassword );
 }

@@ -1,4 +1,4 @@
-﻿using Application.Auth.Entities;
+﻿using Application.Auth.Services;
 
 namespace Infrastructure.Auth.Utils;
 public class PasswordHasher : IPasswordHasher

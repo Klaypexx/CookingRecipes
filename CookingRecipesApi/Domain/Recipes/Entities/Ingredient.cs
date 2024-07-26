@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.Recipes.Entities;
+﻿namespace Domain.Recipes.Entities;
 
 public class Ingredient
 {
