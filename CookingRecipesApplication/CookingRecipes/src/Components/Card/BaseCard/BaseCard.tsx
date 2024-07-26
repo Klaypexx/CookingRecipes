@@ -1,11 +1,6 @@
 import classNames from 'classnames';
 import styles from './BaseCard.module.css';
-
-interface CardProps {
-  margin?: boolean;
-  className?: string;
-  children?: React.ReactNode;
-}
+import { CardProps } from '../../../Types/types';
 
 const BaseCard: React.FC<CardProps> = ({ margin, className, children }) => {
   return (

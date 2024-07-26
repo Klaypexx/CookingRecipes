@@ -5,25 +5,10 @@ import FormInput from '../../Components/Form/FormInput/FormInput';
 import TagsInput from '../../Components/Form/TagsInput/TagsInput';
 import Subheader from '../../Components/Subheader/Subheader';
 import styles from './CreateRecipe.module.css';
-
-// Define the shape of the form values
-interface Ingredients {
-  header: string;
-  products: string;
-}
-
-interface FormValues {
-  recipeName: string;
-  description: string;
-  tags: string[];
-  cookingTime: string;
-  portion: string;
-  step: string;
-  ingredient: Ingredients;
-}
+import { RecipeFormValues } from '../../Types/types';
 
 const CreateRecipe: React.FC = () => {
-  const initialValues: FormValues = {
+  const initialValues: RecipeFormValues = {
     recipeName: '',
     description: '',
     tags: [],
@@ -36,7 +21,7 @@ const CreateRecipe: React.FC = () => {
     },
   };
 
-  const handleSubmit = (values: FormValues) => {
+  const handleSubmit = (values: RecipeFormValues) => {
     console.log(values);
   };
 

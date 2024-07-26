@@ -2,21 +2,9 @@ import classNames from 'classnames';
 import { ErrorMessage, Field } from 'formik';
 import selectArrow from '../../../resources/icons/select-arrow.svg';
 import style from './FormInput.module.css';
+import { FormInputProps } from '../../../Types/types';
 
-interface ButtonProps {
-  margin?: boolean;
-  select?: boolean;
-  type?: string;
-  as?: string;
-  className?: string;
-  name: string;
-  placeholder?: string;
-  maxLength?: number;
-  styles?: string;
-  children?: React.ReactNode;
-}
-
-const FormInput: React.FC<ButtonProps> = ({
+const FormInput: React.FC<FormInputProps> = ({
   margin,
   select,
   type,

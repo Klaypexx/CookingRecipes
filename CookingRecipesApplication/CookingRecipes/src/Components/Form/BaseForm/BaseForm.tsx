@@ -3,15 +3,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import classNames from 'classnames';
 import styles from './BaseFormLabel.module.css';
-
-interface FormProps {
-  primary?: boolean;
-  initialValues: any; // Use a more specific type if possible
-  validationSchema?: any;
-  onSubmit: (values: any) => void; // Use a more specific type if possible
-  errorText?: string;
-  children?: React.ReactNode;
-}
+import { FormProps } from '../../../Types/types';
 
 const BaseForm: React.FC<FormProps> = ({ primary, initialValues, validationSchema, onSubmit, errorText, children }) => {
   return (

@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import styles from './TagsInput.module.css';
 import closeIcon from '../../../resources/icons/closeTag.svg';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
-
-interface TagsInputProps {
-  name: string;
-}
+import { TagsInputProps } from '../../../Types/types';
 
 const TagsInput: React.FC<TagsInputProps> = ({ name }) => {
   const [error, setError] = useState<string | null>(null); // Локальное состояние для ошибок
