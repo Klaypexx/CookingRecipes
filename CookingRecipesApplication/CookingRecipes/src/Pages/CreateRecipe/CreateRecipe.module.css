@@ -3,38 +3,8 @@
   margin: 0 auto;
 }
 
-.inputFormSize {
-  width: 647px;
-}
-
-.mainFormBlock {
-  max-width: 647px;
-  margin: 49px auto 53px 53px;
-}
-
-.textareaFormSize {
-  width: 647px;
-  height: 117px;
-}
-
-.optionContainer {
+.mainFormContainer {
   display: flex;
   justify-content: space-between;
-}
-
-.optionBox {
-  display: flex;
-  align-items: center;
-}
-
-.optionForm {
-  box-sizing: border-box;
-  padding: 11px 18px;
-  width: 220px;
-  margin-right: 11px;
-  color: rgba(37, 41, 45, 0.5);
-}
-
-.optionText {
-  font-size: 16px;
+  margin-bottom: 106px;
 }

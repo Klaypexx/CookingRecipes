@@ -1,0 +1,36 @@
+.inputRecipeNameFormSize {
+  width: 647px;
+  padding: 11px 24px;
+}
+
+.cardFormContainer {
+  max-width: 647px;
+  margin: 49px auto 53px 53px;
+}
+
+.textareaFormSize {
+  width: 647px;
+  height: 117px;
+}
+
+.optionContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.optionBox {
+  display: flex;
+  align-items: center;
+}
+
+.optionForm {
+  box-sizing: border-box;
+  padding: 11px 18px;
+  width: 220px;
+  margin-right: 11px;
+  color: rgba(37, 41, 45, 0.5);
+}
+
+.optionText {
+  font-size: 16px;
+}

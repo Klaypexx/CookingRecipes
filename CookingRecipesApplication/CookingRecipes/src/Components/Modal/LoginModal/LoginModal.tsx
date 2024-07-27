@@ -2,7 +2,7 @@ import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import AuthService from '../../../Services/AuthService';
 import useModalStore from '../../../Stores/useModalStore';
 import BaseForm from '../../Form/BaseForm/BaseForm';
-import FormInput from '../../Form/FormInput/FormInput';
+import FormField from '../../Form/FormField/FormField';
 import BaseModal from '../BaseModal/BaseModal';
 import * as Yup from 'yup';
 import { useState } from 'react';
@@ -53,8 +53,8 @@ const LoginModal = () => {
           onSubmit={handleLogin}
           errorText={errorText}
         >
-          <FormInput margin name="username" type="text" placeholder="Логин" />
-          <FormInput name="password" type="password" placeholder="Пароль" />
+          <FormField margin name="username" type="text" placeholder="Логин" />
+          <FormField name="password" type="password" placeholder="Пароль" />
           <ButtonBlock
             primaryButtonText="Войти"
             secondaryButtonText="Отмена"

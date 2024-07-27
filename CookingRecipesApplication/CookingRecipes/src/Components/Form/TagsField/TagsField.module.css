@@ -1,4 +1,4 @@
-.tagsInputBox {
+.tagsFieldBox {
   width: 647px;
   min-height: 50px;
   margin-bottom: 20px;
@@ -17,11 +17,11 @@
 }
 
 /* Добавляем стиль для контейнера, когда input в фокусе */
-.tagsInputBox:focus-within .tagsContainer {
+.tagsFieldBox:focus-within .tagsContainer {
   border: 2px solid black;
 }
 
-.tagsInputBox .tagsContainer input {
+.tagsFieldBox .tagsContainer input {
   padding: 0;
   outline: none;
   border: none;

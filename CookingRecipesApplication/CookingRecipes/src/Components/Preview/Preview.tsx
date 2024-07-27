@@ -1,11 +1,11 @@
 import styles from './Preview.module.css';
 import headerPreview from '../../resources/img/headerPreview.png';
-import plusImg from '../../resources/icons/plus-white.svg';
 import BaseLink from '../Link/BaseLink/BaseLink';
 import useModalStore from '../../Stores/useModalStore';
 import LoginModal from '../Modal/LoginModal/LoginModal';
 import RegisterModal from '../Modal/RegisterModal/RegisterModal';
 import TokenService from '../../Services/TokenService';
+import AddRecipeLink from '../Link/AddRecipeLink/AddRecipeLink';
 
 const Preview = () => {
   const { isRegister, isLogin, setLogin } = useModalStore();
@@ -23,9 +23,7 @@ const Preview = () => {
             Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.
           </p>
           <div className={styles.links}>
-            <BaseLink primary navigation="/recipe/create" linkText="Добавить рецепт">
-              <img src={plusImg} className={styles.plus} />
-            </BaseLink>
+            <AddRecipeLink />
             {token ? null : <BaseLink newStyle={{ width: '216px' }} linkText="Войти" onClick={handleLogin}></BaseLink>}
           </div>
         </div>

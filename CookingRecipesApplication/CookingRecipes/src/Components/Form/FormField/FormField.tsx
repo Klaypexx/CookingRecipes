@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { ErrorMessage, Field } from 'formik';
 import selectArrow from '../../../resources/icons/select-arrow.svg';
-import style from './FormInput.module.css';
-import { FormInputProps } from '../../../Types/types';
+import style from './FormField.module.css';
+import { FormFieldProps } from '../../../Types/types';
 
-const FormInput: React.FC<FormInputProps> = ({
+const FormInput: React.FC<FormFieldProps> = ({
   margin,
   select,
   type,

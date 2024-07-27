@@ -2,7 +2,7 @@ import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import AuthService from '../../../Services/AuthService';
 import useModalStore from '../../../Stores/useModalStore';
 import BaseForm from '../../Form/BaseForm/BaseForm';
-import FormInput from '../../Form/FormInput/FormInput';
+import FormField from '../../Form/FormField/FormField';
 import BaseModal from '../BaseModal/BaseModal';
 import * as Yup from 'yup';
 import styles from './RegisterModal.module.css';
@@ -61,11 +61,11 @@ const RegisterModal = () => {
           onSubmit={handleRegister}
           errorText={errorText}
         >
-          <FormInput margin name="name" type="text" placeholder="Имя" />
-          <FormInput margin name="username" type="text" placeholder="Логин" />
+          <FormField margin name="name" type="text" placeholder="Имя" />
+          <FormField margin name="username" type="text" placeholder="Логин" />
           <div className={styles.smallnputBox}>
-            <FormInput margin className={styles.smallInput} name="password" type="password" placeholder="Пароль" />
-            <FormInput
+            <FormField margin className={styles.smallInput} name="password" type="password" placeholder="Пароль" />
+            <FormField
               className={styles.smallInput}
               name="confirmPassword"
               type="password"

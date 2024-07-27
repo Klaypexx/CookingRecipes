@@ -20,6 +20,11 @@ interface ButtonBlockProps {
   onClickSecondary?: () => void;
 }
 
+interface AddRecipeButtonProps {
+  primary?: boolean;
+  className?: string;
+}
+
 interface CardProps {
   margin?: boolean;
   className?: string;
@@ -35,7 +40,7 @@ interface FormProps {
   children?: React.ReactNode;
 }
 
-interface FormInputProps {
+interface FormFieldProps {
   margin?: boolean;
   select?: boolean;
   type?: string;
@@ -48,7 +53,11 @@ interface FormInputProps {
   children?: React.ReactNode;
 }
 
-interface TagsInputProps {
+interface TagsFieldProps {
+  name: string;
+}
+
+interface IngredientFieldPropas {
   name: string;
 }
 
@@ -103,11 +112,11 @@ interface RecipeFormValues {
   tags: string[];
   cookingTime: string;
   portion: string;
-  step: string;
-  ingredient: {
+  step: string[];
+  ingredient: Array<{
     header: string;
     products: string;
-  };
+  }>;
 }
 
 interface ModalStore {
@@ -125,10 +134,12 @@ interface ModalStore {
 export type {
   ButtonProps,
   ButtonBlockProps,
+  AddRecipeButtonProps,
   CardProps,
   FormProps,
-  FormInputProps,
-  TagsInputProps,
+  FormFieldProps,
+  TagsFieldProps,
+  IngredientFieldPropas,
   LinkProps,
   LinkBlockProps,
   ModalProps,
