@@ -4,17 +4,19 @@ import BaseForm from '../../Components/Form/BaseForm/BaseForm';
 import Subheader from '../../Components/Subheader/Subheader';
 import styles from './CreateRecipe.module.css';
 import { RecipeFormValues } from '../../Types/types';
-import IngredientField from '../../Components/Form/IngredientField/IngredientField';
-import CardField from '../../Components/Form/CardField/CardField';
+import IngredientField from '../../Components/Field/IngredientField/IngredientField';
+import CardField from '../../Components/Field/CardField/CardField';
+import StepField from '../../Components/Field/StepField/StepField';
 
 const CreateRecipe: React.FC = () => {
   const initialValues: RecipeFormValues = {
     recipeName: '',
     description: '',
+    avatar: '',
     tags: [],
     cookingTime: '',
     portion: '',
-    step: [],
+    step: [''],
     ingredient: [
       {
         header: '',
@@ -31,7 +33,7 @@ const CreateRecipe: React.FC = () => {
     <section className={styles.formSection}>
       <BaseForm initialValues={initialValues} onSubmit={handleSubmit}>
         <Subheader backward btn type="submit" buttonText="Опубликовать" headerText="Добавить новый рецепт" />
-        <BaseCard margin>
+        <BaseCard form margin>
           <CardField />
         </BaseCard>
         <div className={styles.mainContainer}>
@@ -39,7 +41,9 @@ const CreateRecipe: React.FC = () => {
             <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
             <IngredientField name="ingredient" />
           </div>
-          <div className={styles.stepBlock}>step</div>
+          <div className={styles.stepBlock}>
+            <StepField name="step" />
+          </div>
         </div>
       </BaseForm>
     </section>

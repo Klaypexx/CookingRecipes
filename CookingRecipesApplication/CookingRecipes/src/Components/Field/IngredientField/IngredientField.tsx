@@ -2,7 +2,7 @@ import React from 'react';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
 import { IngredientFieldProps } from '../../../Types/types';
 import styles from './IngredientField.module.css';
-import FormField from '../FormField/FormField';
+import BaseField from '../BaseField/BaseField';
 import AddRecipeButton from '../../Button/AddRecipeButton/AddRecipeButton';
 import closeIcon from '../../../resources/icons/close.svg';
 
@@ -37,14 +37,14 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
                   </button>
                 </div>
                 <div className={styles.ingredientBox}>
-                  <FormField
+                  <BaseField
                     className={styles.inputIngredientNameFormSize}
                     margin
                     name={`${name}.${index}.header`}
                     type="text"
                     placeholder="Заголовок для ингридиентов"
                   />
-                  <FormField
+                  <BaseField
                     className={styles.textareaIngredientFormSize}
                     as="textarea"
                     name={`${name}.${index}.products`}
@@ -53,7 +53,11 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
                 </div>
               </div>
             ))}
-            <AddRecipeButton className={styles.ingredientButton} onClick={() => handlerCreateField(arrayHelpers)} />
+            <AddRecipeButton
+              buttonText="Добавить заголовок"
+              className={styles.ingredientButton}
+              onClick={() => handlerCreateField(arrayHelpers)}
+            />
           </>
         );
       }}

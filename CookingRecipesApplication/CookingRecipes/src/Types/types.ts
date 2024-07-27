@@ -22,11 +22,13 @@ interface ButtonBlockProps {
 
 interface AddRecipeButtonProps {
   primary?: boolean;
+  buttonText?: string;
   className?: string;
   onClick?: () => void;
 }
 
 interface CardProps {
+  form?: boolean;
   margin?: boolean;
   className?: string;
   children?: React.ReactNode;
@@ -41,7 +43,7 @@ interface FormProps {
   children?: React.ReactNode;
 }
 
-interface FormFieldProps {
+interface BaseFieldProps {
   margin?: boolean;
   select?: boolean;
   type?: string;
@@ -114,6 +116,7 @@ interface SubheaderProps {
 interface RecipeFormValues {
   recipeName: string;
   description: string;
+  avatar: string;
   tags: string[];
   cookingTime: string;
   portion: string;
@@ -142,7 +145,7 @@ export type {
   AddRecipeButtonProps,
   CardProps,
   FormProps,
-  FormFieldProps,
+  BaseFieldProps,
   TagsFieldProps,
   IngredientFieldProps,
   StepFieldProps,

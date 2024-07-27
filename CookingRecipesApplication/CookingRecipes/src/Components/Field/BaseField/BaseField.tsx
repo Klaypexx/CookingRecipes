@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { ErrorMessage, Field } from 'formik';
 import selectArrow from '../../../resources/icons/select-arrow.svg';
-import style from './FormField.module.css';
-import { FormFieldProps } from '../../../Types/types';
+import style from './BaseField.module.css';
+import { BaseFieldProps } from '../../../Types/types';
 
-const FormInput: React.FC<FormFieldProps> = ({
+const BaseField: React.FC<BaseFieldProps> = ({
   margin,
   select,
   type,
@@ -35,4 +35,4 @@ const FormInput: React.FC<FormFieldProps> = ({
   );
 };
 
-export default FormInput;
+export default BaseField;

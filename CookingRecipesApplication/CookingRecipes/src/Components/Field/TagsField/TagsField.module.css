@@ -18,10 +18,11 @@
 
 /* Добавляем стиль для контейнера, когда input в фокусе */
 .tagsFieldBox:focus-within .tagsContainer {
-  border: 2px solid black;
+  outline: 2px solid black;
 }
 
 .tagsFieldBox .tagsContainer input {
+  width: 100%;
   padding: 0;
   outline: none;
   border: none;

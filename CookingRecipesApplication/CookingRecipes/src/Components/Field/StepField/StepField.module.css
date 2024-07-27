@@ -1,0 +1,42 @@
+.stepContainer {
+  box-sizing: border-box;
+  width: 790px;
+  height: 329px;
+  border-radius: 24px;
+  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+  background: rgb(255, 255, 255);
+  padding: 50px 70px 69px 70px;
+  margin-bottom: 40px;
+}
+
+.stepBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 21px;
+}
+
+.stepText {
+  font-weight: 600;
+}
+
+.inputStepFormSize {
+  width: 650px;
+  height: 166px;
+}
+
+.stepButtonBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.stepCloseIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.stepButton {
+  width: 380px;
+  margin: 0;
+}
