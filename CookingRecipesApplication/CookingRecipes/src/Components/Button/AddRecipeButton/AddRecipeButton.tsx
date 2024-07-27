@@ -3,10 +3,10 @@ import plusImg from '../../../resources/icons/plus-orange.svg';
 import styles from './AddRecipeButton.module.css';
 import { AddRecipeButtonProps } from '../../../Types/types';
 
-const AddRecipeButton: React.FC<AddRecipeButtonProps> = ({ primary, className }) => {
+const AddRecipeButton: React.FC<AddRecipeButtonProps> = ({ primary, className, onClick }) => {
   return (
     <>
-      <BaseButton primary={primary} buttonText="Добавить рецепт" className={className}>
+      <BaseButton primary={primary} buttonText="Добавить рецепт" className={className} onClick={onClick}>
         <img src={plusImg} className={styles.plus} />
       </BaseButton>
     </>

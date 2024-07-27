@@ -23,6 +23,7 @@ interface ButtonBlockProps {
 interface AddRecipeButtonProps {
   primary?: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
 interface CardProps {
@@ -57,7 +58,11 @@ interface TagsFieldProps {
   name: string;
 }
 
-interface IngredientFieldPropas {
+interface IngredientFieldProps {
+  name: string;
+}
+
+interface StepFieldProps {
   name: string;
 }
 
@@ -139,7 +144,8 @@ export type {
   FormProps,
   FormFieldProps,
   TagsFieldProps,
-  IngredientFieldPropas,
+  IngredientFieldProps,
+  StepFieldProps,
   LinkProps,
   LinkBlockProps,
   ModalProps,

@@ -3,7 +3,7 @@
   margin: 0 auto;
 }
 
-.mainFormContainer {
+.mainContainer {
   display: flex;
   justify-content: space-between;
   margin-bottom: 106px;

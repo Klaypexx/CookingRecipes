@@ -34,9 +34,12 @@ const CreateRecipe: React.FC = () => {
         <BaseCard margin>
           <CardField />
         </BaseCard>
-        <div className={styles.mainFormContainer}>
-          <IngredientField name="ingredient" />
-          <div className={styles.stepFormBlock}>step</div>
+        <div className={styles.mainContainer}>
+          <div className={styles.ingredientBlock}>
+            <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
+            <IngredientField name="ingredient" />
+          </div>
+          <div className={styles.stepBlock}>step</div>
         </div>
       </BaseForm>
     </section>

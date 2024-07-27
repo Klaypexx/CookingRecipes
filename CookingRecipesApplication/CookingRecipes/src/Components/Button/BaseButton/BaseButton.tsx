@@ -14,7 +14,12 @@ const BaseButton: React.FC<ButtonProps> = ({ primary, className, type, newStyle,
   };
 
   return (
-    <button type={type} className={classNames(classList, className)} style={styleList} onClick={onClick}>
+    <button
+      type={type ? type : 'button'}
+      className={classNames(classList, className)}
+      style={styleList}
+      onClick={onClick}
+    >
       {children}
       {buttonText ? <p className={textClassList}>{buttonText}</p> : null}
     </button>
