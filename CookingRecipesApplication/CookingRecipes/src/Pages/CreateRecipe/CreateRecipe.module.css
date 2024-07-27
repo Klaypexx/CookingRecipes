@@ -1,0 +1,10 @@
+.formSection {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 106px;
+}

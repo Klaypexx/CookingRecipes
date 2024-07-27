@@ -1,0 +1,43 @@
+.baseBoxStyle {
+  position: relative;
+}
+
+.baseFieldStyle {
+  box-sizing: border-box;
+  display: block;
+  width: 580px;
+  height: 50px;
+  border: 1px solid rgba(145, 150, 161, 0.4);
+  border-radius: 16px;
+  margin: 0;
+  padding: 11px 26px;
+  resize: none;
+  color: rgb(37, 41, 45);
+  font-size: 16px;
+  font-weight: 400;
+  font-family: Montserrat;
+}
+
+.selectField {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.marginBox {
+  margin-bottom: 20px;
+}
+
+.baseErrorStyle {
+  color: rgba(37, 41, 45, 0.3);
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.selectArrow {
+  position: absolute;
+  left: 181px;
+  top: 13px;
+  pointer-events: none;
+}

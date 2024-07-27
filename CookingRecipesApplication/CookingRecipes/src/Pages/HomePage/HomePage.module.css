@@ -1,0 +1,9 @@
+.container {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.navigation {
+    height: 38px;
+    display: flex;
+}

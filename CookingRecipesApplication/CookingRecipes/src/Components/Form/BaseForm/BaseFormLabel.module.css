@@ -1,0 +1,9 @@
+.baseFormStyle {
+    margin-top: 50px;
+}
+
+.errorText {
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgb(253, 177, 0);
+}
