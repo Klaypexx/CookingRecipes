@@ -7,12 +7,13 @@ import { RecipeFormValues } from '../../Types/types';
 import IngredientField from '../../Components/Field/IngredientField/IngredientField';
 import CardField from '../../Components/Field/CardField/CardField';
 import StepField from '../../Components/Field/StepField/StepField';
+import RecipeService from '../../Services/RecipeService';
 
 const CreateRecipe: React.FC = () => {
   const initialValues: RecipeFormValues = {
     name: '',
     description: '',
-    avatar: '',
+    avatar: 'avatarImage',
     tags: [],
     cookingTime: 0,
     portion: 0,
@@ -25,8 +26,27 @@ const CreateRecipe: React.FC = () => {
     ],
   };
 
-  const handleSubmit = (values: RecipeFormValues) => {
-    console.log(values);
+  const handleSubmit = async (values: RecipeFormValues) => {
+    try {
+      const recipeData = {
+        Name: values.name,
+        Description: values.description,
+        CookingTime: values.cookingTime,
+        Portion: values.portion,
+        Avatar: values.avatar,
+        Tags: values.tags.map((tag) => ({ Description: tag })),
+        Ingredients: values.ingredient.map((ingredient) => ({
+          Name: ingredient.header,
+          Product: ingredient.products,
+        })),
+        Steps: values.step.map((step) => ({ Description: step })),
+      };
+
+      const result = await RecipeService.createRecipe(recipeData);
+      console.log('Recipe created:', result);
+    } catch (error) {
+      console.error('Error creating recipe:', error);
+    }
   };
 
   return (

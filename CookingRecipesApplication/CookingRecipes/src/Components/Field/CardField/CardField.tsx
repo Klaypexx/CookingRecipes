@@ -8,7 +8,7 @@ const CardField = () => {
       <BaseField
         className={styles.inputRecipeNameFormSize}
         margin
-        name="recipeName"
+        name="name"
         type="text"
         placeholder="Название рецепта"
       />
