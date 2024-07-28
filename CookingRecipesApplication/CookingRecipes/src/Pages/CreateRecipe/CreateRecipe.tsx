@@ -10,12 +10,12 @@ import StepField from '../../Components/Field/StepField/StepField';
 
 const CreateRecipe: React.FC = () => {
   const initialValues: RecipeFormValues = {
-    recipeName: '',
+    name: '',
     description: '',
     avatar: '',
     tags: [],
-    cookingTime: '',
-    portion: '',
+    cookingTime: 0,
+    portion: 0,
     step: [''],
     ingredient: [
       {

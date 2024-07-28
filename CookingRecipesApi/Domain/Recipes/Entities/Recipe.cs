@@ -7,8 +7,8 @@ public class Recipe
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public TimeOnly? CookingTime { get; set; }
-    public int? Portion { get; set; }
+    public int CookingTime { get; set; }
+    public int Portion { get; set; }
     public string Avatar { get; set; }
     public int AuthorId { get; set; }
     public List<Like> Likes { get; set; }

@@ -49,7 +49,7 @@ namespace Infrastructure.Migrations.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    time = table.Column<TimeOnly>(type: "time", nullable: false),
+                    time = table.Column<int>(type: "int", nullable: false),
                     portion = table.Column<int>(type: "int", nullable: false),
                     avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     id_author = table.Column<int>(type: "int", nullable: false)
@@ -164,7 +164,6 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     id_step = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    step_number = table.Column<int>(type: "int", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     id_recipe = table.Column<int>(type: "int", nullable: false)
                 },

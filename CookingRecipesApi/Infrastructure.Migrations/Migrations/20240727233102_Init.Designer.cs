@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240726121051_Init")]
+    [Migration("20240727233102_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -151,9 +151,8 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("avatar");
 
-                    b.Property<TimeOnly?>("CookingTime")
-                        .IsRequired()
-                        .HasColumnType("time")
+                    b.Property<int>("CookingTime")
+                        .HasColumnType("int")
                         .HasColumnName("time");
 
                     b.Property<string>("Description")
@@ -166,8 +165,7 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
-                    b.Property<int?>("Portion")
-                        .IsRequired()
+                    b.Property<int>("Portion")
                         .HasColumnType("int")
                         .HasColumnName("portion");
 
@@ -212,10 +210,6 @@ namespace Infrastructure.Migrations.Migrations
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("id_recipe");
-
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("int")
-                        .HasColumnName("step_number");
 
                     b.HasKey("Id");
 

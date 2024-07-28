@@ -114,12 +114,12 @@ interface SubheaderProps {
 }
 
 interface RecipeFormValues {
-  recipeName: string;
+  name: string;
   description: string;
   avatar: string;
   tags: string[];
-  cookingTime: string;
-  portion: string;
+  cookingTime: number;
+  portion: number;
   step: string[];
   ingredient: Array<{
     header: string;
