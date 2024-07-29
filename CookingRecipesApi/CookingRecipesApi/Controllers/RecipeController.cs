@@ -1,5 +1,6 @@
 ﻿using Application.Foundation;
 using Application.Recipes.Services;
+using Application.Tags.Services;
 using CookingRecipesApi.Dto;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
@@ -15,10 +16,12 @@ public class RecipeController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRecipeService _recipeService;
-    public RecipeController( IUnitOfWork unitOfWork, IRecipeService recipeService )
+    private readonly ITagService _tagService;
+    public RecipeController( IUnitOfWork unitOfWork, IRecipeService recipeService, ITagService tagService )
     {
         _unitOfWork = unitOfWork;
         _recipeService = recipeService;
+        _tagService = tagService;
     }
 
     [HttpPost]
@@ -26,28 +29,11 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromBody] RecipeDto recipeDto )
     {
-        Recipe recipe = new Recipe
-        {
-            Name = recipeDto.Name,
-            Description = recipeDto.Description,
-            Avatar = recipeDto.Avatar,
-            CookingTime = recipeDto.CookingTime,
-            Portion = recipeDto.Portion,
-            AuthorId = int.Parse( User.GetUserId() ),
-            Ingredients = recipeDto.Ingredients.Select( ingredientDto => new Ingredient
-            {
-                Name = ingredientDto.Name,
-                Product = ingredientDto.Product
-            } ).ToList(),
-            Steps = recipeDto.Steps.Select( stepDto => new Step
-            {
-                Description = stepDto.Description,
-            } ).ToList(),
-            Tags = await _recipeService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() )
 
-        };
+        int authorId = int.Parse( User.GetUserId() );
+        List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );
 
-        await _recipeService.CreateRcipe( recipe );
+        await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
         return Ok();
     }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Auth.Repositories;
-using Application.Foundation;
+﻿using Application.Foundation;
 using Application.Recipes.Repositories;
 using Domain.Recipes.Entities;
 
@@ -23,11 +17,6 @@ public class RecipeService : IRecipeService
     {
         await _recipeRepository.CreateRecipe( recipe );
         await _unitOfWork.Save();
-    }
-
-    public async Task<List<RecipeTag>> GetOrCreateTag( List<string> tagNames )
-    {
-        return await _recipeRepository.GetOrCreateTag( tagNames );
     }
 
     public async Task<List<Recipe>> GetAllUserRecipes( int userId )
