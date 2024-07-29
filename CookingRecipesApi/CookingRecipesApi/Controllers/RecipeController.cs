@@ -1,11 +1,10 @@
 ﻿using Application.Foundation;
 using Application.Recipes.Services;
-using CookingRecipesApi.Dto.AuthDto;
-using CookingRecipesApi.Dto.RecipeDto;
+using CookingRecipesApi.Dto;
+using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
 using Domain.Recipes.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
@@ -25,16 +24,26 @@ public class RecipeController : ControllerBase
     [HttpPost]
     [Route( "create" )]
     [Authorize]
-    public async Task<IActionResult> CreateRecipe( [FromBody] RecipeDto body )
+    public async Task<IActionResult> CreateRecipe( [FromBody] RecipeDto recipeDto )
     {
         Recipe recipe = new Recipe
         {
-            Name = body.Name,
-            Description = body.Description,
-            Avatar = body.Avatar,
-            CookingTime = body.CookingTime,
-            Portion = body.Portion,
+            Name = recipeDto.Name,
+            Description = recipeDto.Description,
+            Avatar = recipeDto.Avatar,
+            CookingTime = recipeDto.CookingTime,
+            Portion = recipeDto.Portion,
             AuthorId = int.Parse( User.GetUserId() ),
+            Ingredients = recipeDto.Ingredients.Select( ingredientDto => new Ingredient
+            {
+                Name = ingredientDto.Name,
+                Product = ingredientDto.Product
+            } ).ToList(),
+            Steps = recipeDto.Steps.Select( stepDto => new Step
+            {
+                Description = stepDto.Description,
+            } ).ToList()
+
         };
 
         await _recipeService.CreateRcipe( recipe );
@@ -47,7 +56,8 @@ public class RecipeController : ControllerBase
     public async Task<IActionResult> GetAllUserRecipes()
     {
         int userId = int.Parse( User.GetUserId() );
-        List<Recipe> recipe = await _recipeService.GetAllUserRecipes( userId );
-        return Ok( recipe );
+        List<Recipe> recipes = await _recipeService.GetAllUserRecipes( userId );
+        var recipeDto = recipes.Select( a => a.ToDto() ).ToList();
+        return Ok( recipeDto );
     }
 }

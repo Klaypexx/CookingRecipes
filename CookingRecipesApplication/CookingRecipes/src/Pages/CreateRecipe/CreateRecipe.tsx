@@ -13,7 +13,7 @@ const CreateRecipe: React.FC = () => {
   const initialValues: RecipeFormValues = {
     name: '',
     description: '',
-    avatar: 'avatarImage',
+    avatar: '',
     tags: [],
     cookingTime: 0,
     portion: 0,

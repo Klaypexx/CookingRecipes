@@ -7,14 +7,14 @@ import { useState } from 'react';
 
 const BaseCard: React.FC<CardProps> = ({ form, margin, className, children }) => {
   const [file, setFile] = useState('');
-  const { setFieldValue } = useFormikContext(); // Access Formik context
+  const { setFieldValue } = useFormikContext();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const selectedFile = event.currentTarget.files[0];
-      const fileURL = URL.createObjectURL(selectedFile);
+      const fileURL = URL.createObjectURL(selectedFile).toString();
       setFile(fileURL);
-      setFieldValue('avatar', fileURL); // Set the file in Formik state
+      setFieldValue('avatar', fileURL);
     }
   };
 

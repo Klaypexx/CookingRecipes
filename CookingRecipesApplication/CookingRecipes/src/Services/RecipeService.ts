@@ -2,6 +2,7 @@ import api from '../util/api';
 
 const endpoints = {
   create: '/recipes/create',
+  getRecipe: '/recipes/getall',
 };
 
 export interface TagDto {
@@ -36,8 +37,17 @@ const createRecipe = async (recipeData: RecipeDto) => {
   return response.statusText;
 };
 
+const getAllUserRecipes = async () => {
+  const response = await api.get(endpoints.getRecipe);
+  if (response.data && response.data !== undefined) {
+    console.log(response.data);
+  }
+  return response.statusText;
+};
+
 const RecipeService = {
   createRecipe,
+  getAllUserRecipes,
 };
 
 export default RecipeService;

@@ -28,6 +28,8 @@ public class RecipeRepository : IRecipeRepository
     {
         return await _entities
          .Where( recipe => recipe.AuthorId == userId )
+         .Include( recipe => recipe.Ingredients )
+         .Include( recipe => recipe.Steps )
          .ToListAsync();
     }
 }

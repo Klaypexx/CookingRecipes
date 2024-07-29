@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CookingRecipesApi.Dto.RecipeDto;
+namespace CookingRecipesApi.Dto.RecipesDto;
 public class StepDto
 {
     [Required]

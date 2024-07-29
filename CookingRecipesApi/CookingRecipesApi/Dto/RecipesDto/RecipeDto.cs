@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.Recipes.Entities;
 
-namespace CookingRecipesApi.Dto.RecipeDto;
+namespace CookingRecipesApi.Dto.RecipesDto;
 public class RecipeDto
 {
     [Required]
