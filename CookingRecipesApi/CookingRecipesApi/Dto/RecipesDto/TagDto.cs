@@ -4,5 +4,5 @@ namespace CookingRecipesApi.Dto.RecipesDto;
 public class TagDto
 {
     [Required]
-    public string Description { get; set; }
+    public string Name { get; set; }
 }

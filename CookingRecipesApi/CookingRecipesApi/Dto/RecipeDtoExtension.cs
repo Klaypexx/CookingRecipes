@@ -21,6 +21,10 @@ public static class RecipeDtoExtension
             Steps = recipe.Steps.Select( stepDto => new StepDto
             {
                 Description = stepDto.Description,
+            } ).ToList(),
+            Tags = recipe.Tags.Select( recipeTag => new TagDto
+            {
+                Name = recipeTag.Tag.Name
             } ).ToList()
 
         };

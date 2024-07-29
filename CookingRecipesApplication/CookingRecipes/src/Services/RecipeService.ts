@@ -6,7 +6,7 @@ const endpoints = {
 };
 
 export interface TagDto {
-  Description: string;
+  Name: string;
 }
 
 export interface IngredientDto {

@@ -42,7 +42,8 @@ public class RecipeController : ControllerBase
             Steps = recipeDto.Steps.Select( stepDto => new Step
             {
                 Description = stepDto.Description,
-            } ).ToList()
+            } ).ToList(),
+            Tags = await _recipeService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() )
 
         };
 

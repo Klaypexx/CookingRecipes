@@ -10,5 +10,6 @@ namespace Application.Recipes.Repositories;
 public interface IRecipeRepository
 {
     Task CreateRecipe( Recipe recipe );
+    Task<List<RecipeTag>> GetOrCreateTag( List<string> tagNames );
     Task<List<Recipe>> GetAllUserRecipes( int userId );
 }

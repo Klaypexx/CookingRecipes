@@ -10,5 +10,6 @@ namespace Application.Recipes.Services;
 public interface IRecipeService
 {
     Task CreateRcipe( Recipe recipe );
+    Task<List<RecipeTag>> GetOrCreateTag( List<string> tagNames );
     Task<List<Recipe>> GetAllUserRecipes( int userId );
 }

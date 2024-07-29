@@ -34,7 +34,7 @@ const CreateRecipe: React.FC = () => {
         CookingTime: values.cookingTime,
         Portion: values.portion,
         Avatar: values.avatar,
-        Tags: values.tags.map((tag) => ({ Description: tag })),
+        Tags: values.tags.map((tag) => ({ Name: tag })),
         Ingredients: values.ingredient.map((ingredient) => ({
           Name: ingredient.header,
           Product: ingredient.products,

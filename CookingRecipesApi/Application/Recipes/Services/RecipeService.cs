@@ -25,6 +25,11 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
+    public async Task<List<RecipeTag>> GetOrCreateTag( List<string> tagNames )
+    {
+        return await _recipeRepository.GetOrCreateTag( tagNames );
+    }
+
     public async Task<List<Recipe>> GetAllUserRecipes( int userId )
     {
         return await _recipeRepository.GetAllUserRecipes( userId );
