@@ -105,11 +105,7 @@ interface RegisterValues {
 
 interface SubheaderProps {
   backward?: boolean;
-  type?: 'button' | 'reset' | 'submit' | undefined;
   headerText: string;
-  btn?: boolean;
-  buttonText?: string;
-  onClick?: () => void;
   children?: React.ReactNode;
 }
 
@@ -139,6 +135,21 @@ interface ModalStore {
   unsetAll: () => void;
 }
 
+interface TagsBlockListProps {
+  text?: boolean;
+  className?: string;
+}
+
+interface SearchBlockProps {
+  text?: boolean;
+  className?: string;
+  onSubmit: (values: any) => void;
+}
+
+interface SearchBlockValues {
+  name: string;
+}
+
 export type {
   ButtonProps,
   ButtonBlockProps,
@@ -157,4 +168,7 @@ export type {
   SubheaderProps,
   RecipeFormValues,
   ModalStore,
+  TagsBlockListProps,
+  SearchBlockProps,
+  SearchBlockValues,
 };

@@ -8,6 +8,7 @@ import IngredientField from '../../Components/Field/IngredientField/IngredientFi
 import CardField from '../../Components/Field/CardField/CardField';
 import StepField from '../../Components/Field/StepField/StepField';
 import RecipeService from '../../Services/RecipeService';
+import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 
 const CreateRecipe: React.FC = () => {
   const initialValues: RecipeFormValues = {
@@ -60,7 +61,9 @@ const CreateRecipe: React.FC = () => {
   return (
     <section className={styles.formSection}>
       <BaseForm initialValues={initialValues} onSubmit={handleSubmit}>
-        <Subheader backward btn type="submit" buttonText="Опубликовать" headerText="Добавить новый рецепт" />
+        <Subheader backward headerText="Добавить новый рецепт">
+          <BaseButton primary type="submit" buttonText="Добавить рецепт" />
+        </Subheader>
         <BaseCard form margin>
           <CardField />
         </BaseCard>

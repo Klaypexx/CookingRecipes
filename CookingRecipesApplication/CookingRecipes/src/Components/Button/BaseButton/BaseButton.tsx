@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { ButtonProps } from '../../../Types/types';
 
 const BaseButton: React.FC<ButtonProps> = ({ primary, className, type, newStyle, buttonText, onClick, children }) => {
-  const classList = classNames(primary ? styles.buttonPrimary : styles.buttonSecondary, styles.baseButton);
+  const classList = classNames(primary ? undefined : styles.buttonSecondary, styles.baseButton);
 
   const textClassList = classNames(primary ? styles.textPrimary : styles.textSecondary, styles.baseText);
 

@@ -3,6 +3,7 @@ import App from '../App';
 import HomePage from '../Pages/HomePage/HomePage';
 import ProtectedRoute from './ProtectedRoute';
 import CreateRecipe from '../Pages/CreateRecipe/CreateRecipe';
+import RecipesList from '../Pages/RecipesList/RecipesList';
 
 export const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ export const router = createBrowserRouter([
       { path: '', element: <HomePage /> },
       {
         path: 'recipes',
-        element: <HomePage />,
+        element: <RecipesList />,
       },
       {
         path: 'favourites',

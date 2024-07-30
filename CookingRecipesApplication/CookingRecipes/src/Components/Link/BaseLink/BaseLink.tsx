@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { LinkProps } from '../../../Types/types';
 
 const BaseLink: React.FC<LinkProps> = ({ primary, navigation, newStyle, linkText, onClick, children }) => {
-  const classList = classNames(primary ? styles.linkPrimary : styles.linkSecondary, styles.baseLink);
+  const classList = classNames(primary ? undefined : styles.linkSecondary, styles.baseLink);
 
   const textClassList = classNames(primary ? styles.textPrimary : styles.textSecondary, styles.baseText);
 
