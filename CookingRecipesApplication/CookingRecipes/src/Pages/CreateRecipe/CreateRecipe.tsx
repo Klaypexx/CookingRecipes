@@ -13,7 +13,7 @@ const CreateRecipe: React.FC = () => {
   const initialValues: RecipeFormValues = {
     name: '',
     description: '',
-    avatar: '',
+    avatar: null,
     tags: [],
     cookingTime: 0,
     portion: 0,
@@ -28,21 +28,29 @@ const CreateRecipe: React.FC = () => {
 
   const handleSubmit = async (values: RecipeFormValues) => {
     try {
-      const recipeData = {
-        Name: values.name,
-        Description: values.description,
-        CookingTime: values.cookingTime,
-        Portion: values.portion,
-        Avatar: values.avatar,
-        Tags: values.tags.map((tag) => ({ Name: tag })),
-        Ingredients: values.ingredient.map((ingredient) => ({
-          Name: ingredient.header,
-          Product: ingredient.products,
-        })),
-        Steps: values.step.map((step) => ({ Description: step })),
-      };
+      let formData = new FormData();
+      formData.append('Name', values.name);
+      formData.append('Description', values.description);
+      formData.append('CookingTime', values.cookingTime.toString());
+      formData.append('Portion', values.portion.toString());
+      if (values.avatar) {
+        formData.append('Avatar', values.avatar); // Append the file directly
+      }
 
-      const result = await RecipeService.createRecipe(recipeData);
+      values.tags.forEach((tag, index) => {
+        formData.append(`Tags[${index}].Name`, tag);
+      });
+
+      values.ingredient.forEach((ingredient, index) => {
+        formData.append(`Ingredients[${index}].Name`, ingredient.header);
+        formData.append(`Ingredients[${index}].Product`, ingredient.products);
+      });
+
+      values.step.forEach((step, index) => {
+        formData.append(`Steps[${index}].Description`, step);
+      });
+
+      const result = await RecipeService.createRecipe(formData);
       console.log('Recipe created:', result);
     } catch (error) {
       console.error('Error creating recipe:', error);

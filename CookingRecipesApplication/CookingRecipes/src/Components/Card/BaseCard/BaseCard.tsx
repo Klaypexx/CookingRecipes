@@ -6,15 +6,14 @@ import cloudDownload from '../../../resources/icons/cloud-download.svg';
 import { useState } from 'react';
 
 const BaseCard: React.FC<CardProps> = ({ form, margin, className, children }) => {
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState<File | null>(null);
   const { setFieldValue } = useFormikContext();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const selectedFile = event.currentTarget.files[0];
-      const fileURL = URL.createObjectURL(selectedFile).toString();
-      setFile(fileURL);
-      setFieldValue('avatar', fileURL);
+      setFile(selectedFile);
+      setFieldValue('avatar', selectedFile); // Store the file directly
     }
   };
 
@@ -22,7 +21,7 @@ const BaseCard: React.FC<CardProps> = ({ form, margin, className, children }) =>
     <div className={classNames(margin ? styles.margin : undefined, styles.cardContainer, className)}>
       <div className={styles.cardBackground}></div>
       <div className={styles.cardPhoto}>
-        {file && <img src={file} alt="avatar" className={styles.avatarImage} />}
+        {file && <img src={URL.createObjectURL(file)} alt="avatar" className={styles.avatarImage} />}
         {form && (
           <>
             <input

@@ -27,14 +27,14 @@ public class RecipeController : ControllerBase
     [HttpPost]
     [Route( "create" )]
     [Authorize]
-    public async Task<IActionResult> CreateRecipe( [FromBody] RecipeDto recipeDto )
+    public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
 
         int authorId = int.Parse( User.GetUserId() );
-        List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );
+       /* List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );*/
 
-        await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
-        return Ok();
+        /*    await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );*/
+        return Ok( recipeDto );
     }
 
     [HttpGet]
