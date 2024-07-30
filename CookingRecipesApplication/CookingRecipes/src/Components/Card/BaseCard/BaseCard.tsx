@@ -1,4 +1,4 @@
-import { ErrorMessage, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import classNames from 'classnames';
 import styles from './BaseCard.module.css';
 import { CardProps } from '../../../Types/types';
@@ -39,7 +39,6 @@ const BaseCard: React.FC<CardProps> = ({ form, margin, className, children }) =>
                 </div>
               )}
             </div>
-            <ErrorMessage name="avatar" component="div" className={styles.baseErrorStyle} />
           </>
         )}
       </div>

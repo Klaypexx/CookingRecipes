@@ -6,15 +6,12 @@ import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import UserService from '../../Services/UserService';
-import AuthModal from '../Modal/AuthModal/AuthModal';
 import useModalStore from '../../Stores/useModalStore';
-import LogoutModal from '../Modal/LogoutModal/LogoutModal';
 import TokenService from '../../Services/TokenService';
 import RecipeService from '../../Services/RecipeService';
-
 const Header = () => {
   const [userName, setUserName] = useState('');
-  const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
+  const { isRegister, isLogin, isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const token = TokenService.getAccessToken();
 
   useEffect(() => {
@@ -86,9 +83,6 @@ const Header = () => {
           )}
         </div>
       </div>
-      {isAuth ? <AuthModal /> : null}
-
-      {isLogout ? <LogoutModal /> : null}
     </header>
   );
 };

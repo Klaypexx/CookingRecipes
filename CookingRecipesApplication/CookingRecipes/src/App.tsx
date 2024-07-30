@@ -6,6 +6,7 @@ import { navigation } from './util/api';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './Components/Footer/Footer';
+import ModalBlock from './Components/Modal/ModalBlock/ModaBlock';
 
 function App() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function App() {
       <Header />
       <Outlet />
       <Footer />
+      <ModalBlock />
       <ToastContainer />
     </>
   );
