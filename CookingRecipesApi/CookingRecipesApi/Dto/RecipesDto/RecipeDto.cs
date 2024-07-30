@@ -8,6 +8,7 @@ public class RecipeDto
     public string Description { get; set; }
     public int CookingTime { get; set; }
     public int Portion { get; set; }
+    public string? AvatarPath { get; set; }
     public IFormFile Avatar { get; set; }
     public List<TagDto> Tags { get; set; }
     public List<IngredientDto> Ingredients { get; set; }

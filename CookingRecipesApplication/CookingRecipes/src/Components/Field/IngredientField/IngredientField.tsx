@@ -8,7 +8,7 @@ import closeIcon from '../../../resources/icons/close.svg';
 
 const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
-    arrayHelpers.push({ header: '', products: '' });
+    arrayHelpers.push({ name: '', product: '' });
   };
 
   const handlerDeleteCurrentField = (arrayHelpers: FieldArrayRenderProps, index: number) => {
@@ -25,7 +25,7 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
         const ingredients = arrayHelpers.form.values[name] || [];
         return (
           <>
-            {ingredients.map((ingredient: { header: string; products: string }, index: number) => (
+            {ingredients.map((ingredient: { name: string; product: string }, index: number) => (
               <div key={index}>
                 <div className={styles.ingredientButtonBox}>
                   <button
@@ -40,14 +40,14 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
                   <BaseField
                     className={styles.inputIngredientNameFormSize}
                     margin
-                    name={`${name}.${index}.header`}
+                    name={`${name}.${index}.name`}
                     type="text"
                     placeholder="Заголовок для ингридиентов"
                   />
                   <BaseField
                     className={styles.textareaIngredientFormSize}
                     as="textarea"
-                    name={`${name}.${index}.products`}
+                    name={`${name}.${index}.product`}
                     placeholder="Список подуктов для категории"
                   />
                 </div>

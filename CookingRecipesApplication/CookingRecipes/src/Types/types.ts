@@ -120,10 +120,10 @@ interface RecipeFormValues {
   tags: string[];
   cookingTime: number;
   portion: number;
-  step: string[];
-  ingredient: Array<{
-    header: string;
-    products: string;
+  steps: string[];
+  ingredients: Array<{
+    name: string;
+    product: string;
   }>;
 }
 

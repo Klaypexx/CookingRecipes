@@ -17,11 +17,11 @@ const CreateRecipe: React.FC = () => {
     tags: [],
     cookingTime: 0,
     portion: 0,
-    step: [''],
-    ingredient: [
+    steps: [''],
+    ingredients: [
       {
-        header: '',
-        products: '',
+        name: '',
+        product: '',
       },
     ],
   };
@@ -34,19 +34,19 @@ const CreateRecipe: React.FC = () => {
       formData.append('CookingTime', values.cookingTime.toString());
       formData.append('Portion', values.portion.toString());
       if (values.avatar) {
-        formData.append('Avatar', values.avatar); // Append the file directly
+        formData.append('Avatar', values.avatar);
       }
 
       values.tags.forEach((tag, index) => {
         formData.append(`Tags[${index}].Name`, tag);
       });
 
-      values.ingredient.forEach((ingredient, index) => {
-        formData.append(`Ingredients[${index}].Name`, ingredient.header);
-        formData.append(`Ingredients[${index}].Product`, ingredient.products);
+      values.ingredients.forEach((ingredient, index) => {
+        formData.append(`Ingredients[${index}].Name`, ingredient.name);
+        formData.append(`Ingredients[${index}].Product`, ingredient.product);
       });
 
-      values.step.forEach((step, index) => {
+      values.steps.forEach((step, index) => {
         formData.append(`Steps[${index}].Description`, step);
       });
 
@@ -67,10 +67,10 @@ const CreateRecipe: React.FC = () => {
         <div className={styles.mainContainer}>
           <div className={styles.ingredientBlock}>
             <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
-            <IngredientField name="ingredient" />
+            <IngredientField name="ingredients" />
           </div>
           <div className={styles.stepBlock}>
-            <StepField name="step" />
+            <StepField name="steps" />
           </div>
         </div>
       </BaseForm>

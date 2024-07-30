@@ -4,7 +4,6 @@ import styles from './StepField.module.css';
 import AddRecipeButton from '../../Button/AddRecipeButton/AddRecipeButton';
 import closeIcon from '../../../resources/icons/close.svg';
 import { StepFieldProps } from '../../../Types/types';
-import { useState } from 'react';
 
 const StepField: React.FC<StepFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {

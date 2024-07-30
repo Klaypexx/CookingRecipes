@@ -10,7 +10,7 @@ public static class RecipeDtoExtension
         {
             Name = recipeDto.Name,
             Description = recipeDto.Description,
-            /*            Avatar = recipeDto.Avatar,*/
+            Avatar = recipeDto.Avatar.FileName,
             CookingTime = recipeDto.CookingTime,
             Portion = recipeDto.Portion,
             AuthorId = authorId,
@@ -34,7 +34,7 @@ public static class RecipeDtoExtension
             Description = recipe.Description,
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
-            /*Avatar = recipe.Avatar,*/
+            AvatarPath = recipe.Avatar,
             Ingredients = recipe.Ingredients.Select( ingredientDto => new IngredientDto
             {
                 Name = ingredientDto.Name,

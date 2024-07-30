@@ -31,9 +31,16 @@ public class RecipeController : ControllerBase
     {
 
         int authorId = int.Parse( User.GetUserId() );
-       /* List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );*/
 
-        /*    await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );*/
+        string path = Path.Combine( @"C:\Users\dimas\Code\Проекты\CookingRecipes\CookingRecipesApi\Images", recipeDto.Avatar.FileName );
+        using ( var fileStream = new FileStream( path, FileMode.Create ) )
+        {
+            await recipeDto.Avatar.CopyToAsync( fileStream );
+        }
+
+        List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );
+
+        await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
         return Ok( recipeDto );
     }
 
