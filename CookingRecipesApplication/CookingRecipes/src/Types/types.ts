@@ -32,7 +32,7 @@ interface CardProps {
   props?: {
     name: string;
     description: string;
-    avatarPath?: string;
+    avatarPath: string;
     authorName: string;
     tags: Array<{
       name: string;
@@ -162,7 +162,7 @@ interface SearchBlockValues {
 interface RecipeListValues {
   name: string;
   description: string;
-  avatarPath?: string;
+  avatarPath: string;
   authorName: string;
   tags: Array<{
     name: string;
