@@ -6,17 +6,17 @@ import timeIcon from '../../../resources/icons/time.svg';
 import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
 
-const BaseCard: React.FC<CardProps> = ({ className, props }) => {
+const BaseCard: React.FC<CardProps> = ({ className, props, children }) => {
   const [image, setImage] = useState<string | undefined>(undefined);
   useEffect(() => {
-    setImage(props.avatarPath);
+    setImage(props?.avatarPath);
   }, []);
 
   return (
     <div className={classNames(styles.cardContainer, className)}>
       <div className={styles.avatarImageBox}>
         <div className={styles.authorRecipeBox}>
-          <p className={styles.authorRecipeText}>@PROSU</p>
+          <p className={styles.authorRecipeText}>{`@${props?.authorName}`}</p>
         </div>
         {image ? (
           <img src={IMAGE_URL + image} alt="avatar" className={styles.avatarImage} />
@@ -25,21 +25,26 @@ const BaseCard: React.FC<CardProps> = ({ className, props }) => {
         )}
       </div>
       <div className={styles.cardInformation}>
-        <div className={styles.cardHeader}>
-          <div className={styles.tagsContainer}>
-            {props.tags.map((tag, index) => (
-              <div key={index} className={styles.tagBox}>
-                <p className={styles.tagText}>{tag.name}</p>
-              </div>
-            ))}
+        {children}
+        {props?.tags ? (
+          <div className={styles.cardHeader}>
+            <div className={styles.tagsContainer}>
+              {props.tags.map((tag, index) => (
+                <div key={index} className={styles.tagBox}>
+                  <p className={styles.tagText}>{tag.name}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : undefined}
         {props?.description && props.cookingTime && props.portion ? (
           <>
-            <div className={styles.cardInfoContainer}>
-              <h3 className={styles.cardInfoHeader}>{props?.name}</h3>
-              <div className={styles.cardInfoTextBox}>
-                <p className={styles.cardInfoText}>{props?.description}</p>
+            <div className={styles.mainContainer}>
+              <div className={styles.cardInfoContainer}>
+                <h3 className={styles.cardInfoHeader}>{props?.name}</h3>
+                <div className={styles.cardInfoTextBox}>
+                  <p className={styles.cardInfoText}>{props?.description}</p>
+                </div>
               </div>
               <div className={styles.cardNumerableContainer}>
                 <div className={styles.cardNumerableBox}>

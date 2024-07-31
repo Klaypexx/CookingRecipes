@@ -8,6 +8,8 @@ public class CardRecipeDto
     [Required]
     public string Description { get; set; }
     [Required]
+    public string AuthorName { get; set; }
+    [Required]
     public int CookingTime { get; set; }
     [Required]
     public int Portion { get; set; }

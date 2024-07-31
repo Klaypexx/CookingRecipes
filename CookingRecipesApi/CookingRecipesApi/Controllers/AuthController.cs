@@ -114,7 +114,7 @@ public class AuthController : ControllerBase
             return BadRequest( "Токен обновления не существует" );
         }
 
-        if ( user.RefreshTokenExpiryTime <= DateTime.UtcNow )
+        if ( user.RefreshTokenExpiryTime <= DateTime.Now )
         {
             return BadRequest( "Срок действия токена обновления истек" );
         }

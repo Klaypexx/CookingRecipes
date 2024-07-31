@@ -29,16 +29,18 @@ interface AddRecipeButtonProps {
 
 interface CardProps {
   className?: string;
-  props: {
+  props?: {
     name: string;
     description: string;
     avatarPath?: string;
+    authorName: string;
     tags: Array<{
       name: string;
     }>;
     cookingTime: number;
     portion: number;
   };
+  children?: React.ReactNode;
 }
 
 interface FormProps {
@@ -161,6 +163,7 @@ interface RecipeListValues {
   name: string;
   description: string;
   avatarPath?: string;
+  authorName: string;
   tags: Array<{
     name: string;
   }>;

@@ -35,6 +35,7 @@ public static class RecipeDtoExtension
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
             AvatarPath = recipe.Avatar,
+            AuthorName = recipe.Author.UserName,
             Tags = recipe.Tags.Select( recipeTag => new TagDto
             {
                 Name = recipeTag.Tag.Name

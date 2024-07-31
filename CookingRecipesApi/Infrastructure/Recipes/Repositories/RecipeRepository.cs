@@ -23,6 +23,7 @@ public class RecipeRepository : IRecipeRepository
         return await _entities
          .Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
+         .Include( recipe => recipe.Author )
          .Skip( ( page - 1 ) * 4 )
          .Take( 4 )
          .ToListAsync();
