@@ -6,17 +6,23 @@ import timeIcon from '../../../resources/icons/time.svg';
 import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
 
-const BaseCard: React.FC<CardProps> = ({ margin, className, props }) => {
+const BaseCard: React.FC<CardProps> = ({ className, props }) => {
   const [image, setImage] = useState<string | undefined>(undefined);
   useEffect(() => {
     setImage(props.avatarPath);
   }, []);
 
   return (
-    <div className={classNames(margin ? styles.margin : undefined, styles.cardContainer, className)}>
-      <div className={styles.cardBackground}></div>
-      <div className={styles.cardPhoto}>
-        {image && <img src={IMAGE_URL + image} alt="avatar" className={styles.avatarImage} />}
+    <div className={classNames(styles.cardContainer, className)}>
+      <div className={styles.avatarImageBox}>
+        <div className={styles.authorRecipeBox}>
+          <p className={styles.authorRecipeText}>@PROSU</p>
+        </div>
+        {image ? (
+          <img src={IMAGE_URL + image} alt="avatar" className={styles.avatarImage} />
+        ) : (
+          <div className={styles.avatarNoImage}></div>
+        )}
       </div>
       <div className={styles.cardInformation}>
         <div className={styles.cardHeader}>

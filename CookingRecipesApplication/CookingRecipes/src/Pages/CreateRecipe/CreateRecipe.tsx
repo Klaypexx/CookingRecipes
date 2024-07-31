@@ -9,6 +9,7 @@ import StepField from '../../Components/Field/StepField/StepField';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { successToast } from '../../Components/Toast/Toast';
 
 const CreateRecipe: React.FC = () => {
   const location = useLocation();
@@ -54,6 +55,7 @@ const CreateRecipe: React.FC = () => {
       });
 
       await RecipeService.createRecipe(formData);
+      successToast('Рецепт успешно создан');
       navigate(location.state?.from);
     } catch (error) {
       console.error('Error creating recipe:', error);

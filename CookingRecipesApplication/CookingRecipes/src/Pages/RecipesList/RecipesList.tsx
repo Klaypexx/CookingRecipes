@@ -47,7 +47,7 @@ const RecipesList = () => {
         </div>
         <div className={styles.recipesListBlock}>
           {values.map((value, index) => (
-            <BaseCard key={index} margin props={value} />
+            <BaseCard key={index} props={value} />
           ))}
         </div>
         <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />

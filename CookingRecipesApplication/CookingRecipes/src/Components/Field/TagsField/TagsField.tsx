@@ -12,8 +12,8 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
       e.preventDefault();
       const inputValue = (e.target as HTMLInputElement).value.trim();
 
-      if (tags.length >= 5) {
-        setError('Вы не можете добавить больше 5 тегов'); // Установка ошибки
+      if (tags.length >= 3) {
+        setError('Вы не можете добавить больше 3 тегов'); // Установка ошибки
         return;
       }
 

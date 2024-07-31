@@ -13,6 +13,7 @@ const createRecipe = async (recipeData: FormData) => {
   const response = await api.post(endpoints.create, recipeData, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*',
     },
   });
   if (response.data && response.data !== undefined) {

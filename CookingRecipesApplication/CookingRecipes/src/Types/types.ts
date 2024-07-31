@@ -28,7 +28,6 @@ interface AddRecipeButtonProps {
 }
 
 interface CardProps {
-  margin?: boolean;
   className?: string;
   props: {
     name: string;
