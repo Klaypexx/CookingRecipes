@@ -32,16 +32,14 @@ const tagsBd = [
 const TagsBlockList: React.FC<TagsBlockListProps> = ({ text, className }) => {
   return (
     <div className={styles.tagListContainer}>
-      {tagsBd.map((tags) => (
-        <>
-          <div className={classNames(styles.tagListBlockBase, className)}>
-            <div className={styles.iconBlock}>
-              <img src={tags.icon} alt="photo" className={styles.icon} />
-            </div>
-            <h3>{tags.header}</h3>
-            {text ? <p>{tags.text}</p> : undefined}
+      {tagsBd.map((tags, index) => (
+        <div key={index} className={classNames(styles.tagListBlockBase, className)}>
+          <div className={styles.iconBlock}>
+            <img src={tags.icon} alt="photo" className={styles.icon} />
           </div>
-        </>
+          <h3>{tags.header}</h3>
+          {text ? <p>{tags.text}</p> : undefined}
+        </div>
       ))}
     </div>
   );

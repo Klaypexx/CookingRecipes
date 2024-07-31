@@ -95,6 +95,7 @@ if ( app.Environment.IsDevelopment() )
 app.UseHttpsRedirection();
 
 app.UseCors( "MyPolicy" );
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

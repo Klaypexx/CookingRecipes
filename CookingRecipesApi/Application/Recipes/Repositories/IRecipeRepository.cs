@@ -4,5 +4,5 @@ namespace Application.Recipes.Repositories;
 public interface IRecipeRepository
 {
     Task CreateRecipe( Recipe recipe );
-    Task<List<Recipe>> GetAllUserRecipes( int userId );
+    Task<List<Recipe>> GetAllRecipes( int page );
 }

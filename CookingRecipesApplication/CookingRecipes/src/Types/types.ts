@@ -28,10 +28,18 @@ interface AddRecipeButtonProps {
 }
 
 interface CardProps {
-  form?: boolean;
   margin?: boolean;
   className?: string;
-  children?: React.ReactNode;
+  props: {
+    name: string;
+    description: string;
+    avatarPath?: string;
+    tags: Array<{
+      name: string;
+    }>;
+    cookingTime: number;
+    portion: number;
+  };
 }
 
 interface FormProps {
@@ -150,6 +158,17 @@ interface SearchBlockValues {
   name: string;
 }
 
+interface RecipeListValues {
+  name: string;
+  description: string;
+  avatarPath?: string;
+  tags: Array<{
+    name: string;
+  }>;
+  cookingTime: number;
+  portion: number;
+}
+
 export type {
   ButtonProps,
   ButtonBlockProps,
@@ -171,4 +190,5 @@ export type {
   TagsBlockListProps,
   SearchBlockProps,
   SearchBlockValues,
+  RecipeListValues,
 };

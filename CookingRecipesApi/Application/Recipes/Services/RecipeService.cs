@@ -19,8 +19,8 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task<List<Recipe>> GetAllUserRecipes( int userId )
+    public async Task<List<Recipe>> GetAllRecipes( int page )
     {
-        return await _recipeRepository.GetAllUserRecipes( userId );
+        return await _recipeRepository.GetAllRecipes( page );
     }
 }

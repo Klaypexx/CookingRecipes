@@ -26,7 +26,7 @@ public static class RecipeDtoExtension
             Tags = Tags
         };
     }
-    public static RecipeDto ToDto( this Recipe recipe )
+    public static CardRecipeDto ToDto( this Recipe recipe )
     {
         return new()
         {
@@ -35,15 +35,6 @@ public static class RecipeDtoExtension
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
             AvatarPath = recipe.Avatar,
-            Ingredients = recipe.Ingredients.Select( ingredientDto => new IngredientDto
-            {
-                Name = ingredientDto.Name,
-                Product = ingredientDto.Product
-            } ).ToList(),
-            Steps = recipe.Steps.Select( stepDto => new StepDto
-            {
-                Description = stepDto.Description,
-            } ).ToList(),
             Tags = recipe.Tags.Select( recipeTag => new TagDto
             {
                 Name = recipeTag.Tag.Name

@@ -52,7 +52,6 @@ const Header = () => {
               className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
               to={'/recipes'}
               state={{ from: location.pathname }}
-              onClick={RecipeService.getAllUserRecipes}
             >
               Рецепты
             </NavLink>

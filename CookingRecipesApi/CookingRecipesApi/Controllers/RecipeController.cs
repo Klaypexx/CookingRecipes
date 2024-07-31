@@ -17,11 +17,13 @@ public class RecipeController : ControllerBase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRecipeService _recipeService;
     private readonly ITagService _tagService;
-    public RecipeController( IUnitOfWork unitOfWork, IRecipeService recipeService, ITagService tagService )
+    IWebHostEnvironment _appEnvironment;
+    public RecipeController( IUnitOfWork unitOfWork, IRecipeService recipeService, ITagService tagService, IWebHostEnvironment appEnvironment )
     {
         _unitOfWork = unitOfWork;
         _recipeService = recipeService;
         _tagService = tagService;
+        _appEnvironment = appEnvironment;
     }
 
     [HttpPost]
@@ -32,8 +34,10 @@ public class RecipeController : ControllerBase
 
         int authorId = int.Parse( User.GetUserId() );
 
-        string path = Path.Combine( @"C:\Users\dimas\Code\Проекты\CookingRecipes\CookingRecipesApi\Images", recipeDto.Avatar.FileName );
-        using ( var fileStream = new FileStream( path, FileMode.Create ) )
+        string imagePath = Path.Combine( "images", recipeDto.Avatar.FileName );
+        string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
+
+        using ( var fileStream = new FileStream( fullPath, FileMode.Create ) )
         {
             await recipeDto.Avatar.CopyToAsync( fileStream );
         }
@@ -44,13 +48,12 @@ public class RecipeController : ControllerBase
         return Ok( recipeDto );
     }
 
-    [HttpGet]
-    [Route( "getall" )]
+    [HttpPost]
+    [Route( "get" )]
     [Authorize]
-    public async Task<IActionResult> GetAllUserRecipes()
+    public async Task<IActionResult> GetAllRecipes( [FromBody] int page = 1 )
     {
-        int userId = int.Parse( User.GetUserId() );
-        List<Recipe> recipes = await _recipeService.GetAllUserRecipes( userId );
+        List<Recipe> recipes = await _recipeService.GetAllRecipes( page );
         var recipeDto = recipes.Select( a => a.ToDto() ).ToList();
         return Ok( recipeDto );
     }

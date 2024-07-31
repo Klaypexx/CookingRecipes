@@ -1,5 +1,4 @@
 import React from 'react';
-import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import BaseForm from '../../Components/Form/BaseForm/BaseForm';
 import Subheader from '../../Components/Subheader/Subheader';
 import styles from './CreateRecipe.module.css';
@@ -9,8 +8,11 @@ import CardField from '../../Components/Field/CardField/CardField';
 import StepField from '../../Components/Field/StepField/StepField';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const CreateRecipe: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const initialValues: RecipeFormValues = {
     name: '',
     description: '',
@@ -51,8 +53,8 @@ const CreateRecipe: React.FC = () => {
         formData.append(`Steps[${index}].Description`, step);
       });
 
-      const result = await RecipeService.createRecipe(formData);
-      console.log('Recipe created:', result);
+      await RecipeService.createRecipe(formData);
+      navigate(location.state?.from);
     } catch (error) {
       console.error('Error creating recipe:', error);
     }
@@ -64,9 +66,7 @@ const CreateRecipe: React.FC = () => {
         <Subheader backward headerText="Добавить новый рецепт">
           <BaseButton primary type="submit" buttonText="Добавить рецепт" />
         </Subheader>
-        <BaseCard form margin>
-          <CardField />
-        </BaseCard>
+        <CardField />
         <div className={styles.mainContainer}>
           <div className={styles.ingredientBlock}>
             <h4 className={styles.ingredientHeader}>Ингридиенты</h4>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace CookingRecipesApi.Dto.RecipesDto;
-public class RecipeDto
+public class CardRecipeDto
 {
     [Required]
     public string Name { get; set; }
@@ -11,10 +11,6 @@ public class RecipeDto
     public int CookingTime { get; set; }
     [Required]
     public int Portion { get; set; }
-    public IFormFile Avatar { get; set; }
+    public string AvatarPath { get; set; }
     public List<TagDto> Tags { get; set; }
-    [Required]
-    public List<IngredientDto> Ingredients { get; set; }
-    [Required]
-    public List<StepDto> Steps { get; set; }
 }

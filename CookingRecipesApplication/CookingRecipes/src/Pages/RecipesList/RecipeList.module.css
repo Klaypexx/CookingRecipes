@@ -15,5 +15,15 @@
 }
 
 .searchBlock {
-  margin-bottom: 80px;
+  margin-bottom: 108px;
+}
+
+.recipesListBlock {
+  margin-bottom: 65px;
+}
+
+.loadButton {
+  margin: 0 auto;
+  width: 309px;
+  margin-bottom: 108px;
 }
