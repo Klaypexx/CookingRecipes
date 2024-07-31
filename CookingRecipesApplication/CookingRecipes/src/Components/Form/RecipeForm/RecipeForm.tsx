@@ -9,10 +9,12 @@ import BaseButton from '../../Button/BaseButton/BaseButton';
 import CardField from '../../Field/CardField/CardField';
 import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
+import recipeValidation from './RecipeValidation';
 
 const RecipeForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const initialValues: RecipeFormValues = {
     name: '',
     description: '',
@@ -20,7 +22,11 @@ const RecipeForm = () => {
     tags: [],
     cookingTime: 0,
     portion: 0,
-    steps: [''],
+    steps: [
+      {
+        description: '',
+      },
+    ],
     ingredients: [
       {
         name: '',
@@ -50,7 +56,7 @@ const RecipeForm = () => {
       });
 
       values.steps.forEach((step, index) => {
-        formData.append(`Steps[${index}].Description`, step);
+        formData.append(`Steps[${index}].Description`, step.description);
       });
 
       await RecipeService.createRecipe(formData);
@@ -62,7 +68,7 @@ const RecipeForm = () => {
   };
 
   return (
-    <BaseForm initialValues={initialValues} onSubmit={handleSubmit}>
+    <BaseForm initialValues={initialValues} validationSchema={recipeValidation} onSubmit={handleSubmit}>
       <Subheader backward headerText="Добавить новый рецепт">
         <BaseButton primary type="submit" buttonText="Добавить рецепт" />
       </Subheader>

@@ -116,3 +116,10 @@
 .optionText {
   font-size: 16px;
 }
+
+.baseErrorStyle {
+  color: rgb(253, 177, 0);
+  font-family: Montserrat;
+  font-size: 14px;
+  font-weight: 700;
+}

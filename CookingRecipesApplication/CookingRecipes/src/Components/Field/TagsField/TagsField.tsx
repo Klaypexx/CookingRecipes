@@ -7,17 +7,25 @@ import { TagsFieldProps } from '../../../Types/types';
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
   const [error, setError] = useState<string | null>(null); // Локальное состояние для ошибок
 
-  const handleCreate = (e: React.KeyboardEvent<HTMLInputElement>, tags: any, arrayHelpers: FieldArrayRenderProps) => {
+  const handleCreate = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    tags: string[],
+    arrayHelpers: FieldArrayRenderProps,
+  ) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const inputValue = (e.target as HTMLInputElement).value.trim();
+
+      if (inputValue.length > 20) {
+        setError('Тег не должен превышать 20 символов');
+      }
 
       if (tags.length >= 3) {
         setError('Вы не можете добавить больше 3 тегов'); // Установка ошибки
         return;
       }
 
-      if (tags.some((tag: any) => tag.toLowerCase() === inputValue.toLowerCase())) {
+      if (tags.some((tag: string) => tag.toLowerCase() === inputValue.toLowerCase())) {
         setError('Этот тег уже существует');
         return;
       }
@@ -39,13 +47,13 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
     <FieldArray
       name={name}
       render={(arrayHelpers: FieldArrayRenderProps) => {
-        const tags = arrayHelpers.form.values[name] || [];
+        const tags: string[] = arrayHelpers.form.values[name] || [];
 
         return (
           <div className={styles.tagsFieldBox}>
             <div className={styles.tagsContainer}>
               {tags.length > 0
-                ? tags.map((tag: string, index: number) => (
+                ? tags.map((tag, index: number) => (
                     <div key={index} className={styles.tag}>
                       <span className={styles.name}>{tag}</span>
                       <img

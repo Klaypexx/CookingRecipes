@@ -5,10 +5,6 @@ const endpoints = {
   getRecipe: '/recipes/get',
 };
 
-export interface TagDto {
-  Name: string;
-}
-
 const createRecipe = async (recipeData: FormData) => {
   const response = await api.post(endpoints.create, recipeData, {
     headers: {

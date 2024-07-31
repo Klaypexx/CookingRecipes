@@ -29,10 +29,10 @@
 }
 
 .baseErrorStyle {
-  color: rgba(37, 41, 45, 0.3);
+  color: rgb(253, 177, 0);
   font-family: Montserrat;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .selectArrow {

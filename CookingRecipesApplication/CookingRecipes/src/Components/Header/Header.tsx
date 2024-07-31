@@ -8,10 +8,9 @@ import { useEffect, useState } from 'react';
 import UserService from '../../Services/UserService';
 import useModalStore from '../../Stores/useModalStore';
 import TokenService from '../../Services/TokenService';
-import RecipeService from '../../Services/RecipeService';
 const Header = () => {
   const [userName, setUserName] = useState('');
-  const { isRegister, isLogin, isAuth, isLogout, setAuth, setLogout } = useModalStore();
+  const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const token = TokenService.getAccessToken();
 
   useEffect(() => {

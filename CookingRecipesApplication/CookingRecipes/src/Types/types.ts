@@ -125,7 +125,9 @@ interface RecipeFormValues {
   tags: string[];
   cookingTime: number;
   portion: number;
-  steps: string[];
+  steps: Array<{
+    description: string;
+  }>;
   ingredients: Array<{
     name: string;
     product: string;

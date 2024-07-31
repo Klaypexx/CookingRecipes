@@ -2,7 +2,7 @@ import { useState } from 'react';
 import BaseField from '../BaseField/BaseField';
 import TagsField from '../TagsField/TagsField';
 import styles from './CardField.module.css';
-import { useFormikContext } from 'formik';
+import { ErrorMessage, useFormikContext } from 'formik';
 import cloudDownload from '../../../resources/icons/cloud-download.svg';
 
 const CardField = () => {
@@ -21,7 +21,13 @@ const CardField = () => {
       <div className={styles.cardBackground}></div>
       <div className={styles.cardPhoto}>
         {file && <img src={URL.createObjectURL(file)} alt="avatar" className={styles.avatarImage} />}
-        <input type="file" name="avatar" accept="image/*" onChange={handleFileChange} className={styles.inputPhoto} />
+        <input
+          type="file"
+          name="avatar"
+          accept="image/png, image/jpeg"
+          onChange={handleFileChange}
+          className={styles.inputPhoto}
+        />
         <div className={styles.inputPhotoContainer}>
           {!file && (
             <div className={styles.inputPhotoBox}>
@@ -30,6 +36,7 @@ const CardField = () => {
             </div>
           )}
         </div>
+        <ErrorMessage name="avatar" component="div" className={styles.baseErrorStyle} />
       </div>
       <div className={styles.cardInformation}>
         <div className={styles.cardFormContainer}>
