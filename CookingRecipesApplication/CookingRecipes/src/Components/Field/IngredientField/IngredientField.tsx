@@ -27,7 +27,7 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
           return (
             <>
               {ingredients.map((ingredient: { name: string; product: string }, index: number) => (
-                <div key={index}>
+                <div key={index} className={styles.ingredientContainer}>
                   <div className={styles.ingredientButtonBox}>
                     <button
                       type="button"

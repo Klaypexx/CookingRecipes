@@ -13,6 +13,6 @@ public class CardRecipeDto
     public int CookingTime { get; set; }
     [Required]
     public int Portion { get; set; }
-    public string AvatarPath { get; set; }
+    public string? AvatarPath { get; set; }
     public List<TagDto> Tags { get; set; }
 }

@@ -42,7 +42,7 @@
 .avatarNoImage {
   width: 430px;
   height: 430px;
-  background: rgb(255, 239, 204), rgb(255, 252, 247);
+  background: rgb(255, 239, 204);
   border-radius: 72px 0px 72px 0px;
 }
 

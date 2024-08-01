@@ -2,9 +2,14 @@
 using Application.Recipes.Services;
 using Application.Tags.Services;
 using CookingRecipesApi.Dto;
+using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.RecipesDto;
+using CookingRecipesApi.Dto.Validators;
 using CookingRecipesApi.Utilities;
+using Domain.Auth.Entities;
 using Domain.Recipes.Entities;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +22,19 @@ public class RecipeController : ControllerBase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRecipeService _recipeService;
     private readonly ITagService _tagService;
-    IWebHostEnvironment _appEnvironment;
-    public RecipeController( IUnitOfWork unitOfWork, IRecipeService recipeService, ITagService tagService, IWebHostEnvironment appEnvironment )
+    private readonly IWebHostEnvironment _appEnvironment;
+    private readonly IValidator<RecipeDto> _recipeDtoValidator;
+    public RecipeController( IUnitOfWork unitOfWork,
+        IRecipeService recipeService,
+        ITagService tagService,
+        IWebHostEnvironment appEnvironment,
+        IValidator<RecipeDto> recipeDtoValidator )
     {
         _unitOfWork = unitOfWork;
         _recipeService = recipeService;
         _tagService = tagService;
         _appEnvironment = appEnvironment;
+        _recipeDtoValidator = recipeDtoValidator;
     }
 
     [HttpPost]
@@ -32,20 +43,39 @@ public class RecipeController : ControllerBase
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
 
-        int authorId = int.Parse( User.GetUserId() );
+        ValidationResult validationResult = await _recipeDtoValidator.ValidateAsync( recipeDto );
 
-        string imagePath = Path.Combine( "images", recipeDto.Avatar.FileName );
-        string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
-
-        using ( var fileStream = new FileStream( fullPath, FileMode.Create ) )
+        if ( !validationResult.IsValid )
         {
-            await recipeDto.Avatar.CopyToAsync( fileStream );
+            return BadRequest( new { message = validationResult.ToString() } );
         }
 
-        List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );
+        try
+        {
+            if ( recipeDto.Avatar != null )
+            {
 
-        await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
-        return Ok( recipeDto );
+                string imagePath = Path.Combine( "images", recipeDto.Avatar.FileName );
+                string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
+
+                using ( var fileStream = new FileStream( fullPath, FileMode.Create ) )
+                {
+                    await recipeDto.Avatar.CopyToAsync( fileStream );
+                }
+            }
+
+            int authorId = int.Parse( User.GetUserId() );
+
+            List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );
+
+            await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new { message = exception.Message } );
+        }
+
+        return Ok();
     }
 
     [HttpPost]
@@ -53,8 +83,16 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetAllRecipes( [FromBody] int page = 1 )
     {
-        List<Recipe> recipes = await _recipeService.GetAllRecipes( page );
-        var recipeDto = recipes.Select( a => a.ToDto() ).ToList();
-        return Ok( recipeDto );
+        try
+        {
+            List<Recipe> recipes = await _recipeService.GetAllRecipes( page );
+            var recipeDto = recipes.Select( a => a.ToDto() ).ToList();
+            return Ok( recipeDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new { message = exception.Message } );
+        }
+
     }
 }

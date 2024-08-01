@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import TokenService from '../Services/TokenService';
 import { warnToast } from '../Components/Toast/Toast';
@@ -15,7 +14,6 @@ function ProtectedRoute({ redirectPath = '/', children }: any) {
   }, [token]);
 
   if (!token) {
-    // Перенаправляем на страницу, откуда был отправлен запрос
     return <Navigate to={location.state?.from || redirectPath} replace />;
   }
 

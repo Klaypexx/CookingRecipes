@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './TagsField.module.css';
 import closeIcon from '../../../resources/icons/closeTag.svg';
-import { FieldArray, FieldArrayRenderProps } from 'formik';
+import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
 import { TagsFieldProps } from '../../../Types/types';
 
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
@@ -18,6 +18,7 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
 
       if (inputValue.length > 20) {
         setError('Тег не должен превышать 20 символов');
+        return;
       }
 
       if (tags.length >= 3) {
@@ -54,25 +55,28 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
             <div className={styles.tagsContainer}>
               {tags.length > 0
                 ? tags.map((tag, index: number) => (
-                    <div key={index} className={styles.tag}>
-                      <span className={styles.name}>{tag}</span>
-                      <img
-                        src={closeIcon}
-                        alt="closeIcon"
-                        className={styles.icon}
-                        onClick={() => handleDelete(arrayHelpers, index)}
-                      />
-                    </div>
+                    <>
+                      <div key={index} className={styles.tag}>
+                        <span className={styles.name}>{tag}</span>
+                        <img
+                          src={closeIcon}
+                          alt="closeIcon"
+                          className={styles.icon}
+                          onClick={() => handleDelete(arrayHelpers, index)}
+                        />
+                      </div>
+                    </>
                   ))
                 : null}
               <input
                 className={styles.tagInput}
                 type="text"
                 placeholder="Добавить теги"
-                maxLength={15}
+                maxLength={20}
                 onKeyDown={(event) => handleCreate(event, tags, arrayHelpers)}
               />
             </div>
+            <ErrorMessage name={`${name}`} component="div" className={styles.baseErrorStyle} />
             {error && <div className={styles.baseErrorStyle}>{error}</div>}
           </div>
         );

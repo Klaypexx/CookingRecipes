@@ -11,12 +11,16 @@ import { RecipeListValues } from '../../Types/types';
 
 const RecipesList = () => {
   const [page, setPage] = useState(1);
+  const [isLoad, setIsLoad] = useState(true);
   const [values, setValues] = useState<RecipeListValues[]>([]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
         const response: RecipeListValues[] = await RecipeService.getAllRecipes(page);
+        if (response.length < 4) {
+          setIsLoad(false);
+        }
         setValues((prevValues) => [...prevValues, ...response]);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -50,7 +54,9 @@ const RecipesList = () => {
             <BaseCard key={index} props={value} />
           ))}
         </div>
-        <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
+        {isLoad ? (
+          <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
+        ) : undefined}
       </section>
     </>
   );

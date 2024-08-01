@@ -10,7 +10,7 @@ public static class RecipeDtoExtension
         {
             Name = recipeDto.Name,
             Description = recipeDto.Description,
-            Avatar = recipeDto.Avatar.FileName,
+            Avatar = recipeDto.Avatar?.FileName,
             CookingTime = recipeDto.CookingTime,
             Portion = recipeDto.Portion,
             AuthorId = authorId,

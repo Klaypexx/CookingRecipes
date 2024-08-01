@@ -8,6 +8,7 @@ using Application.Tags.Services;
 using Application.Users.Services;
 using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
+using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
 using Infrastructure.Auth.Repositories;
 using Infrastructure.Database;
@@ -42,6 +43,9 @@ services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connection
 
 services.AddValidatorsFromAssemblyContaining<RegisterDto>();
 services.AddValidatorsFromAssemblyContaining<LoginDto>();
+services.AddValidatorsFromAssemblyContaining<RecipeDto>();
+services.AddValidatorsFromAssemblyContaining<StepDto>();
+services.AddValidatorsFromAssemblyContaining<IngredientDto>();
 
 services.AddControllers();
 

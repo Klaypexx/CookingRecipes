@@ -4,10 +4,6 @@ import TokenService from '../Services/TokenService';
 import AuthService from '../Services/AuthService';
 import { BASE_URL } from '../Constants/httpUrl';
 
-export const navigation = (navigate: any) => {
-  return navigate;
-};
-
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
