@@ -11,7 +11,7 @@ public class Recipe
     public string? Avatar { get; set; }
     public int AuthorId { get; set; }
     public List<Like> Likes { get; set; }
-    public List<RecipeTag> Tags { get; set; }
+    public List<RecipeTag>? Tags { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public List<Step> Steps { get; set; }
     public User Author { get; set; }

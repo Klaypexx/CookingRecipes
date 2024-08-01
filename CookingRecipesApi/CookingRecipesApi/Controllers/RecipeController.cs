@@ -66,7 +66,7 @@ public class RecipeController : ControllerBase
 
             int authorId = int.Parse( User.GetUserId() );
 
-            List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags.Select( tagDto => tagDto.Name ).ToList() );
+            List<RecipeTag> Tags = await _tagService.GetOrCreateTag( recipeDto.Tags?.Select( tagDto => tagDto.Name ).ToList() );
 
             await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
         }

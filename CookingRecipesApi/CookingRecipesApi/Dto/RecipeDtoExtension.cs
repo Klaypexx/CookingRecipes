@@ -4,7 +4,7 @@ using Domain.Recipes.Entities;
 namespace CookingRecipesApi.Dto;
 public static class RecipeDtoExtension
 {
-    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId, List<RecipeTag> Tags )
+    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId, List<RecipeTag>? Tags )
     {
         return new()
         {
@@ -30,13 +30,14 @@ public static class RecipeDtoExtension
     {
         return new()
         {
+            Id = recipe.Id,
             Name = recipe.Name,
             Description = recipe.Description,
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
             AvatarPath = recipe.Avatar,
             AuthorName = recipe.Author.UserName,
-            Tags = recipe.Tags.Select( recipeTag => new TagDto
+            Tags = recipe.Tags?.Select( recipeTag => new TagDto
             {
                 Name = recipeTag.Tag.Name
             } ).ToList()

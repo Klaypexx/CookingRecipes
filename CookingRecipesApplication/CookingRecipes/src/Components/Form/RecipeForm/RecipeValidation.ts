@@ -12,7 +12,7 @@ const recipeValidation = Yup.object().shape({
     }),
   cookingTime: Yup.number().required('Время приготовления обязательно').min(1, 'Укажите количество минут'),
   portion: Yup.number().required('Количество порций обязательно').min(1, 'Укажите количество порций'),
-  tags: Yup.array().min(1, 'Необходимо добавить хотя бы один тег'),
+  tags: Yup.array().of(Yup.string().max(20, 'Тег не должен превышать 20 символов')).max(3, 'Не более 3 тегов'),
   steps: Yup.array()
     .of(
       Yup.object().shape({

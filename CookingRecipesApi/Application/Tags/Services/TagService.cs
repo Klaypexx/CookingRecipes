@@ -9,7 +9,7 @@ public class TagService : ITagService
     {
         _tagRepository = tagRepository;
     }
-    public async Task<List<RecipeTag>> GetOrCreateTag( List<string> tagNames )
+    public async Task<List<RecipeTag>> GetOrCreateTag( List<string>? tagNames )
     {
         return await _tagRepository.GetOrCreateTag( tagNames );
     }

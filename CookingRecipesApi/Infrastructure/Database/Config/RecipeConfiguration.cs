@@ -40,7 +40,8 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 
         builder.HasMany( x => x.Tags )
             .WithOne( x => x.Recipe )
-            .HasForeignKey( x => x.RecipeId );
+            .HasForeignKey( x => x.RecipeId )
+            .IsRequired( false );
 
         builder.HasMany( x => x.Ingredients )
            .WithOne( x => x.Recipe )

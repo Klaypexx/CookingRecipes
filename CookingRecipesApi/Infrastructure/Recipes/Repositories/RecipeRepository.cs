@@ -24,6 +24,7 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Author )
+         .OrderBy( recipe => recipe.Id )
          .Skip( ( page - 1 ) * 4 )
          .Take( 4 )
          .ToListAsync();

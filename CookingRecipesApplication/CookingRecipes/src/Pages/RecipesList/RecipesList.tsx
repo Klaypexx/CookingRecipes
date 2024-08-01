@@ -50,8 +50,8 @@ const RecipesList = () => {
           <SearchBlock text onSubmit={handleSubmit} />
         </div>
         <div className={styles.recipesListBlock}>
-          {values.map((value, index) => (
-            <BaseCard key={index} props={value} />
+          {values.map((value) => (
+            <BaseCard key={value.idRecipe} props={value} />
           ))}
         </div>
         {isLoad ? (

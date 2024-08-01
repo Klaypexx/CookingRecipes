@@ -3,5 +3,5 @@
 namespace Application.Tags.Repositories;
 public interface ITagRepository
 {
-    Task<List<RecipeTag>> GetOrCreateTag( List<string> tagNames );
+    Task<List<RecipeTag>> GetOrCreateTag( List<string>? tagNames );
 }

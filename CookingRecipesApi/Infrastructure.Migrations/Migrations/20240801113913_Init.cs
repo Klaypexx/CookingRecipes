@@ -148,8 +148,7 @@ namespace Infrastructure.Migrations.Migrations
                         name: "FK_recipe_tag_recipe_id_recipe",
                         column: x => x.id_recipe,
                         principalTable: "recipe",
-                        principalColumn: "id_recipe",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id_recipe");
                     table.ForeignKey(
                         name: "FK_recipe_tag_tag_id_tag",
                         column: x => x.id_tag,

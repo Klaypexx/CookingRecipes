@@ -30,11 +30,12 @@ interface AddRecipeButtonProps {
 interface CardProps {
   className?: string;
   props?: {
+    idRecipe: number;
     name: string;
     description: string;
     avatarPath?: string;
     authorName: string;
-    tags: Array<{
+    tags?: Array<{
       name: string;
     }>;
     cookingTime: number;
@@ -162,11 +163,12 @@ interface SearchBlockValues {
 }
 
 interface RecipeListValues {
+  idRecipe: number;
   name: string;
   description: string;
   avatarPath?: string;
   authorName: string;
-  tags: Array<{
+  tags?: Array<{
     name: string;
   }>;
   cookingTime: number;
