@@ -6,26 +6,20 @@ import timeIcon from '../../../resources/icons/time.svg';
 import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
 
-const BaseCard: React.FC<CardProps> = ({ className, props, children }) => {
-  const [image, setImage] = useState<string | undefined>(undefined);
-  useEffect(() => {
-    setImage(props?.avatarPath);
-  }, []);
-
+const BaseCard: React.FC<CardProps> = ({ className, props }) => {
   return (
     <div className={classNames(styles.cardContainer, className)}>
       <div className={styles.avatarImageBox}>
         <div className={styles.authorRecipeBox}>
           <p className={styles.authorRecipeText}>{`@${props?.authorName}`}</p>
         </div>
-        {image ? (
-          <img src={IMAGE_URL + image} alt="avatar" className={styles.avatarImage} />
+        {props?.avatarPath ? (
+          <img src={IMAGE_URL + props.avatarPath} alt="avatar" className={styles.avatarImage} />
         ) : (
           <div className={styles.avatarNoImage}></div>
         )}
       </div>
       <div className={styles.cardInformation}>
-        {children}
         {props?.tags ? (
           <div className={styles.cardHeader}>
             <div className={styles.tagsContainer}>
@@ -41,7 +35,7 @@ const BaseCard: React.FC<CardProps> = ({ className, props, children }) => {
           <>
             <div className={styles.mainContainer}>
               <div className={styles.cardInfoContainer}>
-                <h3 className={styles.cardInfoHeader}>{props?.name}</h3>
+                {props.name ? <h3 className={styles.cardInfoHeader}>{props.name}</h3> : undefined}
                 <div className={styles.cardInfoTextBox}>
                   <p className={styles.cardInfoText}>{props?.description}</p>
                 </div>

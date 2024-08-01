@@ -137,11 +137,13 @@
 }
 
 .cardNumerableHeader {
+  color: rgb(37, 41, 45);
   opacity: 0.5;
   font-size: 14px;
   margin-bottom: 5px;
 }
 
 .cardNumerableTime {
+  color: rgb(37, 41, 45);
   font-size: 16px;
 }

@@ -18,7 +18,7 @@ const RecipeForm = () => {
   const initialValues: RecipeFormValues = {
     name: '',
     description: '',
-    avatar: null,
+    avatar: undefined,
     tags: [],
     cookingTime: 0,
     portion: 0,
@@ -42,13 +42,16 @@ const RecipeForm = () => {
       formData.append('Description', values.description);
       formData.append('CookingTime', values.cookingTime.toString());
       formData.append('Portion', values.portion.toString());
+
       if (values.avatar) {
         formData.append('Avatar', values.avatar);
       }
 
-      values.tags.forEach((tag, index) => {
-        formData.append(`Tags[${index}].Name`, tag);
-      });
+      if (values.tags) {
+        values.tags.forEach((tag, index) => {
+          formData.append(`Tags[${index}].Name`, tag);
+        });
+      }
 
       values.ingredients.forEach((ingredient, index) => {
         formData.append(`Ingredients[${index}].Name`, ingredient.name);

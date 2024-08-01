@@ -3,6 +3,7 @@ import api from '../util/api';
 const endpoints = {
   create: '/recipes/create',
   getRecipe: '/recipes/get',
+  getCurrentRecipe: '/recipes/get/',
 };
 
 const createRecipe = async (recipeData: FormData) => {
@@ -26,9 +27,18 @@ const getAllRecipes = async (pages: number) => {
   return response.statusText;
 };
 
+const getCurrentUserRecipe = async (recipeId: string) => {
+  const response = await api.post(endpoints.getCurrentRecipe + recipeId, recipeId);
+  if (response.data && response.data !== undefined) {
+    return response.data;
+  }
+  return response.statusText;
+};
+
 const RecipeService = {
   createRecipe,
   getAllRecipes,
+  getCurrentUserRecipe,
 };
 
 export default RecipeService;

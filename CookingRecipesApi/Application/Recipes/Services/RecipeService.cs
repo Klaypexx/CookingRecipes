@@ -23,4 +23,9 @@ public class RecipeService : IRecipeService
     {
         return await _recipeRepository.GetAllRecipes( page );
     }
+
+    public async Task<Recipe> GetCurrentUserRecipe( int recipeId )
+    {
+        return await _recipeRepository.GetCurrentUserRecipe( recipeId );
+    }
 }

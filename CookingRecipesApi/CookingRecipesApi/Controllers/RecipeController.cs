@@ -1,8 +1,8 @@
 ﻿using Application.Foundation;
 using Application.Recipes.Services;
 using Application.Tags.Services;
-using CookingRecipesApi.Dto;
 using CookingRecipesApi.Dto.AuthDto;
+using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Dto.Validators;
 using CookingRecipesApi.Utilities;
@@ -86,7 +86,25 @@ public class RecipeController : ControllerBase
         try
         {
             List<Recipe> recipes = await _recipeService.GetAllRecipes( page );
-            var recipeDto = recipes.Select( a => a.ToDto() ).ToList();
+            var recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
+            return Ok( recipeDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new { message = exception.Message } );
+        }
+
+    }
+
+    [HttpPost]
+    [Route( "get/{userId}" )]
+    [Authorize]
+    public async Task<IActionResult> GetCurrentUserRecipe( [FromBody] int recipeId )
+    {
+        try
+        {
+            Recipe recipes = await _recipeService.GetCurrentUserRecipe( recipeId );
+            var recipeDto = recipes.ToCurrentRecipeDto();
             return Ok( recipeDto );
         }
         catch ( Exception exception )

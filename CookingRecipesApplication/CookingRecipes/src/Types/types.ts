@@ -30,7 +30,6 @@ interface AddRecipeButtonProps {
 interface CardProps {
   className?: string;
   props?: {
-    idRecipe: number;
     name: string;
     description: string;
     avatarPath?: string;
@@ -41,7 +40,6 @@ interface CardProps {
     cookingTime: number;
     portion: number;
   };
-  children?: React.ReactNode;
 }
 
 interface FormProps {
@@ -79,6 +77,7 @@ interface StepFieldProps {
 }
 
 interface LinkProps {
+  base?: boolean;
   primary?: boolean;
   navigation?: string;
   newStyle?: CSSProperties;
@@ -115,15 +114,15 @@ interface RegisterValues {
 
 interface SubheaderProps {
   backward?: boolean;
-  headerText: string;
+  headerText?: string;
   children?: React.ReactNode;
 }
 
 interface RecipeFormValues {
   name: string;
   description: string;
-  avatar: File | null;
-  tags: string[];
+  avatar?: File | null;
+  tags?: string[];
   cookingTime: number;
   portion: number;
   steps: Array<{
@@ -163,7 +162,7 @@ interface SearchBlockValues {
 }
 
 interface RecipeListValues {
-  idRecipe: number;
+  id: number;
   name: string;
   description: string;
   avatarPath?: string;
@@ -173,6 +172,25 @@ interface RecipeListValues {
   }>;
   cookingTime: number;
   portion: number;
+}
+
+interface RecipeViewValues {
+  name: string;
+  description: string;
+  avatarPath?: string;
+  authorName: string;
+  tags?: Array<{
+    name: string;
+  }>;
+  cookingTime: number;
+  portion: number;
+  steps: Array<{
+    description: string;
+  }>;
+  ingredients: Array<{
+    name: string;
+    product: string;
+  }>;
 }
 
 export type {
@@ -197,4 +215,5 @@ export type {
   SearchBlockProps,
   SearchBlockValues,
   RecipeListValues,
+  RecipeViewValues,
 };

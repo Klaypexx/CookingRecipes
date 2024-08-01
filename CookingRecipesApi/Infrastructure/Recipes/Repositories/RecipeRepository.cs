@@ -29,4 +29,17 @@ public class RecipeRepository : IRecipeRepository
          .Take( 4 )
          .ToListAsync();
     }
+
+    public async Task<Recipe> GetCurrentUserRecipe( int recipeId )
+    {
+        return await _entities
+         .Where( recipe => recipe.Id == recipeId )
+         .Include( recipe => recipe.Tags )
+         .ThenInclude( recipeTag => recipeTag.Tag )
+         .Include( recipe => recipe.Ingredients )
+         .Include( recipe => recipe.Steps )
+         .Include( recipe => recipe.Author )
+         .OrderBy( recipe => recipe.Id )
+         .FirstOrDefaultAsync();
+    }
 }

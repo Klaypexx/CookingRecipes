@@ -8,6 +8,7 @@ import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import { RecipeListValues } from '../../Types/types';
+import { Link } from 'react-router-dom';
 
 const RecipesList = () => {
   const [page, setPage] = useState(1);
@@ -38,27 +39,27 @@ const RecipesList = () => {
   };
 
   return (
-    <>
-      <section className={styles.recipesListSection}>
-        <Subheader headerText="Рецепты">
-          <BaseLink primary navigation="/recipe/create" linkText="Добавить рецепт" />
-        </Subheader>
-        <div className={styles.tagListBlock}>
-          <TagsBlockList className={styles.tagList} />
-        </div>
-        <div className={styles.searchBlock}>
-          <SearchBlock text onSubmit={handleSubmit} />
-        </div>
-        <div className={styles.recipesListBlock}>
-          {values.map((value) => (
-            <BaseCard key={value.idRecipe} props={value} />
-          ))}
-        </div>
-        {isLoad ? (
-          <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-        ) : undefined}
-      </section>
-    </>
+    <section className={styles.recipesListSection}>
+      <Subheader headerText="Рецепты">
+        <BaseLink base primary navigation="/recipe/create" linkText="Добавить рецепт" />
+      </Subheader>
+      <div className={styles.tagListBlock}>
+        <TagsBlockList className={styles.tagList} />
+      </div>
+      <div className={styles.searchBlock}>
+        <SearchBlock text onSubmit={handleSubmit} />
+      </div>
+      <div className={styles.recipesListBlock}>
+        {values.map((value, index) => (
+          <Link key={index} to={`/recipe/${value.id}`}>
+            <BaseCard props={value} />
+          </Link>
+        ))}
+      </div>
+      {isLoad ? (
+        <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
+      ) : undefined}
+    </section>
   );
 };
 

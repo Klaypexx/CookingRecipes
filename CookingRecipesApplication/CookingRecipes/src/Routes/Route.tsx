@@ -4,6 +4,8 @@ import HomePage from '../Pages/HomePage/HomePage';
 import ProtectedRoute from './ProtectedRoute';
 import CreateRecipe from '../Pages/CreateRecipe/CreateRecipe';
 import RecipesList from '../Pages/RecipesList/RecipesList';
+import RecipeView from '../Pages/RecipeView/RecipeView';
+import ErrorPage from '../Pages/ErrorPage/ErrorPage';
 
 export const router = createBrowserRouter([
   {
@@ -23,14 +25,14 @@ export const router = createBrowserRouter([
         path: 'favourites',
         element: (
           <ProtectedRoute>
-            <HomePage />
+            <RecipeView />
           </ProtectedRoute>
         ),
       },
     ],
   },
   {
-    path: '/recipe',
+    path: 'recipe',
     element: <App />,
     children: [
       {
@@ -42,6 +44,15 @@ export const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: 'recipe/:recipeId',
+    errorElement: <ErrorPage />,
+    element: (
+      <ProtectedRoute>
+        <RecipeView />
+      </ProtectedRoute>
+    ),
   },
   { path: '*', element: <Navigate to="/" replace /> },
 ]);
