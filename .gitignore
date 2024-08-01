@@ -289,4 +289,4 @@ __pycache__/
 *.xsd.cs
 
 # Image file
-/CookingRecipes/CookingRecipesApi/CookingRecipesApi/wwwroot
+wwwroot/
