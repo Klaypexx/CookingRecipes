@@ -5,7 +5,7 @@ import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
 import { TagsFieldProps } from '../../../Types/types';
 
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
-  const [error, setError] = useState<string | null>(null); // Локальное состояние для ошибок
+  const [error, setError] = useState<string | null>(null); // Локальное состояние для ошибо
 
   const handleCreate = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -55,17 +55,15 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
             <div className={styles.tagsContainer}>
               {tags.length > 0
                 ? tags.map((tag, index: number) => (
-                    <>
-                      <div key={index} className={styles.tag}>
-                        <span className={styles.name}>{tag}</span>
-                        <img
-                          src={closeIcon}
-                          alt="closeIcon"
-                          className={styles.icon}
-                          onClick={() => handleDelete(arrayHelpers, index)}
-                        />
-                      </div>
-                    </>
+                    <div key={index} className={styles.tag}>
+                      <span className={styles.name}>{tag}</span>
+                      <img
+                        src={closeIcon}
+                        alt="closeIcon"
+                        className={styles.icon}
+                        onClick={() => handleDelete(arrayHelpers, index)}
+                      />
+                    </div>
                   ))
                 : null}
               <input
