@@ -5,7 +5,7 @@ import styles from './AddRecipeLink.module.css';
 const AddRecipeLink = () => {
   return (
     <>
-      <BaseLink primary navigation="/recipe/create" linkText="Добавить рецепт">
+      <BaseLink primary navigation="/recipes/create" linkText="Добавить рецепт">
         <img src={plusImg} className={styles.plus} />
       </BaseLink>
     </>

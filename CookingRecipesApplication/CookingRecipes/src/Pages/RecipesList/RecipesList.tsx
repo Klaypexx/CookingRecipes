@@ -8,7 +8,7 @@ import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import { RecipeListValues } from '../../Types/types';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 const RecipesList = () => {
   const [page, setPage] = useState(1);
@@ -41,7 +41,7 @@ const RecipesList = () => {
   return (
     <section className={styles.recipesListSection}>
       <Subheader headerText="Рецепты">
-        <BaseLink base primary navigation="/recipe/create" linkText="Добавить рецепт" />
+        <BaseLink base primary navigation="/recipes/create" linkText="Добавить рецепт" />
       </Subheader>
       <div className={styles.tagListBlock}>
         <TagsBlockList className={styles.tagList} />
@@ -51,9 +51,9 @@ const RecipesList = () => {
       </div>
       <div className={styles.recipesListBlock}>
         {values.map((value, index) => (
-          <Link key={index} to={`/recipe/${value.id}`}>
+          <NavLink key={index} to={`/recipes/${value.id}`} state={{ from: location.pathname }}>
             <BaseCard props={value} />
-          </Link>
+          </NavLink>
         ))}
       </div>
       {isLoad ? (

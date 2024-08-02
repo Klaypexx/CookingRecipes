@@ -1,5 +1,5 @@
 import React from 'react';
-import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
+import { FieldArray, FieldArrayRenderProps } from 'formik';
 import { IngredientFieldProps } from '../../../Types/types';
 import styles from './IngredientField.module.css';
 import BaseField from '../BaseField/BaseField';

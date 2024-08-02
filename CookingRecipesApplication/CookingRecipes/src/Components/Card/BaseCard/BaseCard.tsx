@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import styles from './BaseCard.module.css';
 import { CardProps } from '../../../Types/types';
-import { useEffect, useState } from 'react';
 import timeIcon from '../../../resources/icons/time.svg';
 import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';

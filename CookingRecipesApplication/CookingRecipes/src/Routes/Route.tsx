@@ -11,6 +11,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       { path: '', element: <HomePage /> },
       {
@@ -22,37 +23,30 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'favourites',
-        element: (
-          <ProtectedRoute>
-            <RecipeView />
-          </ProtectedRoute>
-        ),
-      },
-    ],
-  },
-  {
-    path: 'recipe',
-    element: <App />,
-    children: [
-      {
-        path: 'create',
+        path: 'recipes/create',
         element: (
           <ProtectedRoute>
             <CreateRecipe />
           </ProtectedRoute>
         ),
       },
+      {
+        path: 'recipes/:recipeId',
+        element: (
+          <ProtectedRoute>
+            <RecipeView />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'favourites',
+        element: (
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        ),
+      },
     ],
-  },
-  {
-    path: 'recipe/:recipeId',
-    errorElement: <ErrorPage />,
-    element: (
-      <ProtectedRoute>
-        <RecipeView />
-      </ProtectedRoute>
-    ),
   },
   { path: '*', element: <Navigate to="/" replace /> },
 ]);

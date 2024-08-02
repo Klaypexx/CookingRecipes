@@ -3,14 +3,18 @@ import Subheader from '../../Components/Subheader/Subheader';
 import styles from './RecipeView.module.css';
 import removeIcon from '../../resources/icons/remove.svg';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RecipeViewValues } from '../../Types/types';
-import { useParams } from 'react-router-dom';
+import { useParams, useRouteError } from 'react-router-dom';
 import RecipeService from '../../Services/RecipeService';
 
 const RecipeView = () => {
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Прокрутка к началу страницы
+  }, []);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -19,7 +23,7 @@ const RecipeView = () => {
         setValues(response);
         console.log(response);
       } catch (error) {
-        console.error('Error fetching recipes:', error);
+        throw new Error('Failed to fetch recipe');
       }
     };
     fetchRecipes();
