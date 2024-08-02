@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './TagsField.module.css';
 import closeIcon from '../../../resources/icons/closeTag.svg';
 import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
-import { TagsFieldProps } from '../../../Types/types';
+import TagsFieldProps from '../../../Types/TagsFieldProps';
 
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
   const [error, setError] = useState<string | null>(null); // Локальное состояние для ошибо

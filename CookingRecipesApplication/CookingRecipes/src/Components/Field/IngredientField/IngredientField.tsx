@@ -1,10 +1,10 @@
 import React from 'react';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
-import { IngredientFieldProps } from '../../../Types/types';
 import styles from './IngredientField.module.css';
 import BaseField from '../BaseField/BaseField';
 import AddRecipeButton from '../../Button/AddRecipeButton/AddRecipeButton';
 import closeIcon from '../../../resources/icons/close.svg';
+import IngredientFieldProps from '../../../Types/IngredientFieldProps';
 
 const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {

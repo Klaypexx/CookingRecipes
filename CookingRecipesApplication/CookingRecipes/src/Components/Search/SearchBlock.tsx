@@ -1,4 +1,5 @@
-import { SearchBlockProps, SearchBlockValues } from '../../Types/types';
+import SearchBlockProps from '../../Types/SearchBlockProps';
+import SearchBlockValues from '../../Types/SearchBlockValues';
 import BaseButton from '../Button/BaseButton/BaseButton';
 import BaseField from '../Field/BaseField/BaseField';
 import BaseForm from '../Form/BaseForm/BaseForm';

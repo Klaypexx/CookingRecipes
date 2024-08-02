@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import styles from './Subheader.module.css';
 import arrow from '../../resources/icons/backward-arrow.svg';
 import { NavLink, useLocation } from 'react-router-dom';
-import { SubheaderProps } from '../../Types/types';
 import { useEffect } from 'react';
+import SubheaderProps from '../../Types/SubheaderProps';
 
 const Subheader: React.FC<SubheaderProps> = ({ backward, headerText, children }) => {
   const location = useLocation();

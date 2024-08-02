@@ -1,6 +1,5 @@
 import useModalStore from '../../../Stores/useModalStore';
 import { useState } from 'react';
-import { RegisterValues } from '../../../Types/types';
 import AuthService from '../../../Services/AuthService';
 import { successToast } from '../../Toast/Toast';
 import BaseForm from '../BaseForm/BaseForm';
@@ -8,6 +7,7 @@ import BaseField from '../../Field/BaseField/BaseField';
 import styles from './RegisterForm.module.css';
 import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import registerValidation from './RegisterValidaton';
+import RegisterValues from '../../../Types/RegisterValues';
 
 const RegisterForm = () => {
   const { isLogin, setLogin, unsetAll } = useModalStore();

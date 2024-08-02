@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RecipeFormValues } from '../../../Types/types';
 import RecipeService from '../../../Services/RecipeService';
 import { successToast } from '../../Toast/Toast';
 import styles from './RecipeForm.module.css';
@@ -10,6 +9,7 @@ import CardField from '../../Field/CardField/CardField';
 import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
 import recipeValidation from './RecipeValidation';
+import RecipeFormValues from '../../../Types/RecipeFormValues';
 
 const RecipeForm = () => {
   const location = useLocation();

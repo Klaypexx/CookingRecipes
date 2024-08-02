@@ -1,7 +1,7 @@
 import BaseButton from '../BaseButton/BaseButton';
 import plusImg from '../../../resources/icons/plus-orange.svg';
 import styles from './AddRecipeButton.module.css';
-import { AddRecipeButtonProps } from '../../../Types/types';
+import AddRecipeButtonProps from '../../../Types/AddRecipeButtonProps';
 
 const AddRecipeButton: React.FC<AddRecipeButtonProps> = ({ primary, buttonText, className, onClick }) => {
   return (

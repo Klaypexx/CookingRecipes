@@ -4,7 +4,7 @@ import cookIcon from '../../../resources/icons/ic-cook.svg';
 import chefIcon from '../../../resources/icons/ic-chef.svg';
 import feastIcon from '../../../resources/icons/ic-feast.svg';
 import styles from './TagsList.module.css';
-import { TagsBlockListProps } from '../../../Types/types';
+import TagsBlockListProps from '../../../Types/TagsBlockListProps';
 
 const tagsBd = [
   {

@@ -4,9 +4,9 @@ import styles from './RecipeView.module.css';
 import removeIcon from '../../resources/icons/remove.svg';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { useEffect, useState } from 'react';
-import { RecipeViewValues } from '../../Types/types';
 import { useParams, useRouteError } from 'react-router-dom';
 import RecipeService from '../../Services/RecipeService';
+import RecipeViewValues from '../../Types/RecipeViewValues';
 
 const RecipeView = () => {
   const [values, setValues] = useState<RecipeViewValues>();

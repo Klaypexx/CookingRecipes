@@ -1,12 +1,12 @@
 import useModalStore from '../../../Stores/useModalStore';
 import { useState } from 'react';
-import { LoginValues } from '../../../Types/types';
 import AuthService from '../../../Services/AuthService';
 import { successToast } from '../../Toast/Toast';
 import BaseForm from '../BaseForm/BaseForm';
 import BaseField from '../../Field/BaseField/BaseField';
 import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import loginValidation from './LoginValidation';
+import LoginValues from '../../../Types/LoginValues';
 
 const LoginForm = () => {
   const { unsetAll } = useModalStore();

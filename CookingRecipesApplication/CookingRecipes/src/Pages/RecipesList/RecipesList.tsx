@@ -7,8 +7,8 @@ import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
 import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import { RecipeListValues } from '../../Types/types';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import RecipeListValues from '../../Types/RecipeListValues';
 
 const RecipesList = () => {
   const [page, setPage] = useState(1);
