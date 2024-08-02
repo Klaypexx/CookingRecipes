@@ -2,9 +2,10 @@ import React from 'react';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
 import styles from './IngredientField.module.css';
 import BaseField from '../BaseField/BaseField';
-import AddRecipeButton from '../../Button/AddRecipeButton/AddRecipeButton';
 import closeIcon from '../../../resources/icons/close.svg';
 import IngredientFieldProps from '../../../Types/IngredientFieldProps';
+import BaseButton from '../../Button/BaseButton/BaseButton';
+import plusImg from '../../../resources/icons/plus-orange.svg';
 
 const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
@@ -54,11 +55,13 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
                   </div>
                 </div>
               ))}
-              <AddRecipeButton
+              <BaseButton
                 buttonText="Добавить заголовок"
                 className={styles.ingredientButton}
                 onClick={() => handlerCreateField(arrayHelpers)}
-              />
+              >
+                <img src={plusImg} className={styles.plusIcon} />
+              </BaseButton>
             </>
           );
         }}

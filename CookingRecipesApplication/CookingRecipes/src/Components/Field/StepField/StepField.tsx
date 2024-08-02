@@ -1,9 +1,10 @@
 import { FieldArray, FieldArrayRenderProps, ErrorMessage } from 'formik';
 import BaseField from '../BaseField/BaseField';
 import styles from './StepField.module.css';
-import AddRecipeButton from '../../Button/AddRecipeButton/AddRecipeButton';
 import closeIcon from '../../../resources/icons/close.svg';
 import StepFieldProps from '../../../Types/StepFieldProps';
+import BaseButton from '../../Button/BaseButton/BaseButton';
+import plusImg from '../../../resources/icons/plus-orange.svg';
 
 const StepField: React.FC<StepFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
@@ -44,11 +45,13 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
               </div>
             ))}
             <div className={styles.stepButtonBox}>
-              <AddRecipeButton
+              <BaseButton
                 buttonText="Добавить шаг"
                 className={styles.stepButton}
                 onClick={() => handlerCreateField(arrayHelpers)}
-              />
+              >
+                <img src={plusImg} className={styles.plusIcon} />
+              </BaseButton>
             </div>
           </>
         );

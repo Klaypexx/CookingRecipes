@@ -40,3 +40,9 @@
   width: 380px;
   margin: 0;
 }
+
+.plusIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 28px;
+}
