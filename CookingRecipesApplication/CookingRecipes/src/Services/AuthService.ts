@@ -1,6 +1,8 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import api from '../util/api';
 import TokenService from './TokenService';
+import RegisterValues from '../Types/RegisterValues';
+import LoginValues from '../Types/LoginValues';
 
 const endpoints = {
   login: '/users/login',
@@ -9,55 +11,43 @@ const endpoints = {
   logout: '/users/logout',
 };
 
-const register = async (name: string, username: string, password: string) => {
+const register = async (values: RegisterValues) => {
   try {
-    const response = await api.post(endpoints.register, {
-      name,
-      username,
-      password,
-    });
-    return { success: true, response };
+    const response: AxiosResponse<null, any> = await api.post(endpoints.register, values);
+    return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { success: false, message: error.response?.data?.message || 'Произошла ошибка при входе' };
+      return { message: error.response?.data?.message || 'Произошла ошибка при входе' };
     }
-    return { success: false, message: 'Произошла неизвестная ошибка при входе' };
+    return { message: 'Произошла неизвестная ошибка при входе' };
   }
 };
 
-const login = async (username: string, password: string) => {
+const login = async (values: LoginValues) => {
   try {
-    const response = await api.post(endpoints.login, {
-      username,
-      password,
-    });
+    const response: AxiosResponse<string, any> = await api.post(endpoints.login, values);
     if (response.data) {
       TokenService.setToken(response.data);
     }
-    return { success: true, response };
+    return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { success: false, message: error.response?.data?.message || 'Произошла ошибка при входе' };
+      return { message: error.response?.data?.message || 'Произошла ошибка при входе' };
     }
-    return { success: false, message: 'Произошла неизвестная ошибка при входе' };
+    return { message: 'Произошла неизвестная ошибка при входе' };
   }
 };
 
 const refresh = async () => {
-  const response = await api.post(endpoints.refresh);
+  const response: AxiosResponse<string, any> = await api.post(endpoints.refresh);
   if (response.data) {
     TokenService.setToken(response.data);
   }
   return response;
 };
 
-const checkAuth = async () => {
-  const response = await AuthService.refresh();
-  return response;
-};
-
 const logout = async () => {
-  const response = await api.post(endpoints.logout);
+  const response: AxiosResponse<null, any> = await api.post(endpoints.logout);
   TokenService.removeToken();
   return response;
 };
@@ -66,7 +56,6 @@ const AuthService = {
   register,
   login,
   refresh,
-  checkAuth,
   logout,
 };
 

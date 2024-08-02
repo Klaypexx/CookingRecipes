@@ -13,12 +13,7 @@ const LoginForm = () => {
   const [errorText, setErrorText] = useState('');
 
   const handleLogin = async (values: LoginValues) => {
-    const result = await AuthService.login(values.username, values.password);
-
-    if (!result.success) {
-      setErrorText(result.message);
-      return;
-    }
+    const result = await AuthService.login(values);
 
     if (result.response && result.response.status === 200) {
       successToast('Вы успешно вошли в систему!');

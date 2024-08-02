@@ -7,7 +7,7 @@ import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
 import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import RecipeListValues from '../../Types/RecipeListValues';
 
 const RecipesList = () => {
@@ -17,14 +17,14 @@ const RecipesList = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      try {
-        const response: RecipeListValues[] = await RecipeService.getAllRecipes(page);
-        if (response.length < 4) {
+      const result = await RecipeService.getAllRecipes(page);
+      if (result.response && result.response.status === 200) {
+        if (result.response.data.length < 4) {
           setIsLoad(false);
         }
-        setValues((prevValues) => [...prevValues, ...response]);
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
+        setValues((prevValues) => [...prevValues, ...result.response.data]);
+      } else {
+        throw Error(result.message);
       }
     };
     fetchRecipes();

@@ -14,12 +14,7 @@ const RegisterForm = () => {
   const [errorText, setErrorText] = useState('');
 
   const handleRegister = async (values: RegisterValues) => {
-    const result = await AuthService.register(values.name, values.username, values.password);
-
-    if (!result.success) {
-      setErrorText(result.message);
-      return;
-    }
+    const result = await AuthService.register(values);
 
     if (result.response && result.response.status === 200) {
       unsetAll();

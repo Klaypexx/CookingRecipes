@@ -4,7 +4,7 @@ import styles from './RecipeView.module.css';
 import removeIcon from '../../resources/icons/remove.svg';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { useEffect, useState } from 'react';
-import { useParams, useRouteError } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
 
@@ -18,12 +18,12 @@ const RecipeView = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      try {
-        const response: RecipeViewValues = await RecipeService.getCurrentUserRecipe(recipeId!);
-        setValues(response);
-        console.log(response);
-      } catch (error) {
-        throw new Error('Failed to fetch recipe');
+      const result = await RecipeService.getCurrentUserRecipe(recipeId!);
+
+      if (result.response && result.response.status === 200) {
+        setValues(result.response.data);
+      } else {
+        throw Error(result.message);
       }
     };
     fetchRecipes();

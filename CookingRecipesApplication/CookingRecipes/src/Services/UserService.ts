@@ -1,20 +1,25 @@
-import api from "../util/api";
+import { AxiosError, AxiosResponse } from 'axios';
+import api from '../util/api';
+import UsernameResponseValues from '../Types/UsernameResponseValues';
 
 const endpoints = {
-    username: '/users/username',
+  username: '/users/username',
 };
 
 const username = async () => {
-    const response = await api
-        .get(endpoints.username);
-    if (response.data && response.data !== undefined) {
-        return response.data;
+  try {
+    const response: AxiosResponse<UsernameResponseValues, any> = await api.get(endpoints.username);
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { message: error.response?.data?.message || 'Произошла ошибка при запросе' };
     }
-    return response.statusText;
+    return { message: 'Произошла неизвестная ошибка при запросе' };
+  }
 };
 
 const UserService = {
-    username
+  username,
 };
 
 export default UserService;

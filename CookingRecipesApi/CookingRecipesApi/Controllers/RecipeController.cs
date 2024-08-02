@@ -86,7 +86,7 @@ public class RecipeController : ControllerBase
         try
         {
             List<Recipe> recipes = await _recipeService.GetAllRecipes( page );
-            var recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
+            List<CardRecipeDto> recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
             return Ok( recipeDto );
         }
         catch ( Exception exception )

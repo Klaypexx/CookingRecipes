@@ -1,4 +1,7 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import api from '../util/api';
+import GetAllRecipesResponseValues from '../Types/GetAllRecipesResponseValues';
+import GetCurrentUserRecipeResponseValues from '../Types/GetCurrentUserRecipeResponseValues';
 
 const endpoints = {
   create: '/recipes/create',
@@ -6,8 +9,8 @@ const endpoints = {
   getCurrentRecipe: '/recipes/get/',
 };
 
-const createRecipe = async (recipeData: FormData) => {
-  const response = await api.post(endpoints.create, recipeData, {
+const createRecipe = async (values: FormData) => {
+  const response: AxiosResponse<null, any> = await api.post(endpoints.create, values, {
     headers: {
       'Content-Type': 'multipart/form-data',
       'Access-Control-Allow-Origin': '*',
@@ -20,19 +23,30 @@ const createRecipe = async (recipeData: FormData) => {
 };
 
 const getAllRecipes = async (pages: number) => {
-  const response = await api.post(endpoints.getRecipe, pages);
-  if (response.data && response.data !== undefined) {
-    return response.data;
+  try {
+    const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.post(endpoints.getRecipe, pages);
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { message: error.response?.data?.message || 'Произошла ошибка при запросе' };
+    }
+    return { message: 'Произошла неизвестная ошибка при запросе' };
   }
-  return response.statusText;
 };
 
 const getCurrentUserRecipe = async (recipeId: string) => {
-  const response = await api.post(endpoints.getCurrentRecipe + recipeId, recipeId);
-  if (response.data && response.data !== undefined) {
-    return response.data;
+  try {
+    const response: AxiosResponse<GetCurrentUserRecipeResponseValues, any> = await api.post(
+      endpoints.getCurrentRecipe + recipeId,
+      recipeId,
+    );
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { message: error.response?.data?.message || 'Произошла ошибка при запросе' };
+    }
+    return { message: 'Произошла неизвестная ошибка при запросе' };
   }
-  return response.statusText;
 };
 
 const RecipeService = {

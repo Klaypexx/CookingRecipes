@@ -16,9 +16,12 @@ const Header = () => {
   useEffect(() => {
     if (token) {
       const fetchUsername = async () => {
-        const response = await UserService.username();
-        const { userName } = response;
-        setUserName(userName);
+        const result = await UserService.username();
+        if (result.response && result.response.status === 200) {
+          setUserName(result.response.data.userName);
+        } else {
+          throw Error(result.message);
+        }
       };
       fetchUsername();
     }
