@@ -19,7 +19,7 @@ const RecipesList = () => {
     const fetchRecipes = async () => {
       const result = await RecipeService.getAllRecipes(page);
       if (result.response && result.response.status === 200) {
-        if (result.response.data.length < 4) {
+        if (!result.response.data.length) {
           setIsLoad(false);
         }
         setValues((prevValues) => [...prevValues, ...result.response.data]);

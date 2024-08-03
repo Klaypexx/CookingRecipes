@@ -6,6 +6,7 @@ import closeIcon from '../../../resources/icons/close.svg';
 import IngredientFieldProps from '../../../Types/IngredientFieldProps';
 import BaseButton from '../../Button/BaseButton/BaseButton';
 import plusImg from '../../../resources/icons/plus-orange.svg';
+import { INGREDIENTS_PRODUCT_MAX_WORDS } from '../../../Constants/recipe';
 
 const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {

@@ -3,9 +3,10 @@ import styles from './TagsField.module.css';
 import closeIcon from '../../../resources/icons/closeTag.svg';
 import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
 import TagsFieldProps from '../../../Types/TagsFieldProps';
+import { TAG_MAX_WORDS, TAGS_MAX_COUNT } from '../../../Constants/recipe';
 
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
-  const [error, setError] = useState<string | null>(null); // Локальное состояние для ошибо
+  const [error, setError] = useState<string | null>(null);
 
   const handleCreate = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -16,13 +17,13 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
       e.preventDefault();
       const inputValue = (e.target as HTMLInputElement).value.trim();
 
-      if (inputValue.length > 20) {
+      if (inputValue.length > TAG_MAX_WORDS) {
         setError('Тег не должен превышать 20 символов');
         return;
       }
 
-      if (tags.length >= 3) {
-        setError('Вы не можете добавить больше 3 тегов'); // Установка ошибки
+      if (tags.length >= TAGS_MAX_COUNT) {
+        setError('Вы не можете добавить больше 3 тегов');
         return;
       }
 
@@ -70,7 +71,7 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
                 className={styles.tagInput}
                 type="text"
                 placeholder="Добавить теги"
-                maxLength={20}
+                maxLength={TAG_MAX_WORDS}
                 onKeyDown={(event) => handleCreate(event, tags, arrayHelpers)}
               />
             </div>
