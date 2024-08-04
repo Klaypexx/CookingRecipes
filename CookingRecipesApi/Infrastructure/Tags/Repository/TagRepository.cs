@@ -11,27 +11,15 @@ public class TagRepository : ITagRepository
     {
         _entitiesTag = context.Set<Tag>();
     }
-    public async Task<List<RecipeTag>> GetOrCreateTag( List<string>? tagNames )
+    public async Task<List<Tag>> GetExistingTags( List<string> tagNames )
     {
-        if ( tagNames == null )
-        {
-            return null;
-        }
-
-        var tags = await _entitiesTag
+        return await _entitiesTag
             .Where( t => tagNames.Contains( t.Name ) )
             .ToListAsync();
+    }
 
-        var newTags = tagNames
-            .Where( name => !tags.Any( t => t.Name.ToLower() == name.ToLower() ) )
-            .Select( name => new Tag { Name = name.ToLower() } )
-            .ToList();
-
-        _entitiesTag.AddRange( newTags );
-
-        return tags
-            .Select( t => new RecipeTag { Tag = t } )
-            .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
-            .ToList();
+    public async Task CreateTags( List<Tag> newTags )
+    {
+        await _entitiesTag.AddRangeAsync( newTags );
     }
 }
