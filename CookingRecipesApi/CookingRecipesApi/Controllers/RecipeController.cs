@@ -65,9 +65,11 @@ public class RecipeController : ControllerBase
 
             int authorId = int.Parse( User.GetUserId() );
 
-            List<RecipeTag> Tags = await _tagService.GetTags( recipeDto.Tags?.Select( tagDto => tagDto.Name ).ToList() );
+            List<RecipeTag> tags = await _tagService.GetTags(
+                recipeDto.Tags?.Select( tagDto => tagDto.Name ).ToList()
+            );
 
-            await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, Tags ) );
+            await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, tags ) );
         }
         catch ( Exception exception )
         {
