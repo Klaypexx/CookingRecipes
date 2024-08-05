@@ -54,7 +54,6 @@ public class RecipeController : ControllerBase
         {
             if ( recipeDto.Avatar != null )
             {
-
                 string imagePath = Path.Combine( "images", recipeDto.Avatar.FileName );
                 string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
 
@@ -81,11 +80,12 @@ public class RecipeController : ControllerBase
     [HttpPost]
     [Route( "get" )]
     [Authorize]
-    public async Task<IActionResult> GetAllRecipes( [FromBody] int page = 1 )
+    public async Task<IActionResult> GetAllRecipes( [FromBody] int page = 1, int pageAmount = 4 )
     {
         try
         {
-            List<Recipe> recipes = await _recipeService.GetAllRecipes( page );
+            int skipRange = ( page - 1 ) * pageAmount;
+            List<Recipe> recipes = await _recipeService.GetAllRecipes( skipRange );
             List<CardRecipeDto> recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
             return Ok( recipeDto );
         }

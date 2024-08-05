@@ -18,14 +18,14 @@ public class RecipeRepository : IRecipeRepository
         await _entities.AddAsync( recipe );
     }
 
-    public async Task<List<Recipe>> GetAllRecipes( int page )
+    public async Task<List<Recipe>> GetAllRecipes( int skipRange )
     {
         return await _entities
          .Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Author )
          .OrderBy( recipe => recipe.Id )
-         .Skip( ( page - 1 ) * 4 )
+         .Skip( skipRange )
          .Take( 4 )
          .ToListAsync();
     }

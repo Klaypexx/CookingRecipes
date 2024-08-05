@@ -19,9 +19,9 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task<List<Recipe>> GetAllRecipes( int page )
+    public async Task<List<Recipe>> GetAllRecipes( int skipRange )
     {
-        return await _recipeRepository.GetAllRecipes( page );
+        return await _recipeRepository.GetAllRecipes( skipRange );
     }
 
     public async Task<Recipe> GetCurrentUserRecipe( int recipeId )
