@@ -39,7 +39,6 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Ingredients )
          .Include( recipe => recipe.Steps )
          .Include( recipe => recipe.Author )
-         .OrderBy( recipe => recipe.Id )
          .FirstOrDefaultAsync();
     }
 }
