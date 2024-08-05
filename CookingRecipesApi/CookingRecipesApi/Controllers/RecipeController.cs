@@ -77,10 +77,10 @@ public class RecipeController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
+    [HttpGet]
     [Route( "get" )]
     [Authorize]
-    public async Task<IActionResult> GetAllRecipes( [FromBody] int page = 1, int pageAmount = 4 )
+    public async Task<IActionResult> GetAllRecipes( [FromHeader] int page = 1, int pageAmount = 4 )
     {
         try
         {
@@ -96,10 +96,10 @@ public class RecipeController : ControllerBase
 
     }
 
-    [HttpPost]
-    [Route( "get/{userId}" )]
+    [HttpGet]
+    [Route( "get/{recipeId}" )]
     [Authorize]
-    public async Task<IActionResult> GetByIdWithAllDetails( [FromBody] int recipeId )
+    public async Task<IActionResult> GetByIdWithAllDetails( [FromHeader] int recipeId )
     {
         try
         {
