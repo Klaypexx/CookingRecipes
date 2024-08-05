@@ -104,7 +104,7 @@ public class RecipeController : ControllerBase
         try
         {
             Recipe recipes = await _recipeService.GetByIdWithAllDetails( recipeId );
-            var recipeDto = recipes.ToCurrentRecipeDto();
+            CurrentRecipeDto recipeDto = recipes.ToCurrentRecipeDto();
             return Ok( recipeDto );
         }
         catch ( Exception exception )
