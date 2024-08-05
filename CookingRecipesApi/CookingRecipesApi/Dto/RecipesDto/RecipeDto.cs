@@ -11,8 +11,8 @@ public class RecipeDto
     public int CookingTime { get; set; }
     [Required]
     public int Portion { get; set; }
-    public IFormFile? Avatar { get; set; }
-    public List<TagDto>? Tags { get; set; }
+    public IFormFile Avatar { get; set; }
+    public List<TagDto> Tags { get; set; }
     [Required]
     public List<IngredientDto> Ingredients { get; set; }
     [Required]

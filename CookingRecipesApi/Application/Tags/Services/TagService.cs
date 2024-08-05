@@ -9,7 +9,7 @@ public class TagService : ITagService
     {
         _tagRepository = tagRepository;
     }
-    public async Task<List<RecipeTag>> GetTags( List<string>? tagNames )
+    public async Task<List<RecipeTag>> GetTags( List<string> tagNames )
     {
         if ( tagNames == null )
         {

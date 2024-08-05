@@ -17,6 +17,6 @@ public class CurrentRecipeDto
     public List<IngredientDto> Ingredients { get; set; }
     [Required]
     public List<StepDto> Steps { get; set; }
-    public string? AvatarPath { get; set; }
-    public List<TagDto>? Tags { get; set; }
+    public string AvatarPath { get; set; }
+    public List<TagDto> Tags { get; set; }
 }

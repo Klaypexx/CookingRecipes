@@ -15,7 +15,7 @@ public static class CurrentRecipeDtoExtension
             Portion = recipe.Portion,
             AvatarPath = recipe.Avatar,
             AuthorName = recipe.Author.UserName,
-            Tags = recipe.Tags?.Select( recipeTag => new TagDto
+            Tags = recipe.Tags.Select( recipeTag => new TagDto
             {
                 Name = recipeTag.Tag.Name
             } ).ToList(),
