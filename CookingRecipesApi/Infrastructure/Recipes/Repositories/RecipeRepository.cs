@@ -30,7 +30,7 @@ public class RecipeRepository : IRecipeRepository
          .ToListAsync();
     }
 
-    public async Task<Recipe> GetCurrentUserRecipe( int recipeId )
+    public async Task<Recipe> GetByIdWithAllDetails( int recipeId )
     {
         return await _entities
          .Where( recipe => recipe.Id == recipeId )

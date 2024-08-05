@@ -99,11 +99,11 @@ public class RecipeController : ControllerBase
     [HttpPost]
     [Route( "get/{userId}" )]
     [Authorize]
-    public async Task<IActionResult> GetCurrentUserRecipe( [FromBody] int recipeId )
+    public async Task<IActionResult> GetByIdWithAllDetails( [FromBody] int recipeId )
     {
         try
         {
-            Recipe recipes = await _recipeService.GetCurrentUserRecipe( recipeId );
+            Recipe recipes = await _recipeService.GetByIdWithAllDetails( recipeId );
             var recipeDto = recipes.ToCurrentRecipeDto();
             return Ok( recipeDto );
         }

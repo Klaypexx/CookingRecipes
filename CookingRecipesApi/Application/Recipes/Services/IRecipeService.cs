@@ -5,5 +5,5 @@ public interface IRecipeService
 {
     Task CreateRcipe( Recipe recipe );
     Task<List<Recipe>> GetAllRecipes( int skipRange );
-    Task<Recipe> GetCurrentUserRecipe( int recipeId );
+    Task<Recipe> GetByIdWithAllDetails( int recipeId );
 }

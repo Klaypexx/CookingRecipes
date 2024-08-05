@@ -24,8 +24,8 @@ public class RecipeService : IRecipeService
         return await _recipeRepository.GetAllRecipes( skipRange );
     }
 
-    public async Task<Recipe> GetCurrentUserRecipe( int recipeId )
+    public async Task<Recipe> GetByIdWithAllDetails( int recipeId )
     {
-        return await _recipeRepository.GetCurrentUserRecipe( recipeId );
+        return await _recipeRepository.GetByIdWithAllDetails( recipeId );
     }
 }
