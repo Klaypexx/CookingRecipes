@@ -49,7 +49,7 @@ public class TagDtoValidator : AbstractValidator<TagDto>
     public TagDtoValidator()
     {
         RuleFor( s => s.Name )
-            .MaximumLength( 20 ).WithMessage( "Тег не должен превышать 300 символов" );
+            .MaximumLength( 20 ).WithMessage( "Тег не должен превышать 20 символов" );
     }
 }
 
