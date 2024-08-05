@@ -15,7 +15,9 @@ public class RecipeDtoValidator : AbstractValidator<RecipeDto>
             .MaximumLength( 150 ).WithMessage( "Описание не должно превышать 150 символов" );
 
         RuleFor( r => r.Avatar )
-            .Must( BeAnImage ).WithMessage( "Неподдерживаемый формат файла" );
+            .Must( IsImage )
+            .When( r => r.Avatar != null )
+            .WithMessage( "Неподдерживаемый формат файла" );
 
         RuleFor( r => r.CookingTime )
             .NotEmpty().WithMessage( "Время приготовления обязательно" );
@@ -35,11 +37,8 @@ public class RecipeDtoValidator : AbstractValidator<RecipeDto>
             .SetValidator( new IngredientDtoValidator() );
     }
 
-    private bool BeAnImage( IFormFile file )
+    private bool IsImage( IFormFile file )
     {
-        if ( file == null )
-            return true;
-
         return file.ContentType == "image/jpeg" || file.ContentType == "image/png";
     }
 }
