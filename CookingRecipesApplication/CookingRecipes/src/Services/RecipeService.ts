@@ -26,7 +26,7 @@ const createRecipe = async (values: FormData) => {
   }
 };
 
-const getAllRecipes = async (pages: number) => {
+const GetRecipesForPage = async (pages: number) => {
   try {
     const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(endpoints.getRecipe, {
       headers: {
@@ -63,7 +63,7 @@ const getCurrentUserRecipe = async (recipeId: string) => {
 
 const RecipeService = {
   createRecipe,
-  getAllRecipes,
+  GetRecipesForPage,
   getCurrentUserRecipe,
 };
 

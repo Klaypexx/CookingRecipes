@@ -81,12 +81,12 @@ public class RecipeController : ControllerBase
     [HttpGet]
     [Route( "get" )]
     [Authorize]
-    public async Task<IActionResult> GetAllRecipes( [FromHeader] int page = 1, int pageAmount = 4 )
+    public async Task<IActionResult> GetRecipesForPage( [FromHeader] int pageNumber = 1, int pageAmount = 4 )
     {
         try
         {
-            int skipRange = ( page - 1 ) * pageAmount;
-            List<Recipe> recipes = await _recipeService.GetAllRecipes( skipRange );
+            int skipRange = ( pageNumber - 1 ) * pageAmount;
+            List<Recipe> recipes = await _recipeService.GetRecipesForPage( skipRange );
             List<CardRecipeDto> recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
             return Ok( recipeDto );
         }

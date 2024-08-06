@@ -17,7 +17,7 @@ const RecipesList = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.getAllRecipes(page);
+      const result = await RecipeService.GetRecipesForPage(page);
       if (result.response && result.response.status === 200) {
         if (!result.response.data.length) {
           setIsLoad(false);

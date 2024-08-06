@@ -18,7 +18,7 @@ public class RecipeRepository : IRecipeRepository
         await _entities.AddAsync( recipe );
     }
 
-    public async Task<List<Recipe>> GetAllRecipes( int skipRange )
+    public async Task<List<Recipe>> GetRecipesForPage( int skipRange )
     {
         return await _entities
          .Include( recipe => recipe.Tags )
