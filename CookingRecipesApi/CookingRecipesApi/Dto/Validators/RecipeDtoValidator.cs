@@ -1,11 +1,16 @@
-﻿using CookingRecipesApi.Dto.RecipesDto;
+﻿using Application.Validation;
+using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
+using Infrastructure.Auth.Repositories;
 
 namespace CookingRecipesApi.Dto.Validators;
 public class RecipeDtoValidator : AbstractValidator<RecipeDto>
 {
+    private readonly FileValidationRules _fileValidationRules;
     public RecipeDtoValidator()
     {
+        _fileValidationRules = new FileValidationRules();
+
         RuleFor( r => r.Name )
             .NotEmpty().WithMessage( "Название рецепта обязательно" )
             .MaximumLength( 50 ).WithMessage( "Название не должно превышать 50 символов" );
@@ -14,8 +19,8 @@ public class RecipeDtoValidator : AbstractValidator<RecipeDto>
             .NotEmpty().WithMessage( "Описание рецепта обязательно" )
             .MaximumLength( 150 ).WithMessage( "Описание не должно превышать 150 символов" );
 
-        RuleFor( r => r.Avatar )
-            .Must( IsImage )
+        RuleFor( item => item )
+            .Must( ( item, cancellation ) => _fileValidationRules.IsImage( item.Avatar ) )
             .When( r => r.Avatar != null )
             .WithMessage( "Неподдерживаемый формат файла" );
 

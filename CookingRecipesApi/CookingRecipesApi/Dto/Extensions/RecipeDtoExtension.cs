@@ -4,13 +4,13 @@ using Domain.Recipes.Entities;
 namespace CookingRecipesApi.Dto.Extensions;
 public static class RecipeDtoExtension
 {
-    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId, List<RecipeTag> Tags )
+    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId, List<RecipeTag> Tags, string avatarGuid )
     {
         return new()
         {
             Name = recipeDto.Name,
             Description = recipeDto.Description,
-            Avatar = recipeDto.Avatar?.FileName,
+            Avatar = avatarGuid,
             CookingTime = recipeDto.CookingTime,
             Portion = recipeDto.Portion,
             AuthorId = authorId,

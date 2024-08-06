@@ -1,12 +1,9 @@
 ﻿using Application.Foundation;
 using Application.Recipes.Services;
 using Application.Tags.Services;
-using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
-using CookingRecipesApi.Dto.Validators;
 using CookingRecipesApi.Utilities;
-using Domain.Auth.Entities;
 using Domain.Recipes.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -52,15 +49,16 @@ public class RecipeController : ControllerBase
 
         try
         {
+            string avatarGuid = null;
+
             if ( recipeDto.Avatar != null )
             {
-                string imagePath = Path.Combine( "images", recipeDto.Avatar.FileName );
+                avatarGuid = Guid.NewGuid().ToString() + recipeDto.Avatar.FileName;
+                string imagePath = Path.Combine( "images", avatarGuid );
                 string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
 
-                using ( var fileStream = new FileStream( fullPath, FileMode.Create ) )
-                {
-                    await recipeDto.Avatar.CopyToAsync( fileStream );
-                }
+                using FileStream fileStream = new( fullPath, FileMode.Create );
+                await recipeDto.Avatar.CopyToAsync( fileStream );
             }
 
             int authorId = int.Parse( User.GetUserId() );
@@ -69,7 +67,7 @@ public class RecipeController : ControllerBase
                 recipeDto.Tags?.Select( tagDto => tagDto.Name ).ToList()
             );
 
-            await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, tags ) );
+            await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, tags, avatarGuid ) );
         }
         catch ( Exception exception )
         {
