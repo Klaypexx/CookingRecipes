@@ -6,17 +6,14 @@ namespace Application.Recipes.Services;
 public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    public RecipeService( IRecipeRepository recipeRepository, IUnitOfWork unitOfWork )
+    public RecipeService( IRecipeRepository recipeRepository )
     {
         _recipeRepository = recipeRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task CreateRcipe( Recipe recipe )
     {
         await _recipeRepository.CreateRecipe( recipe );
-        await _unitOfWork.Save();
     }
 
     public async Task<List<Recipe>> GetAllRecipes( int skipRange )

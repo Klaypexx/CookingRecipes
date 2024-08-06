@@ -8,12 +8,10 @@ namespace Application.Users.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public AuthService( IUserRepository userRepository, IUnitOfWork unitOfWork )
+    public AuthService( IUserRepository userRepository )
     {
         _userRepository = userRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<User> GetUserByUsername( string username )
@@ -30,6 +28,5 @@ public class AuthService : IAuthService
     {
         user.Password = PasswordHasher.GeneratePasswordHash( user.Password );
         await _userRepository.AddUser( user );
-        await _unitOfWork.Save();
     }
 }

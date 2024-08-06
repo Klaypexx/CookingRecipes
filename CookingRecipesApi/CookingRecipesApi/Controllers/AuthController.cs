@@ -59,6 +59,7 @@ public class AuthController : ControllerBase
         try
         {
             await _authService.RegisterUser( user );
+            await _unitOfWork.Save();
         }
         catch ( Exception exception )
         {

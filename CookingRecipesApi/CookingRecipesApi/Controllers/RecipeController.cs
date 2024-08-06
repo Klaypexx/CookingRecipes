@@ -68,6 +68,7 @@ public class RecipeController : ControllerBase
             );
 
             await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, tags, avatarGuid ) );
+            await _unitOfWork.Save();
         }
         catch ( Exception exception )
         {
