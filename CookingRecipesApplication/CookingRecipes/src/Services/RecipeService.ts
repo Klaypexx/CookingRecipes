@@ -10,16 +10,20 @@ const endpoints = {
 };
 
 const createRecipe = async (values: FormData) => {
-  const response: AxiosResponse<null, any> = await api.post(endpoints.create, values, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'Access-Control-Allow-Origin': '*',
-    },
-  });
-  if (response.data && response.data !== undefined) {
-    return response.data;
+  try {
+    const response: AxiosResponse<null, any> = await api.post(endpoints.create, values, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+    }
+    return { message: 'Произошла неизвестная ошибка при запросе' };
   }
-  return response.statusText;
 };
 
 const getAllRecipes = async (pages: number) => {
@@ -32,7 +36,7 @@ const getAllRecipes = async (pages: number) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.message || 'Произошла ошибка при запросе' };
+      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
     }
     return { message: 'Произошла неизвестная ошибка при запросе' };
   }
@@ -51,7 +55,7 @@ const getCurrentUserRecipe = async (recipeId: string) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.message || 'Произошла ошибка при запросе' };
+      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
     }
     return { message: 'Произошла неизвестная ошибка при запросе' };
   }

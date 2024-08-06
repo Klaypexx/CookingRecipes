@@ -36,37 +36,37 @@ const RecipeForm = () => {
   };
 
   const handleSubmit = async (values: RecipeFormValues) => {
-    try {
-      let formData = new FormData();
-      formData.append('Name', values.name);
-      formData.append('Description', values.description);
-      formData.append('CookingTime', values.cookingTime.toString());
-      formData.append('Portion', values.portion.toString());
+    let formData = new FormData();
+    formData.append('Name', values.name);
+    formData.append('Description', values.description);
+    formData.append('CookingTime', values.cookingTime.toString());
+    formData.append('Portion', values.portion.toString());
 
-      if (values.avatar) {
-        formData.append('Avatar', values.avatar);
-      }
+    if (values.avatar) {
+      formData.append('Avatar', values.avatar);
+    }
 
-      if (values.tags) {
-        values.tags.forEach((tag, index) => {
-          formData.append(`Tags[${index}].Name`, tag);
-        });
-      }
-
-      values.ingredients.forEach((ingredient, index) => {
-        formData.append(`Ingredients[${index}].Name`, ingredient.name);
-        formData.append(`Ingredients[${index}].Product`, ingredient.product);
+    if (values.tags) {
+      values.tags.forEach((tag, index) => {
+        formData.append(`Tags[${index}].Name`, tag);
       });
+    }
 
-      values.steps.forEach((step, index) => {
-        formData.append(`Steps[${index}].Description`, step.description);
-      });
+    values.ingredients.forEach((ingredient, index) => {
+      formData.append(`Ingredients[${index}].Name`, ingredient.name);
+      formData.append(`Ingredients[${index}].Product`, ingredient.product);
+    });
 
-      await RecipeService.createRecipe(formData);
+    values.steps.forEach((step, index) => {
+      formData.append(`Steps[${index}].Description`, step.description);
+    });
+
+    const result = await RecipeService.createRecipe(formData);
+    if (result.response && result.response.status === 200) {
       successToast('Рецепт успешно создан');
       navigate(location.state?.from);
-    } catch (error) {
-      console.error('Error creating recipe:', error);
+    } else {
+      throw Error(result.message);
     }
   };
 

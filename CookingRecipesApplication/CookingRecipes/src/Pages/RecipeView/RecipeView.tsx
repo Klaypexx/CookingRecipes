@@ -13,7 +13,7 @@ const RecipeView = () => {
   const { recipeId } = useParams();
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Прокрутка к началу страницы
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {

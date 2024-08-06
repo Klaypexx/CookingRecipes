@@ -44,7 +44,7 @@ public class RecipeController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( new { message = validationResult.ToString() } );
+            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
         }
 
         try
@@ -71,7 +71,7 @@ public class RecipeController : ControllerBase
         }
         catch ( Exception exception )
         {
-            return BadRequest( new { message = exception.Message } );
+            return BadRequest( new ErrorResponse( exception.Message ) );
         }
 
         return Ok();
@@ -91,7 +91,7 @@ public class RecipeController : ControllerBase
         }
         catch ( Exception exception )
         {
-            return BadRequest( new { message = exception.Message } );
+            return BadRequest( new ErrorResponse( exception.Message ) );
         }
 
     }
@@ -109,7 +109,7 @@ public class RecipeController : ControllerBase
         }
         catch ( Exception exception )
         {
-            return BadRequest( new { message = exception.Message } );
+            return BadRequest( new ErrorResponse( exception.Message ) );
         }
 
     }
