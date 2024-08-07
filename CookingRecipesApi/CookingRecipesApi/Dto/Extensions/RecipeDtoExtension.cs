@@ -1,19 +1,19 @@
 ﻿using CookingRecipesApi.Dto.RecipesDto;
-using Domain.Recipes.Entities;
+using Application.Recipes.Entities;
 
 namespace CookingRecipesApi.Dto.Extensions;
 public static class RecipeDtoExtension
 {
-    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId, List<RecipeTag> Tags, string avatarGuid )
+    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId )
     {
         return new()
         {
             Name = recipeDto.Name,
             Description = recipeDto.Description,
-            Avatar = avatarGuid,
             CookingTime = recipeDto.CookingTime,
             Portion = recipeDto.Portion,
             AuthorId = authorId,
+            Avatar = recipeDto.Avatar,
             Ingredients = recipeDto.Ingredients.Select( ingredientDto => new Ingredient
             {
                 Name = ingredientDto.Name,
@@ -23,7 +23,10 @@ public static class RecipeDtoExtension
             {
                 Description = stepDto.Description,
             } ).ToList(),
-            Tags = Tags
+            Tags = recipeDto.Tags?.Select( tagDto => new Tag
+            {
+                Name = tagDto.Name,
+            } ).ToList(),
         };
     }
 }

@@ -1,9 +1,10 @@
-﻿using Domain.Recipes.Entities;
+﻿using RecipeApplication = Application.Recipes.Entities.Recipe;
+using RecipeDomain = Domain.Recipes.Entities.Recipe;
 
 namespace Application.Recipes.Services;
 public interface IRecipeService
 {
-    Task CreateRcipe( Recipe recipe );
-    Task<List<Recipe>> GetRecipesForPage( int skipRange );
-    Task<Recipe> GetByIdWithAllDetails( int recipeId );
+    Task CreateRecipe( RecipeApplication recipe, string rootPath );
+    Task<List<RecipeDomain>> GetRecipesForPage( int skipRange );
+    Task<RecipeDomain> GetByIdWithAllDetails( int recipeId );
 }

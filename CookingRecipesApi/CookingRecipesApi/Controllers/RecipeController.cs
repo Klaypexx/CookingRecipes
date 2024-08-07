@@ -49,31 +49,9 @@ public class RecipeController : ControllerBase
 
         try
         {
-            string avatarGuid = null;
-
-            if ( recipeDto.Avatar != null )
-            {
-                avatarGuid = Guid.NewGuid().ToString() + recipeDto.Avatar.FileName;
-                string imagePath = Path.Combine( "images", avatarGuid );
-                string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
-                using FileStream fileStream = new( fullPath, FileMode.Create );
-
-                await recipeDto.Avatar.CopyToAsync( fileStream );
-            }
-
             int authorId = int.Parse( User.GetUserId() );
 
-            List<RecipeTag> tags = await _tagService.GetTags(
-                recipeDto.Tags?.Select( tagDto => tagDto.Name ).ToList()
-            );
-
-            // 1 создать вспомогательный класс, в него сохранить все что есть в дто (на уровне application)
-            // 2 создать из дто + authorId объект вспомогательного класса
-            // 3 в CreateRcipe прокинуть вспомогательный класс и путь до папки сохранения
-            // 4 на уровне application получить все данные для создания доменной сущности 
-            // 5 создать доменную сущность (посмотреть порождающие паттерны) можно создать сервис RecipeCreator и в нем всего 1 метод create()
-            await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, tags, avatarGuid ) );
-
+            await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ), _appEnvironment.WebRootPath );
 
             await _unitOfWork.Save();
         }
