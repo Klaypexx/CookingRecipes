@@ -14,6 +14,7 @@ namespace CookingRecipesApi.Controllers;
 
 [Route( "recipes" )]
 [ApiController]
+[Authorize]
 public class RecipeController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -36,7 +37,6 @@ public class RecipeController : ControllerBase
 
     [HttpPost]
     [Route( "create" )]
-    [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
 
@@ -56,8 +56,8 @@ public class RecipeController : ControllerBase
                 avatarGuid = Guid.NewGuid().ToString() + recipeDto.Avatar.FileName;
                 string imagePath = Path.Combine( "images", avatarGuid );
                 string fullPath = Path.Combine( _appEnvironment.WebRootPath, imagePath );
-
                 using FileStream fileStream = new( fullPath, FileMode.Create );
+
                 await recipeDto.Avatar.CopyToAsync( fileStream );
             }
 
@@ -67,7 +67,14 @@ public class RecipeController : ControllerBase
                 recipeDto.Tags?.Select( tagDto => tagDto.Name ).ToList()
             );
 
+            // 1 создать вспомогательный класс, в него сохранить все что есть в дто (на уровне application)
+            // 2 создать из дто + authorId объект вспомогательного класса
+            // 3 в CreateRcipe прокинуть вспомогательный класс и путь до папки сохранения
+            // 4 на уровне application получить все данные для создания доменной сущности 
+            // 5 создать доменную сущность (посмотреть порождающие паттерны) можно создать сервис RecipeCreator и в нем всего 1 метод create()
             await _recipeService.CreateRcipe( recipeDto.ToDomain( authorId, tags, avatarGuid ) );
+
+
             await _unitOfWork.Save();
         }
         catch ( Exception exception )
@@ -79,8 +86,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "get" )]
-    [Authorize]
+    [Route( "get/list/{pageNumber}" )]
     public async Task<IActionResult> GetRecipesForPage( [FromRoute] int pageNumber = 1, int pageAmount = 4 )
     {
         try
@@ -99,7 +105,6 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "get/{recipeId}" )]
-    [Authorize]
     public async Task<IActionResult> GetByIdWithAllDetails( [FromRoute] int recipeId )
     {
         try

@@ -1,4 +1,5 @@
-﻿using Domain.Auth.Entities;
+﻿using Application.Auth.Entities;
+using Domain.Auth.Entities;
 
 namespace Application.Auth.Services;
 public interface IAuthService
@@ -7,4 +8,5 @@ public interface IAuthService
     Task<User> GetUserByUsername( string username );
     Task<User> GetUserByToken( string token );
     Task<bool> IsUniqueUsername( string username );
+    Tokens SignIn( User user, int lifetime );
 }

@@ -13,6 +13,7 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
     tags: string[],
     arrayHelpers: FieldArrayRenderProps,
   ) => {
+    setError(null);
     if (e.key === 'Enter') {
       e.preventDefault();
       const inputValue = (e.target as HTMLInputElement).value.trim();
@@ -71,7 +72,7 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
                 className={styles.tagInput}
                 type="text"
                 placeholder="Добавить теги"
-                maxLength={TAG_MAX_WORDS}
+                // maxLength={TAG_MAX_WORDS}
                 onKeyDown={(event) => handleCreate(event, tags, arrayHelpers)}
               />
             </div>

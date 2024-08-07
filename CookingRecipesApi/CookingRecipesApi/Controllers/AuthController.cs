@@ -9,6 +9,7 @@ using FluentValidation.Results;
 using Application.Auth.Services;
 using Infrastructure.Auth.Utils;
 using Application.Foundation;
+using Application.Auth.Entities;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -101,13 +102,13 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Неверный пароль" ) );
         }
 
-        string jwtToken = _tokenService.GenerateJwtToken( user );
-        string refreshToken = _tokenService.GenerateRefreshToken();
-        _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
-        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
+        Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+
+        HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
+
         await _unitOfWork.Save();
 
-        return Ok( jwtToken );
+        return Ok( tokens.JwtToken );
     }
 
     [HttpPost]
@@ -127,15 +128,13 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Срок действия токена обновления истек" ) );
         }
 
-        string jwtToken = _tokenService.GenerateJwtToken( user );
-        string refreshToken = _tokenService.GenerateRefreshToken();
+        Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
-        _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
+        HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
 
-        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
         await _unitOfWork.Save();
 
-        return Ok( jwtToken );
+        return Ok( tokens.JwtToken );
     }
 
     [HttpPost]

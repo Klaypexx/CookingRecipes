@@ -1,4 +1,5 @@
-﻿using Application.Auth.Repositories;
+﻿using Application.Auth.Entities;
+using Application.Auth.Repositories;
 using Application.Auth.Services;
 using Application.Foundation;
 using Domain.Auth.Entities;
@@ -8,10 +9,12 @@ namespace Application.Users.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITokenService _tokenService;
 
-    public AuthService( IUserRepository userRepository )
+    public AuthService( IUserRepository userRepository, ITokenService tokenService )
     {
         _userRepository = userRepository;
+        _tokenService = tokenService;
     }
 
     public async Task<User> GetUserByUsername( string username )
@@ -35,5 +38,20 @@ public class AuthService : IAuthService
         User user = await _userRepository.GetByUsername( username );
 
         return user is null;
+    }
+
+    public Tokens SignIn( User user, int lifetime )
+    {
+        string jwtToken = _tokenService.GenerateJwtToken( user );
+        string refreshToken = _tokenService.GenerateRefreshToken();
+        user.SetRefreshToken( refreshToken, lifetime );
+
+        Tokens tokens = new()
+        {
+            JwtToken = jwtToken,
+            RefreshToken = refreshToken,
+        };
+
+        return tokens;
     }
 }

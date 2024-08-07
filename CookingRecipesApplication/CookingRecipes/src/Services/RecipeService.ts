@@ -5,7 +5,7 @@ import GetCurrentUserRecipeResponseValues from '../Types/GetCurrentUserRecipeRes
 
 const endpoints = {
   create: '/recipes/create',
-  getRecipe: '/recipes/get',
+  getRecipe: '/recipes/get/list/',
   getCurrentRecipe: '/recipes/get/',
 };
 
@@ -29,7 +29,7 @@ const createRecipe = async (values: FormData) => {
 const GetRecipesForPage = async (pageNumber: number) => {
   try {
     const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(
-      `${endpoints.getRecipe}?pageNumber=${pageNumber}`,
+      `${endpoints.getRecipe}${pageNumber}`,
     );
     return { response };
   } catch (error) {
