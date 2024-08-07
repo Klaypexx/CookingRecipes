@@ -15,14 +15,14 @@ public static class RecipeCreator
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
             AuthorId = recipe.AuthorId,
-            Ingredients = recipe.Ingredients.Select( ingredientDto => new Ingredient
+            Ingredients = recipe.Ingredients.Select( ingredient => new Ingredient
             {
-                Name = ingredientDto.Name,
-                Product = ingredientDto.Product
+                Name = ingredient.Name,
+                Product = ingredient.Product
             } ).ToList(),
-            Steps = recipe.Steps.Select( stepDto => new Step
+            Steps = recipe.Steps.Select( step => new Step
             {
-                Description = stepDto.Description,
+                Description = step.Description,
             } ).ToList(),
             Tags = tags
         };
