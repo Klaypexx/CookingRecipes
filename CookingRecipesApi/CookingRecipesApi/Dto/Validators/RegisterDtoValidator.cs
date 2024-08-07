@@ -6,8 +6,6 @@ using FluentValidation;
 namespace CookingRecipesApi.Dto.Validators;
 public class RegisterDtoValidator : AbstractValidator<RegisterDto>
 {
-    private readonly AuthValidationRules _authValidationRules;
-
     private const int _nameMinWords = 3;
     private const int _nameMaxWords = 25;
     private const int _usernameMinWords = 3;
@@ -17,8 +15,6 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
 
     public RegisterDtoValidator( IUserRepository userRepository )
     {
-        _authValidationRules = new AuthValidationRules( userRepository );
-
         RuleFor( registerDto => registerDto.Name )
             .MinimumLength( _nameMinWords )
             .WithMessage( "Имя пользователя должно включать не менее" + _nameMinWords + "символов" )
@@ -34,10 +30,6 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
             .WithMessage( "Логин пользователя должен включать не более" + _usernameMaxWords + "символов" )
             .NotEmpty()
             .WithMessage( "Логин пользователя не может быть пустым" );
-
-        RuleFor( item => item )
-            .MustAsync( async ( item, cancellation ) => await _authValidationRules.IsUniqueUsername( item.UserName ) )
-            .WithMessage( item => "Логин пользователя должен быть уникальным" );
 
         RuleFor( registerDto => registerDto.Password )
             .NotEmpty()

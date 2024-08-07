@@ -16,9 +16,9 @@ public class RecipeService : IRecipeService
         await _recipeRepository.CreateRecipe( recipe );
     }
 
-    public async Task<List<Recipe>> GetAllRecipes( int skipRange )
+    public async Task<List<Recipe>> GetRecipesForPage( int skipRange )
     {
-        return await _recipeRepository.GetAllRecipes( skipRange );
+        return await _recipeRepository.GetRecipesForPage( skipRange );
     }
 
     public async Task<Recipe> GetByIdWithAllDetails( int recipeId )

@@ -29,4 +29,11 @@ public class AuthService : IAuthService
         user.Password = PasswordHasher.GeneratePasswordHash( user.Password );
         await _userRepository.AddUser( user );
     }
+
+    public async Task<bool> IsUniqueUsername( string username )
+    {
+        User user = await _userRepository.GetByUsername( username );
+
+        return user is null;
+    }
 }
