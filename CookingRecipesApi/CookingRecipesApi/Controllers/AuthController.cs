@@ -102,13 +102,20 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Неверный пароль" ) );
         }
 
-        Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+        try
+        {
+            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
-        HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
+            HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
 
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
 
-        return Ok( tokens.JwtToken );
+            return Ok( tokens.JwtToken );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpPost]
@@ -128,13 +135,20 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Срок действия токена обновления истек" ) );
         }
 
-        Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+        try
+        {
+            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
-        HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
+            HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
 
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
 
-        return Ok( tokens.JwtToken );
+            return Ok( tokens.JwtToken );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpPost]
@@ -149,12 +163,18 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Токен обновления не существует" ) );
         }
 
-        user.SetRefreshToken( "", 0 );
-        await _unitOfWork.Save();
+        try
+        {
+            user.SetRefreshToken( "", 0 );
 
-        HttpContext.Response.Cookies.Delete( "refreshToken" );
+            HttpContext.Response.Cookies.Delete( "refreshToken" );
 
-        return Ok();
+            return Ok();
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
 
@@ -163,8 +183,15 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserByUsername( [FromHeader] string userName )
     {
-        User user = await _authService.GetUserByUsername( userName );
-        return Ok( user );
+        try
+        {
+            User user = await _authService.GetUserByUsername( userName );
+            return Ok( user );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpGet]
@@ -172,6 +199,14 @@ public class AuthController : ControllerBase
     [Authorize]
     public IActionResult GetUsername()
     {
-        return Ok( new UserDto() { UserName = User.GetUserName() } );
+        try
+        {
+            UserDto username = new() { UserName = User.GetUserName() };
+            return Ok( username );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 }
