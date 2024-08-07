@@ -81,7 +81,7 @@ public class RecipeController : ControllerBase
     [HttpGet]
     [Route( "get" )]
     [Authorize]
-    public async Task<IActionResult> GetRecipesForPage( [FromHeader] int pageNumber = 1, int pageAmount = 4 )
+    public async Task<IActionResult> GetRecipesForPage( [FromRoute] int pageNumber = 1, int pageAmount = 4 )
     {
         try
         {
@@ -100,7 +100,7 @@ public class RecipeController : ControllerBase
     [HttpGet]
     [Route( "get/{recipeId}" )]
     [Authorize]
-    public async Task<IActionResult> GetByIdWithAllDetails( [FromHeader] int recipeId )
+    public async Task<IActionResult> GetByIdWithAllDetails( [FromRoute] int recipeId )
     {
         try
         {

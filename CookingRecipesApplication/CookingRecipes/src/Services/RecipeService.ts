@@ -28,11 +28,9 @@ const createRecipe = async (values: FormData) => {
 
 const GetRecipesForPage = async (pageNumber: number) => {
   try {
-    const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(endpoints.getRecipe, {
-      headers: {
-        page: pageNumber,
-      },
-    });
+    const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(
+      `${endpoints.getRecipe}?pageNumber=${pageNumber}`,
+    );
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -45,12 +43,7 @@ const GetRecipesForPage = async (pageNumber: number) => {
 const getCurrentUserRecipe = async (recipeId: string) => {
   try {
     const response: AxiosResponse<GetCurrentUserRecipeResponseValues, any> = await api.get(
-      endpoints.getCurrentRecipe + recipeId,
-      {
-        headers: {
-          recipeId: recipeId,
-        },
-      },
+      `${endpoints.getCurrentRecipe}${recipeId}`,
     );
     return { response };
   } catch (error) {

@@ -49,9 +49,9 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
         }
 
-        bool isUnique = await _authService.IsUniqueUsername( body.UserName );
+        bool isUniqueUserName = await _authService.IsUniqueUsername( body.UserName );
 
-        if ( !isUnique )
+        if ( !isUniqueUserName )
         {
             return BadRequest( new ErrorResponse( "Логин пользователя должен быть уникальным" ) );
         }
