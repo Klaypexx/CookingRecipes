@@ -11,13 +11,13 @@ import { NavLink } from 'react-router-dom';
 import RecipeListValues from '../../Types/RecipeListValues';
 
 const RecipesList = () => {
-  const [page, setPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [isLoad, setIsLoad] = useState(true);
   const [values, setValues] = useState<RecipeListValues[]>([]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipesForPage(page);
+      const result = await RecipeService.GetRecipesForPage(pageNumber);
       if (result.response && result.response.status === 200) {
         if (!result.response.data.length) {
           setIsLoad(false);
@@ -28,14 +28,14 @@ const RecipesList = () => {
       }
     };
     fetchRecipes();
-  }, [page]);
+  }, [pageNumber]);
 
   const handleSubmit = () => {
     return;
   };
 
   const handleClick = () => {
-    setPage((page) => page + 1);
+    setPageNumber((pageNumber) => pageNumber + 1);
   };
 
   return (

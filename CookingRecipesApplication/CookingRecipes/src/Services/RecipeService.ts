@@ -26,11 +26,11 @@ const createRecipe = async (values: FormData) => {
   }
 };
 
-const GetRecipesForPage = async (pages: number) => {
+const GetRecipesForPage = async (pageNumber: number) => {
   try {
     const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(endpoints.getRecipe, {
       headers: {
-        page: pages,
+        page: pageNumber,
       },
     });
     return { response };
