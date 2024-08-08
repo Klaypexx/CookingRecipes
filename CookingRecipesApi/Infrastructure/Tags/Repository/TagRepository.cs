@@ -22,4 +22,20 @@ public class TagRepository : ITagRepository
     {
         await _entities.AddRangeAsync( newTags );
     }
+
+    public async Task<List<Tag>> GetTagsToDelete( List<int> tagsId, int recipeId )
+    {
+        List<Tag> tags = await _entities
+        .Where( t => tagsId.Contains( t.Id ) )
+        .Include( t => t.Recipes )
+        .ToListAsync();
+
+        List<Tag> tagsToDelete = tags.Where( t => t.Recipes.Count( r => r.RecipeId != recipeId ) == 0 ).ToList();
+        return tagsToDelete;
+    }
+
+    public void RemoveTags( List<Tag> tags )
+    {
+        _entities.RemoveRange( tags );
+    }
 }

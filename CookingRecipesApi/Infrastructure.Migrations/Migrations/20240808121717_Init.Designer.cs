@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240805121030_Init-Migration")]
-    partial class InitMigration
+    [Migration("20240808121717_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,7 +301,8 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("Tags")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Recipes.Entities.Tag", "Tag")
                         .WithMany("Recipes")

@@ -8,14 +8,21 @@ namespace Infrastructure.Recipes.Repositories;
 public class RecipeRepository : IRecipeRepository
 {
     private readonly DbSet<Recipe> _entities;
+    private readonly DbSet<Tag> _entitiesTag;
 
     public RecipeRepository( AppDbContext context )
     {
         _entities = context.Set<Recipe>();
+        _entitiesTag = context.Set<Tag>();
     }
     public async Task CreateRecipe( Recipe recipe )
     {
         await _entities.AddAsync( recipe );
+    }
+
+    public void RemoveRecipe( Recipe recipe )
+    {
+        _entities.Remove( recipe );
     }
 
     public async Task<List<Recipe>> GetRecipesForPage( int skipRange )
@@ -40,5 +47,13 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Steps )
          .Include( recipe => recipe.Author )
          .FirstOrDefaultAsync();
+    }
+
+    public async Task<Recipe> GetByIdWithTag( int recipeId )
+    {
+        return await _entities
+            .Where( recipe => recipe.Id == recipeId )
+            .Include( recipe => recipe.Tags )
+            .FirstOrDefaultAsync();
     }
 }

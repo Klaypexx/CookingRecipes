@@ -298,7 +298,8 @@ namespace Infrastructure.Migrations.Migrations
                 {
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("Tags")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Recipes.Entities.Tag", "Tag")
                         .WithMany("Recipes")

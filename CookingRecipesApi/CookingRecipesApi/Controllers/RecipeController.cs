@@ -54,13 +54,32 @@ public class RecipeController : ControllerBase
             await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ), _appEnvironment.WebRootPath );
 
             await _unitOfWork.Save();
+
+            return Ok();
         }
         catch ( Exception exception )
         {
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
 
-        return Ok();
+    }
+
+    [HttpDelete]
+    [Route( "delete/{recipeId}" )]
+    public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
+    {
+        try
+        {
+            await _recipeService.RemoveRecipe( recipeId );
+
+            await _unitOfWork.Save();
+
+            return Ok();
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpGet]

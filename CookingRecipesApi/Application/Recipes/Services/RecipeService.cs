@@ -44,6 +44,21 @@ public class RecipeService : IRecipeService
         await _recipeRepository.CreateRecipe( recipe.Create( tags, avatarGuid ) );
     }
 
+    public async Task RemoveRecipe( int recipeId )
+    {
+        RecipeDomain recipe = await GetByIdWithTag( recipeId );
+        List<int> tagsId = recipe.Tags?.Select( tag => tag.TagId ).ToList();
+        if ( tagsId?.Count > 0 )
+        {
+            List<Tag> tagsToDelete = await _tagService.GetTagsToDelete( tagsId, recipeId );
+            if ( tagsToDelete?.Count > 0 )
+            {
+                _tagService.RemoveTags( tagsToDelete );
+            }
+        }
+        _recipeRepository.RemoveRecipe( recipe );
+    }
+
     public async Task<List<RecipeDomain>> GetRecipesForPage( int skipRange )
     {
         return await _recipeRepository.GetRecipesForPage( skipRange );
@@ -52,5 +67,10 @@ public class RecipeService : IRecipeService
     public async Task<RecipeDomain> GetByIdWithAllDetails( int recipeId )
     {
         return await _recipeRepository.GetByIdWithAllDetails( recipeId );
+    }
+
+    public async Task<RecipeDomain> GetByIdWithTag( int recipeId )
+    {
+        return await _recipeRepository.GetByIdWithTag( recipeId );
     }
 }

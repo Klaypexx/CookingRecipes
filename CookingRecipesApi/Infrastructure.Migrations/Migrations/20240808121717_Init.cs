@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -148,7 +148,8 @@ namespace Infrastructure.Migrations.Migrations
                         name: "FK_recipe_tag_recipe_id_recipe",
                         column: x => x.id_recipe,
                         principalTable: "recipe",
-                        principalColumn: "id_recipe");
+                        principalColumn: "id_recipe",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_recipe_tag_tag_id_tag",
                         column: x => x.id_tag,

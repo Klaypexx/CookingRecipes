@@ -4,13 +4,16 @@ import styles from './RecipeView.module.css';
 import removeIcon from '../../resources/icons/remove.svg';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
+import { successToast } from '../../Components/Toast/Toast';
 
 const RecipeView = () => {
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,11 +32,22 @@ const RecipeView = () => {
     fetchRecipes();
   }, []);
 
+  const handleRemove = async () => {
+    const result = await RecipeService.removeRecipe(recipeId!);
+
+    if (result.response && result.response.status === 200) {
+      successToast('Рецепт успешно удален');
+      navigate(location.state?.from);
+    } else {
+      throw Error(result.message);
+    }
+  };
+
   return (
     <section className={styles.recipeView}>
       <Subheader backward headerText={values?.name}>
         <div className={styles.buttonBox}>
-          <button className={styles.removeRecipe}>
+          <button className={styles.removeRecipe} onClick={handleRemove}>
             <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
           </button>
           <BaseButton primary buttonText="Редактировать" className={styles.editBtn} />

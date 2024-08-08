@@ -5,6 +5,7 @@ import GetCurrentUserRecipeResponseValues from '../Types/GetCurrentUserRecipeRes
 
 const endpoints = {
   create: '/recipes/create',
+  remove: '/recipes/delete/',
   getRecipe: '/recipes/get/list/',
   getCurrentRecipe: '/recipes/get/',
 };
@@ -17,6 +18,18 @@ const createRecipe = async (values: FormData) => {
         'Access-Control-Allow-Origin': '*',
       },
     });
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+    }
+    return { message: 'Произошла неизвестная ошибка при запросе' };
+  }
+};
+
+const removeRecipe = async (recipeId: string) => {
+  try {
+    const response: AxiosResponse<null, any> = await api.delete(`${endpoints.remove}${recipeId}`);
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -56,6 +69,7 @@ const getCurrentUserRecipe = async (recipeId: string) => {
 
 const RecipeService = {
   createRecipe,
+  removeRecipe,
   GetRecipesForPage,
   getCurrentUserRecipe,
 };

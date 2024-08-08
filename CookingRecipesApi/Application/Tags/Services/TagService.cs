@@ -30,4 +30,14 @@ public class TagService : ITagService
             .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
             .ToList();
     }
+
+    public async Task<List<Tag>> GetTagsToDelete( List<int> tagsId, int recipeId )
+    {
+        return await _tagRepository.GetTagsToDelete( tagsId, recipeId );
+    }
+
+    public void RemoveTags( List<Tag> tags )
+    {
+        _tagRepository.RemoveTags( tags );
+    }
 }
