@@ -11,12 +11,12 @@ import { IMAGE_URL } from '../../../Constants/httpUrl';
 const CardField = () => {
   const { setFieldValue, initialValues } = useFormikContext<RecipeFormValues>();
   const [file, setFile] = useState<File | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState(initialValues.avatarUrl);
+  const [avatarPath, setAvatarPath] = useState(initialValues.avatarPath);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const selectedFile = event.currentTarget.files[0];
-      setAvatarUrl(undefined);
+      setAvatarPath(undefined);
       setFile(selectedFile);
       setFieldValue('avatar', selectedFile);
     }
@@ -26,9 +26,9 @@ const CardField = () => {
     <div className={styles.cardContainer}>
       <div className={styles.cardBackground}></div>
       <div className={styles.cardPhoto}>
-        {(file || avatarUrl) && (
+        {(file || avatarPath) && (
           <img
-            src={file ? URL.createObjectURL(file) : IMAGE_URL + avatarUrl}
+            src={file ? URL.createObjectURL(file) : IMAGE_URL + avatarPath}
             alt="avatar"
             className={styles.avatarImage}
           />

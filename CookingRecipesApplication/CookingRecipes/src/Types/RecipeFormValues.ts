@@ -2,8 +2,10 @@ export default interface RecipeFormValues {
   name: string;
   description: string;
   avatar?: File | null;
-  avatarUrl?: string | undefined;
-  tags?: string[];
+  avatarPath?: string | undefined;
+  tags?: Array<{
+    name: string;
+  }>;
   cookingTime: number;
   portion: number;
   steps: Array<{

@@ -45,7 +45,7 @@ const RecipeView = () => {
 
   return (
     <section className={styles.recipeView}>
-      <Subheader backward headerText={values?.name}>
+      <Subheader backward headerText={values?.name} navigation="/recipes">
         <div className={styles.buttonBox}>
           <button className={styles.removeRecipe} onClick={handleRemove}>
             <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
@@ -72,7 +72,7 @@ const RecipeView = () => {
         <div className={styles.stepsContainer}>
           {values?.steps.map((step, index) => (
             <div key={index} className={styles.stepBox}>
-              <p className={styles.stepHeader}>Шаг {index}</p>
+              <p className={styles.stepHeader}>Шаг {index + 1}</p>
               <div className={styles.stepTextBox}>
                 <p className={styles.stepText}>{step.description}</p>
               </div>

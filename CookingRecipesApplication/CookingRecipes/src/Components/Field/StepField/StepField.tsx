@@ -22,7 +22,9 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
     <FieldArray
       name={name}
       render={(arrayHelpers: FieldArrayRenderProps) => {
-        const steps = arrayHelpers.form.values[name] || [];
+        const steps: Array<{
+          description: string;
+        }> = arrayHelpers.form.values[name] || [];
         return (
           <>
             {steps.map((step: { description: string }, index: number) => (

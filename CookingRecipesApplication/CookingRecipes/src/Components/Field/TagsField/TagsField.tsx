@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import styles from './TagsField.module.css';
 import closeIcon from '../../../resources/icons/closeTag.svg';
-import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
+import { ErrorMessage, FieldArray, FieldArrayRenderProps, useFormikContext } from 'formik';
 import TagsFieldProps from '../../../Types/TagsFieldProps';
 import { TAG_MAX_WORDS, TAGS_MAX_COUNT } from '../../../Constants/recipe';
+import RecipeFormValues from '../../../Types/RecipeFormValues';
 
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
   const [error, setError] = useState<string | null>(null);
+  const { setFieldValue } = useFormikContext<RecipeFormValues>();
 
   const handleCreate = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    tags: string[],
+    tags: Array<{
+      name: string;
+    }>,
     arrayHelpers: FieldArrayRenderProps,
   ) => {
     setError(null);
@@ -28,13 +32,13 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
         return;
       }
 
-      if (tags.some((tag: string) => tag.toLowerCase() === inputValue.toLowerCase())) {
+      if (tags.some((tag) => tag.name.toLowerCase() === inputValue.toLowerCase())) {
         setError('Этот тег уже существует');
         return;
       }
 
       if (inputValue) {
-        arrayHelpers.push(inputValue);
+        arrayHelpers.push({ name: inputValue });
         (e.target as HTMLInputElement).value = '';
         setError(null);
       }
@@ -50,15 +54,16 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
     <FieldArray
       name={name}
       render={(arrayHelpers: FieldArrayRenderProps) => {
-        const tags: string[] = arrayHelpers.form.values[name] || [];
-
+        const tags: Array<{
+          name: string;
+        }> = arrayHelpers.form.values[name] || [];
         return (
           <div className={styles.tagsFieldBox}>
             <div className={styles.tagsContainer}>
               {tags.length > 0
                 ? tags.map((tag, index: number) => (
                     <div key={index} className={styles.tag}>
-                      <span className={styles.name}>{tag}</span>
+                      <span className={styles.name}>{tag.name}</span>
                       <img
                         src={closeIcon}
                         alt="closeIcon"
@@ -72,7 +77,6 @@ const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
                 className={styles.tagInput}
                 type="text"
                 placeholder="Добавить теги"
-                // maxLength={TAG_MAX_WORDS}
                 onKeyDown={(event) => handleCreate(event, tags, arrayHelpers)}
               />
             </div>

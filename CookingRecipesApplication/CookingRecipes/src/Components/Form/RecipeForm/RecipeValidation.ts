@@ -24,7 +24,11 @@ const recipeValidation = Yup.object().shape({
   cookingTime: Yup.number().required('Обязетальное поле').min(1, 'Укажите количество минут'),
   portion: Yup.number().required('Обязетальное поле').min(1, 'Укажите количество порций'),
   tags: Yup.array()
-    .of(Yup.string().max(TAG_MAX_WORDS, `Тег не должен превышать ${TAG_MAX_WORDS} символов`))
+    .of(
+      Yup.object().shape({
+        name: Yup.string().max(TAG_MAX_WORDS, `Тег не должен превышать ${TAG_MAX_WORDS} символов`),
+      }),
+    )
     .max(TAGS_MAX_COUNT, `Не более ${TAGS_MAX_COUNT} тегов`),
   steps: Yup.array()
     .of(

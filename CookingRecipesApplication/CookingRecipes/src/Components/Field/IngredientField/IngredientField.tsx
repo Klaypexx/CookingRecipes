@@ -6,7 +6,6 @@ import closeIcon from '../../../resources/icons/close.svg';
 import IngredientFieldProps from '../../../Types/IngredientFieldProps';
 import BaseButton from '../../Button/BaseButton/BaseButton';
 import plusImg from '../../../resources/icons/plus-orange.svg';
-import { INGREDIENTS_PRODUCT_MAX_WORDS } from '../../../Constants/recipe';
 
 const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
@@ -25,7 +24,10 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
       <FieldArray
         name={name}
         render={(arrayHelpers: FieldArrayRenderProps) => {
-          const ingredients = arrayHelpers.form.values[name] || [];
+          const ingredients: Array<{
+            name: string;
+            product: string;
+          }> = arrayHelpers.form.values[name] || [];
           return (
             <>
               {ingredients.map((ingredient: { name: string; product: string }, index: number) => (

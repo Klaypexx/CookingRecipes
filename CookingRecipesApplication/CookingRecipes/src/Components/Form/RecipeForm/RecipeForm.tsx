@@ -21,15 +21,14 @@ interface RecipeFormProps {
 const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage, headerText }) => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const initialValues: RecipeFormValues = values
     ? values
     : {
         name: '',
         description: '',
         avatar: undefined,
-        avatarUrl: '../../../resources/img/headerPreview.png',
-        tags: [],
+        avatarPath: undefined,
+        tags: undefined,
         cookingTime: 0,
         portion: 0,
         steps: [
@@ -58,7 +57,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage,
 
     if (values.tags) {
       values.tags.forEach((tag, index) => {
-        formData.append(`Tags[${index}].Name`, tag);
+        formData.append(`Tags[${index}].Name`, tag.name);
       });
     }
 
