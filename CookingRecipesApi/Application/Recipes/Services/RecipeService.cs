@@ -47,10 +47,11 @@ public class RecipeService : IRecipeService
     public async Task RemoveRecipe( int recipeId )
     {
         RecipeDomain recipe = await GetByIdWithTag( recipeId );
-        List<int> tagsId = recipe.Tags?.Select( tag => tag.TagId ).ToList();
+        List<int>? tagsId = recipe.Tags?.Select( tag => tag.TagId ).ToList();
         if ( tagsId?.Count > 0 )
         {
-            List<Tag> tagsToDelete = await _tagService.GetTagsToDelete( tagsId, recipeId );
+            List<Tag> tags = await _tagService.GetTagsByIdWithRecipes( tagsId );
+            List<Tag> tagsToDelete = await _tagService.GetTagsToDelete( tags, recipeId );
             if ( tagsToDelete?.Count > 0 )
             {
                 _tagService.RemoveTags( tagsToDelete );
