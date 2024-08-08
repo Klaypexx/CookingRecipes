@@ -3,7 +3,7 @@ import headerPreview from '../../resources/img/headerPreview.png';
 import BaseLink from '../Link/BaseLink/BaseLink';
 import useModalStore from '../../Stores/useModalStore';
 import TokenService from '../../Services/TokenService';
-import AddRecipeLink from '../Link/AddRecipeLink/AddRecipeLink';
+import plusImg from '../../resources/icons/plus-white.svg';
 
 const Preview = () => {
   const { isLogin, setLogin } = useModalStore();
@@ -21,7 +21,9 @@ const Preview = () => {
             Никаких кулинарных книг и блокнотов! Храни все любимые рецепты в одном месте.
           </p>
           <div className={styles.links}>
-            <AddRecipeLink />
+            <BaseLink primary navigation="/recipes/create" linkText="Добавить рецепт">
+              <img src={plusImg} className={styles.plus} />
+            </BaseLink>
             {token ? null : <BaseLink newStyle={{ width: '216px' }} linkText="Войти" onClick={handleLogin}></BaseLink>}
           </div>
         </div>

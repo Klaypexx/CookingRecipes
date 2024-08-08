@@ -7,7 +7,7 @@ import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
 import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import RecipeListValues from '../../Types/RecipeListValues';
 
 const RecipesList = () => {
@@ -51,9 +51,9 @@ const RecipesList = () => {
       </div>
       <div className={styles.recipesListBlock}>
         {values.map((value, index) => (
-          <NavLink key={index} to={`/recipes/${value.id}`} state={{ from: location.pathname }}>
+          <Link key={index} to={`/recipes/${value.id}`} state={{ from: location.pathname }}>
             <BaseCard props={value} />
-          </NavLink>
+          </Link>
         ))}
       </div>
       {isLoad ? (

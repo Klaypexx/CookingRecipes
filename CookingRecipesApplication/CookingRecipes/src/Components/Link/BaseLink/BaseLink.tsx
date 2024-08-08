@@ -4,10 +4,10 @@ import styles from './BaseLink.module.css';
 import classNames from 'classnames';
 import LinkProps from '../../../Types/LinkProps';
 
-const BaseLink: React.FC<LinkProps> = ({ primary, navigation, newStyle, linkText, onClick, children }) => {
-  const classList = classNames(primary ? undefined : styles.linkSecondary, styles.baseLink);
+const BaseLink: React.FC<LinkProps> = ({ primary, navigation, newStyle, className, linkText, onClick, children }) => {
+  const LinkclassName = classNames(primary ? undefined : styles.linkSecondary, styles.baseLink);
 
-  const textClassList = classNames(primary ? styles.textPrimary : styles.textSecondary, styles.baseText);
+  const textClassName = classNames(primary ? styles.textPrimary : styles.textSecondary, styles.baseText);
 
   const styleList = {
     ...newStyle,
@@ -18,12 +18,12 @@ const BaseLink: React.FC<LinkProps> = ({ primary, navigation, newStyle, linkText
     <Link
       to={navigation ? navigation : location.pathname}
       state={{ from: location.pathname }}
-      className={classList}
+      className={classNames(LinkclassName, className)}
       style={styleList}
       onClick={onClick}
     >
       {children}
-      {linkText ? <p className={textClassList}>{linkText}</p> : null}
+      {linkText ? <p className={textClassName}>{linkText}</p> : null}
     </Link>
   );
 };

@@ -6,6 +6,7 @@ import CreateRecipe from '../Pages/CreateRecipe/CreateRecipe';
 import RecipesList from '../Pages/RecipesList/RecipesList';
 import RecipeView from '../Pages/RecipeView/RecipeView';
 import ErrorPage from '../Pages/ErrorPage/ErrorPage';
+import EditRecipe from '../Pages/EditRecipe/EditRecipe';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <RecipeView />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'recipes/edit/:recipeId',
+        element: (
+          <ProtectedRoute>
+            <EditRecipe />
           </ProtectedRoute>
         ),
       },

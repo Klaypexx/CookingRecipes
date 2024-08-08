@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import styles from './Subheader.module.css';
 import arrow from '../../resources/icons/backward-arrow.svg';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SubheaderProps from '../../Types/SubheaderProps';
 
 const Subheader: React.FC<SubheaderProps> = ({ backward, headerText, children }) => {
@@ -13,10 +13,10 @@ const Subheader: React.FC<SubheaderProps> = ({ backward, headerText, children })
     <div className={classList}>
       {backward && (
         <div className={styles.backwardContainer}>
-          <NavLink to={location.state?.from} state={{ from: location.pathname }} className={styles.backwardBox}>
+          <Link to={location.state?.from} state={{ from: location.pathname }} className={styles.backwardBox}>
             <img src={arrow} alt="backward arrow" className={styles.arrow} />
             <p className={styles.backwardText}>Назад</p>
-          </NavLink>
+          </Link>
         </div>
       )}
       <div className={styles.subheadBox}>

@@ -1,4 +1,3 @@
-import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import Subheader from '../../Components/Subheader/Subheader';
 import styles from './RecipeView.module.css';
 import removeIcon from '../../resources/icons/remove.svg';
@@ -8,6 +7,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
+import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 
 const RecipeView = () => {
   const [values, setValues] = useState<RecipeViewValues>();
@@ -50,7 +50,12 @@ const RecipeView = () => {
           <button className={styles.removeRecipe} onClick={handleRemove}>
             <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
           </button>
-          <BaseButton primary buttonText="Редактировать" className={styles.editBtn} />
+          <BaseLink
+            primary
+            linkText="Редактировать"
+            className={styles.editBtn}
+            navigation={`/recipes/edit/${recipeId}`}
+          />
         </div>
       </Subheader>
       <BaseCard props={values} />

@@ -5,23 +5,34 @@ import styles from './CardField.module.css';
 import { ErrorMessage, useFormikContext } from 'formik';
 import cloudDownload from '../../../resources/icons/cloud-download.svg';
 import { COOKING_TIMES, DESCRIPTION_MAX_WORDS, PORTION_COUNT } from '../../../Constants/recipe';
+import RecipeFormValues from '../../../Types/RecipeFormValues';
+import { IMAGE_URL } from '../../../Constants/httpUrl';
 
 const CardField = () => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, initialValues } = useFormikContext<RecipeFormValues>();
   const [file, setFile] = useState<File | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState(initialValues.avatarUrl);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const selectedFile = event.currentTarget.files[0];
+      setAvatarUrl(undefined);
       setFile(selectedFile);
-      setFieldValue('avatar', selectedFile); // Store the file directly
+      setFieldValue('avatar', selectedFile);
     }
   };
+
   return (
     <div className={styles.cardContainer}>
       <div className={styles.cardBackground}></div>
       <div className={styles.cardPhoto}>
-        {file && <img src={URL.createObjectURL(file)} alt="avatar" className={styles.avatarImage} />}
+        {(file || avatarUrl) && (
+          <img
+            src={file ? URL.createObjectURL(file) : IMAGE_URL + avatarUrl}
+            alt="avatar"
+            className={styles.avatarImage}
+          />
+        )}
         <input
           type="file"
           name="avatar"

@@ -27,6 +27,23 @@ const createRecipe = async (values: FormData) => {
   }
 };
 
+const editRecipe = async (values: FormData) => {
+  try {
+    const response: AxiosResponse<null, any> = await api.put(endpoints.create, values, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+    }
+    return { message: 'Произошла неизвестная ошибка при запросе' };
+  }
+};
+
 const removeRecipe = async (recipeId: string) => {
   try {
     const response: AxiosResponse<null, any> = await api.delete(`${endpoints.remove}${recipeId}`);
@@ -69,6 +86,7 @@ const getCurrentUserRecipe = async (recipeId: string) => {
 
 const RecipeService = {
   createRecipe,
+  editRecipe,
   removeRecipe,
   GetRecipesForPage,
   getCurrentUserRecipe,

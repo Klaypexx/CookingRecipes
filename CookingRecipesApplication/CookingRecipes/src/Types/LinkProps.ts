@@ -5,6 +5,7 @@ export default interface LinkProps {
   primary?: boolean;
   navigation?: string;
   newStyle?: CSSProperties;
+  className?: string;
   linkText?: string;
   onClick?: () => void;
   children?: React.ReactNode;

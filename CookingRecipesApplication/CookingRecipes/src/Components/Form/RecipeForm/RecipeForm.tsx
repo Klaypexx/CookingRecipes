@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import RecipeService from '../../../Services/RecipeService';
 import { successToast } from '../../Toast/Toast';
 import styles from './RecipeForm.module.css';
 import BaseForm from '../BaseForm/BaseForm';
@@ -10,30 +9,41 @@ import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
 import recipeValidation from './RecipeValidation';
 import RecipeFormValues from '../../../Types/RecipeFormValues';
+import { AxiosResponse } from 'axios';
 
-const RecipeForm = () => {
+interface RecipeFormProps {
+  onSubmit: (formData: FormData) => Promise<{ response?: AxiosResponse; message?: string }>;
+  values?: RecipeFormValues;
+  toastMessage: string;
+  headerText: string;
+}
+
+const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage, headerText }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const initialValues: RecipeFormValues = {
-    name: '',
-    description: '',
-    avatar: undefined,
-    tags: [],
-    cookingTime: 0,
-    portion: 0,
-    steps: [
-      {
-        description: '',
-      },
-    ],
-    ingredients: [
-      {
+  const initialValues: RecipeFormValues = values
+    ? values
+    : {
         name: '',
-        product: '',
-      },
-    ],
-  };
+        description: '',
+        avatar: undefined,
+        avatarUrl: '../../../resources/img/headerPreview.png',
+        tags: [],
+        cookingTime: 0,
+        portion: 0,
+        steps: [
+          {
+            description: '',
+          },
+        ],
+        ingredients: [
+          {
+            name: '',
+            product: '',
+          },
+        ],
+      };
 
   const handleSubmit = async (values: RecipeFormValues) => {
     let formData = new FormData();
@@ -61,9 +71,9 @@ const RecipeForm = () => {
       formData.append(`Steps[${index}].Description`, step.description);
     });
 
-    const result = await RecipeService.createRecipe(formData);
+    const result = await onSubmit(formData);
     if (result.response && result.response.status === 200) {
-      successToast('Рецепт успешно создан');
+      successToast(toastMessage);
       navigate(location.state?.from);
     } else {
       throw Error(result.message);
@@ -72,7 +82,7 @@ const RecipeForm = () => {
 
   return (
     <BaseForm initialValues={initialValues} validationSchema={recipeValidation} onSubmit={handleSubmit}>
-      <Subheader backward headerText="Добавить новый рецепт">
+      <Subheader backward headerText={headerText}>
         <BaseButton primary type="submit" buttonText="Добавить рецепт" />
       </Subheader>
       <CardField />
