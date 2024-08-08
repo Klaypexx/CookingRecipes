@@ -24,10 +24,8 @@ public class RecipeService : IRecipeService
 
         if ( recipe.Avatar != null )
         {
-            avatarGuid = Guid.NewGuid().ToString() + recipe.Avatar.FileName;
-            string imagePath = Path.Combine( "images", avatarGuid );
-            string fullPath = Path.Combine( rootPath, imagePath );
-            using FileStream fileStream = new( fullPath, FileMode.Create );
+            avatarGuid = Guid.NewGuid().ToString() + Path.GetExtension( recipe.Avatar.FileName );
+            using FileStream fileStream = ImageService.CreateImage( avatarGuid, rootPath );
 
             await recipe.Avatar.CopyToAsync( fileStream );
         }
@@ -44,13 +42,20 @@ public class RecipeService : IRecipeService
         await _recipeRepository.CreateRecipe( recipe.Create( tags, avatarGuid ) );
     }
 
-    public async Task RemoveRecipe( int recipeId )
+    public async Task RemoveRecipe( int recipeId, string rootPath )
     {
         RecipeDomain recipe = await GetByIdWithTag( recipeId );
+
         if ( recipe.Tags != null )
         {
             await _tagService.RemoveTags( recipeId );
         }
+
+        if ( recipe.Avatar != null )
+        {
+            ImageService.RemoveImage( recipe.Avatar, rootPath );
+        }
+
         _recipeRepository.RemoveRecipe( recipe );
     }
 

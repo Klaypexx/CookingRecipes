@@ -61,7 +61,24 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
+    }
 
+    [HttpPut]
+    [Route( "update" )]
+    public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto )
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+
+            await _unitOfWork.Save();
+
+            return Ok();
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpDelete]
@@ -70,7 +87,7 @@ public class RecipeController : ControllerBase
     {
         try
         {
-            await _recipeService.RemoveRecipe( recipeId );
+            await _recipeService.RemoveRecipe( recipeId, _appEnvironment.WebRootPath );
 
             await _unitOfWork.Save();
 
