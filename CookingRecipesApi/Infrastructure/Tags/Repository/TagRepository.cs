@@ -18,18 +18,14 @@ public class TagRepository : ITagRepository
             .ToListAsync();
     }
 
-    public async Task<List<Tag>> GetTagsByIdWithRecipes( List<int> tagsId )
+    public async Task<List<Tag>> GetTagsByIdWithRecipes( int recipeId )
     {
         return await _entities
-        .Where( t => tagsId.Contains( t.Id ) )
-        .Include( t => t.Recipes )
-        .ToListAsync();
+            .Include( t => t.Recipes )
+            .Where( t => t.Recipes.Any( t => t.RecipeId == recipeId ) )
+            .ToListAsync();
     }
 
-    public async Task<List<Tag>> GetTagsToDelete( List<Tag> tags, int recipeId )
-    {
-        return tags.Where( t => t.Recipes.Count( r => r.RecipeId != recipeId ) == 0 ).ToList(); ;
-    }
     public async Task CreateTags( List<Tag> newTags )
     {
         await _entities.AddRangeAsync( newTags );

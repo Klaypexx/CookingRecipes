@@ -31,18 +31,18 @@ public class TagService : ITagService
             .ToList();
     }
 
-    public async Task<List<Tag>> GetTagsByIdWithRecipes( List<int> tagsId )
+    public async Task<List<Tag>> GetTagsByIdWithRecipes( int recipeId )
     {
-        return await _tagRepository.GetTagsByIdWithRecipes( tagsId );
+        return await _tagRepository.GetTagsByIdWithRecipes( recipeId );
     }
 
-    public async Task<List<Tag>> GetTagsToDelete( List<Tag> tags, int recipeId )
+    public async Task RemoveTags( int recipeId )
     {
-        return await _tagRepository.GetTagsToDelete( tags, recipeId );
-    }
-
-    public void RemoveTags( List<Tag> tags )
-    {
-        _tagRepository.RemoveTags( tags );
+        List<Tag> tags = await GetTagsByIdWithRecipes( recipeId );
+        List<Tag> tagsToDelete = tags.Where( tag => tag?.Recipes.Count( r => r.RecipeId != recipeId ) == 0 ).ToList();
+        if ( tagsToDelete?.Count > 0 )
+        {
+            _tagRepository.RemoveTags( tagsToDelete );
+        }
     }
 }
