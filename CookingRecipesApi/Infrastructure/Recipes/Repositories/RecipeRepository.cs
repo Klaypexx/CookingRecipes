@@ -8,12 +8,10 @@ namespace Infrastructure.Recipes.Repositories;
 public class RecipeRepository : IRecipeRepository
 {
     private readonly DbSet<Recipe> _entities;
-    private readonly DbSet<Tag> _entitiesTag;
 
     public RecipeRepository( AppDbContext context )
     {
         _entities = context.Set<Recipe>();
-        _entitiesTag = context.Set<Tag>();
     }
     public async Task CreateRecipe( Recipe recipe )
     {

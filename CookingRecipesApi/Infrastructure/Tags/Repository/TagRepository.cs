@@ -11,7 +11,7 @@ public class TagRepository : ITagRepository
     {
         _entities = context.Set<Tag>();
     }
-    public async Task<List<Tag>> GetExistingTags( List<string> tagNames )
+    public async Task<List<Tag>> GetExistingTagsByName( List<string> tagNames )
     {
         return await _entities
             .Where( t => tagNames.Contains( t.Name ) )

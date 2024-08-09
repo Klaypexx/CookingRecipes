@@ -5,6 +5,8 @@ using Application.Tags.Services;
 using Domain.Recipes.Entities;
 using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
+using TagApplication = Application.Recipes.Entities.Tag;
+using TagDomain = Domain.Recipes.Entities.Tag;
 using IngredientDomain = Domain.Recipes.Entities.Ingredient;
 using StepDomain = Domain.Recipes.Entities.Step;
 using Application.Foundation;
@@ -22,6 +24,8 @@ public class RecipeService : IRecipeService
 
     public async Task CreateRecipe( RecipeApplication recipe, string rootPath )
     {
+        List<string>? tagsName = recipe.Tags?.Select( r => r.Name ).ToList();
+
         string avatarGuid = null;
 
         if ( recipe.Avatar != null )
@@ -36,9 +40,19 @@ public class RecipeService : IRecipeService
 
         if ( recipe.Tags != null )
         {
-            tags = await _tagService.GetTags(
-                recipe.Tags.Select( tag => tag.Name ).ToList()
-            );
+            List<TagDomain> oldTags = await _tagService.GetExistingTagsByName( tagsName );
+
+            List<TagDomain> newTags = tagsName
+            .Where( name => !oldTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
+            .Select( name => new TagDomain { Name = name.ToLower() } )
+            .ToList();
+
+            await _tagService.CreateTags( newTags );
+
+            tags = oldTags
+            .Select( t => new RecipeTag { Tag = t } )
+            .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
+            .ToList();
         }
 
         await _recipeRepository.CreateRecipe( recipe.Create( tags, avatarGuid ) );
@@ -47,6 +61,9 @@ public class RecipeService : IRecipeService
     public async Task UpdateRecipe( RecipeApplication recipe, int recipeId, string rootPath )
     {
         RecipeDomain recipeDb = await GetByIdWithAllDetails( recipeId );
+
+        List<string>? newTagsName = recipe.Tags?.Select( r => r.Name ).ToList();
+        List<string>? oldTagsName = recipeDb.Tags?.Select( r => r.Tag.Name ).ToList();
 
         //Avatar
         string avatarGuid = null;
@@ -70,15 +87,27 @@ public class RecipeService : IRecipeService
         if ( recipe.Tags != null )
         {
             List<string> tagsNameToDelete = recipeDb.Tags
-            .Where( tag => !recipe.Tags.Select( r => r.Name ).Contains( tag.Tag.Name ) )
+            .Where( tag => !newTagsName.Contains( tag.Tag.Name ) )
             .Select( tag => tag.Tag.Name )
             .ToList();
 
             await _tagService.RemoveTags( recipeId, tagsNameToDelete );
 
-            tags = await _tagService.GetTags(
-                recipe.Tags.Select( tag => tag.Name ).ToList()
-            );
+            List<TagDomain> oldTags = await _tagService.GetExistingTagsByName( newTagsName );
+
+            List<TagDomain> newTags = newTagsName
+            .Where( name => !oldTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
+            .Select( name => new TagDomain { Name = name.ToLower() } )
+            .ToList();
+
+            await _tagService.CreateTags( newTags );
+
+            tags = newTags.Select( t => new RecipeTag { Tag = t } )
+                .ToList();
+        }
+        else
+        {
+            await _tagService.RemoveTags( recipeId, oldTagsName );
         }
 
         //RecipeUpdate
@@ -86,7 +115,7 @@ public class RecipeService : IRecipeService
         recipeDb.Description = recipe.Description;
         recipeDb.CookingTime = recipe.CookingTime;
         recipeDb.Portion = recipe.Portion;
-        recipeDb.Avatar = avatarGuid;
+        recipeDb.Avatar = recipe.Avatar != null ? avatarGuid : recipeDb.Avatar;
         recipeDb.Ingredients = recipe.Ingredients.Select( ingredientDto => new IngredientDomain
         {
             Name = ingredientDto.Name,
