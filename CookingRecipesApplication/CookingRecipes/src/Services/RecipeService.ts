@@ -5,6 +5,7 @@ import GetCurrentUserRecipeResponseValues from '../Types/GetCurrentUserRecipeRes
 
 const endpoints = {
   create: '/recipes/create',
+  update: '/recipes/update/',
   remove: '/recipes/delete/',
   getRecipe: '/recipes/get/list/',
   getCurrentRecipe: '/recipes/get/',
@@ -27,9 +28,9 @@ const createRecipe = async (values: FormData) => {
   }
 };
 
-const editRecipe = async (values: FormData) => {
+const editRecipe = async (values: FormData, recipeId: string) => {
   try {
-    const response: AxiosResponse<null, any> = await api.put(endpoints.create, values, {
+    const response: AxiosResponse<null, any> = await api.put(`${endpoints.update}${recipeId}`, values, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*',

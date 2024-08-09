@@ -4,6 +4,6 @@ namespace Application.Tags.Services;
 public interface ITagService
 {
     Task<List<RecipeTag>> GetTags( List<string> tagNames );
-    Task<List<Tag>> GetTagsByIdWithRecipes( int recipeId );
-    Task RemoveTags( int recipeId );
+    Task<List<Tag>> GetTagsByNameWithRecipes( List<string> tagsName );
+    Task RemoveTags( int recipeId, List<string> tagsName );
 }

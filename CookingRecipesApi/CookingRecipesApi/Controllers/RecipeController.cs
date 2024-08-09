@@ -64,12 +64,14 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPut]
-    [Route( "update" )]
-    public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto )
+    [Route( "update/{recipeId}" )]
+    public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
         try
         {
             int authorId = int.Parse( User.GetUserId() );
+
+            await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId, _appEnvironment.WebRootPath );
 
             await _unitOfWork.Save();
 

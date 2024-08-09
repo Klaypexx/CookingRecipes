@@ -20,6 +20,11 @@ public class RecipeRepository : IRecipeRepository
         await _entities.AddAsync( recipe );
     }
 
+    public void UpdateRecipe( Recipe recipe )
+    {
+        _entities.Update( recipe );
+    }
+
     public void RemoveRecipe( Recipe recipe )
     {
         _entities.Remove( recipe );
@@ -54,6 +59,7 @@ public class RecipeRepository : IRecipeRepository
         return await _entities
             .Where( recipe => recipe.Id == recipeId )
             .Include( recipe => recipe.Tags )
+            .ThenInclude( tag => tag.Tag )
             .FirstOrDefaultAsync();
     }
 }

@@ -31,14 +31,14 @@ public class TagService : ITagService
             .ToList();
     }
 
-    public async Task<List<Tag>> GetTagsByIdWithRecipes( int recipeId )
+    public async Task<List<Tag>> GetTagsByNameWithRecipes( List<string> tagsName )
     {
-        return await _tagRepository.GetTagsByIdWithRecipes( recipeId );
+        return await _tagRepository.GetTagsByNameWithRecipes( tagsName );
     }
 
-    public async Task RemoveTags( int recipeId )
+    public async Task RemoveTags( int recipeId, List<string> tagsName )
     {
-        List<Tag> tags = await GetTagsByIdWithRecipes( recipeId );
+        List<Tag> tags = await GetTagsByNameWithRecipes( tagsName );
         List<Tag> tagsToDelete = tags.Where( tag => tag?.Recipes.Count( r => r.RecipeId != recipeId ) == 0 ).ToList();
         if ( tagsToDelete?.Count > 0 )
         {
