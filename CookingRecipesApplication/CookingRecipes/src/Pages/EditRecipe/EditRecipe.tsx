@@ -21,11 +21,15 @@ const EditRecipe = () => {
     fetchRecipes();
   }, []);
 
+  const handleEditRecipe = async (formData: FormData) => {
+    return await RecipeService.editRecipe(formData, recipeId!);
+  };
+
   return (
     <section className={styles.formSection}>
       {values && (
         <RecipeForm
-          onSubmit={RecipeService.editRecipe}
+          onSubmit={handleEditRecipe}
           toastMessage="Рецепт успешно обновлен"
           headerText="Редактировать рецепт"
           values={values}

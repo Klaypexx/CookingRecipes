@@ -7,13 +7,14 @@ using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using IngredientDomain = Domain.Recipes.Entities.Ingredient;
 using StepDomain = Domain.Recipes.Entities.Step;
+using Application.Foundation;
 
 namespace Application.Recipes.Services;
 public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
-    public RecipeService( IRecipeRepository recipeRepository, ITagService tagService )
+    public RecipeService( IRecipeRepository recipeRepository, ITagService tagService, IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
