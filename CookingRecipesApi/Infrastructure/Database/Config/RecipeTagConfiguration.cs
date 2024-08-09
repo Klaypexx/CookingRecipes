@@ -20,7 +20,8 @@ public class RecipeTagConfiguration : IEntityTypeConfiguration<RecipeTag>
 
         builder.HasOne( x => x.Recipe )
             .WithMany( x => x.Tags )
-            .HasForeignKey( x => x.RecipeId );
+            .HasForeignKey( x => x.RecipeId )
+            .OnDelete( DeleteBehavior.Cascade );
 
         builder.HasOne( x => x.Tag )
             .WithMany( x => x.Recipes )

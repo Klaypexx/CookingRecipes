@@ -148,9 +148,8 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("avatar");
 
-                    b.Property<TimeOnly?>("CookingTime")
-                        .IsRequired()
-                        .HasColumnType("time")
+                    b.Property<int>("CookingTime")
+                        .HasColumnType("int")
                         .HasColumnName("time");
 
                     b.Property<string>("Description")
@@ -163,8 +162,7 @@ namespace Infrastructure.Migrations.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
-                    b.Property<int?>("Portion")
-                        .IsRequired()
+                    b.Property<int>("Portion")
                         .HasColumnType("int")
                         .HasColumnName("portion");
 
@@ -209,10 +207,6 @@ namespace Infrastructure.Migrations.Migrations
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("id_recipe");
-
-                    b.Property<int>("StepNumber")
-                        .HasColumnType("int")
-                        .HasColumnName("step_number");
 
                     b.HasKey("Id");
 
@@ -305,8 +299,7 @@ namespace Infrastructure.Migrations.Migrations
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("Tags")
                         .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Recipes.Entities.Tag", "Tag")
                         .WithMany("Recipes")

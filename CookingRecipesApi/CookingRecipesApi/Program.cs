@@ -1,13 +1,20 @@
 using Application.Auth.Repositories;
 using Application.Auth.Services;
 using Application.Foundation;
+using Application.Recipes.Repositories;
+using Application.Recipes.Services;
+using Application.Tags.Repositories;
+using Application.Tags.Services;
 using Application.Users.Services;
 using CookingRecipesApi.Auth;
 using CookingRecipesApi.Dto.AuthDto;
+using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
 using Infrastructure.Auth.Repositories;
 using Infrastructure.Database;
 using Infrastructure.Foundation;
+using Infrastructure.Recipes.Repositories;
+using Infrastructure.Tags.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,10 +26,14 @@ IServiceCollection services = builder.Services;
 
 // Add services to the container.
 services.AddScoped<IAuthService, AuthService>();
+services.AddScoped<IRecipeService, RecipeService>();
+services.AddScoped<ITagService, TagService>();
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<ITokenService, TokenService>();
 
 services.AddScoped<IUserRepository, UserRepository>();
+services.AddScoped<IRecipeRepository, RecipeRepository>();
+services.AddScoped<ITagRepository, TagRepository>();
 
 AuthSettings authSettings = configuration.GetSection( "Auth" ).Get<AuthSettings>();
 services.AddScoped( sp => authSettings );
@@ -32,6 +43,9 @@ services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connection
 
 services.AddValidatorsFromAssemblyContaining<RegisterDto>();
 services.AddValidatorsFromAssemblyContaining<LoginDto>();
+services.AddValidatorsFromAssemblyContaining<RecipeDto>();
+services.AddValidatorsFromAssemblyContaining<StepDto>();
+services.AddValidatorsFromAssemblyContaining<IngredientDto>();
 
 services.AddControllers();
 
@@ -85,6 +99,7 @@ if ( app.Environment.IsDevelopment() )
 app.UseHttpsRedirection();
 
 app.UseCors( "MyPolicy" );
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

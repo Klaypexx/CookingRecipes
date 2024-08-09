@@ -6,5 +6,4 @@ public interface ITokenService
 {
     string GenerateJwtToken( User user );
     string GenerateRefreshToken();
-    void SetRefreshTokenInsideCookie( string refreshToken, HttpContext context );
 }

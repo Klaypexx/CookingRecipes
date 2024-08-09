@@ -14,10 +14,6 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
         builder.Property( a => a.Id )
             .HasColumnName( "id_step" );
 
-        builder.Property( x => x.StepNumber )
-           .HasColumnName( "step_number" )
-           .IsRequired( true );
-
         builder.Property( x => x.Description )
            .HasColumnName( "description" )
            .IsRequired( true );

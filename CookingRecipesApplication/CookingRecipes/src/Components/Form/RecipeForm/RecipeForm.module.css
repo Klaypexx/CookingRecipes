@@ -1,0 +1,12 @@
+.mainContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 106px;
+}
+
+.baseErrorStyle {
+  color: rgba(37, 41, 45, 0.3);
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 700;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from '../BaseLink/BaseLink';
 import styles from './LinkBlock.module.css';
-import { LinkBlockProps } from '../../../Types/types';
+import LinkBlockProps from '../../../Types/LinkBlockProps';
 
 const LinkBlock: React.FC<LinkBlockProps> = ({
   linkPrimaryText,

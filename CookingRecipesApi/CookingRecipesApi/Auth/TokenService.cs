@@ -42,7 +42,7 @@ public class TokenService : ITokenService
 
     public string GenerateRefreshToken()
     {
-        var randomNumber = new byte[ 32 ];
+        byte[] randomNumber = new byte[ 32 ];
         RandomNumberGenerator rng = RandomNumberGenerator.Create();
         rng.GetBytes( randomNumber );
         return Convert.ToBase64String( randomNumber );
@@ -51,16 +51,5 @@ public class TokenService : ITokenService
     public static SymmetricSecurityKey GetSymmetricSecurityKey( string key )
     {
         return new SymmetricSecurityKey( Encoding.ASCII.GetBytes( key ) );
-    }
-
-    public void SetRefreshTokenInsideCookie( string refreshToken, HttpContext context )
-    {
-        context.Response.Cookies.Append( "refreshToken", refreshToken,
-            new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddDays( _authSettings.RefreshLifeTime ),
-                HttpOnly = true,
-                SameSite = SameSiteMode.Strict
-            } );
     }
 }
