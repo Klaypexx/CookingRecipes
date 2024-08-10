@@ -10,5 +10,4 @@ public interface IRecipeTagRepository
 {
     Task<List<RecipeTag>> GetRecipeTagsByRecipeIdAndTagIds( int recipeId, List<int> tagsId );
     void RemoveConnections( List<RecipeTag> recipeTag );
-    Task CreateConnections( List<RecipeTag> recipeTag );
 }

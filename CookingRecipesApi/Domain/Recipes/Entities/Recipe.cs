@@ -16,4 +16,22 @@ public class Recipe
     public List<Step> Steps { get; set; }
     public User Author { get; set; }
     public List<FavouriteRecipe> FavouriteRecipes { get; set; }
+    public void UpdateRecipe( Recipe newRecipe )
+    {
+        Name = newRecipe.Name;
+        Description = newRecipe.Description;
+        CookingTime = newRecipe.CookingTime;
+        Portion = newRecipe.Portion;
+        Avatar = newRecipe.Avatar;
+        Ingredients = newRecipe.Ingredients.Select( ingredientDto => new Ingredient
+        {
+            Name = ingredientDto.Name,
+            Product = ingredientDto.Product
+        } ).ToList();
+        Steps = newRecipe.Steps.Select( stepDto => new Step
+        {
+            Description = stepDto.Description,
+        } ).ToList();
+        Tags = newRecipe.Tags;
+    }
 }

@@ -21,15 +21,4 @@ public class RecipeTagService : IRecipeTagService
 
         _recipeTagRepository.RemoveConnections( recipeTags );
     }
-
-    public async Task CreateConnections( int recipeId, List<int> tagsId )
-    {
-        List<RecipeTag> recipeTags = tagsId.Select( tagId => new RecipeTag
-        {
-            RecipeId = recipeId,
-            TagId = tagId
-        } ).ToList();
-
-        await _recipeTagRepository.CreateConnections( recipeTags );
-    }
 }

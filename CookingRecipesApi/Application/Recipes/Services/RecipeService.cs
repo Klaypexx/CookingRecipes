@@ -30,7 +30,7 @@ public class RecipeService : IRecipeService
     {
         List<string>? tagsName = recipe.Tags?.Select( r => r.Name ).ToList();
 
-        string avatarGuid = null;
+        string? avatarGuid = null;
 
         if ( recipe.Avatar != null )
         {
@@ -40,7 +40,7 @@ public class RecipeService : IRecipeService
             await recipe.Avatar.CopyToAsync( fileStream );
         }
 
-        List<RecipeTag> tags = null;
+        List<RecipeTag>? tags = null;
 
         if ( recipe.Tags != null )
         {
@@ -62,87 +62,77 @@ public class RecipeService : IRecipeService
         await _recipeRepository.CreateRecipe( recipe.Create( tags, avatarGuid ) );
     }
 
-    public async Task UpdateRecipe( RecipeApplication recipe, int recipeId, string rootPath )
+    public async Task UpdateRecipe( RecipeApplication newRecipe, int recipeId, string rootPath )
     {
-        RecipeDomain recipeDb = await GetByIdWithAllDetails( recipeId );
+        RecipeDomain oldRecipe = await GetByIdWithAllDetails( recipeId );
 
-        List<string>? newTagsName = recipe.Tags?.Select( r => r.Name ).ToList();
+        List<string>? newTagsName = newRecipe.Tags?.Select( r => r.Name ).ToList();
+        List<string>? oldTagName = oldRecipe.Tags?.Select( r => r.Tag.Name ).ToList();
 
         //Avatar
-        string avatarGuid = null;
+        string? avatarGuid = null;
 
-        if ( recipe.Avatar != null )
+        if ( newRecipe.Avatar != null )
         {
-            if ( recipeDb.Avatar != null )
+            if ( oldRecipe.Avatar != null )
             {
-                ImageService.RemoveImage( recipeDb.Avatar, rootPath );
+                ImageService.RemoveImage( oldRecipe.Avatar, rootPath );
             }
 
-            avatarGuid = Guid.NewGuid().ToString() + Path.GetExtension( recipe.Avatar.FileName );
+            avatarGuid = Guid.NewGuid().ToString() + Path.GetExtension( newRecipe.Avatar.FileName );
             using FileStream fileStream = ImageService.CreateImage( avatarGuid, rootPath );
 
-            await recipe.Avatar.CopyToAsync( fileStream );
+            await newRecipe.Avatar.CopyToAsync( fileStream );
+        }
+        else
+        {
+            avatarGuid = oldRecipe.Avatar;
         }
 
         //Tags
 
         //Удаление тегов
-        List<int> tagsIdToDelete = recipeDb.Tags
+        List<int>? tagsIdToDelete = oldRecipe.Tags?
         .Where( tag => newTagsName?.Contains( tag.Tag.Name ) != true )
         .Select( tag => tag.Tag.Id )
         .ToList();
 
-        if ( tagsIdToDelete.Count != 0 )
+        if ( tagsIdToDelete?.Count != 0 )
         {
-            await _recipeTagService.RemoveConnections( recipeDb.Id, tagsIdToDelete );
+            await _recipeTagService.RemoveConnections( oldRecipe.Id, tagsIdToDelete );
 
             await _tagService.RemoveTags( recipeId, tagsIdToDelete );
-
-
         }
 
         // Создание новых тегов/Установка связей
-        if ( recipe.Tags != null )
+        List<RecipeTag>? tags = new List<RecipeTag>();
+
+        if ( newRecipe.Tags != null )
         {
-            List<TagDomain> existingTags = await _tagService.GetTagsByNames( newTagsName );
 
-            if ( existingTags != null )
-            {
-                await _recipeTagService.CreateConnections( recipeId, existingTags.Select( tag => tag.Id ).ToList() );
-            }
+            // Добавление тегов которые уже есть в базе данных, при этом которые еще не имеют свящей с нашим рецептом
+            List<TagDomain>? existingTags = await _tagService.GetTagsByNames( newTagsName );
 
+            List<TagDomain>? existingTagsWithoutOldNames = existingTags?.Where( t => oldTagName?.Contains( t.Name ) != true ).ToList();
+
+            // Добавление новых тегов, которых еще нет в базе данных
+            List<TagDomain>? newTags = newTagsName
+                .Where( name => existingTags?.Any( t => t.Name.ToLower() == name.ToLower() ) != true )
+                .Select( name => new TagDomain { Name = name.ToLower() } )
+                .ToList();
+
+            await _tagService.CreateTags( newTags );
+
+            tags = existingTagsWithoutOldNames?
+           .Select( t => new RecipeTag { Tag = t } )
+           .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
+           .ToList();
         }
 
-        /*List<TagDomain>? newTags = newTagsName
-        .Where( name => existingTags?.Any( t => t.Name.ToLower() == name.ToLower() ) != true )
-        .Select( name => new TagDomain { Name = name.ToLower() } )
-        .ToList();
-
-        List<RecipeTag>? tags = newTags?.Select( t => new RecipeTag { Tag = t } ).ToList(); ;
-
-        if ( newTags != null )
-        {
-            await _tagService.CreateTags( newTags ); // добавляем новые теги сразу со связбю к рецепту
-        }*/
-
         //RecipeUpdate
-        recipeDb.Name = recipe.Name;
-        recipeDb.Description = recipe.Description;
-        recipeDb.CookingTime = recipe.CookingTime;
-        recipeDb.Portion = recipe.Portion;
-        recipeDb.Avatar = recipe.Avatar != null ? avatarGuid : recipeDb.Avatar;
-        recipeDb.Ingredients = recipe.Ingredients.Select( ingredientDto => new IngredientDomain
-        {
-            Name = ingredientDto.Name,
-            Product = ingredientDto.Product
-        } ).ToList();
-        recipeDb.Steps = recipe.Steps.Select( stepDto => new StepDomain
-        {
-            Description = stepDto.Description,
-        } ).ToList();
-        /*recipeDb.Tags = tags;*/
+        oldRecipe.UpdateRecipe( newRecipe.Create( tags, avatarGuid ) );
 
-        _recipeRepository.UpdateRecipe( recipeDb );
+        _recipeRepository.UpdateRecipe( oldRecipe );
     }
 
     public async Task RemoveRecipe( int recipeId, string rootPath )

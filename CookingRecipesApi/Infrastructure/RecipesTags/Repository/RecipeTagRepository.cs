@@ -27,9 +27,4 @@ public class RecipeTagRepository : IRecipeTagRepository
     {
         _entities.RemoveRange( recipeTag );
     }
-
-    public async Task CreateConnections( List<RecipeTag> recipeTag )
-    {
-        await _entities.AddRangeAsync( recipeTag );
-    }
 }
