@@ -15,9 +15,9 @@ public class TagService : ITagService
         await _tagRepository.CreateTags( newTags );
     }
 
-    public async Task<List<Tag>> GetExistingTagsByName( List<string> tagNames )
+    public async Task<List<Tag>> GetTagsByNames( List<string> tagNames )
     {
-        return await _tagRepository.GetExistingTagsByName( tagNames );
+        return await _tagRepository.GetTagsByNames( tagNames );
     }
 
     public async Task<List<Tag>> GetTagsByNameWithRecipes( List<string> tagsName )

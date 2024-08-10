@@ -40,16 +40,16 @@ public class RecipeService : IRecipeService
 
         if ( recipe.Tags != null )
         {
-            List<TagDomain> oldTags = await _tagService.GetExistingTagsByName( tagsName );
+            List<TagDomain> existingTags = await _tagService.GetTagsByNames( tagsName );
 
             List<TagDomain> newTags = tagsName
-            .Where( name => !oldTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
+            .Where( name => !existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
             .Select( name => new TagDomain { Name = name.ToLower() } )
             .ToList();
 
             await _tagService.CreateTags( newTags );
 
-            tags = oldTags
+            tags = existingTags
             .Select( t => new RecipeTag { Tag = t } )
             .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
             .ToList();
@@ -82,10 +82,10 @@ public class RecipeService : IRecipeService
         }
 
         //Tags
-        List<RecipeTag> tags = null;
 
         if ( recipe.Tags != null )
         {
+            //Удаление тегов
             List<string> tagsNameToDelete = recipeDb.Tags
             .Where( tag => !newTagsName.Contains( tag.Tag.Name ) )
             .Select( tag => tag.Tag.Name )
@@ -93,17 +93,17 @@ public class RecipeService : IRecipeService
 
             await _tagService.RemoveTags( recipeId, tagsNameToDelete );
 
-            List<TagDomain> oldTags = await _tagService.GetExistingTagsByName( newTagsName );
+
+            //Добавление новых тегов
+            List<TagDomain> existingTags = await _tagService.GetTagsByNames( newTagsName );
 
             List<TagDomain> newTags = newTagsName
-            .Where( name => !oldTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
-            .Select( name => new TagDomain { Name = name.ToLower() } )
-            .ToList();
+                 .Where( name => !existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
+                 // тут должна создаться связь рецепта и тега за счет добавления id рецепта, но запись жутко выглядит, надо рефакторить
+                 .Select( name => new TagDomain { Name = name.ToLower(), Recipes = new() { new() { RecipeId = recipeId } } } )
+                 .ToList();
 
             await _tagService.CreateTags( newTags );
-
-            tags = newTags.Select( t => new RecipeTag { Tag = t } )
-                .ToList();
         }
         else
         {
@@ -125,7 +125,6 @@ public class RecipeService : IRecipeService
         {
             Description = stepDto.Description,
         } ).ToList();
-        recipeDb.Tags = tags;
 
         _recipeRepository.UpdateRecipe( recipeDb );
     }
