@@ -5,6 +5,6 @@ public interface ITagService
 {
     Task CreateTags( List<Tag> newTags );
     Task<List<Tag>> GetTagsByNames( List<string> tagNames );
-    Task<List<Tag>> GetTagsByNameWithRecipes( List<string> tagsName );
-    Task RemoveTags( int recipeId, List<string> tagsName );
+    Task<List<Tag>> GetTagsByIdWithRecipes( List<int> tagsId );
+    Task RemoveTags( int recipeId, List<int> tagsId );
 }

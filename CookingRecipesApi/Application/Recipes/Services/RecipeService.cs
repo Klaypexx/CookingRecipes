@@ -10,16 +10,20 @@ using TagDomain = Domain.Recipes.Entities.Tag;
 using IngredientDomain = Domain.Recipes.Entities.Ingredient;
 using StepDomain = Domain.Recipes.Entities.Step;
 using Application.Foundation;
+using Application.RecipesTags.Services;
+using Application.Tags.Repositories;
 
 namespace Application.Recipes.Services;
 public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
-    public RecipeService( IRecipeRepository recipeRepository, ITagService tagService, IUnitOfWork unitOfWork )
+    private readonly IRecipeTagService _recipeTagService;
+    public RecipeService( IRecipeRepository recipeRepository, ITagService tagService, IRecipeTagService recipeTagService, IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
+        _recipeTagService = recipeTagService;
     }
 
     public async Task CreateRecipe( RecipeApplication recipe, string rootPath )
@@ -63,7 +67,6 @@ public class RecipeService : IRecipeService
         RecipeDomain recipeDb = await GetByIdWithAllDetails( recipeId );
 
         List<string>? newTagsName = recipe.Tags?.Select( r => r.Name ).ToList();
-        List<string>? oldTagsName = recipeDb.Tags?.Select( r => r.Tag.Name ).ToList();
 
         //Avatar
         string avatarGuid = null;
@@ -83,32 +86,44 @@ public class RecipeService : IRecipeService
 
         //Tags
 
+        //Удаление тегов
+        List<int> tagsIdToDelete = recipeDb.Tags
+        .Where( tag => newTagsName?.Contains( tag.Tag.Name ) != true )
+        .Select( tag => tag.Tag.Id )
+        .ToList();
+
+        if ( tagsIdToDelete.Count != 0 )
+        {
+            await _recipeTagService.RemoveConnections( recipeDb.Id, tagsIdToDelete );
+
+            await _tagService.RemoveTags( recipeId, tagsIdToDelete );
+
+
+        }
+
+        // Создание новых тегов/Установка связей
         if ( recipe.Tags != null )
         {
-            //Удаление тегов
-            List<string> tagsNameToDelete = recipeDb.Tags
-            .Where( tag => !newTagsName.Contains( tag.Tag.Name ) )
-            .Select( tag => tag.Tag.Name )
-            .ToList();
-
-            await _tagService.RemoveTags( recipeId, tagsNameToDelete );
-
-
-            //Добавление новых тегов
             List<TagDomain> existingTags = await _tagService.GetTagsByNames( newTagsName );
 
-            List<TagDomain> newTags = newTagsName
-                 .Where( name => !existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
-                 // тут должна создаться связь рецепта и тега за счет добавления id рецепта, но запись жутко выглядит, надо рефакторить
-                 .Select( name => new TagDomain { Name = name.ToLower(), Recipes = new() { new() { RecipeId = recipeId } } } )
-                 .ToList();
+            if ( existingTags != null )
+            {
+                await _recipeTagService.CreateConnections( recipeId, existingTags.Select( tag => tag.Id ).ToList() );
+            }
 
-            await _tagService.CreateTags( newTags );
         }
-        else
+
+        /*List<TagDomain>? newTags = newTagsName
+        .Where( name => existingTags?.Any( t => t.Name.ToLower() == name.ToLower() ) != true )
+        .Select( name => new TagDomain { Name = name.ToLower() } )
+        .ToList();
+
+        List<RecipeTag>? tags = newTags?.Select( t => new RecipeTag { Tag = t } ).ToList(); ;
+
+        if ( newTags != null )
         {
-            await _tagService.RemoveTags( recipeId, oldTagsName );
-        }
+            await _tagService.CreateTags( newTags ); // добавляем новые теги сразу со связбю к рецепту
+        }*/
 
         //RecipeUpdate
         recipeDb.Name = recipe.Name;
@@ -125,6 +140,7 @@ public class RecipeService : IRecipeService
         {
             Description = stepDto.Description,
         } ).ToList();
+        /*recipeDb.Tags = tags;*/
 
         _recipeRepository.UpdateRecipe( recipeDb );
     }
@@ -135,7 +151,7 @@ public class RecipeService : IRecipeService
 
         if ( recipe.Tags != null )
         {
-            await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Name ).ToList() );
+            await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Id ).ToList() );
         }
 
         if ( recipe.Avatar != null )

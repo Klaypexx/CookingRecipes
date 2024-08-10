@@ -18,10 +18,10 @@ public class TagRepository : ITagRepository
             .ToListAsync();
     }
 
-    public async Task<List<Tag>> GetTagsByNameWithRecipes( List<string> tagsName )
+    public async Task<List<Tag>> GetTagsByIdWithRecipes( List<int> tagsId )
     {
         return await _entities
-        .Where( t => tagsName.Contains( t.Name ) )
+        .Where( t => tagsId.Contains( t.Id ) )
         .Include( t => t.Recipes )
         .ToListAsync();
     }
