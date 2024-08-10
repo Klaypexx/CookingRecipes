@@ -1,9 +1,7 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { successToast } from '../../Toast/Toast';
 import styles from './RecipeForm.module.css';
 import BaseForm from '../BaseForm/BaseForm';
-import Subheader from '../../Subheader/Subheader';
-import BaseButton from '../../Button/BaseButton/BaseButton';
 import CardField from '../../Field/CardField/CardField';
 import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
@@ -12,13 +10,12 @@ import RecipeFormValues from '../../../Types/RecipeFormValues';
 import { AxiosResponse } from 'axios';
 
 interface RecipeFormProps {
-  onSubmit: (formData: FormData) => Promise<{ response?: AxiosResponse; message?: string }>;
+  onSubmit: (formData: FormData, recipeId?: string) => Promise<{ response?: AxiosResponse; message?: string }>;
   values?: RecipeFormValues;
   toastMessage: string;
-  headerText: string;
 }
 
-const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage, headerText }) => {
+const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const initialValues: RecipeFormValues = values
@@ -80,21 +77,25 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage,
   };
 
   return (
-    <BaseForm initialValues={initialValues} validationSchema={recipeValidation} onSubmit={handleSubmit}>
-      <Subheader backward headerText={headerText}>
-        <BaseButton primary type="submit" buttonText="Добавить рецепт" />
-      </Subheader>
-      <CardField />
-      <div className={styles.mainContainer}>
-        <div className={styles.ingredientBlock}>
-          <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
-          <IngredientField name="ingredients" />
+    <>
+      <BaseForm
+        id="form-submit"
+        initialValues={initialValues}
+        validationSchema={recipeValidation}
+        onSubmit={handleSubmit}
+      >
+        <CardField />
+        <div className={styles.mainContainer}>
+          <div className={styles.ingredientBlock}>
+            <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
+            <IngredientField name="ingredients" />
+          </div>
+          <div className={styles.stepBlock}>
+            <StepField name="steps" />
+          </div>
         </div>
-        <div className={styles.stepBlock}>
-          <StepField name="steps" />
-        </div>
-      </div>
-    </BaseForm>
+      </BaseForm>
+    </>
   );
 };
 

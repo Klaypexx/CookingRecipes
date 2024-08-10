@@ -8,8 +8,10 @@ import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
+import Spinner from '../../Components/Spinner/Spinner';
 
 const RecipeView = () => {
+  const [loading, setLoading] = useState(true);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
   const location = useLocation();
@@ -25,6 +27,7 @@ const RecipeView = () => {
 
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
+        setLoading(!loading);
       } else {
         throw Error(result.message);
       }
@@ -45,42 +48,52 @@ const RecipeView = () => {
 
   return (
     <section className={styles.recipeView}>
-      <Subheader backward headerText={values?.name} navigation="/recipes">
+      <Subheader backward headerText={loading ? undefined : values?.name} navigation="/recipes">
         <div className={styles.buttonBox}>
-          <button className={styles.removeRecipe} onClick={handleRemove}>
-            <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
-          </button>
-          <BaseLink
-            primary
-            linkText="Редактировать"
-            className={styles.editBtn}
-            navigation={`/recipes/edit/${recipeId}`}
-          />
+          {loading ? undefined : (
+            <>
+              <button className={styles.removeRecipe} onClick={handleRemove}>
+                <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
+              </button>
+              <BaseLink
+                primary
+                linkText="Редактировать"
+                className={styles.editBtn}
+                navigation={`/recipes/edit/${recipeId}`}
+              />
+            </>
+          )}
         </div>
       </Subheader>
-      <BaseCard props={values} />
-      <div className={styles.mainContainer}>
-        <div className={styles.ingredientsContainer}>
-          <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
-          {values?.ingredients.map((ingredient, index) => (
-            <div key={index} className={styles.ingredientBox}>
-              <p className={styles.ingredientsName}>{ingredient.name}</p>
-              <p className={styles.ingredientsText}>{ingredient.product}</p>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <BaseCard props={values} />
+          <div className={styles.mainContainer}>
+            <div className={styles.ingredientsContainer}>
+              <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
+              {values?.ingredients.map((ingredient, index) => (
+                <div key={index} className={styles.ingredientBox}>
+                  <p className={styles.ingredientsName}>{ingredient.name}</p>
+                  <p className={styles.ingredientsText}>{ingredient.product}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className={styles.stepsContainer}>
-          {values?.steps.map((step, index) => (
-            <div key={index} className={styles.stepBox}>
-              <p className={styles.stepHeader}>Шаг {index + 1}</p>
-              <div className={styles.stepTextBox}>
-                <p className={styles.stepText}>{step.description}</p>
-              </div>
+            <div className={styles.stepsContainer}>
+              {values?.steps.map((step, index) => (
+                <div key={index} className={styles.stepBox}>
+                  <p className={styles.stepHeader}>Шаг {index + 1}</p>
+                  <div className={styles.stepTextBox}>
+                    <p className={styles.stepText}>{step.description}</p>
+                  </div>
+                </div>
+              ))}
+              <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
             </div>
-          ))}
-          <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </section>
   );
 };

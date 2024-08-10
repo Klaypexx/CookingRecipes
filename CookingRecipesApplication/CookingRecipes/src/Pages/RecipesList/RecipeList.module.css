@@ -27,3 +27,13 @@
   width: 309px;
   margin-bottom: 108px;
 }
+
+.noRecipesBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noRecipeText {
+  color: rgb(253, 177, 0);
+}

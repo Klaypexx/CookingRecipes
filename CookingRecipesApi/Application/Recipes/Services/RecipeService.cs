@@ -29,14 +29,14 @@ public class RecipeService : IRecipeService
 
         string? avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
 
-        List<RecipeTag>? tags = null;
+        List<RecipeTag>? tags = new List<RecipeTag>();
 
         if ( recipe.Tags != null )
         {
             List<TagDomain> existingTags = await _tagService.GetTagsByNames( tagsName );
 
             List<TagDomain> newTags = tagsName
-            .Where( name => existingTags.Any( t => t.Name.ToLower() == name.ToLower() != true ) )
+            .Where( name => !existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
             .Select( name => new TagDomain { Name = name.ToLower() } )
             .ToList();
 
@@ -89,7 +89,7 @@ public class RecipeService : IRecipeService
 
             // Добавление новых тегов, которых еще нет в базе данных
             List<TagDomain> newTags = newTagsName
-                .Where( name => existingTags?.Any( t => t.Name.ToLower() == name.ToLower() ) != true )
+                .Where( name => existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) != true )
                 .Select( name => new TagDomain { Name = name.ToLower() } )
                 .ToList();
 
