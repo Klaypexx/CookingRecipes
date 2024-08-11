@@ -21,8 +21,6 @@ const Header = () => {
         const result = await UserService.username();
         if (result.response && result.response.status === 200) {
           setUserName(result.response.data.userName);
-        } else {
-          throw Error(result.message);
         }
       };
       fetchUsername();

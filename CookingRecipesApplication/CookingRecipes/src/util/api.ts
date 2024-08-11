@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import TokenService from '../Services/TokenService';
 import AuthService from '../Services/AuthService';
 import { BASE_URL } from '../Constants/httpUrl';
+import { errorToast } from '../Components/Toast/Toast';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -43,6 +44,14 @@ api.interceptors.response.use(
     }
 
     if (err.response) {
+      if (err.response.status === 400 || err.response.status === 403) {
+        if (err instanceof AxiosError) {
+          err.response?.data?.errors.forEach((message: string) => {
+            errorToast(message);
+          });
+        }
+      }
+
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
 

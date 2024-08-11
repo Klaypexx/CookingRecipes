@@ -19,8 +19,6 @@ const EditRecipe = () => {
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
         setLoading(!loading);
-      } else {
-        throw Error(result.message);
       }
     };
     fetchRecipes();

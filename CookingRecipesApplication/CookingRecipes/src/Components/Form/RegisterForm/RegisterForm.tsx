@@ -1,5 +1,4 @@
 import useModalStore from '../../../Stores/useModalStore';
-import { useState } from 'react';
 import AuthService from '../../../Services/AuthService';
 import { successToast } from '../../Toast/Toast';
 import BaseForm from '../BaseForm/BaseForm';
@@ -11,7 +10,6 @@ import RegisterValues from '../../../Types/RegisterValues';
 
 const RegisterForm = () => {
   const { isLogin, setLogin, unsetAll } = useModalStore();
-  const [errorText, setErrorText] = useState('');
 
   const handleRegister = async (values: RegisterValues) => {
     const result = await AuthService.register(values);
@@ -20,8 +18,6 @@ const RegisterForm = () => {
       unsetAll();
       setLogin(isLogin);
       successToast('Вы успешно зарегестрировались!');
-    } else {
-      setErrorText(result.message);
     }
   };
 
@@ -38,13 +34,7 @@ const RegisterForm = () => {
 
   return (
     <>
-      <BaseForm
-        primary
-        initialValues={initialValues}
-        validationSchema={registerValidation}
-        onSubmit={handleRegister}
-        errorText={errorText}
-      >
+      <BaseForm primary initialValues={initialValues} validationSchema={registerValidation} onSubmit={handleRegister}>
         <BaseField margin name="name" type="text" placeholder="Имя" />
         <BaseField margin name="username" type="text" placeholder="Логин" />
         <div className={styles.smallnputBox}>

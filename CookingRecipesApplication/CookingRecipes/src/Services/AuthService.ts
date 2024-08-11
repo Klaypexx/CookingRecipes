@@ -17,9 +17,9 @@ const register = async (values: RegisterValues) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.errors || 'Произошла ошибка при входе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при входе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 
@@ -32,10 +32,9 @@ const login = async (values: LoginValues) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error);
-      return { message: error.response?.data?.errors || 'Произошла ошибка при входе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при входе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 

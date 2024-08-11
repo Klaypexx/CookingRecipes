@@ -71,8 +71,6 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
     if (result.response && result.response.status === 200) {
       successToast(toastMessage);
       navigate(location.state?.from);
-    } else {
-      throw Error(result.message);
     }
   };
 

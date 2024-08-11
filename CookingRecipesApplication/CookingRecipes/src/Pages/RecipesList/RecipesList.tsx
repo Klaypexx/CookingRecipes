@@ -26,8 +26,6 @@ const RecipesList = () => {
         }
         setValues((prevValues) => [...prevValues, ...result.response.data]);
         setLoading(false);
-      } else {
-        throw Error(result.message);
       }
     };
     fetchRecipes();

@@ -31,8 +31,6 @@ const RecipeView = () => {
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
         setLoading(!loading);
-      } else {
-        throw Error(result.message);
       }
     };
     fetchRecipes();
@@ -50,8 +48,6 @@ const RecipeView = () => {
     if (result.response && result.response.status === 200) {
       successToast('Рецепт успешно удален');
       navigate(location.state?.from);
-    } else {
-      throw Error(result.message);
     }
   };
 
