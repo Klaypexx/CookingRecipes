@@ -31,7 +31,7 @@ const EditRecipe = () => {
   return (
     <section className={styles.formSection}>
       <Subheader backward headerText={loading ? undefined : 'Редактировать рецепт'}>
-        {loading ? undefined : <BaseButton primary type="submit" form="form-submit" buttonText="Добавить рецепт" />}
+        {loading ? undefined : <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />}
       </Subheader>
       {loading ? (
         <Spinner />

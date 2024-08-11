@@ -62,7 +62,7 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           TokenService.removeToken();
-          location.reload();
+          // location.reload();
         }
       }
     }
