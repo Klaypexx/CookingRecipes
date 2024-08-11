@@ -9,6 +9,7 @@ using FluentValidation.Results;
 using Application.Auth.Services;
 using Infrastructure.Auth.Utils;
 using Application.Foundation;
+using Application.Auth.Entities;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -46,7 +47,14 @@ public class AuthController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( new { message = validationResult.ToString() } );
+            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
+        }
+
+        bool isUniqueUserName = await _authService.IsUniqueUsername( body.UserName );
+
+        if ( !isUniqueUserName )
+        {
+            return BadRequest( new ErrorResponse( "Логин пользователя должен быть уникальным" ) );
         }
 
         User user = new()
@@ -59,10 +67,11 @@ public class AuthController : ControllerBase
         try
         {
             await _authService.RegisterUser( user );
+            await _unitOfWork.Save();
         }
         catch ( Exception exception )
         {
-            return BadRequest( new { message = exception.Message } );
+            return BadRequest( new ErrorResponse( exception.Message ) );
         }
 
         return Ok();
@@ -76,30 +85,37 @@ public class AuthController : ControllerBase
 
         if ( !validationResult.IsValid )
         {
-            return BadRequest( new { message = validationResult.ToString() } );
+            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
         }
 
         User user = await _authService.GetUserByUsername( body.UserName );
 
         if ( user is null )
         {
-            return BadRequest( new { message = "Пользователь не найден" } );
+            return BadRequest( new ErrorResponse( "Пользователь не найден" ) );
         }
 
         bool result = PasswordHasher.VerifyPasswordHash( body.Password, user.Password );
 
         if ( !result )
         {
-            return BadRequest( new { message = "Неверный пароль" } );
+            return BadRequest( new ErrorResponse( "Неверный пароль" ) );
         }
 
-        string jwtToken = _tokenService.GenerateJwtToken( user );
-        string refreshToken = _tokenService.GenerateRefreshToken();
-        _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
-        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
-        await _unitOfWork.Save();
+        try
+        {
+            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
-        return Ok( jwtToken );
+            HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
+
+            await _unitOfWork.Save();
+
+            return Ok( tokens.JwtToken );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpPost]
@@ -111,23 +127,28 @@ public class AuthController : ControllerBase
 
         if ( user is null )
         {
-            return BadRequest( "Токен обновления не существует" );
+            return BadRequest( new ErrorResponse( "Токен обновления не существует" ) );
         }
 
-        if ( user.RefreshTokenExpiryTime <= DateTime.UtcNow )
+        if ( user.RefreshTokenExpiryTime <= DateTime.Now )
         {
-            return BadRequest( "Срок действия токена обновления истек" );
+            return BadRequest( new ErrorResponse( "Срок действия токена обновления истек" ) );
         }
 
-        string jwtToken = _tokenService.GenerateJwtToken( user );
-        string refreshToken = _tokenService.GenerateRefreshToken();
+        try
+        {
+            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
-        _tokenService.SetRefreshTokenInsideCookie( refreshToken, HttpContext );
+            HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
 
-        user.SetRefreshToken( refreshToken, _authSettings.RefreshLifeTime );
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
 
-        return Ok( jwtToken );
+            return Ok( tokens.JwtToken );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpPost]
@@ -139,15 +160,21 @@ public class AuthController : ControllerBase
 
         if ( user == null )
         {
-            return BadRequest( "Токен обновления не существует" );
+            return BadRequest( new ErrorResponse( "Токен обновления не существует" ) );
         }
 
-        user.SetRefreshToken( "", 0 );
-        await _unitOfWork.Save();
+        try
+        {
+            user.SetRefreshToken( "", 0 );
 
-        HttpContext.Response.Cookies.Delete( "refreshToken" );
+            HttpContext.Response.Cookies.Delete( "refreshToken" );
 
-        return Ok();
+            return Ok();
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
 
@@ -156,8 +183,15 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserByUsername( [FromHeader] string userName )
     {
-        User user = await _authService.GetUserByUsername( userName );
-        return Ok( user );
+        try
+        {
+            User user = await _authService.GetUserByUsername( userName );
+            return Ok( user );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpGet]
@@ -165,6 +199,14 @@ public class AuthController : ControllerBase
     [Authorize]
     public IActionResult GetUsername()
     {
-        return Ok( new UserDto() { UserName = User.GetUserName() } );
+        try
+        {
+            UserDto username = new() { UserName = User.GetUserName() };
+            return Ok( username );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 }

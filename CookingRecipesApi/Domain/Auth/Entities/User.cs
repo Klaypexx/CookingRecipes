@@ -15,6 +15,6 @@ public class User
     public void SetRefreshToken( string token, int expiration )
     {
         RefreshToken = token;
-        RefreshTokenExpiryTime = DateTime.Now.AddMinutes( expiration );
+        RefreshTokenExpiryTime = DateTime.Now.AddDays( expiration );
     }
 }

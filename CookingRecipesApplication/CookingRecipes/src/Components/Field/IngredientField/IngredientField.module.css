@@ -6,7 +6,6 @@
   box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
   background: rgb(255, 255, 255);
   padding: 36px 30px;
-  margin-bottom: 40px;
 }
 
 .inputIngredientNameFormSize {
@@ -26,6 +25,10 @@
   margin-left: 0;
 }
 
+.ingredientContainer {
+  margin-bottom: 15px;
+}
+
 .ingredientButtonBox {
   width: 100%;
   display: flex;
@@ -36,4 +39,10 @@
 .ingredientCloseIcon {
   width: 14px;
   height: 14px;
+}
+
+.plusIcon {
+  width: 14px;
+  height: 14px;
+  margin-right: 28px;
 }

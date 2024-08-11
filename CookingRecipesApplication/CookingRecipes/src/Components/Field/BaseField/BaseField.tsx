@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { ErrorMessage, Field } from 'formik';
 import selectArrow from '../../../resources/icons/select-arrow.svg';
 import style from './BaseField.module.css';
-import { BaseFieldProps } from '../../../Types/types';
+import BaseFieldProps from '../../../Types/BaseFieldProps';
 
 const BaseField: React.FC<BaseFieldProps> = ({
   margin,

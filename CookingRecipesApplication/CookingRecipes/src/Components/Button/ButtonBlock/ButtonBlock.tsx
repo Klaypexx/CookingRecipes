@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ButtonBlock.module.css';
 import BaseButton from '../BaseButton/BaseButton';
-import { ButtonBlockProps } from '../../../Types/types';
+import ButtonBlockProps from '../../../Types/ButtonBlockProps';
 
 const ButtonBlock: React.FC<ButtonBlockProps> = ({
   primaryType,

@@ -2,13 +2,10 @@
 import axios from 'axios';
 import TokenService from '../Services/TokenService';
 import AuthService from '../Services/AuthService';
-
-export const navigation = (navigate: any) => {
-  return navigate;
-};
+import { BASE_URL } from '../Constants/httpUrl';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5014',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

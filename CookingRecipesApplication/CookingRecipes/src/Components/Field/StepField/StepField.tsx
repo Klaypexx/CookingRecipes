@@ -1,18 +1,18 @@
-import { FieldArray, FieldArrayRenderProps, setIn } from 'formik';
+import { FieldArray, FieldArrayRenderProps, ErrorMessage } from 'formik';
 import BaseField from '../BaseField/BaseField';
 import styles from './StepField.module.css';
-import AddRecipeButton from '../../Button/AddRecipeButton/AddRecipeButton';
 import closeIcon from '../../../resources/icons/close.svg';
-import { StepFieldProps } from '../../../Types/types';
-import { useState } from 'react';
+import StepFieldProps from '../../../Types/StepFieldProps';
+import BaseButton from '../../Button/BaseButton/BaseButton';
+import plusImg from '../../../resources/icons/plus-orange.svg';
 
 const StepField: React.FC<StepFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
-    arrayHelpers.push('');
+    arrayHelpers.push({ description: '' }); // Ensure we push an object with a description
   };
 
   const handlerDeleteCurrentField = (arrayHelpers: FieldArrayRenderProps, index: number) => {
-    if (index == 0) {
+    if (index === 0) {
       return;
     }
     arrayHelpers.remove(index);
@@ -22,10 +22,12 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
     <FieldArray
       name={name}
       render={(arrayHelpers: FieldArrayRenderProps) => {
-        const steps = arrayHelpers.form.values[name] || [];
+        const steps: Array<{
+          description: string;
+        }> = arrayHelpers.form.values[name] || [];
         return (
           <>
-            {steps.map((step: [], index: number) => (
+            {steps.map((step: { description: string }, index: number) => (
               <div key={index}>
                 <div className={styles.stepContainer}>
                   <div className={styles.stepBox}>
@@ -37,7 +39,7 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
                   <BaseField
                     className={styles.inputStepFormSize}
                     margin
-                    name={`${name}.${index}`}
+                    name={`${name}.${index}.description`}
                     as="textarea"
                     placeholder="Описание шага"
                   />
@@ -45,11 +47,13 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
               </div>
             ))}
             <div className={styles.stepButtonBox}>
-              <AddRecipeButton
+              <BaseButton
                 buttonText="Добавить шаг"
                 className={styles.stepButton}
                 onClick={() => handlerCreateField(arrayHelpers)}
-              />
+              >
+                <img src={plusImg} className={styles.plusIcon} />
+              </BaseButton>
             </div>
           </>
         );

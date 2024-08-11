@@ -1,0 +1,8 @@
+.smallnputBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.smallInput {
+  width: 278px;
+}

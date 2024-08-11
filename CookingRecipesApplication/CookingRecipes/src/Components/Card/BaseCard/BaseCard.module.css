@@ -1,83 +1,149 @@
 .cardContainer {
-  position: relative;
-  width: 100%;
-  min-height: 430px;
-  display: flex;
-  z-index: 10;
-}
-
-.margin {
-  margin-bottom: 40px;
-}
-
-.cardPhoto {
-  position: relative;
-  width: 430px;
-  max-height: 430px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
   border-radius: 72px 0px 72px 0px;
-  background: rgb(255, 239, 204);
+  margin-bottom: 40px;
+  width: 100%;
+  max-height: 430px;
+  display: flex;
+}
+
+.avatarImageBox {
+  position: relative;
+}
+
+.authorRecipeBox {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 4px 4px 0;
+  top: 360px;
+  min-width: 108px;
+  padding: 0 16px;
+  height: 32px;
+  background: rgb(255, 255, 255);
+}
+
+.authorRecipeText {
+  color: rgb(253, 177, 0);
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .avatarImage {
-  position: absolute;
-  width: 100%;
+  width: 430px;
+  height: 430px;
   border-radius: 72px 0px 72px 0px;
   object-fit: fill;
-  z-index: 1;
 }
 
-.inputPhoto {
-  position: absolute;
+.avatarNoImage {
   width: 430px;
   height: 430px;
-  opacity: 0;
-  z-index: 10;
-}
-
-.inputPhotoContainer {
-  width: 100%;
-  height: 430px;
-  box-sizing: border-box;
-  padding: 83px 83px 78px 78px;
-}
-
-.inputPhotoBox {
-  box-sizing: border-box;
-  padding: 80px 52px 77px 52px;
-  width: 100%;
-  height: 100%;
-  border: 1px dashed rgb(242, 158, 31);
-  border-radius: 20px;
-  text-align: center;
-}
-
-.cloudDownload {
-  width: 42px;
-  height: 42px;
-  margin-bottom: 30px;
-}
-
-.inputPhotoText {
-  font-size: 16px;
-  color: rgb(242, 158, 31);
-}
-
-.cardBackground {
-  position: absolute;
-  width: 430px;
-  min-height: 100%;
-  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
-  z-index: 1;
+  background: rgb(255, 239, 204);
+  border-radius: 72px 0px 72px 0px;
 }
 
 .cardInformation {
-  width: 770px;
-  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+  box-sizing: border-box;
+  padding: 36px 30px 65px 53px;
+  width: 100%;
+  height: 430px;
 }
 
-.baseErrorStyle {
-  color: rgba(37, 41, 45, 0.3);
-  font-family: Montserrat;
-  font-size: 12px;
+.cardHeader {
+  display: flex;
+  height: 50px;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 34px;
+}
+
+.tagsContainer {
+  display: flex;
+}
+
+.tagBox {
+  box-sizing: border-box;
+  padding: 5px;
+  min-width: 90px;
+  min-height: 25px;
+  border-radius: 5px;
+  background: rgb(253, 177, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tagBox:not(:first-child) {
+  margin-left: 5px;
+}
+
+.tagText {
+  color: rgb(242, 158, 31);
+  font-size: 14px;
   font-weight: 400;
+  opacity: 1;
+}
+
+.mainContainer {
+  display: grid;
+  grid-template-columns: 693px;
+  grid-template-rows: 141px 64px;
+  row-gap: 37px;
+}
+
+.cardInfoHeader {
+  margin-bottom: 16px;
+}
+
+.cardInfoTextBox {
+  width: 571px;
+  margin-bottom: 40px;
+}
+
+.cardInfoText {
+  color: rgb(74, 82, 90);
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.cardNumerableContainer {
+  display: flex;
+}
+
+.cardNumerableBox {
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.cardNumerableBox:not(:first-child) {
+  margin-left: 71px;
+}
+
+.timeIcon {
+  width: 48px;
+  height: 56px;
+  margin-right: 20px;
+}
+
+.personIcon {
+  width: 58.67px;
+  height: 37.33px;
+  margin-right: 15px;
+}
+
+.cardNumerableHeader {
+  color: rgb(37, 41, 45);
+  opacity: 0.5;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.cardNumerableTime {
+  color: rgb(37, 41, 45);
+  font-size: 16px;
 }
