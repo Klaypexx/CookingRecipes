@@ -10,4 +10,6 @@ public interface IRecipeService
     Task<List<RecipeDomain>> GetRecipesForPage( int skipRange );
     Task<RecipeDomain> GetByIdWithAllDetails( int recipeId );
     Task<RecipeDomain> GetByIdWithTag( int recipeId );
+    Task<RecipeDomain> GetById( int recipeId );
+    Task<bool> HasAccessToRecipe( int recipeId, int authorId );
 }

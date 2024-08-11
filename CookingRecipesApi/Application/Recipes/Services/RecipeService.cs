@@ -5,7 +5,6 @@ using Domain.Recipes.Entities;
 using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using TagDomain = Domain.Recipes.Entities.Tag;
-using Application.Foundation;
 using Application.RecipesTags.Services;
 
 namespace Application.Recipes.Services;
@@ -134,5 +133,17 @@ public class RecipeService : IRecipeService
     public async Task<RecipeDomain> GetByIdWithTag( int recipeId )
     {
         return await _recipeRepository.GetByIdWithTag( recipeId );
+    }
+
+    public async Task<RecipeDomain> GetById( int recipeId )
+    {
+        return await _recipeRepository.GetById( recipeId );
+    }
+
+    public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )
+    {
+        RecipeDomain recipe = await GetById( recipeId );
+
+        return recipe.AuthorId == authorId;
     }
 }

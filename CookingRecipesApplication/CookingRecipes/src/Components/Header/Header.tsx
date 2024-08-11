@@ -4,12 +4,14 @@ import userIcon from '../../resources/icons/user.svg';
 import exitIcon from '../../resources/icons/exit.svg';
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import UserService from '../../Services/UserService';
 import useModalStore from '../../Stores/useModalStore';
 import TokenService from '../../Services/TokenService';
+import useAuthStore from '../../Stores/useAuthStore';
+
 const Header = () => {
-  const [userName, setUserName] = useState('');
+  const { setUserName, userName } = useAuthStore();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const token = TokenService.getAccessToken();
 

@@ -9,9 +9,12 @@ import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import Spinner from '../../Components/Spinner/Spinner';
+import useAuthStore from '../../Stores/useAuthStore';
 
 const RecipeView = () => {
   const [loading, setLoading] = useState(true);
+  const { userName } = useAuthStore();
+  const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
   const location = useLocation();
@@ -35,6 +38,12 @@ const RecipeView = () => {
     fetchRecipes();
   }, []);
 
+  useEffect(() => {
+    if (values) {
+      setRecipeOwner(values.authorName === userName);
+    }
+  }, [values]);
+
   const handleRemove = async () => {
     const result = await RecipeService.removeRecipe(recipeId!);
 
@@ -50,7 +59,7 @@ const RecipeView = () => {
     <section className={styles.recipeView}>
       <Subheader backward headerText={loading ? undefined : values?.name} navigation="/recipes">
         <div className={styles.buttonBox}>
-          {loading ? undefined : (
+          {!loading && isRecipeOwner && (
             <>
               <button className={styles.removeRecipe} onClick={handleRemove}>
                 <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
