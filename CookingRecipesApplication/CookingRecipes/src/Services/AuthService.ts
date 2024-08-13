@@ -3,7 +3,6 @@ import api from '../util/api';
 import TokenService from './TokenService';
 import RegisterValues from '../Types/RegisterValues';
 import LoginValues from '../Types/LoginValues';
-import useAuthStore from '../Stores/useAuthStore';
 
 const endpoints = {
   login: '/users/login',

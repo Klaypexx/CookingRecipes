@@ -17,15 +17,15 @@ const BaseField: React.FC<BaseFieldProps> = ({
   children,
 }) => {
   return (
-    <div className={classNames(margin ? style.marginBox : undefined, style.baseBoxStyle)}>
-      {select ? <img src={selectArrow} alt="select arrow" className={style.selectArrow} /> : undefined}
+    <div className={classNames(margin && style.marginBox, style.baseBoxStyle)}>
+      {select && <img src={selectArrow} alt="select arrow" className={style.selectArrow} />}
       <Field
         name={name}
         type={type}
         as={as}
         placeholder={placeholder}
         maxLength={maxLength}
-        className={classNames(className, style.baseFieldStyle, select ? style.selectField : undefined)}
+        className={classNames(className, style.baseFieldStyle, select && style.selectField)}
         styles={styles}
       >
         {children}

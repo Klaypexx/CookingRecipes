@@ -8,12 +8,12 @@ import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
-import Spinner from '../../Components/Spinner/Spinner';
 import UserService from '../../Services/UserService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import TokenService from '../../Services/TokenService';
 
 const RecipeView = () => {
-  const [loading, setLoading] = useState(true);
+  const token = TokenService.getAccessToken();
   const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
@@ -30,14 +30,13 @@ const RecipeView = () => {
 
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
-        setLoading(!loading);
       }
     };
     fetchRecipes();
   }, []);
 
   useEffect(() => {
-    if (values) {
+    if (values && token) {
       const fetchUsername = async () => {
         const result = await UserService.username();
         if (result.response && result.response.status === 200) {
@@ -54,29 +53,20 @@ const RecipeView = () => {
 
     if (result.response && result.response.status === 200) {
       successToast('Рецепт успешно удален');
-      navigate(location.state?.from);
+      navigate(-1);
     }
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
-
   return (
     <section className={styles.recipeView}>
-      <Subheader backward headerText={values?.name} navigation="/recipes">
+      <Subheader backward headerText={values?.name}>
         <div className={styles.buttonBox}>
           {isRecipeOwner && (
             <>
               <BaseButton className={styles.removeRecipe} onClick={handleRemove}>
                 <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
               </BaseButton>
-              <BaseLink
-                primary
-                linkText="Редактировать"
-                className={styles.editBtn}
-                navigation={`/recipes/edit/${recipeId}`}
-              />
+              <BaseLink primary linkText="Редактировать" className={styles.editBtn} to={`/recipes/edit/${recipeId}`} />
             </>
           )}
         </div>

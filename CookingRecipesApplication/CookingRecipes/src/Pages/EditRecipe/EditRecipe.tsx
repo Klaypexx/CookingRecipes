@@ -6,10 +6,8 @@ import RecipeFormValues from '../../Types/RecipeFormValues';
 import { useParams } from 'react-router-dom';
 import Subheader from '../../Components/Subheader/Subheader';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import Spinner from '../../Components/Spinner/Spinner';
 
 const EditRecipe = () => {
-  const [loading, setLoading] = useState(true);
   const [values, setValues] = useState<RecipeFormValues>();
   const { recipeId } = useParams();
 
@@ -18,7 +16,6 @@ const EditRecipe = () => {
       const result = await RecipeService.getCurrentUserRecipe(recipeId!);
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
-        setLoading(!loading);
       }
     };
     fetchRecipes();
@@ -28,13 +25,9 @@ const EditRecipe = () => {
     return await RecipeService.editRecipe(formData, recipeId!);
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
-
   return (
     <section className={styles.formSection}>
-      <Subheader backward headerText={loading ? undefined : 'Редактировать рецепт'}>
+      <Subheader backward headerText={'Редактировать рецепт'}>
         <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />
       </Subheader>
       {values && <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />}

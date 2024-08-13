@@ -19,7 +19,7 @@ const BaseCard: React.FC<CardProps> = ({ className, props }) => {
         )}
       </div>
       <div className={styles.cardInformation}>
-        {props?.tags ? (
+        {props?.tags && (
           <div className={styles.cardHeader}>
             <div className={styles.tagsContainer}>
               {props.tags.map((tag, index) => (
@@ -29,12 +29,12 @@ const BaseCard: React.FC<CardProps> = ({ className, props }) => {
               ))}
             </div>
           </div>
-        ) : undefined}
-        {props?.description && props.cookingTime && props.portion ? (
+        )}
+        {props?.description && props.cookingTime && props.portion && (
           <>
             <div className={styles.mainContainer}>
               <div className={styles.cardInfoContainer}>
-                {props.name ? <h3 className={styles.cardInfoHeader}>{props.name}</h3> : undefined}
+                {props.name && <h3 className={styles.cardInfoHeader}>{props.name}</h3>}
                 <div className={styles.cardInfoTextBox}>
                   <p className={styles.cardInfoText}>{props?.description}</p>
                 </div>
@@ -57,7 +57,7 @@ const BaseCard: React.FC<CardProps> = ({ className, props }) => {
               </div>
             </div>
           </>
-        ) : undefined}
+        )}
       </div>
     </div>
   );

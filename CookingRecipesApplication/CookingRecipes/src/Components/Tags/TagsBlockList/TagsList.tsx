@@ -38,7 +38,7 @@ const TagsBlockList: React.FC<TagsBlockListProps> = ({ text, className }) => {
             <img src={tags.icon} alt="photo" className={styles.icon} />
           </div>
           <h3>{tags.header}</h3>
-          {text ? <p>{tags.text}</p> : undefined}
+          {text && <p>{tags.text}</p>}
         </div>
       ))}
     </div>

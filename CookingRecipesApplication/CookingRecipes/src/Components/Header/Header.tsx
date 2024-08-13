@@ -38,28 +38,25 @@ const Header = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.navigation}>
-          <Link to={'/'} state={{ from: location.pathname }}>
+          <Link to={'/'}>
             <img src={logo} alt="header_logo" className={styles.imageLogo} />
           </Link>
           <div className={styles.containerButtons}>
             <NavLink
               className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
               to={'/'}
-              state={{ from: location.pathname }}
             >
               Главная
             </NavLink>
             <NavLink
               className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
               to={'/recipes'}
-              state={{ from: location.pathname }}
             >
               Рецепты
             </NavLink>
             <NavLink
               className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
               to={'/favourites'}
-              state={{ from: location.pathname }}
             >
               Избранное
             </NavLink>
@@ -70,7 +67,7 @@ const Header = () => {
           <div className={styles.userAvatar}>
             <img src={userIcon} alt="User Icon" className={styles.userAvatarImg} />
           </div>
-          {token ? (
+          {token && userName ? (
             <div className={styles.authBlock}>
               <p className={styles.authText}>Привет, {userName}</p>
               <div className={styles.line}></div>

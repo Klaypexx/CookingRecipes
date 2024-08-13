@@ -6,18 +6,15 @@ import BaseField from '../../Field/BaseField/BaseField';
 import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import loginValidation from './LoginValidation';
 import LoginValues from '../../../Types/LoginValues';
-import useAuthStore from '../../../Stores/useAuthStore';
 
 const LoginForm = () => {
   const { unsetAll } = useModalStore();
-  const { setAuthorized } = useAuthStore();
 
   const handleLogin = async (values: LoginValues) => {
     const result = await AuthService.login(values);
 
     if (result.response && result.response.status === 200) {
       successToast('Вы успешно вошли в систему!');
-      setAuthorized(true);
       unsetAll();
     }
   };

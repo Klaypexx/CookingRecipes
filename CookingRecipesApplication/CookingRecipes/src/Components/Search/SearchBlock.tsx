@@ -13,7 +13,7 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ text, className, onSubmit }) 
     <>
       <BaseForm initialValues={initialValues} onSubmit={onSubmit}>
         <div className={styles.searchBlock}>
-          {text ? <h3>Поиск рецепта</h3> : undefined}
+          {text && <h3>Поиск рецепта</h3>}
           <BaseField name="name" className={styles.serchFormField} placeholder="Название блюда" />
           <BaseButton primary className={styles.searchFormButton} buttonText="Поиск" />
         </div>

@@ -3,7 +3,7 @@ import { CSSProperties } from 'react';
 export default interface LinkProps {
   base?: boolean;
   primary?: boolean;
-  navigation?: string;
+  to?: string;
   newStyle?: CSSProperties;
   className?: string;
   linkText?: string;

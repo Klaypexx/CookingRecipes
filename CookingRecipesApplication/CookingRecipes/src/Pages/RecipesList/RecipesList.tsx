@@ -46,22 +46,22 @@ const RecipesList = () => {
   return (
     <section className={styles.recipesListSection}>
       <Subheader headerText="Рецепты">
-        <BaseLink base primary navigation="/recipes/create" linkText="Добавить рецепт" />
+        <BaseLink base primary to="/recipes/create" linkText="Добавить рецепт" />
       </Subheader>
       <div className={styles.tagListBlock}>
         <TagsBlockList className={styles.tagList} />
       </div>
-      {values.length > 0 ? (
+      {values.length > 0 && (
         <div className={styles.searchBlock}>
           <SearchBlock text onSubmit={handleSubmit} />
         </div>
-      ) : undefined}
+      )}
 
       <div className={styles.recipesListBlock}>
         {values.length > 0 ? (
           <>
             {values.map((value, index) => (
-              <Link key={index} to={`/recipes/${value.id}`} state={{ from: location.pathname }}>
+              <Link key={index} to={`/recipes/${value.id}`}>
                 <BaseCard props={value} />
               </Link>
             ))}
@@ -72,9 +72,7 @@ const RecipesList = () => {
           </div>
         )}
       </div>
-      {isLoadButton ? (
-        <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-      ) : undefined}
+      {isLoadButton && <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />}
     </section>
   );
 };
