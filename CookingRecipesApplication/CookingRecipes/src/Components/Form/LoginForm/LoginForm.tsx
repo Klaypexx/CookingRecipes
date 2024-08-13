@@ -1,5 +1,4 @@
 import useModalStore from '../../../Stores/useModalStore';
-import { useState } from 'react';
 import AuthService from '../../../Services/AuthService';
 import { successToast } from '../../Toast/Toast';
 import BaseForm from '../BaseForm/BaseForm';
@@ -7,19 +6,23 @@ import BaseField from '../../Field/BaseField/BaseField';
 import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import loginValidation from './LoginValidation';
 import LoginValues from '../../../Types/LoginValues';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const { unsetAll } = useModalStore();
-  const [errorText, setErrorText] = useState('');
+  const { unsetAll, fromPath, setFromPath } = useModalStore();
+  const navigation = useNavigate();
 
   const handleLogin = async (values: LoginValues) => {
     const result = await AuthService.login(values);
 
     if (result.response && result.response.status === 200) {
       successToast('Вы успешно вошли в систему!');
+      console.log(fromPath);
+      if (fromPath) {
+        navigation(fromPath);
+        setFromPath(undefined);
+      }
       unsetAll();
-    } else {
-      setErrorText(result.message);
     }
   };
 
@@ -34,13 +37,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <BaseForm
-        primary
-        initialValues={initialValues}
-        validationSchema={loginValidation}
-        onSubmit={handleLogin}
-        errorText={errorText}
-      >
+      <BaseForm primary initialValues={initialValues} validationSchema={loginValidation} onSubmit={handleLogin}>
         <BaseField margin name="username" type="text" placeholder="Логин" />
         <BaseField name="password" type="password" placeholder="Пароль" />
         <ButtonBlock

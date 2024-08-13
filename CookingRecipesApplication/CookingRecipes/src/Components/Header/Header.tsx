@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 import UserService from '../../Services/UserService';
 import useModalStore from '../../Stores/useModalStore';
 import TokenService from '../../Services/TokenService';
+
 const Header = () => {
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState<string>();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const token = TokenService.getAccessToken();
 
@@ -19,8 +20,6 @@ const Header = () => {
         const result = await UserService.username();
         if (result.response && result.response.status === 200) {
           setUserName(result.response.data.userName);
-        } else {
-          throw Error(result.message);
         }
       };
       fetchUsername();
@@ -39,21 +38,19 @@ const Header = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.navigation}>
-          <Link to={'/'} state={{ from: location.pathname }}>
+          <Link to={'/'}>
             <img src={logo} alt="header_logo" className={styles.imageLogo} />
           </Link>
           <div className={styles.containerButtons}>
             <NavLink
               className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
               to={'/'}
-              state={{ from: location.pathname }}
             >
               Главная
             </NavLink>
             <NavLink
               className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
               to={'/recipes'}
-              state={{ from: location.pathname }}
             >
               Рецепты
             </NavLink>
@@ -71,7 +68,7 @@ const Header = () => {
           <div className={styles.userAvatar}>
             <img src={userIcon} alt="User Icon" className={styles.userAvatarImg} />
           </div>
-          {token ? (
+          {token && userName ? (
             <div className={styles.authBlock}>
               <p className={styles.authText}>Привет, {userName}</p>
               <div className={styles.line}></div>

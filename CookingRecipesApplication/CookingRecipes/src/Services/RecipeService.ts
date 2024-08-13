@@ -22,9 +22,9 @@ const createRecipe = async (values: FormData) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при запросе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 
@@ -39,9 +39,9 @@ const editRecipe = async (values: FormData, recipeId: string) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при запросе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 
@@ -51,9 +51,9 @@ const removeRecipe = async (recipeId: string) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при запросе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 
@@ -65,9 +65,9 @@ const GetRecipesForPage = async (pageNumber: number) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при запросе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 
@@ -79,9 +79,9 @@ const getCurrentUserRecipe = async (recipeId: string) => {
     return { response };
   } catch (error) {
     if (error instanceof AxiosError) {
-      return { message: error.response?.data?.errors || 'Произошла ошибка при запросе' };
+      throw Error(error.response?.data?.errors);
     }
-    return { message: 'Произошла неизвестная ошибка при запросе' };
+    throw Error('Произошла неизвестная ошибка при входе');
   }
 };
 

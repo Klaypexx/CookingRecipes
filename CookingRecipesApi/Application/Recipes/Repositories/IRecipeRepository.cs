@@ -9,4 +9,5 @@ public interface IRecipeRepository
     Task<List<Recipe>> GetRecipesForPage( int skipRange );
     Task<Recipe> GetByIdWithAllDetails( int recipeId );
     Task<Recipe> GetByIdWithTag( int recipeId );
+    Task<Recipe> GetById( int recipeId );
 }

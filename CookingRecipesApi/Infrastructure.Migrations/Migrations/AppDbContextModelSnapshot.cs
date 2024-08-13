@@ -299,7 +299,8 @@ namespace Infrastructure.Migrations.Migrations
                     b.HasOne("Domain.Recipes.Entities.Recipe", "Recipe")
                         .WithMany("Tags")
                         .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Recipes.Entities.Tag", "Tag")
                         .WithMany("Recipes")

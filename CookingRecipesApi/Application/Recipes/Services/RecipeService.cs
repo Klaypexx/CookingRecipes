@@ -5,7 +5,6 @@ using Domain.Recipes.Entities;
 using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using TagDomain = Domain.Recipes.Entities.Tag;
-using Application.Foundation;
 using Application.RecipesTags.Services;
 
 namespace Application.Recipes.Services;
@@ -25,14 +24,14 @@ public class RecipeService : IRecipeService
 
     public async Task CreateRecipe( RecipeApplication recipe, string rootPath )
     {
-        List<string>? tagsName = recipe.Tags?.Select( r => r.Name ).ToList();
 
-        string? avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
-
-        List<RecipeTag>? tags = new List<RecipeTag>();
+        string avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
+        List<RecipeTag> tags = null;
 
         if ( recipe.Tags != null )
         {
+            List<string> tagsName = recipe.Tags.Select( r => r.Name ).ToList();
+
             List<TagDomain> existingTags = await _tagService.GetTagsByNames( tagsName );
 
             List<TagDomain> newTags = tagsName
@@ -111,10 +110,7 @@ public class RecipeService : IRecipeService
     {
         RecipeDomain recipe = await GetByIdWithTag( recipeId );
 
-        if ( recipe.Tags != null )
-        {
-            await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Id ).ToList() );
-        }
+        await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Id ).ToList() );
 
         AvatarService.RemoveAvatar( recipe, rootPath );
 
@@ -134,5 +130,17 @@ public class RecipeService : IRecipeService
     public async Task<RecipeDomain> GetByIdWithTag( int recipeId )
     {
         return await _recipeRepository.GetByIdWithTag( recipeId );
+    }
+
+    public async Task<RecipeDomain> GetById( int recipeId )
+    {
+        return await _recipeRepository.GetById( recipeId );
+    }
+
+    public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )
+    {
+        RecipeDomain recipe = await GetById( recipeId );
+
+        return recipe.AuthorId == authorId;
     }
 }

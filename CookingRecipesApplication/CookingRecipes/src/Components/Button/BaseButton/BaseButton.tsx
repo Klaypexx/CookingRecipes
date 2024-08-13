@@ -13,13 +13,13 @@ const BaseButton: React.FC<ButtonProps> = ({
   onClick,
   children,
 }) => {
-  const classList = classNames(primary ? undefined : styles.buttonSecondary, styles.baseButton);
+  const classList = classNames(!primary && styles.buttonSecondary, styles.baseButton);
 
   const textClassList = classNames(primary ? styles.textPrimary : styles.textSecondary, styles.baseText);
 
   const styleList = {
     ...newStyle,
-    ...(primary ? { backgroundColor: 'rgb(253, 177, 0)' } : undefined),
+    ...(primary && { backgroundColor: 'rgb(253, 177, 0)' }),
   };
 
   return (

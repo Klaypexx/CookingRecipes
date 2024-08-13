@@ -17,11 +17,7 @@ export const router = createBrowserRouter([
       { path: '', element: <HomePage /> },
       {
         path: 'recipes',
-        element: (
-          <ProtectedRoute>
-            <RecipesList />
-          </ProtectedRoute>
-        ),
+        element: <RecipesList />,
       },
       {
         path: 'recipes/create',
@@ -33,11 +29,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'recipes/:recipeId',
-        element: (
-          <ProtectedRoute>
-            <RecipeView />
-          </ProtectedRoute>
-        ),
+        element: <RecipeView />,
       },
       {
         path: 'recipes/edit/:recipeId',

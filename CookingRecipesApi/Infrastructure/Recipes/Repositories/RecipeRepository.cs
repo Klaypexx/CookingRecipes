@@ -60,4 +60,11 @@ public class RecipeRepository : IRecipeRepository
             .ThenInclude( tag => tag.Tag )
             .FirstOrDefaultAsync();
     }
+
+    public async Task<Recipe> GetById( int recipeId )
+    {
+        return await _entities
+            .Where( recipe => recipe.Id == recipeId )
+            .FirstOrDefaultAsync();
+    }
 }

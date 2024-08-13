@@ -20,7 +20,7 @@ const AuthModal = () => {
   return (
     <>
       <BaseModal haederText="Войдите в профиль">
-        <p className={styles.authText}>Добавлять рецепты могут только зарегистрированные пользователи.</p>
+        <p className={styles.authText}>Расширенные функции доступны только для зарегестрированных пользователей.</p>
         <LinkBlock
           linkPrimaryText="Войти"
           linkSecondaryText="Регистрация"

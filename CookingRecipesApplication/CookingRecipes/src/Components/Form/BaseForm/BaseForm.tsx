@@ -17,7 +17,7 @@ const BaseForm: React.FC<FormProps> = ({
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
       {() => (
-        <Form id={id} className={classNames(primary ? styles.baseFormStyle : undefined)}>
+        <Form id={id} className={classNames(primary && styles.baseFormStyle)}>
           {errorText && <h4 className={styles.errorText}>{errorText}</h4>}
           {children}
         </Form>

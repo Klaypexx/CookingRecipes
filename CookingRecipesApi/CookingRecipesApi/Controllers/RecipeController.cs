@@ -8,13 +8,13 @@ using Domain.Recipes.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
 
 [Route( "recipes" )]
 [ApiController]
-[Authorize]
 public class RecipeController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -37,6 +37,7 @@ public class RecipeController : ControllerBase
 
     [HttpPost]
     [Route( "create" )]
+    [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
 
@@ -65,12 +66,20 @@ public class RecipeController : ControllerBase
 
     [HttpPut]
     [Route( "update/{recipeId}" )]
+    [Authorize]
     public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
+        int authorId = int.Parse( User.GetUserId() );
+
+        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, authorId );
+
+        if ( !hasAccess )
+        {
+            return StatusCode( 403, new ErrorResponse( "Нет доступа" ) );
+        }
+
         try
         {
-            int authorId = int.Parse( User.GetUserId() );
-
             await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId, _appEnvironment.WebRootPath );
 
             await _unitOfWork.Save();
@@ -85,8 +94,18 @@ public class RecipeController : ControllerBase
 
     [HttpDelete]
     [Route( "delete/{recipeId}" )]
+    [Authorize]
     public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
     {
+        int authorId = int.Parse( User.GetUserId() );
+
+        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, authorId );
+
+        if ( !hasAccess )
+        {
+            return StatusCode( 403, new ErrorResponse( "Нет доступа" ) );
+        }
+
         try
         {
             await _recipeService.RemoveRecipe( recipeId, _appEnvironment.WebRootPath );
