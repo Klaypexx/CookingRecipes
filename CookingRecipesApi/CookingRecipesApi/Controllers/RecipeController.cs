@@ -15,7 +15,6 @@ namespace CookingRecipesApi.Controllers;
 
 [Route( "recipes" )]
 [ApiController]
-[Authorize]
 public class RecipeController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -38,6 +37,7 @@ public class RecipeController : ControllerBase
 
     [HttpPost]
     [Route( "create" )]
+    [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
 
@@ -66,6 +66,7 @@ public class RecipeController : ControllerBase
 
     [HttpPut]
     [Route( "update/{recipeId}" )]
+    [Authorize]
     public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
         int authorId = int.Parse( User.GetUserId() );
@@ -93,6 +94,7 @@ public class RecipeController : ControllerBase
 
     [HttpDelete]
     [Route( "delete/{recipeId}" )]
+    [Authorize]
     public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
     {
         int authorId = int.Parse( User.GetUserId() );

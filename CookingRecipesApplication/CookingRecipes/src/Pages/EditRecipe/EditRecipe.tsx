@@ -28,18 +28,16 @@ const EditRecipe = () => {
     return await RecipeService.editRecipe(formData, recipeId!);
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <section className={styles.formSection}>
       <Subheader backward headerText={loading ? undefined : 'Редактировать рецепт'}>
-        {loading ? undefined : <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />}
+        <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />
       </Subheader>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          {values && <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />}
-        </>
-      )}
+      {values && <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />}
     </section>
   );
 };

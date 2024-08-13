@@ -24,14 +24,14 @@ public class RecipeService : IRecipeService
 
     public async Task CreateRecipe( RecipeApplication recipe, string rootPath )
     {
-        List<string>? tagsName = recipe.Tags?.Select( r => r.Name ).ToList();
 
-        string? avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
-
-        List<RecipeTag>? tags = new List<RecipeTag>();
+        string avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
+        List<RecipeTag> tags = null;
 
         if ( recipe.Tags != null )
         {
+            List<string> tagsName = recipe.Tags.Select( r => r.Name ).ToList();
+
             List<TagDomain> existingTags = await _tagService.GetTagsByNames( tagsName );
 
             List<TagDomain> newTags = tagsName
@@ -110,10 +110,7 @@ public class RecipeService : IRecipeService
     {
         RecipeDomain recipe = await GetByIdWithTag( recipeId );
 
-        if ( recipe.Tags != null )
-        {
-            await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Id ).ToList() );
-        }
+        await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Id ).ToList() );
 
         AvatarService.RemoveAvatar( recipe, rootPath );
 

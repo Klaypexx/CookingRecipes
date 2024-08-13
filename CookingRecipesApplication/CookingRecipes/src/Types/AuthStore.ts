@@ -1,4 +1,4 @@
 export default interface AuthStore {
-  userName: string;
-  setUserName: (state: string) => void;
+  isAuthorized: boolean;
+  setAuthorized: (state: boolean) => void;
 }

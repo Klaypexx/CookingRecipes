@@ -39,6 +39,10 @@ const RecipesList = () => {
     setPageNumber((pageNumber) => pageNumber + 1);
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <section className={styles.recipesListSection}>
       <Subheader headerText="Рецепты">
@@ -48,36 +52,29 @@ const RecipesList = () => {
         <TagsBlockList className={styles.tagList} />
       </div>
       {values.length > 0 ? (
-        <>
-          <div className={styles.searchBlock}>
-            <SearchBlock text onSubmit={handleSubmit} />
-          </div>
-        </>
+        <div className={styles.searchBlock}>
+          <SearchBlock text onSubmit={handleSubmit} />
+        </div>
       ) : undefined}
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <div className={styles.recipesListBlock}>
-            {values.length > 0 ? (
-              <>
-                {values.map((value, index) => (
-                  <Link key={index} to={`/recipes/${value.id}`} state={{ from: location.pathname }}>
-                    <BaseCard props={value} />
-                  </Link>
-                ))}
-              </>
-            ) : (
-              <div className={styles.noRecipesBlock}>
-                <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-              </div>
-            )}
+
+      <div className={styles.recipesListBlock}>
+        {values.length > 0 ? (
+          <>
+            {values.map((value, index) => (
+              <Link key={index} to={`/recipes/${value.id}`} state={{ from: location.pathname }}>
+                <BaseCard props={value} />
+              </Link>
+            ))}
+          </>
+        ) : (
+          <div className={styles.noRecipesBlock}>
+            <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
           </div>
-          {isLoadButton ? (
-            <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-          ) : undefined}
-        </>
-      )}
+        )}
+      </div>
+      {isLoadButton ? (
+        <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
+      ) : undefined}
     </section>
   );
 };

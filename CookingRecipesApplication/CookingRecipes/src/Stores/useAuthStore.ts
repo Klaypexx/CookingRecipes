@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import AuthStore from '../Types/AuthStore';
 
 const useAuthStore = create<AuthStore>()((set) => ({
-  userName: '',
+  isAuthorized: false,
 
-  setUserName: (newUserName) => set({ userName: newUserName }),
+  setAuthorized: (state) => set({ isAuthorized: state }),
 }));
 
 export default useAuthStore;

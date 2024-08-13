@@ -155,18 +155,8 @@ public class AuthController : ControllerBase
     [Route( "logout" )]
     public async Task<IActionResult> Logout()
     {
-        HttpContext.Request.Cookies.TryGetValue( "refreshToken", out string cookieRefreshToken );
-        User user = await _authService.GetUserByToken( cookieRefreshToken );
-
-        if ( user == null )
-        {
-            return BadRequest( new ErrorResponse( "Токен обновления не существует" ) );
-        }
-
         try
         {
-            user.SetRefreshToken( "", 0 );
-
             HttpContext.Response.Cookies.Delete( "refreshToken" );
 
             return Ok();

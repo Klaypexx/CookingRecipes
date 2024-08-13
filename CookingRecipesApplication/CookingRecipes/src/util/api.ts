@@ -56,13 +56,11 @@ api.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const rs = await AuthService.refresh();
-          const accessToken = rs.data;
-          TokenService.updateAccessToken(accessToken);
+          await AuthService.refresh();
           return api(originalConfig);
         } catch (_error) {
-          TokenService.removeToken();
-          // location.reload();
+          await AuthService.logout();
+          location.reload();
         }
       }
     }

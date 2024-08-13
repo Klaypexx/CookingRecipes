@@ -9,11 +9,11 @@ import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import Spinner from '../../Components/Spinner/Spinner';
-import useAuthStore from '../../Stores/useAuthStore';
+import UserService from '../../Services/UserService';
+import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 
 const RecipeView = () => {
   const [loading, setLoading] = useState(true);
-  const { userName } = useAuthStore();
   const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
@@ -38,7 +38,14 @@ const RecipeView = () => {
 
   useEffect(() => {
     if (values) {
-      setRecipeOwner(values.authorName === userName);
+      const fetchUsername = async () => {
+        const result = await UserService.username();
+        if (result.response && result.response.status === 200) {
+          const userName = result.response.data.userName;
+          setRecipeOwner(values.authorName === userName);
+        }
+      };
+      fetchUsername();
     }
   }, [values]);
 
@@ -51,15 +58,19 @@ const RecipeView = () => {
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <section className={styles.recipeView}>
-      <Subheader backward headerText={loading ? undefined : values?.name} navigation="/recipes">
+      <Subheader backward headerText={values?.name} navigation="/recipes">
         <div className={styles.buttonBox}>
-          {!loading && isRecipeOwner && (
+          {isRecipeOwner && (
             <>
-              <button className={styles.removeRecipe} onClick={handleRemove}>
+              <BaseButton className={styles.removeRecipe} onClick={handleRemove}>
                 <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
-              </button>
+              </BaseButton>
               <BaseLink
                 primary
                 linkText="Редактировать"
@@ -70,35 +81,30 @@ const RecipeView = () => {
           )}
         </div>
       </Subheader>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <BaseCard props={values} />
-          <div className={styles.mainContainer}>
-            <div className={styles.ingredientsContainer}>
-              <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
-              {values?.ingredients.map((ingredient, index) => (
-                <div key={index} className={styles.ingredientBox}>
-                  <p className={styles.ingredientsName}>{ingredient.name}</p>
-                  <p className={styles.ingredientsText}>{ingredient.product}</p>
-                </div>
-              ))}
+
+      <BaseCard props={values} />
+      <div className={styles.mainContainer}>
+        <div className={styles.ingredientsContainer}>
+          <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
+          {values?.ingredients.map((ingredient, index) => (
+            <div key={index} className={styles.ingredientBox}>
+              <p className={styles.ingredientsName}>{ingredient.name}</p>
+              <p className={styles.ingredientsText}>{ingredient.product}</p>
             </div>
-            <div className={styles.stepsContainer}>
-              {values?.steps.map((step, index) => (
-                <div key={index} className={styles.stepBox}>
-                  <p className={styles.stepHeader}>Шаг {index + 1}</p>
-                  <div className={styles.stepTextBox}>
-                    <p className={styles.stepText}>{step.description}</p>
-                  </div>
-                </div>
-              ))}
-              <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
+          ))}
+        </div>
+        <div className={styles.stepsContainer}>
+          {values?.steps.map((step, index) => (
+            <div key={index} className={styles.stepBox}>
+              <p className={styles.stepHeader}>Шаг {index + 1}</p>
+              <div className={styles.stepTextBox}>
+                <p className={styles.stepText}>{step.description}</p>
+              </div>
             </div>
-          </div>
-        </>
-      )}
+          ))}
+          <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
+        </div>
+      </div>
     </section>
   );
 };
