@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { successToast } from '../../Toast/Toast';
 import styles from './RecipeForm.module.css';
 import BaseForm from '../BaseForm/BaseForm';
@@ -16,7 +16,6 @@ interface RecipeFormProps {
 }
 
 const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage }) => {
-  const location = useLocation();
   const navigate = useNavigate();
   const initialValues: RecipeFormValues = values
     ? values

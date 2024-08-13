@@ -3,7 +3,7 @@ import styles from './RecipeView.module.css';
 import removeIcon from '../../resources/icons/remove.svg';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
@@ -17,7 +17,6 @@ const RecipeView = () => {
   const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
