@@ -26,7 +26,7 @@ function ProtectedRoute({ redirectPath = '/', children }: any) {
   }, [token]);
 
   if (!token) {
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to={location.state?.from || redirectPath} replace />;
   }
 
   return children || <Outlet />;
