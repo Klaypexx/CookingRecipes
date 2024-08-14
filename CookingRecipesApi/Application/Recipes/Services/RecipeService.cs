@@ -3,7 +3,6 @@ using Application.Recipes.Utils;
 using Application.Tags.Services;
 using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
-using Application.RecipesTags.Services;
 using Application.Foundation;
 
 namespace Application.Recipes.Services;
@@ -11,16 +10,13 @@ public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
-    private readonly IRecipeTagService _recipeTagService;
     private readonly IUnitOfWork _unitOfWork;
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
-        IRecipeTagService recipeTagService,
         IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
-        _recipeTagService = recipeTagService;
         _unitOfWork = unitOfWork;
     }
 

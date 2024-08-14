@@ -64,6 +64,7 @@ public class TagService : ITagService
     public async Task RemoveUnusedTags()
     {
         List<Tag> tags = await _tagRepository.GetAllTagsWithRecipeTags();
+
         List<Tag> tagsToRemove = tags.Where( tag => !tag.Recipes.Any() ).ToList();
 
         _tagRepository.RemoveTags( tagsToRemove );
