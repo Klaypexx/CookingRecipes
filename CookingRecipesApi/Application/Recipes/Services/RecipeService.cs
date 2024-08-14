@@ -1,11 +1,10 @@
 ﻿using Application.Recipes.Repositories;
 using Application.Recipes.Utils;
 using Application.Tags.Services;
-using Domain.Recipes.Entities;
 using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
-using TagDomain = Domain.Recipes.Entities.Tag;
 using Application.RecipesTags.Services;
+using Application.Foundation;
 
 namespace Application.Recipes.Services;
 public class RecipeService : IRecipeService
@@ -13,108 +12,59 @@ public class RecipeService : IRecipeService
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
     private readonly IRecipeTagService _recipeTagService;
+    private readonly IUnitOfWork _unitOfWork;
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
-        IRecipeTagService recipeTagService )
+        IRecipeTagService recipeTagService,
+        IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
         _recipeTagService = recipeTagService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task CreateRecipe( RecipeApplication recipe, string rootPath )
     {
 
         string avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
-        List<RecipeTag> tags = null;
+        RecipeDomain recipeDomain = recipe.Create( avatarGuid );
+        await _tagService.ActualizeTags( recipeDomain );
+        await _tagService.CreatingLinksWithTags( recipeDomain );
 
-        if ( recipe.Tags != null )
-        {
-            List<string> tagsName = recipe.Tags.Select( r => r.Name ).ToList();
+        await _recipeRepository.CreateRecipe( recipeDomain );
 
-            List<TagDomain> existingTags = await _tagService.GetTagsByNames( tagsName );
-
-            List<TagDomain> newTags = tagsName
-            .Where( name => !existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) )
-            .Select( name => new TagDomain { Name = name.ToLower() } )
-            .ToList();
-
-            await _tagService.CreateTags( newTags );
-
-            tags = existingTags
-            .Select( t => new RecipeTag { Tag = t } )
-            .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
-            .ToList();
-        }
-
-        await _recipeRepository.CreateRecipe( recipe.Create( tags, avatarGuid ) );
+        await _unitOfWork.Save();
     }
 
-    public async Task UpdateRecipe( RecipeApplication newRecipe, int recipeId, string rootPath )
+    public async Task UpdateRecipe( RecipeApplication actualRecipe, int recipeId, string rootPath )
     {
-        RecipeDomain oldRecipe = await GetByIdWithAllDetails( recipeId );
+        RecipeDomain oldRecipe = await _recipeRepository.GetByIdWithAllDetails( recipeId );
+        string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe, oldRecipe, rootPath );
+        RecipeDomain actualDomainRecipe = actualRecipe.Create( avatarGuid );
 
-        List<string>? newTagsName = newRecipe.Tags?.Select( r => r.Name ).ToList();
-        List<string>? oldTagName = oldRecipe.Tags?.Select( r => r.Tag.Name ).ToList();
+        await _tagService.ActualizeTags( actualDomainRecipe );
+        await _tagService.CreatingLinksWithTags( actualDomainRecipe );
 
-        //Avatar
-        string? avatarGuid = await AvatarService.UpdateAvatar( newRecipe, oldRecipe, rootPath );
+        oldRecipe.UpdateRecipe( actualDomainRecipe );
+        await _unitOfWork.Save();
 
-        //Tags
+        await _tagService.RemoveUnusedTags();
 
-        //Удаление тегов
-        List<int>? tagsIdToDelete = oldRecipe.Tags?
-            .Where( tag => newTagsName?.Contains( tag.Tag.Name ) != true )
-            .Select( tag => tag.Tag.Id )
-            .ToList();
-
-        if ( tagsIdToDelete?.Count != 0 )
-        {
-            await _recipeTagService.RemoveConnections( oldRecipe.Id, tagsIdToDelete );
-
-            await _tagService.RemoveTags( recipeId, tagsIdToDelete );
-        }
-
-        // Создание новых тегов/Установка связей
-        List<RecipeTag>? tags = new List<RecipeTag>();
-
-        if ( newRecipe.Tags != null )
-        {
-
-            // Добавление тегов которые уже есть в базе данных, при этом которые еще не имеют свящей с нашим рецептом
-            List<TagDomain> existingTags = await _tagService.GetTagsByNames( newTagsName );
-
-            List<TagDomain>? existingTagsWithoutOldNames = existingTags?.Where( t => oldTagName?.Contains( t.Name ) != true ).ToList();
-
-            // Добавление новых тегов, которых еще нет в базе данных
-            List<TagDomain> newTags = newTagsName
-                .Where( name => existingTags.Any( t => t.Name.ToLower() == name.ToLower() ) != true )
-                .Select( name => new TagDomain { Name = name.ToLower() } )
-                .ToList();
-
-            await _tagService.CreateTags( newTags );
-
-            tags = existingTagsWithoutOldNames?
-               .Select( t => new RecipeTag { Tag = t } )
-               .Concat( newTags.Select( t => new RecipeTag { Tag = t } ) )
-               .ToList();
-        }
-
-        //RecipeUpdate
-        oldRecipe.UpdateRecipe( newRecipe.Create( tags, avatarGuid ) );
-
-        _recipeRepository.UpdateRecipe( oldRecipe );
     }
 
     public async Task RemoveRecipe( int recipeId, string rootPath )
     {
         RecipeDomain recipe = await GetByIdWithTag( recipeId );
 
-        await _tagService.RemoveTags( recipeId, recipe.Tags.Select( tag => tag.Tag.Id ).ToList() );
+        await _tagService.RemoveTagsLinks( recipe );
+        await _tagService.RemoveUnusedTags();
 
         AvatarService.RemoveAvatar( recipe, rootPath );
 
         _recipeRepository.RemoveRecipe( recipe );
+
+        await _unitOfWork.Save();
     }
 
     public async Task<List<RecipeDomain>> GetRecipesForPage( int skipRange )

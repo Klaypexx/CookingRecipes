@@ -5,7 +5,7 @@ using RecipeDomain = Domain.Recipes.Entities.Recipe;
 namespace Application.Recipes.Utils;
 public static class RecipeCreator
 {
-    public static RecipeDomain Create( this RecipeApplication recipe, List<RecipeTag> tags, string avatarGuid )
+    public static RecipeDomain Create( this RecipeApplication recipe, string avatarGuid )
     {
         return new()
         {
@@ -24,7 +24,10 @@ public static class RecipeCreator
             {
                 Description = step.Description,
             } ).ToList(),
-            Tags = tags
+            Tags = recipe.Tags?.Select( tag => new RecipeTag
+            {
+                Tag = new Tag { Name = tag.Name }
+            } ).ToList()
         };
     }
 }

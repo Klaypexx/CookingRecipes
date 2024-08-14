@@ -54,8 +54,6 @@ public class RecipeController : ControllerBase
 
             await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ), _appEnvironment.WebRootPath );
 
-            await _unitOfWork.Save();
-
             return Ok();
         }
         catch ( Exception exception )
@@ -82,8 +80,6 @@ public class RecipeController : ControllerBase
         {
             await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId, _appEnvironment.WebRootPath );
 
-            await _unitOfWork.Save();
-
             return Ok();
         }
         catch ( Exception exception )
@@ -109,8 +105,6 @@ public class RecipeController : ControllerBase
         try
         {
             await _recipeService.RemoveRecipe( recipeId, _appEnvironment.WebRootPath );
-
-            await _unitOfWork.Save();
 
             return Ok();
         }

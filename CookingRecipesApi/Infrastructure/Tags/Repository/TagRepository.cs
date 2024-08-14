@@ -11,19 +11,17 @@ public class TagRepository : ITagRepository
     {
         _entities = context.Set<Tag>();
     }
+
+    public async Task<List<Tag>> GetAllTagsWithRecipeTags()
+    {
+        return await _entities.Include( t => t.Recipes ).ToListAsync();
+    }
+
     public async Task<List<Tag>> GetTagsByNames( List<string> tagNames )
     {
         return await _entities
             .Where( t => tagNames.Contains( t.Name ) )
             .ToListAsync();
-    }
-
-    public async Task<List<Tag>> GetTagsByIdWithRecipes( List<int> tagsId )
-    {
-        return await _entities
-        .Where( t => tagsId.Contains( t.Id ) )
-        .Include( t => t.Recipes )
-        .ToListAsync();
     }
 
     public async Task CreateTags( List<Tag> newTags )
