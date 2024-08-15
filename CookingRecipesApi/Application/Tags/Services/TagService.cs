@@ -15,9 +15,9 @@ public class TagService : ITagService
 
     public async Task ActualizeTags( Recipe recipe )
     {
-        List<string> tagsName = recipe.Tags?.Select( tag => tag.Tag.Name.ToLower() ).ToList();
+        List<string> tagsName = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList(); // actualTagsName
 
-        if ( tagsName != null )
+        if ( tagsName.Count != 0 )
         {
             List<Tag> existingTags = await _tagRepository.GetTagsByNames( tagsName );
 
@@ -27,17 +27,15 @@ public class TagService : ITagService
                    .ToList();
 
             await _tagRepository.CreateTags( tagsToCreate );
-
-            await _unitOfWork.Save();
         }
 
     }
 
-    public async Task CreatingLinksWithTags( Recipe recipe )
+    public async Task CreatingLinksWithTags( Recipe recipe ) // передавать actualRecipeTags
     {
-        List<string> tagsName = recipe.Tags?.Select( tag => tag.Tag.Name.ToLower() ).ToList();
+        List<string> tagsName = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList(); //actual
 
-        if ( tagsName != null )
+        if ( tagsName.Count != 0 )
         {
             List<Tag> existingTags = await _tagRepository.GetTagsByNames( tagsName );
 
@@ -48,10 +46,7 @@ public class TagService : ITagService
             } ).ToList();
 
             recipe.Tags = recipeTags;
-
-            await _unitOfWork.Save();
         }
-
     }
 
     public async Task RemoveTagsLinks( Recipe recipe )
@@ -68,7 +63,5 @@ public class TagService : ITagService
         List<Tag> tagsToRemove = tags.Where( tag => !tag.Recipes.Any() ).ToList();
 
         _tagRepository.RemoveTags( tagsToRemove );
-
-        await _unitOfWork.Save();
     }
 }

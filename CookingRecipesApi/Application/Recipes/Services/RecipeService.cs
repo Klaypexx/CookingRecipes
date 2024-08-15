@@ -1,8 +1,8 @@
 ﻿using Application.Recipes.Repositories;
 using Application.Recipes.Utils;
 using Application.Tags.Services;
-using RecipeApplication = Application.Recipes.Entities.Recipe;
-using RecipeDomain = Domain.Recipes.Entities.Recipe;
+//using RecipeApplication = Application.Recipes.Entities.Recipe;
+using Domain.Recipes.Entities;
 using Application.Foundation;
 
 namespace Application.Recipes.Services;
@@ -20,11 +20,11 @@ public class RecipeService : IRecipeService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task CreateRecipe( RecipeApplication recipe, string rootPath )
+    public async Task CreateRecipe( Entities.Recipe recipe, string rootPath )
     {
 
         string avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
-        RecipeDomain recipeDomain = recipe.Create( avatarGuid );
+        Recipe recipeDomain = recipe.Create( avatarGuid );
         await _tagService.ActualizeTags( recipeDomain );
         await _tagService.CreatingLinksWithTags( recipeDomain );
 
@@ -73,12 +73,12 @@ public class RecipeService : IRecipeService
         return await _recipeRepository.GetByIdWithAllDetails( recipeId );
     }
 
-    public async Task<RecipeDomain> GetByIdWithTag( int recipeId )
+    public async Task<RecipeDomain> GetByIdWithTag( int recipeId ) // убрать и использовать метод репозитория
     {
         return await _recipeRepository.GetByIdWithTag( recipeId );
     }
 
-    public async Task<RecipeDomain> GetById( int recipeId )
+    public async Task<RecipeDomain> GetById( int recipeId ) // убрать и использовать метод репозитория
     {
         return await _recipeRepository.GetById( recipeId );
     }
