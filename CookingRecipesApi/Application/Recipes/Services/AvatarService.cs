@@ -4,7 +4,7 @@ using RecipeDomain = Domain.Recipes.Entities.Recipe;
 namespace Application.Recipes.Services;
 public static class AvatarService
 {
-    public async static Task<string> CreateAvatar( RecipeApplication recipe, string rootPath )
+    public async static Task<string> CreateAvatar( RecipeApplication recipe, string rootPath ) // сразу передавать recipe.Avatar
     {
         if ( recipe.Avatar == null ) return null;
 
@@ -25,7 +25,7 @@ public static class AvatarService
 
     public async static Task<string> UpdateAvatar( RecipeApplication newRecipe, RecipeDomain oldRecipe, string rootPath )
     {
-        if ( newRecipe.Avatar == null ) return oldRecipe.Avatar;
+        if ( newRecipe.Avatar == null ) return oldRecipe.Avatar; // стиль кодирования
 
         RemoveAvatar( oldRecipe, rootPath );
 

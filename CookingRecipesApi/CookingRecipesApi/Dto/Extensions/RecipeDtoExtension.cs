@@ -23,7 +23,7 @@ public static class RecipeDtoExtension
             {
                 Description = stepDto.Description,
             } ).ToList(),
-            Tags = recipeDto.Tags?.Select( tagDto => new Tag
+            Tags = recipeDto.Tags.Select( tagDto => new Tag
             {
                 Name = tagDto.Name,
             } ).ToList(),

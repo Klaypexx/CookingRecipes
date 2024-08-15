@@ -6,54 +6,33 @@ namespace Application.Tags.Services;
 public class TagService : ITagService
 {
     private readonly ITagRepository _tagRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    public TagService( ITagRepository tagRepository, IUnitOfWork unitOfWork )
+    public TagService( ITagRepository tagRepository )
     {
         _tagRepository = tagRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task ActualizeTags( Recipe recipe )
     {
-        List<string> tagsName = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList(); // actualTagsName
+        List<string> actualTagsNames = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList();
 
-        if ( tagsName.Count != 0 )
+        if ( actualTagsNames.Count != 0 )
         {
-            List<Tag> existingTags = await _tagRepository.GetTagsByNames( tagsName );
+            List<RecipeTag> existingRecipeTags = await _tagRepository.GetRecipesTagsByTagsNames( actualTagsNames );
 
-            List<Tag> tagsToCreate = tagsName
-                   .Where( name => !existingTags.Any( t => t.Name.ToLower() == name ) )
-                   .Select( name => new Tag { Name = name.ToLower() } )
-                   .ToList();
+            List<RecipeTag> recipeTagsToCreate = actualTagsNames
+                .Where( name => !existingRecipeTags.Any( recipeTag => recipeTag.Tag.Name.ToLower() == name ) )
+                .Select( name => new RecipeTag { Tag = new Tag { Name = name } } )
+                .ToList();
 
-            await _tagRepository.CreateTags( tagsToCreate );
-        }
+            recipe.Tags = [ .. existingRecipeTags, .. recipeTagsToCreate ];
 
-    }
-
-    public async Task CreatingLinksWithTags( Recipe recipe ) // передавать actualRecipeTags
-    {
-        List<string> tagsName = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList(); //actual
-
-        if ( tagsName.Count != 0 )
-        {
-            List<Tag> existingTags = await _tagRepository.GetTagsByNames( tagsName );
-
-            List<RecipeTag> recipeTags = existingTags.Select( tag => new RecipeTag
-            {
-                TagId = tag.Id,
-                Tag = tag
-            } ).ToList();
-
-            recipe.Tags = recipeTags;
+            await _tagRepository.CreateTags( recipeTagsToCreate.Select( recipeTag => recipeTag.Tag ).ToList() );
         }
     }
 
-    public async Task RemoveTagsLinks( Recipe recipe )
+    public void RemoveTagsLinks( Recipe recipe )
     {
         recipe.Tags.Clear();
-
-        await _unitOfWork.Save();
     }
 
     public async Task RemoveUnusedTags()

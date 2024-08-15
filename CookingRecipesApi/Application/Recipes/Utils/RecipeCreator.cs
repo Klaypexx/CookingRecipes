@@ -5,7 +5,7 @@ using RecipeDomain = Domain.Recipes.Entities.Recipe;
 namespace Application.Recipes.Utils;
 public static class RecipeCreator
 {
-    public static RecipeDomain Create( this RecipeApplication recipe, string avatarGuid )
+    public static RecipeDomain Create( this RecipeApplication recipe, string avatarGuid ) // вынести из утилс в папку с логикой рецепта
     {
         return new()
         {
@@ -24,7 +24,7 @@ public static class RecipeCreator
             {
                 Description = step.Description,
             } ).ToList(),
-            Tags = recipe.Tags?.Select( tag => new RecipeTag
+            Tags = recipe.Tags.Select( tag => new RecipeTag
             {
                 Tag = new Tag { Name = tag.Name }
             } ).ToList()
