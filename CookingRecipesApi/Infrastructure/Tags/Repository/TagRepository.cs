@@ -17,12 +17,10 @@ public class TagRepository : ITagRepository
         return await _entities.Include( t => t.Recipes ).ToListAsync();
     }
 
-    public async Task<List<RecipeTag>> GetRecipesTagsByTagsNames( List<string> tagNames )
+    public async Task<List<Tag>> GetTagsByNames( List<string> tagNames )
     {
         return await _entities
-            .Where( tag => tagNames.Contains( tag.Name ) )
-            .SelectMany( tag => tag.Recipes )
-            .Include( recipeTag => recipeTag.Tag )
+            .Where( t => tagNames.Contains( t.Name ) )
             .ToListAsync();
     }
 

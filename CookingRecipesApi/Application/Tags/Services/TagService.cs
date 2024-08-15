@@ -17,14 +17,18 @@ public class TagService : ITagService
 
         if ( actualTagsNames.Count != 0 )
         {
-            List<RecipeTag> existingRecipeTags = await _tagRepository.GetRecipesTagsByTagsNames( actualTagsNames );
+            List<Tag> existingTags = await _tagRepository.GetTagsByNames( actualTagsNames );
+
+            List<RecipeTag> existingRecipeTagsToAdd = existingTags
+                .Select( tag => new RecipeTag { TagId = tag.Id } )
+                .ToList();
 
             List<RecipeTag> recipeTagsToCreate = actualTagsNames
-                .Where( name => !existingRecipeTags.Any( recipeTag => recipeTag.Tag.Name.ToLower() == name ) )
+                .Where( name => !existingTags.Any( tag => tag.Name.ToLower() == name ) )
                 .Select( name => new RecipeTag { Tag = new Tag { Name = name } } )
                 .ToList();
 
-            recipe.Tags = [ .. existingRecipeTags, .. recipeTagsToCreate ];
+            recipe.Tags = [ .. existingRecipeTagsToAdd, .. recipeTagsToCreate ];
 
             await _tagRepository.CreateTags( recipeTagsToCreate.Select( recipeTag => recipeTag.Tag ).ToList() );
         }

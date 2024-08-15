@@ -22,7 +22,7 @@ public class RecipeService : IRecipeService
     public async Task CreateRecipe( Entities.Recipe recipe, string rootPath )
     {
 
-        string avatarGuid = await AvatarService.CreateAvatar( recipe, rootPath );
+        string avatarGuid = await AvatarService.CreateAvatar( recipe.Avatar, rootPath );
         Recipe recipeDomain = recipe.Create( avatarGuid );
 
         await _tagService.ActualizeTags( recipeDomain );
@@ -33,7 +33,7 @@ public class RecipeService : IRecipeService
     public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId, string rootPath )
     {
         Recipe oldRecipe = await _recipeRepository.GetByIdWithAllDetails( recipeId );
-        string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe, oldRecipe, rootPath );
+        string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, rootPath );
         Recipe actualDomainRecipe = actualRecipe.Create( avatarGuid );
 
         await _tagService.ActualizeTags( actualDomainRecipe );
@@ -49,7 +49,7 @@ public class RecipeService : IRecipeService
     {
         Recipe recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
-        AvatarService.RemoveAvatar( recipe, rootPath );
+        AvatarService.RemoveAvatar( recipe.Avatar, rootPath );
 
         _tagService.RemoveTagsLinks( recipe );
         await _tagService.RemoveUnusedTags();
