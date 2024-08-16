@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 
 namespace Application.Recipes.Services;
-public static class AvatarService
+public class FileService : IFileService
 {
-    public async static Task<string> CreateAvatar( IFormFile avatar, string rootPath )
+    public async Task<string> CreateAvatar( IFormFile avatar, string rootPath )
     {
         if ( avatar == null )
         {
@@ -18,7 +18,7 @@ public static class AvatarService
         return pathToFile;
     }
 
-    public static void RemoveAvatar( string avatar, string rootPath )
+    public void RemoveAvatar( string avatar, string rootPath )
     {
         if ( avatar == null )
         {
@@ -28,7 +28,7 @@ public static class AvatarService
         ImageService.RemoveImage( avatar, rootPath );
     }
 
-    public async static Task<string> UpdateAvatar( IFormFile actualAvatar, string oldAvatar, string rootPath )
+    public async Task<string> UpdateAvatar( IFormFile actualAvatar, string oldAvatar, string rootPath )
     {
         if ( actualAvatar == null )
         {

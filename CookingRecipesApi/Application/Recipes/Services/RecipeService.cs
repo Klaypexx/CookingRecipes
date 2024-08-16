@@ -8,12 +8,14 @@ public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
+    private readonly IFileService _fileService;
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly WebHostSetting _webHostSetting;
 
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
+        IFileService fileService,
         IRecipeCreator recipeCreator,
         IUnitOfWork unitOfWork,
         WebHostSetting webHostSetting
@@ -21,6 +23,7 @@ public class RecipeService : IRecipeService
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
+        _fileService = fileService;
         _recipeCreator = recipeCreator;
         _unitOfWork = unitOfWork;
         _webHostSetting = webHostSetting;
@@ -29,7 +32,7 @@ public class RecipeService : IRecipeService
     public async Task CreateRecipe( Entities.Recipe recipe )
     {
 
-        string pathToFile = await AvatarService.CreateAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
+        string pathToFile = await _fileService.CreateAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
         Recipe recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
         await _tagService.ActualizeTags( recipeDomain );
@@ -40,7 +43,7 @@ public class RecipeService : IRecipeService
     public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
     {
         Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
-        string pathToFile = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
+        string pathToFile = await _fileService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
         Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
         await _tagService.ActualizeTags( actualDomainRecipe );
@@ -56,7 +59,7 @@ public class RecipeService : IRecipeService
     {
         Recipe recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
-        AvatarService.RemoveAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
+        _fileService.RemoveAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
 
         recipe.Tags.Clear();
         _recipeRepository.RemoveRecipe( recipe );
