@@ -1,17 +1,12 @@
-using Application.Auth.Services;
 using Application.Recipes;
-using Application.Recipes.Services;
-using Application.Tags.Services;
-using Application.Users.Services;
 using Infrastructure.Auth;
 using Application.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
+using Application;
 using Infrastructure;
-using Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder( args );
@@ -20,21 +15,15 @@ IConfiguration configuration = builder.Configuration;
 IServiceCollection services = builder.Services;
 
 // Add services to the container.
-services.AddScoped<IRecipeCreator, RecipeCreator>();
 
-services.AddScoped<IAuthService, AuthService>();
-services.AddScoped<IRecipeService, RecipeService>();
-services.AddScoped<ITagService, TagService>();
-services.AddScoped<IFileService, FileService>();
+services.AddApplicationServices();
 
-services.AddRepositories()
-    .AddDatabase();
+services.AddInfrastructureRepositories()
+    .AddInfrastructureServices()
+    .AddInfrastructureDatabase( configuration );
 
 AuthSettings authSettings = configuration.GetSection( "Auth" ).Get<AuthSettings>();
 services.AddScoped( sp => authSettings );
-
-string connectionString = configuration.GetConnectionString( "CookingRecipes" );
-services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
 
 string webRootPath = builder.Environment.WebRootPath;
 services.AddSingleton( new WebHostSetting { WebRootPath = webRootPath } );
