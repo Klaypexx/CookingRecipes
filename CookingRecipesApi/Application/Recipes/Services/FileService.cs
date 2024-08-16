@@ -10,7 +10,7 @@ public class FileService : IFileService
         _imageService = imageService;
     }
 
-    public async Task<string> CreateAvatar( IFormFile avatar, string rootPath )
+    public async Task<string> SaveFile( IFormFile avatar, string rootPath )
     {
         if ( avatar == null )
         {
@@ -25,7 +25,7 @@ public class FileService : IFileService
         return pathToFile;
     }
 
-    public void RemoveAvatar( string avatar, string rootPath )
+    public void RemoveFile( string avatar, string rootPath )
     {
         if ( avatar == null )
         {
@@ -35,16 +35,16 @@ public class FileService : IFileService
         _imageService.RemoveImage( avatar, rootPath );
     }
 
-    public async Task<string> UpdateAvatar( IFormFile actualAvatar, string oldAvatar, string rootPath )
+    public async Task<string> UpdateFile( IFormFile actualAvatar, string oldAvatar, string rootPath )
     {
         if ( actualAvatar == null )
         {
             return oldAvatar;
         }
 
-        RemoveAvatar( oldAvatar, rootPath );
+        RemoveFile( oldAvatar, rootPath );
 
-        string pathToFile = await CreateAvatar( actualAvatar, rootPath );
+        string pathToFile = await SaveFile( actualAvatar, rootPath );
 
         return pathToFile;
     }

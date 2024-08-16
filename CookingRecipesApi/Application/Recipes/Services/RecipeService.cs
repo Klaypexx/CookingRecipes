@@ -32,7 +32,7 @@ public class RecipeService : IRecipeService
     public async Task CreateRecipe( Entities.Recipe recipe )
     {
 
-        string pathToFile = await _fileService.CreateAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
+        string pathToFile = await _fileService.SaveFile( recipe.Avatar, _webHostSetting.WebRootPath );
         Recipe recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
         await _tagService.ActualizeTags( recipeDomain );
@@ -43,7 +43,7 @@ public class RecipeService : IRecipeService
     public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
     {
         Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
-        string pathToFile = await _fileService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
+        string pathToFile = await _fileService.UpdateFile( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
         Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
         await _tagService.ActualizeTags( actualDomainRecipe );
@@ -59,7 +59,7 @@ public class RecipeService : IRecipeService
     {
         Recipe recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
-        _fileService.RemoveAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
+        _fileService.RemoveFile( recipe.Avatar, _webHostSetting.WebRootPath );
 
         recipe.Tags.Clear();
         _recipeRepository.RemoveRecipe( recipe );

@@ -3,7 +3,7 @@
 namespace Application.Recipes.Services;
 public interface IFileService
 {
-    Task<string> CreateAvatar( IFormFile avatar, string rootPath );
-    void RemoveAvatar( string avatar, string rootPath );
-    Task<string> UpdateAvatar( IFormFile actualAvatar, string oldAvatar, string rootPath );
+    Task<string> SaveFile( IFormFile avatar, string rootPath );
+    void RemoveFile( string avatar, string rootPath );
+    Task<string> UpdateFile( IFormFile actualAvatar, string oldAvatar, string rootPath );
 }
