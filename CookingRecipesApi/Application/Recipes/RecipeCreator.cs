@@ -12,19 +12,9 @@ public class RecipeCreator : IRecipeCreator
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
             AuthorId = recipe.AuthorId,
-            Ingredients = recipe.Ingredients.Select( ingredient => new Ingredient
-            {
-                Name = ingredient.Name,
-                Product = ingredient.Product
-            } ).ToList(),
-            Steps = recipe.Steps.Select( step => new Step
-            {
-                Description = step.Description,
-            } ).ToList(),
-            Tags = recipe.Tags.Select( tag => new RecipeTag
-            {
-                Tag = new Tag { Name = tag.Name }
-            } ).ToList()
+            Ingredients = recipe.Ingredients.Select( ingredient => new Ingredient( ingredient.Name, ingredient.Product ) ).ToList(),
+            Steps = recipe.Steps.Select( step => new Step( step.Description ) ).ToList(),
+            Tags = recipe.Tags.Select( tag => new RecipeTag( new Tag( tag.Name ) ) ).ToList()
         };
     }
 }

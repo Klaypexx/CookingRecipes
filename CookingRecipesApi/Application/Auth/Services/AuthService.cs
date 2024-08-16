@@ -30,7 +30,8 @@ public class AuthService : IAuthService
 
     public async Task RegisterUser( User user )
     {
-        user.Password = _passwordHasher.GeneratePasswordHash( user.Password );
+        string password = _passwordHasher.GeneratePasswordHash( user.Password );
+        user.SetPassword( password );
         await _userRepository.AddUser( user );
     }
 

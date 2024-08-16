@@ -58,12 +58,7 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Логин пользователя должен быть уникальным" ) );
         }
 
-        User user = new()
-        {
-            Name = body.Name,
-            UserName = body.UserName,
-            Password = body.Password
-        };
+        User user = new( body.Name, body.UserName, body.Password );
 
         try
         {

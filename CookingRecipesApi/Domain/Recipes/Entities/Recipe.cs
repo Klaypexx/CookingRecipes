@@ -24,15 +24,8 @@ public class Recipe
         CookingTime = newRecipe.CookingTime;
         Portion = newRecipe.Portion;
         Avatar = newRecipe.Avatar;
-        Ingredients = newRecipe.Ingredients.Select( ingredientDto => new Ingredient
-        {
-            Name = ingredientDto.Name,
-            Product = ingredientDto.Product
-        } ).ToList();
-        Steps = newRecipe.Steps.Select( stepDto => new Step
-        {
-            Description = stepDto.Description,
-        } ).ToList();
+        Ingredients = newRecipe.Ingredients.Select( ingredientDto => new Ingredient( ingredientDto.Name, ingredientDto.Product ) ).ToList();
+        Steps = newRecipe.Steps.Select( stepDto => new Step( stepDto.Description ) ).ToList();
         Tags = newRecipe.Tags;
     }
 }

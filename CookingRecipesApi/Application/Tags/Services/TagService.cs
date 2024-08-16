@@ -21,7 +21,7 @@ public class TagService : ITagService
 
             List<RecipeTag> recipeTagsToCreate = actualTagsNames
                 .Where( name => !existingRecipesTags.Any( tag => tag.Tag.Name.ToLower() == name ) )
-                .Select( name => new RecipeTag { Tag = new Tag { Name = name } } )
+                .Select( name => new RecipeTag( new Tag( name ) ) )
                 .ToList();
 
             recipe.Tags = [ .. existingRecipesTags, .. recipeTagsToCreate ];
