@@ -1,19 +1,21 @@
 ﻿using Application.Auth.Entities;
 using Application.Auth.Repositories;
 using Application.Auth.Services;
+using Application.Auth.Utils;
 using Domain.Auth.Entities;
-using Infrastructure.Auth.Utils;
 
 namespace Application.Users.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public AuthService( IUserRepository userRepository, ITokenService tokenService )
+    public AuthService( IUserRepository userRepository, ITokenService tokenService, IPasswordHasher passwordHasher )
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<User> GetUserByUsername( string username )
@@ -28,7 +30,7 @@ public class AuthService : IAuthService
 
     public async Task RegisterUser( User user )
     {
-        user.Password = PasswordHasher.GeneratePasswordHash( user.Password );
+        user.Password = _passwordHasher.GeneratePasswordHash( user.Password );
         await _userRepository.AddUser( user );
     }
 

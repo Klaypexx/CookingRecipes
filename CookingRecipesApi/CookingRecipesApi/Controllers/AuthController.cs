@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using FluentValidation.Results;
 using Application.Auth.Services;
-using Infrastructure.Auth.Utils;
 using Application.Foundation;
 using Application.Auth.Entities;
+using Application.Auth.Utils;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -20,6 +20,7 @@ public class AuthController : ControllerBase
     private readonly IAuthService _authService;
     private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly AuthSettings _authSettings;
     private readonly IValidator<RegisterDto> _registerDtoValidator;
     private readonly IValidator<LoginDto> _loginDtoValidator;
@@ -27,6 +28,7 @@ public class AuthController : ControllerBase
     public AuthController( IAuthService authService,
         ITokenService tokenService,
         IUnitOfWork unitOfWork,
+        IPasswordHasher passwordHasher,
         AuthSettings authSettings,
         IValidator<RegisterDto> registerDtoValidator,
         IValidator<LoginDto> loginDtoValidator )
@@ -34,6 +36,7 @@ public class AuthController : ControllerBase
         _authService = authService;
         _tokenService = tokenService;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
         _authSettings = authSettings;
         _registerDtoValidator = registerDtoValidator;
         _loginDtoValidator = loginDtoValidator;
@@ -95,7 +98,7 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Пользователь не найден" ) );
         }
 
-        bool result = PasswordHasher.VerifyPasswordHash( body.Password, user.Password );
+        bool result = _passwordHasher.VerifyPasswordHash( body.Password, user.Password );
 
         if ( !result )
         {
