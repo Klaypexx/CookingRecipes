@@ -18,6 +18,7 @@ const BaseLink: React.FC<LinkProps> = ({ primary, to, newStyle, className, linkT
     <Link
       to={to ? to : location.pathname}
       className={classNames(LinkclassName, className)}
+      state={{ from: location.pathname }}
       style={styleList}
       onClick={onClick}
     >

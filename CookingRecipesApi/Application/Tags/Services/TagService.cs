@@ -1,4 +1,5 @@
-﻿using Application.Tags.Repositories;
+﻿using Application.Foundation;
+using Application.Tags.Repositories;
 using Domain.Recipes.Entities;
 
 namespace Application.Tags.Services;
@@ -10,28 +11,36 @@ public class TagService : ITagService
         _tagRepository = tagRepository;
     }
 
-    public async Task CreateTags( List<Tag> newTags )
+    public async Task ActualizeTags( Recipe recipe )
     {
-        await _tagRepository.CreateTags( newTags );
-    }
+        List<string> actualTagsNames = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList();
 
-    public async Task<List<Tag>> GetTagsByNames( List<string> tagNames )
-    {
-        return await _tagRepository.GetTagsByNames( tagNames );
-    }
-
-    public async Task<List<Tag>> GetTagsByIdWithRecipes( List<int> tagsId )
-    {
-        return await _tagRepository.GetTagsByIdWithRecipes( tagsId );
-    }
-
-    public async Task RemoveTags( int recipeId, List<int> tagsId )
-    {
-        List<Tag> tags = await GetTagsByIdWithRecipes( tagsId );
-        List<Tag> tagsToDelete = tags.Where( tag => tag?.Recipes.Count( r => r.RecipeId != recipeId ) == 0 ).ToList();
-        if ( tagsToDelete?.Count > 0 )
+        if ( actualTagsNames.Count != 0 )
         {
-            _tagRepository.RemoveTags( tagsToDelete );
+            List<RecipeTag> existingRecipesTags = await _tagRepository.GetRecipesTagsByTagsNames( actualTagsNames );
+
+            List<RecipeTag> recipeTagsToCreate = actualTagsNames
+                .Where( name => !existingRecipesTags.Any( tag => tag.Tag.Name.ToLower() == name ) )
+                .Select( name => new RecipeTag { Tag = new Tag { Name = name } } )
+                .ToList();
+
+            recipe.Tags = [ .. existingRecipesTags, .. recipeTagsToCreate ];
+
+            await _tagRepository.CreateTags( recipeTagsToCreate.Select( recipeTag => recipeTag.Tag ).ToList() );
         }
+    }
+
+    public void RemoveTagsLinks( Recipe recipe )
+    {
+        recipe.Tags.Clear();
+    }
+
+    public async Task RemoveUnusedTags()
+    {
+        List<Tag> tags = await _tagRepository.GetAllTagsWithRecipeTags();
+
+        List<Tag> tagsToRemove = tags.Where( tag => !tag.Recipes.Any() ).ToList();
+
+        _tagRepository.RemoveTags( tagsToRemove );
     }
 }

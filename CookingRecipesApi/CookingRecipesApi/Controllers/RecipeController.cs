@@ -36,7 +36,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost]
-    [Route( "create" )]
+    [Route( "" )]
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
@@ -54,8 +54,6 @@ public class RecipeController : ControllerBase
 
             await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ), _appEnvironment.WebRootPath );
 
-            await _unitOfWork.Save();
-
             return Ok();
         }
         catch ( Exception exception )
@@ -65,7 +63,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPut]
-    [Route( "update/{recipeId}" )]
+    [Route( "{recipeId}" )]
     [Authorize]
     public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
@@ -82,8 +80,6 @@ public class RecipeController : ControllerBase
         {
             await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId, _appEnvironment.WebRootPath );
 
-            await _unitOfWork.Save();
-
             return Ok();
         }
         catch ( Exception exception )
@@ -93,7 +89,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpDelete]
-    [Route( "delete/{recipeId}" )]
+    [Route( "{recipeId}" )]
     [Authorize]
     public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
     {
@@ -110,8 +106,6 @@ public class RecipeController : ControllerBase
         {
             await _recipeService.RemoveRecipe( recipeId, _appEnvironment.WebRootPath );
 
-            await _unitOfWork.Save();
-
             return Ok();
         }
         catch ( Exception exception )
@@ -121,7 +115,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "get/list/{pageNumber}" )]
+    [Route( "list/{pageNumber}" )]
     public async Task<IActionResult> GetRecipesForPage( [FromRoute] int pageNumber = 1, int pageAmount = 4 )
     {
         try
@@ -139,7 +133,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "get/{recipeId}" )]
+    [Route( "{recipeId}" )]
     public async Task<IActionResult> GetByIdWithAllDetails( [FromRoute] int recipeId )
     {
         try

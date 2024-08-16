@@ -1,35 +1,45 @@
-﻿using RecipeApplication = Application.Recipes.Entities.Recipe;
+﻿using Microsoft.AspNetCore.Http;
+using RecipeApplication = Application.Recipes.Entities.Recipe;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 
 namespace Application.Recipes.Services;
 public static class AvatarService
 {
-    public async static Task<string> CreateAvatar( RecipeApplication recipe, string rootPath )
+    public async static Task<string> CreateAvatar( IFormFile avatar, string rootPath ) // сразу передавать recipe.Avatar
     {
-        if ( recipe.Avatar == null ) return null;
+        if ( avatar == null )
+        {
+            return null;
+        }
 
-        string avatarGuid = Guid.NewGuid().ToString() + Path.GetExtension( recipe.Avatar.FileName );
+        string avatarGuid = Guid.NewGuid().ToString() + Path.GetExtension( avatar.FileName );
         using FileStream fileStream = ImageService.CreateImage( avatarGuid, rootPath );
 
-        await recipe.Avatar.CopyToAsync( fileStream );
+        await avatar.CopyToAsync( fileStream );
 
         return avatarGuid;
     }
 
-    public static void RemoveAvatar( RecipeDomain recipe, string rootPath )
+    public static void RemoveAvatar( string avatar, string rootPath )
     {
-        if ( recipe.Avatar == null ) return;
+        if ( avatar == null )
+        {
+            return;
+        }
 
-        ImageService.RemoveImage( recipe.Avatar, rootPath );
+        ImageService.RemoveImage( avatar, rootPath );
     }
 
-    public async static Task<string> UpdateAvatar( RecipeApplication newRecipe, RecipeDomain oldRecipe, string rootPath )
+    public async static Task<string> UpdateAvatar( IFormFile actualAvatar, string oldAvatar, string rootPath )
     {
-        if ( newRecipe.Avatar == null ) return oldRecipe.Avatar;
+        if ( actualAvatar == null )
+        {
+            return oldAvatar;
+        }
 
-        RemoveAvatar( oldRecipe, rootPath );
+        RemoveAvatar( oldAvatar, rootPath );
 
-        string avatarGuid = await CreateAvatar( newRecipe, rootPath );
+        string avatarGuid = await CreateAvatar( actualAvatar, rootPath );
 
         return avatarGuid;
     }

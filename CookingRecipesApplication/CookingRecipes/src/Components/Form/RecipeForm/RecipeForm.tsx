@@ -51,10 +51,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
       formData.append('Avatar', values.avatar);
     }
 
-    if (values.tags) {
+    if (values.tags && values.tags.length > 0) {
       values.tags.forEach((tag, index) => {
         formData.append(`Tags[${index}].Name`, tag.name);
       });
+    } else {
+      formData.append('Tags', ''); // Append an empty string if there are no tags
     }
 
     values.ingredients.forEach((ingredient, index) => {

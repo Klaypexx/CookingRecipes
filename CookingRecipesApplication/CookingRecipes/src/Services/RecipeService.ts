@@ -4,11 +4,11 @@ import GetAllRecipesResponseValues from '../Types/GetAllRecipesResponseValues';
 import GetCurrentUserRecipeResponseValues from '../Types/GetCurrentUserRecipeResponseValues';
 
 const endpoints = {
-  create: '/recipes/create',
-  update: '/recipes/update/',
-  remove: '/recipes/delete/',
-  getRecipe: '/recipes/get/list/',
-  getCurrentRecipe: '/recipes/get/',
+  create: '/recipes/',
+  update: '/recipes/',
+  remove: '/recipes/',
+  getRecipe: '/recipes/list/',
+  getCurrentRecipe: '/recipes/',
 };
 
 const createRecipe = async (values: FormData) => {
