@@ -1,7 +1,6 @@
 ﻿using Application.Auth.Entities;
 using Application.Auth.Repositories;
 using Application.Auth.Services;
-using Application.Foundation;
 using Domain.Auth.Entities;
 using Infrastructure.Auth.Utils;
 

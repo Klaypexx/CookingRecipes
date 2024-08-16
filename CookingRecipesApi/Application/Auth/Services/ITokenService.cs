@@ -1,5 +1,4 @@
 ﻿using Domain.Auth.Entities;
-using Microsoft.AspNetCore.Http;
 
 namespace Application.Auth.Services;
 public interface ITokenService
