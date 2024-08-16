@@ -53,12 +53,13 @@ public class RecipeService : IRecipeService
 
         AvatarService.RemoveAvatar( recipe.Avatar, rootPath );
 
-        _tagService.RemoveTagsLinks( recipe );
+        recipe.Tags.Clear();
+        _recipeRepository.RemoveRecipe( recipe );
+        await _unitOfWork.Save();
+
         await _tagService.RemoveUnusedTags();
         await _unitOfWork.Save();
 
-        _recipeRepository.RemoveRecipe( recipe );
-        await _unitOfWork.Save();
     }
 
     public async Task<List<Recipe>> GetRecipesForPage( int skipRange )

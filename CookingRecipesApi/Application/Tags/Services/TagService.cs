@@ -30,11 +30,6 @@ public class TagService : ITagService
         }
     }
 
-    public void RemoveTagsLinks( Recipe recipe )
-    {
-        recipe.Tags.Clear();
-    }
-
     public async Task RemoveUnusedTags()
     {
         List<Tag> tags = await _tagRepository.GetAllTagsWithRecipeTags();
