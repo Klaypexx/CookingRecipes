@@ -8,7 +8,7 @@ using Application.Recipes.Services;
 using Application.Tags.Repositories;
 using Application.Tags.Services;
 using Application.Users.Services;
-using CookingRecipesApi.Auth;
+using Infrastructure.Auth;
 using Application.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.RecipesDto;

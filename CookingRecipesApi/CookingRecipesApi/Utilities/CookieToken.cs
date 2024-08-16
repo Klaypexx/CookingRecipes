@@ -1,6 +1,4 @@
-﻿using CookingRecipesApi.Auth;
-
-namespace CookingRecipesApi.Utilities;
+﻿namespace CookingRecipesApi.Utilities;
 public static class CookieToken
 {
     public static void SetRefreshTokenInsideCookie( this HttpContext context, string refreshToken, int lifetime )

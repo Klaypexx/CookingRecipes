@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CookingRecipesApi.Auth;
+namespace Infrastructure.Auth;
 
 public class TokenService : ITokenService
 {
