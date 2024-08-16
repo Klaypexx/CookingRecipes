@@ -1,11 +1,6 @@
-using Application.Auth.Repositories;
 using Application.Auth.Services;
-using Application.Auth.Utils;
-using Application.Foundation;
 using Application.Recipes;
-using Application.Recipes.Repositories;
 using Application.Recipes.Services;
-using Application.Tags.Repositories;
 using Application.Tags.Services;
 using Application.Users.Services;
 using Infrastructure.Auth;
@@ -13,12 +8,8 @@ using Application.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
-using Infrastructure.Auth.Repositories;
-using Infrastructure.Auth.Utils;
+using Infrastructure;
 using Infrastructure.Database;
-using Infrastructure.Foundation;
-using Infrastructure.Recipes.Repositories;
-using Infrastructure.Tags.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -29,19 +20,15 @@ IConfiguration configuration = builder.Configuration;
 IServiceCollection services = builder.Services;
 
 // Add services to the container.
-services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<IRecipeCreator, RecipeCreator>();
-services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<IRecipeService, RecipeService>();
 services.AddScoped<ITagService, TagService>();
-services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IFileService, FileService>();
 
-services.AddScoped<IUserRepository, UserRepository>();
-services.AddScoped<IRecipeRepository, RecipeRepository>();
-services.AddScoped<ITagRepository, TagRepository>();
+services.AddRepositories()
+    .AddDatabase();
 
 AuthSettings authSettings = configuration.GetSection( "Auth" ).Get<AuthSettings>();
 services.AddScoped( sp => authSettings );
