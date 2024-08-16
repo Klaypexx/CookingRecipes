@@ -3,13 +3,7 @@
 namespace Application.Recipes.Services;
 public class FileService : IFileService
 {
-    private readonly IImageService _imageService;
-
-    public FileService( IImageService imageService )
-    {
-        _imageService = imageService;
-    }
-
+    private readonly string _filePathName = "images";
     public async Task<string> SaveFile( IFormFile avatar, string rootPath )
     {
         if ( avatar == null )
@@ -18,7 +12,9 @@ public class FileService : IFileService
         }
 
         string pathToFile = Guid.NewGuid().ToString() + Path.GetExtension( avatar.FileName );
-        using FileStream fileStream = _imageService.CreateImage( pathToFile, rootPath );
+
+        string fullPath = Path.Combine( rootPath, _filePathName, pathToFile );
+        using FileStream fileStream = new( fullPath, FileMode.Create );
 
         await avatar.CopyToAsync( fileStream );
 
@@ -32,7 +28,8 @@ public class FileService : IFileService
             return;
         }
 
-        _imageService.RemoveImage( avatar, rootPath );
+        string fullPath = Path.Combine( rootPath, _filePathName, avatar );
+        File.Delete( fullPath );
     }
 
     public async Task<string> UpdateFile( IFormFile actualAvatar, string oldAvatar, string rootPath )

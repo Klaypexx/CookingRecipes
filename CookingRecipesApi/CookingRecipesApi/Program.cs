@@ -37,7 +37,6 @@ services.AddScoped<IRecipeService, RecipeService>();
 services.AddScoped<ITagService, TagService>();
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IFileService, FileService>();
-services.AddScoped<IImageService, ImageService>();
 
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IRecipeRepository, RecipeRepository>();
