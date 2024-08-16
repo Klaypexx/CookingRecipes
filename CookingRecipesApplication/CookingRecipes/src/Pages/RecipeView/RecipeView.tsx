@@ -25,7 +25,7 @@ const RecipeView = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.getCurrentUserRecipe(recipeId!);
+      const result = await RecipeService.GetRecipeById(recipeId!);
 
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);

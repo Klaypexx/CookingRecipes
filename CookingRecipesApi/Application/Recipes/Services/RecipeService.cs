@@ -39,7 +39,7 @@ public class RecipeService : IRecipeService
 
     public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
     {
-        Recipe oldRecipe = await _recipeRepository.GetByIdWithAllDetails( recipeId );
+        Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
         string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
         Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, avatarGuid );
 
@@ -72,9 +72,9 @@ public class RecipeService : IRecipeService
         return await _recipeRepository.GetRecipes( skipRange );
     }
 
-    public async Task<Recipe> GetByIdWithAllDetails( int recipeId )
+    public async Task<Recipe> GetRecipeById( int recipeId )
     {
-        return await _recipeRepository.GetByIdWithAllDetails( recipeId );
+        return await _recipeRepository.GetRecipeById( recipeId );
     }
 
     public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )

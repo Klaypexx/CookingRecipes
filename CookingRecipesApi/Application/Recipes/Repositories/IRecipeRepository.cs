@@ -7,7 +7,7 @@ public interface IRecipeRepository
     void UpdateRecipe( Recipe recipe );
     void RemoveRecipe( Recipe recipe );
     Task<List<Recipe>> GetRecipes( int skipRange );
-    Task<Recipe> GetByIdWithAllDetails( int recipeId );
+    Task<Recipe> GetRecipeById( int recipeId );
     Task<Recipe> GetByIdWithTag( int recipeId );
     Task<Recipe> GetById( int recipeId );
 }

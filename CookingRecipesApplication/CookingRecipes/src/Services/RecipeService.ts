@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import api from '../util/api';
-import GetAllRecipesResponseValues from '../Types/GetAllRecipesResponseValues';
-import GetCurrentUserRecipeResponseValues from '../Types/GetCurrentUserRecipeResponseValues';
+import GetRecipesResponseValues from '../Types/GetRecipesResponseValues';
+import GetRecipeByIdResponseValues from '../Types/GetRecipeByIdResponseValues';
 
 const endpoints = {
   create: '/recipes/',
@@ -59,7 +59,7 @@ const removeRecipe = async (recipeId: string) => {
 
 const GetRecipes = async (pageNumber: number) => {
   try {
-    const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(
+    const response: AxiosResponse<GetRecipesResponseValues[], any> = await api.get(
       `${endpoints.getRecipe}${pageNumber}`,
     );
     return { response };
@@ -71,9 +71,9 @@ const GetRecipes = async (pageNumber: number) => {
   }
 };
 
-const getCurrentUserRecipe = async (recipeId: string) => {
+const GetRecipeById = async (recipeId: string) => {
   try {
-    const response: AxiosResponse<GetCurrentUserRecipeResponseValues, any> = await api.get(
+    const response: AxiosResponse<GetRecipeByIdResponseValues, any> = await api.get(
       `${endpoints.getCurrentRecipe}${recipeId}`,
     );
     return { response };
@@ -90,7 +90,7 @@ const RecipeService = {
   editRecipe,
   removeRecipe,
   GetRecipes,
-  getCurrentUserRecipe,
+  GetRecipeById,
 };
 
 export default RecipeService;

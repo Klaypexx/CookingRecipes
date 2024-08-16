@@ -108,10 +108,11 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "" )]
-    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1, int pageAmount = 4 )
+    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1 )
     {
         try
         {
+            int pageAmount = 4;
             int skipRange = ( pageNumber - 1 ) * pageAmount;
             List<Recipe> recipes = await _recipeService.GetRecipes( skipRange );
             List<CardRecipeDto> recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
@@ -126,11 +127,11 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "{recipeId}" )]
-    public async Task<IActionResult> GetByIdWithAllDetails( [FromRoute] int recipeId )
+    public async Task<IActionResult> GetRecipeById( [FromRoute] int recipeId )
     {
         try
         {
-            Recipe recipes = await _recipeService.GetByIdWithAllDetails( recipeId );
+            Recipe recipes = await _recipeService.GetRecipeById( recipeId );
             CurrentRecipeDto recipeDto = recipes.ToCurrentRecipeDto();
             return Ok( recipeDto );
         }
