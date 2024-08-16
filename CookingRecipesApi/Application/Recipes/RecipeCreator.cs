@@ -2,13 +2,13 @@
 namespace Application.Recipes;
 public class RecipeCreator : IRecipeCreator
 {
-    public Recipe Create( Entities.Recipe recipe, string avatarGuid ) // вынести из утилс в папку с логикой рецепта
+    public Recipe Create( Entities.Recipe recipe, string pathToFile ) // вынести из утилс в папку с логикой рецепта
     {
         return new()
         {
             Name = recipe.Name,
             Description = recipe.Description,
-            Avatar = avatarGuid,
+            Avatar = pathToFile,
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
             AuthorId = recipe.AuthorId,

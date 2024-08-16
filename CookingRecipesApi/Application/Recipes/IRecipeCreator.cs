@@ -3,5 +3,5 @@
 namespace Application.Recipes;
 public interface IRecipeCreator
 {
-    Recipe Create( Entities.Recipe recipe, string avatarGuid );
+    Recipe Create( Entities.Recipe recipe, string pathToFile );
 }

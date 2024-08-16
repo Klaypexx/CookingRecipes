@@ -29,8 +29,8 @@ public class RecipeService : IRecipeService
     public async Task CreateRecipe( Entities.Recipe recipe )
     {
 
-        string avatarGuid = await AvatarService.CreateAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
-        Recipe recipeDomain = _recipeCreator.Create( recipe, avatarGuid );
+        string pathToFile = await AvatarService.CreateAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
+        Recipe recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
         await _tagService.ActualizeTags( recipeDomain );
         await _recipeRepository.CreateRecipe( recipeDomain );
@@ -40,8 +40,8 @@ public class RecipeService : IRecipeService
     public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
     {
         Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
-        string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
-        Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, avatarGuid );
+        string pathToFile = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
+        Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
         await _tagService.ActualizeTags( actualDomainRecipe );
         oldRecipe.UpdateRecipe( actualDomainRecipe );

@@ -1,9 +1,9 @@
 ﻿namespace Application.Recipes.Services;
 public static class ImageService
 {
-    public static FileStream CreateImage( string avatarGuid, string rootPath )
+    public static FileStream CreateImage( string pathToFile, string rootPath )
     {
-        string fullPath = Path.Combine( rootPath, "images", avatarGuid );
+        string fullPath = Path.Combine( rootPath, "images", pathToFile );
         FileStream fileStream = new( fullPath, FileMode.Create );
 
         return fileStream;
