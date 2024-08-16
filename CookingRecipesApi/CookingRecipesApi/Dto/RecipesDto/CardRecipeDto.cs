@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CookingRecipesApi.Dto.RecipesDto;
+﻿namespace CookingRecipesApi.Dto.RecipesDto;
 public class CardRecipeDto
 {
     public int Id { get; set; }
