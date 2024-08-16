@@ -1,4 +1,4 @@
-﻿using CookingRecipesApi.Auth;
+﻿using Application.Auth;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Utilities;
 using Domain.Auth.Entities;
