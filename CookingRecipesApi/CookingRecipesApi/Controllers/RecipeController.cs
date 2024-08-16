@@ -1,6 +1,4 @@
-﻿using Application.Foundation;
-using Application.Recipes.Services;
-using Application.Tags.Services;
+﻿using Application.Recipes.Services;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
@@ -18,10 +16,7 @@ public class RecipeController : ControllerBase
 {
     private readonly IRecipeService _recipeService;
     private readonly IValidator<RecipeDto> _recipeDtoValidator;
-    public RecipeController( IUnitOfWork unitOfWork,
-        IRecipeService recipeService,
-        ITagService tagService,
-        IValidator<RecipeDto> recipeDtoValidator )
+    public RecipeController( IRecipeService recipeService, IValidator<RecipeDto> recipeDtoValidator )
     {
         _recipeService = recipeService;
         _recipeDtoValidator = recipeDtoValidator;

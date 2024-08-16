@@ -20,7 +20,6 @@ public static class CardRecipeDtoExtension
             {
                 Name = recipeTag.Tag.Name
             } ).ToList()
-
         };
     }
 }

@@ -18,7 +18,6 @@ namespace CookingRecipesApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPasswordHasher _passwordHasher;
     private readonly AuthSettings _authSettings;
@@ -34,7 +33,6 @@ public class AuthController : ControllerBase
         IValidator<LoginDto> loginDtoValidator )
     {
         _authService = authService;
-        _tokenService = tokenService;
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
         _authSettings = authSettings;
