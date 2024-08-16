@@ -1,5 +1,4 @@
 ﻿using Application.Recipes.Repositories;
-using Application.Recipes.Utils;
 using Application.Tags.Services;
 using Domain.Recipes.Entities;
 using Application.Foundation;
@@ -9,13 +8,16 @@ public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
+    private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
+        IRecipeCreator recipeCreator,
         IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
+        _recipeCreator = recipeCreator;
         _unitOfWork = unitOfWork;
     }
 
@@ -23,7 +25,7 @@ public class RecipeService : IRecipeService
     {
 
         string avatarGuid = await AvatarService.CreateAvatar( recipe.Avatar, rootPath );
-        Recipe recipeDomain = recipe.Create( avatarGuid );
+        Recipe recipeDomain = _recipeCreator.Create( recipe, avatarGuid );
 
         await _tagService.ActualizeTags( recipeDomain );
         await _recipeRepository.CreateRecipe( recipeDomain );
@@ -34,7 +36,7 @@ public class RecipeService : IRecipeService
     {
         Recipe oldRecipe = await _recipeRepository.GetByIdWithAllDetails( recipeId );
         string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, rootPath );
-        Recipe actualDomainRecipe = actualRecipe.Create( avatarGuid );
+        Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, avatarGuid );
 
         await _tagService.ActualizeTags( actualDomainRecipe );
         oldRecipe.UpdateRecipe( actualDomainRecipe );

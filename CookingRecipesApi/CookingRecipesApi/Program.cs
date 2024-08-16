@@ -1,6 +1,7 @@
 using Application.Auth.Repositories;
 using Application.Auth.Services;
 using Application.Foundation;
+using Application.Recipes;
 using Application.Recipes.Repositories;
 using Application.Recipes.Services;
 using Application.Tags.Repositories;
@@ -25,10 +26,12 @@ IConfiguration configuration = builder.Configuration;
 IServiceCollection services = builder.Services;
 
 // Add services to the container.
+services.AddScoped<IUnitOfWork, UnitOfWork>();
+services.AddScoped<IRecipeCreator, RecipeCreator>();
+
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<IRecipeService, RecipeService>();
 services.AddScoped<ITagService, TagService>();
-services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<ITokenService, TokenService>();
 
 services.AddScoped<IUserRepository, UserRepository>();

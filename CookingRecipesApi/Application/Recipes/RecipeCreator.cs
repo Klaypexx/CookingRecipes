@@ -1,11 +1,8 @@
 ﻿using Domain.Recipes.Entities;
-using RecipeApplication = Application.Recipes.Entities.Recipe;
-using RecipeDomain = Domain.Recipes.Entities.Recipe;
-
-namespace Application.Recipes.Utils;
-public static class RecipeCreator
+namespace Application.Recipes;
+public class RecipeCreator : IRecipeCreator
 {
-    public static RecipeDomain Create( this RecipeApplication recipe, string avatarGuid ) // вынести из утилс в папку с логикой рецепта
+    public Recipe Create( Entities.Recipe recipe, string avatarGuid ) // вынести из утилс в папку с логикой рецепта
     {
         return new()
         {
