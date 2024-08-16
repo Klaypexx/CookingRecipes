@@ -16,6 +16,7 @@ public class Recipe
     public List<Step> Steps { get; set; }
     public User Author { get; set; }
     public List<FavouriteRecipe> FavouriteRecipes { get; set; }
+
     public void UpdateRecipe( Recipe newRecipe )
     {
         Name = newRecipe.Name;

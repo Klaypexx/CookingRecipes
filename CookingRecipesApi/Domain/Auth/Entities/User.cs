@@ -12,6 +12,7 @@ public class User
     public List<Like> Likes { get; set; }
     public List<Recipe> Recipes { get; set; }
     public List<FavouriteRecipe> FavouriteRecipes { get; set; }
+
     public void SetRefreshToken( string token, int expiration )
     {
         RefreshToken = token;
