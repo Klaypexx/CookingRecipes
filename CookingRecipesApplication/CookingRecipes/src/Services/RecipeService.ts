@@ -7,7 +7,7 @@ const endpoints = {
   create: '/recipes/',
   update: '/recipes/',
   remove: '/recipes/',
-  getRecipe: '/recipes/list/',
+  getRecipe: '/recipes?pageNumber=',
   getCurrentRecipe: '/recipes/',
 };
 

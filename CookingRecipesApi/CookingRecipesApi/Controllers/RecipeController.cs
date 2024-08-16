@@ -8,7 +8,6 @@ using Domain.Recipes.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
@@ -17,9 +16,7 @@ namespace CookingRecipesApi.Controllers;
 [ApiController]
 public class RecipeController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IRecipeService _recipeService;
-    private readonly ITagService _tagService;
     private readonly IWebHostEnvironment _appEnvironment;
     private readonly IValidator<RecipeDto> _recipeDtoValidator;
     public RecipeController( IUnitOfWork unitOfWork,
@@ -28,9 +25,7 @@ public class RecipeController : ControllerBase
         IWebHostEnvironment appEnvironment,
         IValidator<RecipeDto> recipeDtoValidator )
     {
-        _unitOfWork = unitOfWork;
         _recipeService = recipeService;
-        _tagService = tagService;
         _appEnvironment = appEnvironment;
         _recipeDtoValidator = recipeDtoValidator;
     }
@@ -115,8 +110,8 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "list/{pageNumber}" )]
-    public async Task<IActionResult> GetRecipesForPage( [FromRoute] int pageNumber = 1, int pageAmount = 4 )
+    [Route( "" )]
+    public async Task<IActionResult> GetRecipesForPage( [FromQuery] int pageNumber = 1, int pageAmount = 4 )
     {
         try
         {
