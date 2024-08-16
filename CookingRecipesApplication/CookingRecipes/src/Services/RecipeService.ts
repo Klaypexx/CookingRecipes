@@ -57,7 +57,7 @@ const removeRecipe = async (recipeId: string) => {
   }
 };
 
-const GetRecipesForPage = async (pageNumber: number) => {
+const GetRecipes = async (pageNumber: number) => {
   try {
     const response: AxiosResponse<GetAllRecipesResponseValues[], any> = await api.get(
       `${endpoints.getRecipe}${pageNumber}`,
@@ -89,7 +89,7 @@ const RecipeService = {
   createRecipe,
   editRecipe,
   removeRecipe,
-  GetRecipesForPage,
+  GetRecipes,
   getCurrentUserRecipe,
 };
 
