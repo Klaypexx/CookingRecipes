@@ -28,7 +28,7 @@ public class RecipeRepository : IRecipeRepository
         _entities.Remove( recipe );
     }
 
-    public async Task<List<Recipe>> GetRecipes( int skipRange )
+    public async Task<List<Recipe>> GetRecipes( int skipRange, int pageAmount )
     {
         return await _entities
          .Include( recipe => recipe.Tags )
@@ -36,7 +36,7 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Author )
          .OrderBy( recipe => recipe.Id )
          .Skip( skipRange )
-         .Take( 4 )
+         .Take( pageAmount )
          .ToListAsync();
     }
 

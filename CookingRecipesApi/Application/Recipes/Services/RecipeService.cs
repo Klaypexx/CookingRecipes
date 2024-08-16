@@ -70,9 +70,9 @@ public class RecipeService : IRecipeService
 
     }
 
-    public async Task<List<Recipe>> GetRecipes( int skipRange )
+    public async Task<List<Recipe>> GetRecipes( int skipRange, int pageAmount )
     {
-        return await _recipeRepository.GetRecipes( skipRange );
+        return await _recipeRepository.GetRecipes( skipRange, pageAmount );
     }
 
     public async Task<Recipe> GetRecipeById( int recipeId )

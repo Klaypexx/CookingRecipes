@@ -109,7 +109,7 @@ public class RecipeController : ControllerBase
         {
             int pageAmount = 4;
             int skipRange = ( pageNumber - 1 ) * pageAmount;
-            List<Recipe> recipes = await _recipeService.GetRecipes( skipRange );
+            List<Recipe> recipes = await _recipeService.GetRecipes( skipRange, pageAmount );
             IReadOnlyList<CardRecipeDto> recipeDto = recipes.ToCardRecipeDto();
             return Ok( recipeDto );
         }
