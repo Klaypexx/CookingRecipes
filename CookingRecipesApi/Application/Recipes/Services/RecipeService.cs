@@ -10,21 +10,26 @@ public class RecipeService : IRecipeService
     private readonly ITagService _tagService;
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly WebHostSetting _webHostSetting;
+
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
         IRecipeCreator recipeCreator,
-        IUnitOfWork unitOfWork )
+        IUnitOfWork unitOfWork,
+        WebHostSetting webHostSetting
+        )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
         _recipeCreator = recipeCreator;
         _unitOfWork = unitOfWork;
+        _webHostSetting = webHostSetting;
     }
 
-    public async Task CreateRecipe( Entities.Recipe recipe, string rootPath )
+    public async Task CreateRecipe( Entities.Recipe recipe )
     {
 
-        string avatarGuid = await AvatarService.CreateAvatar( recipe.Avatar, rootPath );
+        string avatarGuid = await AvatarService.CreateAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
         Recipe recipeDomain = _recipeCreator.Create( recipe, avatarGuid );
 
         await _tagService.ActualizeTags( recipeDomain );
@@ -32,10 +37,10 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId, string rootPath )
+    public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
     {
         Recipe oldRecipe = await _recipeRepository.GetByIdWithAllDetails( recipeId );
-        string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, rootPath );
+        string avatarGuid = await AvatarService.UpdateAvatar( actualRecipe.Avatar, oldRecipe.Avatar, _webHostSetting.WebRootPath );
         Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, avatarGuid );
 
         await _tagService.ActualizeTags( actualDomainRecipe );
@@ -47,11 +52,11 @@ public class RecipeService : IRecipeService
 
     }
 
-    public async Task RemoveRecipe( int recipeId, string rootPath )
+    public async Task RemoveRecipe( int recipeId )
     {
         Recipe recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
-        AvatarService.RemoveAvatar( recipe.Avatar, rootPath );
+        AvatarService.RemoveAvatar( recipe.Avatar, _webHostSetting.WebRootPath );
 
         recipe.Tags.Clear();
         _recipeRepository.RemoveRecipe( recipe );

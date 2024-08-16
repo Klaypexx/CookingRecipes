@@ -17,16 +17,13 @@ namespace CookingRecipesApi.Controllers;
 public class RecipeController : ControllerBase
 {
     private readonly IRecipeService _recipeService;
-    private readonly IWebHostEnvironment _appEnvironment;
     private readonly IValidator<RecipeDto> _recipeDtoValidator;
     public RecipeController( IUnitOfWork unitOfWork,
         IRecipeService recipeService,
         ITagService tagService,
-        IWebHostEnvironment appEnvironment,
         IValidator<RecipeDto> recipeDtoValidator )
     {
         _recipeService = recipeService;
-        _appEnvironment = appEnvironment;
         _recipeDtoValidator = recipeDtoValidator;
     }
 
@@ -47,7 +44,7 @@ public class RecipeController : ControllerBase
         {
             int authorId = int.Parse( User.GetUserId() );
 
-            await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ), _appEnvironment.WebRootPath );
+            await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ) );
 
             return Ok();
         }
@@ -73,7 +70,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId, _appEnvironment.WebRootPath );
+            await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId );
 
             return Ok();
         }
@@ -99,7 +96,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.RemoveRecipe( recipeId, _appEnvironment.WebRootPath );
+            await _recipeService.RemoveRecipe( recipeId );
 
             return Ok();
         }

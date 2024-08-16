@@ -44,6 +44,9 @@ services.AddScoped( sp => authSettings );
 string connectionString = configuration.GetConnectionString( "CookingRecipes" );
 services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
 
+string webRootPath = builder.Environment.WebRootPath;
+services.AddSingleton( new WebHostSetting { WebRootPath = webRootPath } );
+
 services.AddValidatorsFromAssemblyContaining<RegisterDto>();
 services.AddValidatorsFromAssemblyContaining<LoginDto>();
 services.AddValidatorsFromAssemblyContaining<RecipeDto>();
