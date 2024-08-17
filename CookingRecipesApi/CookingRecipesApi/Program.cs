@@ -1,13 +1,11 @@
 using Application.Recipes;
 using Infrastructure.Auth;
 using Application.Auth;
-using CookingRecipesApi.Dto.AuthDto;
-using CookingRecipesApi.Dto.RecipesDto;
-using FluentValidation;
 using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using CookingRecipesApi;
 
 var builder = WebApplication.CreateBuilder( args );
 
@@ -28,11 +26,7 @@ services.AddScoped( sp => authSettings );
 string webRootPath = builder.Environment.WebRootPath;
 services.AddSingleton( new WebHostSetting { WebRootPath = webRootPath } );
 
-services.AddValidatorsFromAssemblyContaining<RegisterDto>();
-services.AddValidatorsFromAssemblyContaining<LoginDto>();
-services.AddValidatorsFromAssemblyContaining<RecipeDto>();
-services.AddValidatorsFromAssemblyContaining<StepDto>();
-services.AddValidatorsFromAssemblyContaining<IngredientDto>();
+services.AddCookingRecipesApiValidation();
 
 services.AddControllers();
 

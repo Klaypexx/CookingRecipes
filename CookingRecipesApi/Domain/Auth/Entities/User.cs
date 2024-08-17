@@ -26,6 +26,7 @@ public class User
     {
         Password = password;
     }
+
     public void SetRefreshToken( string token, int expiration )
     {
         RefreshToken = token;
