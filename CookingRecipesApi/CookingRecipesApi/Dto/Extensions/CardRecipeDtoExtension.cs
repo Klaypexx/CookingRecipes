@@ -1,7 +1,5 @@
 ﻿using CookingRecipesApi.Dto.RecipesDto;
 using Domain.Recipes.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CookingRecipesApi.Dto.Extensions
 {
