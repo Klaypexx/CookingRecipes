@@ -55,16 +55,17 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
             };
         } );
 
+string serverUrl = configuration[ "Cors:Url" ];
 
 builder.Services.AddCors( options =>
 {
     options.AddPolicy( "MyPolicy",
         policy =>
         {
-            policy.WithOrigins( "http://localhost:5173" ) // Укажите ваш фронтенд
+            policy.WithOrigins( serverUrl )
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials(); // Разрешает использование учетных данных
+                  .AllowCredentials();
         } );
 } );
 

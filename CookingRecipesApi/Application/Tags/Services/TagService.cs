@@ -1,5 +1,4 @@
-﻿using Application.Foundation;
-using Application.Tags.Repositories;
+﻿using Application.Tags.Repositories;
 using Domain.Recipes.Entities;
 
 namespace Application.Tags.Services;
@@ -24,7 +23,7 @@ public class TagService : ITagService
                 .Select( name => new RecipeTag( new Tag( name ) ) )
                 .ToList();
 
-            recipe.Tags = [ .. existingRecipesTags, .. recipeTagsToCreate ];
+            recipe.Tags = [ .. existingRecipesTags.Select( recipeTag => new RecipeTag( recipeTag.TagId, recipeTag.Tag ) ).ToList(), .. recipeTagsToCreate ];
 
             await _tagRepository.CreateTags( recipeTagsToCreate.Select( recipeTag => recipeTag.Tag ).ToList() );
         }
