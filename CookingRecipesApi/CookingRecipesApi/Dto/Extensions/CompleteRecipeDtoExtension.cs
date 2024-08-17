@@ -3,9 +3,9 @@ using Domain.Recipes.Entities;
 
 namespace CookingRecipesApi.Dto.Extensions;
 
-public static class CurrentRecipeDtoExtension
+public static class CompleteRecipeDtoExtension
 {
-    public static CurrentRecipeDto ToCurrentRecipeDto( this Recipe recipe )
+    public static CompletetRecipeDto ToCompleteRecipeDto( this Recipe recipe )
     {
         return new()
         {

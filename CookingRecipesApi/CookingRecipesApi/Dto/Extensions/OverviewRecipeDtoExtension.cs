@@ -3,11 +3,11 @@ using Domain.Recipes.Entities;
 
 namespace CookingRecipesApi.Dto.Extensions
 {
-    public static class CardRecipeDtoExtension
+    public static class OverviewRecipeDtoExtension
     {
-        public static CardRecipeDto ToCardRecipeDto( this Recipe recipe )
+        public static OverviewRecipeDto ToOverviewRecipeDto( this Recipe recipe )
         {
-            return new CardRecipeDto
+            return new OverviewRecipeDto
             {
                 Id = recipe.Id,
                 Name = recipe.Name,
@@ -23,9 +23,9 @@ namespace CookingRecipesApi.Dto.Extensions
             };
         }
 
-        public static IReadOnlyList<CardRecipeDto> ToCardRecipeDto( this IReadOnlyList<Recipe> recipes )
+        public static IReadOnlyList<OverviewRecipeDto> ToOverviewRecipeDto( this IReadOnlyList<Recipe> recipes )
         {
-            return recipes.Select( recipe => recipe.ToCardRecipeDto() ).ToList();
+            return recipes.Select( recipe => recipe.ToOverviewRecipeDto() ).ToList();
         }
     }
 }
