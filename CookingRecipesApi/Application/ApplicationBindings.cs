@@ -1,6 +1,6 @@
 ﻿using Application.Auth.Services;
-using Application.Recipes.Services;
 using Application.Recipes;
+using Application.Recipes.Services;
 using Application.Tags.Services;
 using Application.Users.Services;
 using Microsoft.Extensions.DependencyInjection;

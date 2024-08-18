@@ -1,5 +1,5 @@
-﻿using CookingRecipesApi.Dto.RecipesDto;
-using Application.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using CookingRecipesApi.Dto.RecipesDto;
 
 namespace CookingRecipesApi.Dto.Extensions;
 

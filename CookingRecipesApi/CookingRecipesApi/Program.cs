@@ -1,11 +1,11 @@
-using Application.Recipes;
-using Infrastructure.Auth;
-using Application.Auth;
 using Application;
+using Application.Auth;
+using Application.Recipes;
+using CookingRecipesApi;
 using Infrastructure;
+using Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using CookingRecipesApi;
 
 var builder = WebApplication.CreateBuilder( args );
 
