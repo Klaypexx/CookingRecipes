@@ -22,8 +22,7 @@ public class RecipeService : IRecipeService
         IFileService fileService,
         IRecipeCreator recipeCreator,
         IUnitOfWork unitOfWork,
-        WebHostSetting webHostSetting
-        )
+        WebHostSetting webHostSetting )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
@@ -35,7 +34,6 @@ public class RecipeService : IRecipeService
 
     public async Task CreateRecipe( Entities.Recipe recipe )
     {
-
         string pathToFile = await _fileService.SaveImage( recipe.Avatar, _imagePathName );
         Recipe recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
@@ -48,15 +46,13 @@ public class RecipeService : IRecipeService
     {
         Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
         string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar, _imagePathName );
-        Recipe actualDomainRecipe = _recipeCreator.Create( actualRecipe, pathToFile );
+        Recipe recipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
-        await _tagService.ActualizeTags( actualDomainRecipe );
-        oldRecipe.UpdateRecipe( actualDomainRecipe );
+        await _tagService.ActualizeTags( recipe );
+        oldRecipe.UpdateRecipe( recipe );
         await _unitOfWork.Save();
 
-        await _tagService.RemoveUnusedTags();
-        await _unitOfWork.Save();
-
+        await RemoveUnusedTags();
     }
 
     public async Task RemoveRecipe( int recipeId )
@@ -69,9 +65,13 @@ public class RecipeService : IRecipeService
         _recipeRepository.RemoveRecipe( recipe );
         await _unitOfWork.Save();
 
+        await RemoveUnusedTags();
+    }
+
+    private async Task RemoveUnusedTags()
+    {
         await _tagService.RemoveUnusedTags();
         await _unitOfWork.Save();
-
     }
 
     public async Task<List<Recipe>> GetRecipes( int skipRange, int pageAmount )
