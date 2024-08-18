@@ -9,5 +9,5 @@ public interface IAuthService
     Task<User> GetUserByUsername( string username );
     Task<User> GetUserByToken( string token );
     Task<bool> IsUniqueUsername( string username );
-    Tokens SignIn( User user, int lifetime );
+    AuthTokenSet SignIn( User user, int lifetime );
 }

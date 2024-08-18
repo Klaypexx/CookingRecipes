@@ -1,6 +1,6 @@
 ﻿namespace Application.Auth.Entities;
 
-public class Tokens
+public class AuthTokenSet
 {
     public string JwtToken { get; set; }
     public string RefreshToken { get; set; }

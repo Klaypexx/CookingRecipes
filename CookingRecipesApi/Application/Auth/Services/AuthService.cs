@@ -43,13 +43,13 @@ public class AuthService : IAuthService
         return user is null;
     }
 
-    public Tokens SignIn( User user, int lifetime )
+    public AuthTokenSet SignIn( User user, int lifetime )
     {
         string jwtToken = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
         user.SetRefreshToken( refreshToken, lifetime );
 
-        Tokens tokens = new()
+        AuthTokenSet tokens = new()
         {
             JwtToken = jwtToken,
             RefreshToken = refreshToken,

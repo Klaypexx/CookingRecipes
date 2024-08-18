@@ -100,7 +100,7 @@ public class AuthController : ControllerBase
 
         try
         {
-            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+            AuthTokenSet tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
             HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
 
@@ -133,7 +133,7 @@ public class AuthController : ControllerBase
 
         try
         {
-            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+            AuthTokenSet tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
             HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
 
