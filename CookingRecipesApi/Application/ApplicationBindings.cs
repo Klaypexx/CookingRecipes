@@ -11,12 +11,11 @@ public static class ApplicationBindings
 {
     public static IServiceCollection AddApplicationServices( this IServiceCollection services )
     {
-        // тут настройки di
         services.AddScoped<IRecipeCreator, RecipeCreator>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<ITagService, TagService>();
-        services.AddScoped<IFileService, FileService>();
+
         return services;
     }
 }
