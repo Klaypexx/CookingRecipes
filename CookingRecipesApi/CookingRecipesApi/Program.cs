@@ -1,9 +1,9 @@
 using Application;
 using Application.Auth;
-using Application.Recipes;
 using CookingRecipesApi;
 using Infrastructure;
 using Infrastructure.Auth;
+using Infrastructure.Files.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

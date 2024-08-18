@@ -13,7 +13,6 @@ public class RecipeService : IRecipeService
     private readonly IFileService _fileService;
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly WebHostSetting _webHostSetting;
 
     private const string _imagePathName = "images";
 
@@ -21,15 +20,13 @@ public class RecipeService : IRecipeService
         ITagService tagService,
         IFileService fileService,
         IRecipeCreator recipeCreator,
-        IUnitOfWork unitOfWork,
-        WebHostSetting webHostSetting )
+        IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
         _fileService = fileService;
         _recipeCreator = recipeCreator;
         _unitOfWork = unitOfWork;
-        _webHostSetting = webHostSetting;
     }
 
     public async Task CreateRecipe( Entities.Recipe recipe )

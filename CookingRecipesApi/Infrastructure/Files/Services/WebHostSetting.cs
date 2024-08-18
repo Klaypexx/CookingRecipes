@@ -1,4 +1,4 @@
-﻿namespace Application.Recipes;
+﻿namespace Infrastructure.Files.Services;
 
 public class WebHostSetting
 {
