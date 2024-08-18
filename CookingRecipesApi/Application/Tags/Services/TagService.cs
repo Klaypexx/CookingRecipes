@@ -13,7 +13,9 @@ public class TagService : ITagService
 
     public async Task ActualizeTags( Recipe recipe )
     {
-        List<string> actualTagsNames = recipe.Tags.Select( tag => tag.Tag.Name.ToLower() ).ToList();
+        List<string> actualTagsNames = recipe.Tags
+            .Select( recipeTag => recipeTag.Tag.Name.ToLower() )
+            .ToList();
 
         if ( actualTagsNames.Count != 0 )
         {
@@ -34,7 +36,7 @@ public class TagService : ITagService
     {
         List<Tag> tags = await _tagRepository.GetAllTagsWithRecipeTags();
 
-        List<Tag> tagsToRemove = tags.Where( tag => !tag.Recipes.Any() ).ToList();
+        List<Tag> tagsToRemove = tags.Where( tag => tag.Recipes.Count == 0 ).ToList();
 
         _tagRepository.RemoveTags( tagsToRemove );
     }
