@@ -6,6 +6,7 @@ using Application.Users.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
+
 public static class ApplicationBindings
 {
     public static IServiceCollection AddApplicationServices( this IServiceCollection services )

@@ -1,6 +1,7 @@
 ﻿using Domain.Recipes.Entities;
 
 namespace Domain.Auth.Entities;
+
 public class User
 {
     public int Id { get; private set; }

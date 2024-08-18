@@ -1,9 +1,9 @@
 ﻿using Application.Auth.Repositories;
-using Application.Validation;
 using CookingRecipesApi.Dto.AuthDto;
 using FluentValidation;
 
 namespace CookingRecipesApi.Dto.Validators;
+
 public class RegisterDtoValidator : AbstractValidator<RegisterDto>
 {
     private const int _nameMinWords = 3;

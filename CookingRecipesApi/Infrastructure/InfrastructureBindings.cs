@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
+
 public static class InfrastructureBindings
 {
     public static IServiceCollection AddInfrastructureRepositories( this IServiceCollection services )

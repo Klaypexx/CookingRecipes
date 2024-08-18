@@ -1,4 +1,5 @@
 ﻿namespace CookingRecipesApi.Dto.RecipesDto;
+
 public class RecipeDto
 {
     public string Name { get; set; }

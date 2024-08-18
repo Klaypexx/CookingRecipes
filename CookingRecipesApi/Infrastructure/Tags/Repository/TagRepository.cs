@@ -4,6 +4,7 @@ using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tags.Repository;
+
 public class TagRepository : ITagRepository
 {
     private readonly DbSet<Tag> _entities;

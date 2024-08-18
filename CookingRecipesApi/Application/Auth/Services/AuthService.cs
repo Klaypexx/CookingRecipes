@@ -5,6 +5,7 @@ using Application.Auth.Utils;
 using Domain.Auth.Entities;
 
 namespace Application.Users.Services;
+
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 
 namespace Application.Recipes.Services;
+
 public interface IFileService
 {
     Task<string> SaveFile( IFormFile avatar, string rootPath );

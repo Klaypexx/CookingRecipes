@@ -2,6 +2,7 @@
 using FluentValidation;
 
 namespace CookingRecipesApi.Dto.Validators;
+
 public class LoginDtoValidator : AbstractValidator<LoginDto>
 {
     private const int _usernameMinWords = 3;

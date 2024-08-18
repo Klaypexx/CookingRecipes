@@ -1,6 +1,7 @@
 ﻿using Domain.Recipes.Entities;
 
 namespace Application.Recipes.Services;
+
 public interface IRecipeService
 {
     Task CreateRecipe( Entities.Recipe recipe );

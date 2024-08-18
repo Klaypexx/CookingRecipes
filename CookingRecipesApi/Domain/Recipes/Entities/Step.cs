@@ -1,4 +1,5 @@
 ﻿namespace Domain.Recipes.Entities;
+
 public class Step
 {
     public int Id { get; private set; }

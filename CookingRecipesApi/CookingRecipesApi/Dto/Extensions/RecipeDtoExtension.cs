@@ -2,6 +2,7 @@
 using Application.Recipes.Entities;
 
 namespace CookingRecipesApi.Dto.Extensions;
+
 public static class RecipeDtoExtension
 {
     public static Recipe ToDomain( this RecipeDto recipeDto, int authorId )

@@ -3,6 +3,7 @@ using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
 
 namespace CookingRecipesApi;
+
 public static class CookingRecipesApiBindings
 {
     public static IServiceCollection AddCookingRecipesApiValidation( this IServiceCollection services )

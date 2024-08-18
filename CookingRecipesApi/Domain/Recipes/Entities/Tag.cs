@@ -1,4 +1,5 @@
 ﻿namespace Domain.Recipes.Entities;
+
 public class Tag
 {
     public int Id { get; private set; }

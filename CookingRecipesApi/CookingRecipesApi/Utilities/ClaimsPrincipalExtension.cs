@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 
 namespace CookingRecipesApi.Utilities;
+
 public static class ClaimsPrincipalExtension
 {
     public static string GetUserId( this ClaimsPrincipal user )

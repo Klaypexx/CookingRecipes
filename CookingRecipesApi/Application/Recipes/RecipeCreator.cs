@@ -1,5 +1,7 @@
 ﻿using Domain.Recipes.Entities;
+
 namespace Application.Recipes;
+
 public class RecipeCreator : IRecipeCreator
 {
     public Recipe Create( Entities.Recipe recipe, string pathToFile ) // вынести из утилс в папку с логикой рецепта

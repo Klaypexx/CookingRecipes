@@ -4,6 +4,7 @@ using Domain.Recipes.Entities;
 using Application.Foundation;
 
 namespace Application.Recipes.Services;
+
 public class RecipeService : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository;

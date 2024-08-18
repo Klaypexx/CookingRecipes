@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 
 namespace Application.Recipes.Entities;
+
 public class Recipe
 {
     public string Name { get; set; }

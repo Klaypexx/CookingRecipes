@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Infrastructure.Database
+namespace Infrastructure.Database;
+
+public class AppDbContext : DbContext
 {
-    public class AppDbContext : DbContext
+    public AppDbContext( DbContextOptions options ) : base( options ) { }
+
+    protected override void OnModelCreating( ModelBuilder modelBuilder )
     {
-        public AppDbContext( DbContextOptions options ) : base( options ) { }
+        base.OnModelCreating( modelBuilder );
 
-        protected override void OnModelCreating( ModelBuilder modelBuilder )
-        {
-            base.OnModelCreating( modelBuilder );
-
-            modelBuilder.ApplyConfigurationsFromAssembly( Assembly.GetExecutingAssembly() );
-        }
+        modelBuilder.ApplyConfigurationsFromAssembly( Assembly.GetExecutingAssembly() );
     }
 }

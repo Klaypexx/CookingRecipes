@@ -1,4 +1,5 @@
 ﻿namespace CookingRecipesApi.Dto.RecipesDto;
+
 public class OverviewRecipeDto
 {
     public int Id { get; set; }

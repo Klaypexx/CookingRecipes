@@ -2,6 +2,7 @@
 using Domain.Recipes.Entities;
 
 namespace Application.Tags.Services;
+
 public class TagService : ITagService
 {
     private readonly ITagRepository _tagRepository;
