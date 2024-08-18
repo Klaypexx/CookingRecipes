@@ -1,7 +1,7 @@
-﻿using Application.Auth.Entities;
+﻿using Application.Auth;
+using Application.Auth.Entities;
 using Application.Auth.Repositories;
 using Application.Auth.Services;
-using Application.Auth.Utils;
 using Domain.Auth.Entities;
 
 namespace Application.Users.Services;

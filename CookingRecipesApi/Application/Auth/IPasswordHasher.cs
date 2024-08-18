@@ -1,4 +1,4 @@
-﻿namespace Application.Auth.Utils;
+﻿namespace Application.Auth;
 public interface IPasswordHasher
 {
     string GeneratePasswordHash( string password );

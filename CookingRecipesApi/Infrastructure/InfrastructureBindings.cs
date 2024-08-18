@@ -1,6 +1,6 @@
-﻿using Application.Auth.Repositories;
+﻿using Application.Auth;
+using Application.Auth.Repositories;
 using Application.Auth.Services;
-using Application.Auth.Utils;
 using Application.Foundation;
 using Application.Recipes.Repositories;
 using Application.Tags.Repositories;

@@ -9,7 +9,6 @@ using FluentValidation.Results;
 using Application.Auth.Services;
 using Application.Foundation;
 using Application.Auth.Entities;
-using Application.Auth.Utils;
 
 namespace CookingRecipesApi.Controllers;
 
