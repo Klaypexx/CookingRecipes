@@ -27,7 +27,6 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
-
         ValidationResult validationResult = await _recipeDtoValidator.ValidateAsync( recipeDto );
 
         if ( !validationResult.IsValid )

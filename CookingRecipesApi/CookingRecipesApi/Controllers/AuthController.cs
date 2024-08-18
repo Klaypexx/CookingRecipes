@@ -24,7 +24,6 @@ public class AuthController : ControllerBase
     private readonly IValidator<LoginDto> _loginDtoValidator;
 
     public AuthController( IAuthService authService,
-        ITokenService tokenService,
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         AuthSettings authSettings,
