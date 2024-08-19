@@ -26,9 +26,13 @@ public class TagService : ITagService
                 .Select( name => new RecipeTag( new Tag( name ) ) )
                 .ToList();
 
-            recipe.Tags = [ .. existingRecipesTags.Select( recipeTag => new RecipeTag( recipeTag.TagId, recipeTag.Tag ) ).ToList(), .. recipeTagsToCreate ];
+            List<RecipeTag> existingRecipesTagsToAdd = existingRecipesTags.Select( recipeTag => new RecipeTag( recipeTag.TagId, recipeTag.Tag ) ).ToList();
 
-            await _tagRepository.CreateTags( recipeTagsToCreate.Select( recipeTag => recipeTag.Tag ).ToList() );
+            recipe.SetTags( [ .. existingRecipesTagsToAdd, .. recipeTagsToCreate ] );
+
+            List<Tag> tagsToCreate = recipeTagsToCreate.Select( recipeTag => recipeTag.Tag ).ToList();
+
+            await _tagRepository.CreateTags( tagsToCreate );
         }
     }
 

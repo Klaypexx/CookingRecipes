@@ -4,29 +4,57 @@ namespace Domain.Recipes.Entities;
 
 public class Recipe
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public int CookingTime { get; set; }
-    public int Portion { get; set; }
-    public string Avatar { get; set; }
-    public int AuthorId { get; set; }
-    public List<Like> Likes { get; set; }
-    public List<RecipeTag> Tags { get; set; }
-    public List<Ingredient> Ingredients { get; set; }
-    public List<Step> Steps { get; set; }
-    public User Author { get; set; }
-    public List<FavouriteRecipe> FavouriteRecipes { get; set; }
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public string Description { get; private set; }
+    public int CookingTime { get; private set; }
+    public int Portion { get; private set; }
+    public string Avatar { get; private set; }
+    public int AuthorId { get; private set; }
+    public List<Like> Likes { get; private set; }
+    public List<RecipeTag> Tags { get; private set; }
+    public List<Ingredient> Ingredients { get; private set; }
+    public List<Step> Steps { get; private set; }
+    public User Author { get; private set; }
+    public List<FavouriteRecipe> FavouriteRecipes { get; private set; }
 
-    public void UpdateRecipe( Recipe newRecipe )
+    public Recipe() { }
+
+    public Recipe( string name,
+        string description,
+        int cookingTime,
+        int portion,
+        string avatar,
+        int authorId,
+        List<Ingredient> ingredients,
+        List<Step> steps,
+        List<RecipeTag> tags )
     {
-        Name = newRecipe.Name;
-        Description = newRecipe.Description;
-        CookingTime = newRecipe.CookingTime;
-        Portion = newRecipe.Portion;
-        Avatar = newRecipe.Avatar;
-        Ingredients = newRecipe.Ingredients.Select( ingredientDto => new Ingredient( ingredientDto.Name, ingredientDto.Product ) ).ToList();
-        Steps = newRecipe.Steps.Select( stepDto => new Step( stepDto.Description ) ).ToList();
-        Tags = newRecipe.Tags;
+        Name = name;
+        Description = description;
+        CookingTime = cookingTime;
+        Portion = portion;
+        Avatar = avatar;
+        AuthorId = authorId;
+        Ingredients = ingredients;
+        Steps = steps;
+        Tags = tags;
+    }
+
+    public void SetTags( List<RecipeTag> tags )
+    {
+        Tags = tags;
+    }
+
+    public void UpdateRecipe( Recipe otherRecipe )
+    {
+        Name = otherRecipe.Name;
+        Description = otherRecipe.Description;
+        CookingTime = otherRecipe.CookingTime;
+        Portion = otherRecipe.Portion;
+        Avatar = otherRecipe.Avatar;
+        Ingredients = otherRecipe.Ingredients;
+        Steps = otherRecipe.Steps;
+        Tags = otherRecipe.Tags;
     }
 }
