@@ -56,12 +56,9 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( "Логин пользователя должен быть уникальным" ) );
         }
 
-        User user = new( body.Name, body.UserName, body.Password );
-
         try
         {
-            await _authService.RegisterUser( user );
-            await _unitOfWork.Save();
+            await _authService.RegisterUser( new( body.Name, body.UserName, body.Password ) );
         }
         catch ( Exception exception )
         {
@@ -98,11 +95,9 @@ public class AuthController : ControllerBase
 
         try
         {
-            AuthTokenSet tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+            AuthTokenSet tokens = await _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
             HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
-
-            await _unitOfWork.Save();
 
             return Ok( tokens.JwtToken );
         }
@@ -131,11 +126,9 @@ public class AuthController : ControllerBase
 
         try
         {
-            AuthTokenSet tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+            AuthTokenSet tokens = await _authService.SignIn( user, _authSettings.RefreshLifeTime );
 
             HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
-
-            await _unitOfWork.Save();
 
             return Ok( tokens.JwtToken );
         }
@@ -147,7 +140,7 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route( "logout" )]
-    public async Task<IActionResult> Logout()
+    public IActionResult Logout()
     {
         try
         {
