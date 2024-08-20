@@ -22,18 +22,15 @@ public class AuthService : IAuthService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<User> GetUserByUsername( string username )
-    {
-        return await _userRepository.GetByUsername( username );
-    }
-
-    public async Task<User> GetUserByToken( string token )
-    {
-        return await _userRepository.GetByRefreshToken( token );
-    }
-
     public async Task RegisterUser( User user )
     {
+        bool isUniqueUserName = await IsUniqueUsername( user.UserName );
+
+        if ( !isUniqueUserName )
+        {
+            throw new Exception( "Логин пользователя должен быть уникальным" );
+        }
+
         string password = _passwordHasher.GeneratePasswordHash( user.Password );
         user.SetPassword( password );
         await _userRepository.AddUser( user );
@@ -41,18 +38,60 @@ public class AuthService : IAuthService
         await _unitOfWork.Save();
     }
 
-    public async Task<bool> IsUniqueUsername( string username )
+    public async Task<AuthTokenSet> SignIn( string userName, string password, int lifetime )
     {
-        User user = await _userRepository.GetByUsername( username );
+        User user = await _userRepository.GetByUsername( userName );
 
-        return user is null;
+        if ( user is null )
+        {
+            throw new Exception( "Пользователь не найден" );
+        }
+
+        bool result = _passwordHasher.VerifyPasswordHash( password, user.Password );
+
+        if ( !result )
+        {
+            throw new Exception( "Неверный пароль" );
+        }
+
+        AuthTokenSet tokens = GetTokens( user );
+
+        await SetToken( user, tokens.RefreshToken, lifetime );
+
+        return tokens;
     }
 
-    public async Task<AuthTokenSet> SignIn( User user, int lifetime )
+    public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )
+    {
+        User user = await _userRepository.GetByRefreshToken( cookieRefreshToken );
+
+        if ( user is null )
+        {
+            throw new Exception( "Токен обновления не существует" );
+        }
+
+        if ( user.RefreshTokenExpiryTime <= DateTime.Now )
+        {
+            throw new Exception( "Срок действия токена обновления истек" );
+        }
+
+        AuthTokenSet tokens = GetTokens( user );
+
+        await SetToken( user, tokens.RefreshToken, lifetime );
+
+        return tokens;
+    }
+
+    private async Task SetToken( User user, string refreshToken, int lifetime )
+    {
+        user.SetRefreshToken( refreshToken, lifetime );
+        await _unitOfWork.Save();
+    }
+
+    private AuthTokenSet GetTokens( User user )
     {
         string jwtToken = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
-        user.SetRefreshToken( refreshToken, lifetime );
 
         AuthTokenSet tokens = new()
         {
@@ -60,8 +99,13 @@ public class AuthService : IAuthService
             RefreshToken = refreshToken,
         };
 
-        await _unitOfWork.Save();
-
         return tokens;
+    }
+
+    private async Task<bool> IsUniqueUsername( string username )
+    {
+        User user = await _userRepository.GetByUsername( username );
+
+        return user is null;
     }
 }
