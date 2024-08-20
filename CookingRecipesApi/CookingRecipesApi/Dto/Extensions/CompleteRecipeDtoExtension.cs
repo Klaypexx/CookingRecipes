@@ -1,11 +1,11 @@
-﻿using CookingRecipesApi.Dto.RecipesDto;
-using Domain.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using CookingRecipesApi.Dto.RecipesDto;
 
 namespace CookingRecipesApi.Dto.Extensions;
 
 public static class CompleteRecipeDtoExtension
 {
-    public static CompletetRecipeDto ToCompleteRecipeDto( this Recipe recipe )
+    public static CompletetRecipeDto ToCompleteRecipeDto( this CompleteRecipe recipe )
     {
         return new()
         {
@@ -13,11 +13,11 @@ public static class CompleteRecipeDtoExtension
             Description = recipe.Description,
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
-            AvatarPath = recipe.Avatar,
-            AuthorName = recipe.Author.UserName,
+            AvatarPath = recipe.AvatarPath,
+            AuthorName = recipe.AuthorName,
             Tags = recipe.Tags.Select( recipeTag => new TagDto
             {
-                Name = recipeTag.Tag.Name
+                Name = recipeTag.Name
             } ).ToList(),
             Ingredients = recipe.Ingredients.Select( ingredientDto => new IngredientDto
             {

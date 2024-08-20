@@ -4,7 +4,6 @@ using Application.Auth.Services;
 using Application.Foundation;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Utilities;
-using Domain.Auth.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;

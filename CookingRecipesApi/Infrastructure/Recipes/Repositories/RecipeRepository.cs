@@ -28,7 +28,7 @@ public class RecipeRepository : IRecipeRepository
         _entities.Remove( recipe );
     }
 
-    public async Task<List<Recipe>> GetRecipes( int skipRange, int pageAmount )
+    public async Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount )
     {
         return await _entities.Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )

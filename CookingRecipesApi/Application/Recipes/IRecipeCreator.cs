@@ -1,8 +1,9 @@
-﻿using Domain.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using RecipeDomain = Domain.Recipes.Entities.Recipe;
 
 namespace Application.Recipes;
 
 public interface IRecipeCreator
 {
-    Recipe Create( Entities.Recipe recipe, string pathToFile );
+    RecipeDomain Create( Recipe recipe, string pathToFile );
 }

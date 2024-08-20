@@ -1,11 +1,11 @@
-﻿using CookingRecipesApi.Dto.RecipesDto;
-using Domain.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using CookingRecipesApi.Dto.RecipesDto;
 
 namespace CookingRecipesApi.Dto.Extensions;
 
 public static class OverviewRecipeDtoExtension
 {
-    public static OverviewRecipeDto ToOverviewRecipeDto( this Recipe recipe )
+    public static OverviewRecipeDto ToOverviewRecipeDto( this OverviewRecipe recipe )
     {
         return new OverviewRecipeDto
         {
@@ -14,16 +14,16 @@ public static class OverviewRecipeDtoExtension
             Description = recipe.Description,
             CookingTime = recipe.CookingTime,
             Portion = recipe.Portion,
-            AvatarPath = recipe.Avatar,
-            AuthorName = recipe.Author.UserName,
+            AvatarPath = recipe.AvatarPath,
+            AuthorName = recipe.AuthorName,
             Tags = recipe.Tags.Select( recipeTag => new TagDto
             {
-                Name = recipeTag.Tag.Name
+                Name = recipeTag.Name
             } ).ToList()
         };
     }
 
-    public static IReadOnlyList<OverviewRecipeDto> ToOverviewRecipeDto( this IReadOnlyList<Recipe> recipes )
+    public static IReadOnlyList<OverviewRecipeDto> ToOverviewRecipeDto( this IReadOnlyList<OverviewRecipe> recipes )
     {
         return recipes.Select( recipe => recipe.ToOverviewRecipeDto() ).ToList();
     }

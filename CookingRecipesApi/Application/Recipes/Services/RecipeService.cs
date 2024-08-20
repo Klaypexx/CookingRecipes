@@ -1,8 +1,10 @@
 ﻿using Application.Files.Services;
 using Application.Foundation;
+using Application.Recipes.Entities;
 using Application.Recipes.Repositories;
 using Application.Tags.Services;
-using Domain.Recipes.Entities;
+using RecipeDomain = Domain.Recipes.Entities.Recipe;
+using Application.Recipes.Extensions;
 
 namespace Application.Recipes.Services;
 
@@ -27,21 +29,21 @@ public class RecipeService : IRecipeService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task CreateRecipe( Entities.Recipe recipe )
+    public async Task CreateRecipe( Recipe recipe )
     {
         string pathToFile = await _fileService.SaveImage( recipe.Avatar );
-        Recipe recipeDomain = _recipeCreator.Create( recipe, pathToFile );
+        RecipeDomain recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
         await _tagService.ActualizeTags( recipeDomain );
         await _recipeRepository.CreateRecipe( recipeDomain );
         await _unitOfWork.Save();
     }
 
-    public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
+    public async Task UpdateRecipe( Recipe actualRecipe, int recipeId )
     {
-        Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
+        RecipeDomain oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
         string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar );
-        Recipe recipe = _recipeCreator.Create( actualRecipe, pathToFile );
+        RecipeDomain recipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
         await _tagService.ActualizeTags( recipe );
         oldRecipe.UpdateRecipe( recipe );
@@ -52,7 +54,7 @@ public class RecipeService : IRecipeService
 
     public async Task RemoveRecipe( int recipeId )
     {
-        Recipe recipe = await _recipeRepository.GetByIdWithTag( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
         _fileService.RemoveImage( recipe.Avatar );
 
@@ -69,21 +71,23 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task<List<Recipe>> GetRecipes( int pageNumber )
+    public async Task<IReadOnlyList<OverviewRecipe>> GetRecipes( int pageNumber )
     {
         int pageAmount = 4;
         int skipRange = ( pageNumber - 1 ) * pageAmount;
-        return await _recipeRepository.GetRecipes( skipRange, pageAmount );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount );
+        return recipes.ToOverviewRecipe();
     }
 
-    public async Task<Recipe> GetRecipeById( int recipeId )
+    public async Task<CompleteRecipe> GetRecipeById( int recipeId )
     {
-        return await _recipeRepository.GetRecipeById( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
+        return recipe.ToCompleteRecipe();
     }
 
     public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )
     {
-        Recipe recipe = await _recipeRepository.GetById( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetById( recipeId );
 
         return recipe.AuthorId == authorId;
     }

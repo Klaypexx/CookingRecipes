@@ -1,8 +1,8 @@
-﻿using Application.Recipes.Services;
+﻿using Application.Recipes.Entities;
+using Application.Recipes.Services;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
-using Domain.Recipes.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -38,7 +38,7 @@ public class RecipeController : ControllerBase
         {
             int authorId = int.Parse( User.GetUserId() );
 
-            await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ) );
+            await _recipeService.CreateRecipe( recipeDto.ToApplication( authorId ) );
 
             return Ok();
         }
@@ -64,7 +64,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId );
+            await _recipeService.UpdateRecipe( recipeDto.ToApplication( authorId ), recipeId );
 
             return Ok();
         }
@@ -106,9 +106,9 @@ public class RecipeController : ControllerBase
     {
         try
         {
-            List<Recipe> recipes = await _recipeService.GetRecipes( pageNumber );
-            IReadOnlyList<OverviewRecipeDto> recipeDto = recipes.ToOverviewRecipeDto();
-            return Ok( recipeDto );
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber );
+            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
+            return Ok( recipesDto );
         }
         catch ( Exception exception )
         {
@@ -123,7 +123,7 @@ public class RecipeController : ControllerBase
     {
         try
         {
-            Recipe recipes = await _recipeService.GetRecipeById( recipeId );
+            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId );
             CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
             return Ok( recipeDto );
         }
