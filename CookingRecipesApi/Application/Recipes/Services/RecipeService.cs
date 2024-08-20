@@ -69,8 +69,10 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task<List<Recipe>> GetRecipes( int skipRange, int pageAmount )
+    public async Task<List<Recipe>> GetRecipes( int pageNumber )
     {
+        int pageAmount = 4;
+        int skipRange = ( pageNumber - 1 ) * pageAmount;
         return await _recipeRepository.GetRecipes( skipRange, pageAmount );
     }
 
