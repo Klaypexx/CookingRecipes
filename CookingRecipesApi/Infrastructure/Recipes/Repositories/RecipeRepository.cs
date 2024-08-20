@@ -30,8 +30,7 @@ public class RecipeRepository : IRecipeRepository
 
     public async Task<List<Recipe>> GetRecipes( int skipRange, int pageAmount )
     {
-        return await _entities
-         .Include( recipe => recipe.Tags )
+        return await _entities.Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Author )
          .OrderBy( recipe => recipe.Id )
@@ -42,8 +41,7 @@ public class RecipeRepository : IRecipeRepository
 
     public async Task<Recipe> GetRecipeById( int recipeId )
     {
-        return await _entities
-         .Where( recipe => recipe.Id == recipeId )
+        return await _entities.Where( recipe => recipe.Id == recipeId )
          .Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Ingredients )
@@ -54,8 +52,7 @@ public class RecipeRepository : IRecipeRepository
 
     public async Task<Recipe> GetByIdWithTag( int recipeId )
     {
-        return await _entities
-            .Where( recipe => recipe.Id == recipeId )
+        return await _entities.Where( recipe => recipe.Id == recipeId )
             .Include( recipe => recipe.Tags )
             .ThenInclude( tag => tag.Tag )
             .FirstOrDefaultAsync();
@@ -63,8 +60,7 @@ public class RecipeRepository : IRecipeRepository
 
     public async Task<Recipe> GetById( int recipeId )
     {
-        return await _entities
-            .Where( recipe => recipe.Id == recipeId )
+        return await _entities.Where( recipe => recipe.Id == recipeId )
             .FirstOrDefaultAsync();
     }
 }

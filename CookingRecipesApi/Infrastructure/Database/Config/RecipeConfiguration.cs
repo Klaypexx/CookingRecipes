@@ -1,6 +1,7 @@
 ﻿using Domain.Recipes.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Infrastructure.Database.Config;
 
 public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>

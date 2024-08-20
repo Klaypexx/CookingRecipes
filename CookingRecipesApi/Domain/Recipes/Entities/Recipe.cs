@@ -18,6 +18,7 @@ public class Recipe
     public User Author { get; private set; }
     public List<FavouriteRecipe> FavouriteRecipes { get; private set; }
 
+    // protected конструктор (проверка)
     public Recipe() { }
 
     public Recipe( string name,
