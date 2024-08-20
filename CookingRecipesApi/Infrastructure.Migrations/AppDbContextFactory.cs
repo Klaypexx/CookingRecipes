@@ -11,7 +11,7 @@ class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         IConfiguration config = GetConfig();
         string connectionString = config.GetConnectionString( "CookingRecipes" ); ;
-        DbContextOptionsBuilder<AppDbContext> optionalBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        DbContextOptionsBuilder<AppDbContext> optionalBuilder = new();
 
         optionalBuilder.UseSqlServer( connectionString,
             ob => ob.MigrationsAssembly( "Infrastructure.Migrations" ) );

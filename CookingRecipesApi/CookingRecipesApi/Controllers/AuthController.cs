@@ -1,15 +1,13 @@
-﻿using CookingRecipesApi.Auth;
+﻿using Application.Auth;
+using Application.Auth.Entities;
+using Application.Auth.Services;
+using Application.Foundation;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Utilities;
-using Domain.Auth.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using FluentValidation.Results;
-using Application.Auth.Services;
-using Infrastructure.Auth.Utils;
-using Application.Foundation;
-using Application.Auth.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -18,22 +16,22 @@ namespace CookingRecipesApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly AuthSettings _authSettings;
     private readonly IValidator<RegisterDto> _registerDtoValidator;
     private readonly IValidator<LoginDto> _loginDtoValidator;
 
     public AuthController( IAuthService authService,
-        ITokenService tokenService,
         IUnitOfWork unitOfWork,
+        IPasswordHasher passwordHasher,
         AuthSettings authSettings,
         IValidator<RegisterDto> registerDtoValidator,
         IValidator<LoginDto> loginDtoValidator )
     {
         _authService = authService;
-        _tokenService = tokenService;
         _unitOfWork = unitOfWork;
+        _passwordHasher = passwordHasher;
         _authSettings = authSettings;
         _registerDtoValidator = registerDtoValidator;
         _loginDtoValidator = loginDtoValidator;
@@ -50,24 +48,9 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
         }
 
-        bool isUniqueUserName = await _authService.IsUniqueUsername( body.UserName );
-
-        if ( !isUniqueUserName )
-        {
-            return BadRequest( new ErrorResponse( "Логин пользователя должен быть уникальным" ) );
-        }
-
-        User user = new()
-        {
-            Name = body.Name,
-            UserName = body.UserName,
-            Password = body.Password
-        };
-
         try
         {
-            await _authService.RegisterUser( user );
-            await _unitOfWork.Save();
+            await _authService.RegisterUser( new( body.Name, body.UserName, body.Password ) );
         }
         catch ( Exception exception )
         {
@@ -88,27 +71,11 @@ public class AuthController : ControllerBase
             return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
         }
 
-        User user = await _authService.GetUserByUsername( body.UserName );
-
-        if ( user is null )
-        {
-            return BadRequest( new ErrorResponse( "Пользователь не найден" ) );
-        }
-
-        bool result = PasswordHasher.VerifyPasswordHash( body.Password, user.Password );
-
-        if ( !result )
-        {
-            return BadRequest( new ErrorResponse( "Неверный пароль" ) );
-        }
-
         try
         {
-            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+            AuthTokenSet tokens = await _authService.SignIn( body.UserName, body.Password, _authSettings.RefreshLifeTime );
 
             HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
-
-            await _unitOfWork.Save();
 
             return Ok( tokens.JwtToken );
         }
@@ -122,26 +89,13 @@ public class AuthController : ControllerBase
     [Route( "refresh" )]
     public async Task<IActionResult> Refresh()
     {
-        HttpContext.Request.Cookies.TryGetValue( "refreshToken", out string cookieRefreshToken );
-        User user = await _authService.GetUserByToken( cookieRefreshToken );
-
-        if ( user is null )
-        {
-            return BadRequest( new ErrorResponse( "Токен обновления не существует" ) );
-        }
-
-        if ( user.RefreshTokenExpiryTime <= DateTime.Now )
-        {
-            return BadRequest( new ErrorResponse( "Срок действия токена обновления истек" ) );
-        }
-
         try
         {
-            Tokens tokens = _authService.SignIn( user, _authSettings.RefreshLifeTime );
+            HttpContext.Request.Cookies.TryGetValue( "refreshToken", out string cookieRefreshToken );
+
+            AuthTokenSet tokens = await _authService.Refresh( cookieRefreshToken, _authSettings.RefreshLifeTime );
 
             HttpContext.SetRefreshTokenInsideCookie( tokens.RefreshToken, _authSettings.RefreshLifeTime );
-
-            await _unitOfWork.Save();
 
             return Ok( tokens.JwtToken );
         }
@@ -153,30 +107,13 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route( "logout" )]
-    public async Task<IActionResult> Logout()
+    public IActionResult Logout()
     {
         try
         {
             HttpContext.Response.Cookies.Delete( "refreshToken" );
 
             return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
-    }
-
-
-    [HttpGet]
-    [Route( "user" )]
-    [Authorize]
-    public async Task<IActionResult> GetUserByUsername( [FromHeader] string userName )
-    {
-        try
-        {
-            User user = await _authService.GetUserByUsername( userName );
-            return Ok( user );
         }
         catch ( Exception exception )
         {

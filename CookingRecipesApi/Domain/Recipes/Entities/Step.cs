@@ -1,8 +1,14 @@
 ﻿namespace Domain.Recipes.Entities;
+
 public class Step
 {
-    public int Id { get; set; }
-    public string Description { get; set; }
-    public int RecipeId { get; set; }
-    public Recipe Recipe { get; set; }
+    public int Id { get; private set; }
+    public string Description { get; private set; }
+    public int RecipeId { get; private set; }
+    public Recipe Recipe { get; private set; }
+
+    public Step( string description )
+    {
+        Description = description;
+    }
 }

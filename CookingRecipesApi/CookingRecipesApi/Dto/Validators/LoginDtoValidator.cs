@@ -2,6 +2,7 @@
 using FluentValidation;
 
 namespace CookingRecipesApi.Dto.Validators;
+
 public class LoginDtoValidator : AbstractValidator<LoginDto>
 {
     private const int _usernameMinWords = 3;
@@ -10,7 +11,6 @@ public class LoginDtoValidator : AbstractValidator<LoginDto>
     private const int _passwordMaxWords = 25;
     public LoginDtoValidator()
     {
-
         RuleFor( loginDto => loginDto.UserName )
             .MinimumLength( _usernameMinWords )
             .WithMessage( "Логин должен включать не менее" + _usernameMinWords + "символов" )

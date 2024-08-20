@@ -1,6 +1,6 @@
 ﻿using Domain.Recipes.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Config;
 public class FavouriteRecipeConfiguration : IEntityTypeConfiguration<FavouriteRecipe>

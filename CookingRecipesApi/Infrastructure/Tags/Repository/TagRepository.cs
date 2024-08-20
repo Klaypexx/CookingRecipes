@@ -4,6 +4,7 @@ using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Tags.Repository;
+
 public class TagRepository : ITagRepository
 {
     private readonly DbSet<Tag> _entities;
@@ -22,11 +23,7 @@ public class TagRepository : ITagRepository
         return await _entities
             .Where( tag => tagNames.Contains( tag.Name ) )
             .SelectMany( tag => tag.Recipes )
-            .Select( recipeTag => new RecipeTag
-            {
-                TagId = recipeTag.TagId,
-                Tag = recipeTag.Tag
-            } )
+            .Select( recipeTag => new RecipeTag( recipeTag.TagId, recipeTag.Tag ) )
             .Distinct()
             .ToListAsync();
     }

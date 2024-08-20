@@ -19,7 +19,7 @@ const RecipesList = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipesForPage(pageNumber);
+      const result = await RecipeService.GetRecipes(pageNumber);
       if (result.response && result.response.status === 200) {
         if (!result.response.data.length) {
           setIsLoadButton(false);

@@ -1,9 +1,9 @@
 ﻿using Application.Validation;
 using CookingRecipesApi.Dto.RecipesDto;
 using FluentValidation;
-using Infrastructure.Auth.Repositories;
 
 namespace CookingRecipesApi.Dto.Validators;
+
 public class RecipeDtoValidator : AbstractValidator<RecipeDto>
 {
     private readonly FileValidationRules _fileValidationRules;

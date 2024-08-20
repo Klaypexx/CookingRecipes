@@ -1,22 +1,10 @@
-using Application.Auth.Repositories;
-using Application.Auth.Services;
-using Application.Foundation;
-using Application.Recipes.Repositories;
-using Application.Recipes.Services;
-using Application.Tags.Repositories;
-using Application.Tags.Services;
-using Application.Users.Services;
-using CookingRecipesApi.Auth;
-using CookingRecipesApi.Dto.AuthDto;
-using CookingRecipesApi.Dto.RecipesDto;
-using FluentValidation;
-using Infrastructure.Auth.Repositories;
-using Infrastructure.Database;
-using Infrastructure.Foundation;
-using Infrastructure.Recipes.Repositories;
-using Infrastructure.Tags.Repository;
+using Application;
+using Application.Auth;
+using CookingRecipesApi;
+using Infrastructure;
+using Infrastructure.Auth;
+using Infrastructure.Files.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder( args );
@@ -25,27 +13,18 @@ IConfiguration configuration = builder.Configuration;
 IServiceCollection services = builder.Services;
 
 // Add services to the container.
-services.AddScoped<IAuthService, AuthService>();
-services.AddScoped<IRecipeService, RecipeService>();
-services.AddScoped<ITagService, TagService>();
-services.AddScoped<IUnitOfWork, UnitOfWork>();
-services.AddScoped<ITokenService, TokenService>();
 
-services.AddScoped<IUserRepository, UserRepository>();
-services.AddScoped<IRecipeRepository, RecipeRepository>();
-services.AddScoped<ITagRepository, TagRepository>();
+services.AddApplication();
+
+services.AddInfrastructure( configuration );
 
 AuthSettings authSettings = configuration.GetSection( "Auth" ).Get<AuthSettings>();
 services.AddScoped( sp => authSettings );
 
-string connectionString = configuration.GetConnectionString( "CookingRecipes" );
-services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
+string webRootPath = builder.Environment.WebRootPath;
+services.AddSingleton( new WebHostSetting { WebRootPath = webRootPath } );
 
-services.AddValidatorsFromAssemblyContaining<RegisterDto>();
-services.AddValidatorsFromAssemblyContaining<LoginDto>();
-services.AddValidatorsFromAssemblyContaining<RecipeDto>();
-services.AddValidatorsFromAssemblyContaining<StepDto>();
-services.AddValidatorsFromAssemblyContaining<IngredientDto>();
+services.AddCookingRecipesApi();
 
 services.AddControllers();
 
@@ -74,16 +53,17 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
             };
         } );
 
+string serverUrl = configuration[ "Cors:Url" ];
 
 builder.Services.AddCors( options =>
 {
     options.AddPolicy( "MyPolicy",
         policy =>
         {
-            policy.WithOrigins( "http://localhost:5173" ) // Укажите ваш фронтенд
+            policy.WithOrigins( serverUrl )
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials(); // Разрешает использование учетных данных
+                  .AllowCredentials();
         } );
 } );
 

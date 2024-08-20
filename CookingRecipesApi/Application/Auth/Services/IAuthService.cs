@@ -2,11 +2,10 @@
 using Domain.Auth.Entities;
 
 namespace Application.Auth.Services;
+
 public interface IAuthService
 {
     Task RegisterUser( User user );
-    Task<User> GetUserByUsername( string username );
-    Task<User> GetUserByToken( string token );
-    Task<bool> IsUniqueUsername( string username );
-    Tokens SignIn( User user, int lifetime );
+    Task<AuthTokenSet> SignIn( string userName, string password, int lifetime );
+    Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime );
 }

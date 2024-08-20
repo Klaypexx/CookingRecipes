@@ -1,4 +1,4 @@
-﻿namespace CookingRecipesApi.Auth;
+﻿namespace Application.Auth;
 
 public class AuthSettings
 {

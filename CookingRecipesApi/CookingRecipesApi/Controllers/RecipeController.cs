@@ -1,14 +1,11 @@
-﻿using Application.Foundation;
+﻿using Application.Recipes.Entities;
 using Application.Recipes.Services;
-using Application.Tags.Services;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
-using Domain.Recipes.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
@@ -17,21 +14,11 @@ namespace CookingRecipesApi.Controllers;
 [ApiController]
 public class RecipeController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IRecipeService _recipeService;
-    private readonly ITagService _tagService;
-    private readonly IWebHostEnvironment _appEnvironment;
     private readonly IValidator<RecipeDto> _recipeDtoValidator;
-    public RecipeController( IUnitOfWork unitOfWork,
-        IRecipeService recipeService,
-        ITagService tagService,
-        IWebHostEnvironment appEnvironment,
-        IValidator<RecipeDto> recipeDtoValidator )
+    public RecipeController( IRecipeService recipeService, IValidator<RecipeDto> recipeDtoValidator )
     {
-        _unitOfWork = unitOfWork;
         _recipeService = recipeService;
-        _tagService = tagService;
-        _appEnvironment = appEnvironment;
         _recipeDtoValidator = recipeDtoValidator;
     }
 
@@ -40,7 +27,6 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
-
         ValidationResult validationResult = await _recipeDtoValidator.ValidateAsync( recipeDto );
 
         if ( !validationResult.IsValid )
@@ -52,7 +38,7 @@ public class RecipeController : ControllerBase
         {
             int authorId = int.Parse( User.GetUserId() );
 
-            await _recipeService.CreateRecipe( recipeDto.ToDomain( authorId ), _appEnvironment.WebRootPath );
+            await _recipeService.CreateRecipe( recipeDto.ToApplication( authorId ) );
 
             return Ok();
         }
@@ -78,7 +64,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.UpdateRecipe( recipeDto.ToDomain( authorId ), recipeId, _appEnvironment.WebRootPath );
+            await _recipeService.UpdateRecipe( recipeDto.ToApplication( authorId ), recipeId );
 
             return Ok();
         }
@@ -104,7 +90,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.RemoveRecipe( recipeId, _appEnvironment.WebRootPath );
+            await _recipeService.RemoveRecipe( recipeId );
 
             return Ok();
         }
@@ -115,15 +101,14 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "list/{pageNumber}" )]
-    public async Task<IActionResult> GetRecipesForPage( [FromRoute] int pageNumber = 1, int pageAmount = 4 )
+    [Route( "" )]
+    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1 )
     {
         try
         {
-            int skipRange = ( pageNumber - 1 ) * pageAmount;
-            List<Recipe> recipes = await _recipeService.GetRecipesForPage( skipRange );
-            List<CardRecipeDto> recipeDto = recipes.Select( a => a.ToCardRecipeDto() ).ToList();
-            return Ok( recipeDto );
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber );
+            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
+            return Ok( recipesDto );
         }
         catch ( Exception exception )
         {
@@ -134,12 +119,12 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "{recipeId}" )]
-    public async Task<IActionResult> GetByIdWithAllDetails( [FromRoute] int recipeId )
+    public async Task<IActionResult> GetRecipeById( [FromRoute] int recipeId )
     {
         try
         {
-            Recipe recipes = await _recipeService.GetByIdWithAllDetails( recipeId );
-            CurrentRecipeDto recipeDto = recipes.ToCurrentRecipeDto();
+            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId );
+            CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
             return Ok( recipeDto );
         }
         catch ( Exception exception )

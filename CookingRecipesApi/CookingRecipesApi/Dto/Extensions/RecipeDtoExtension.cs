@@ -1,10 +1,11 @@
-﻿using CookingRecipesApi.Dto.RecipesDto;
-using Application.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using CookingRecipesApi.Dto.RecipesDto;
 
 namespace CookingRecipesApi.Dto.Extensions;
+
 public static class RecipeDtoExtension
 {
-    public static Recipe ToDomain( this RecipeDto recipeDto, int authorId )
+    public static Recipe ToApplication( this RecipeDto recipeDto, int authorId )
     {
         return new()
         {

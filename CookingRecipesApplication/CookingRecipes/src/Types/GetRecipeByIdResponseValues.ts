@@ -1,4 +1,4 @@
-export default interface GetAllRecipesResponseValues {
+export default interface GetRecipeByIdResponseValues {
   name: string;
   description: string;
   avatarPath?: string;
