@@ -5,6 +5,8 @@ namespace Infrastructure.Files.Services;
 
 public class FileService : IFileService
 {
+    private const string _imagePathName = "images";
+
     private readonly WebHostSetting _webHostSetting;
 
     public FileService( WebHostSetting webHostSetting )
@@ -12,19 +14,19 @@ public class FileService : IFileService
         _webHostSetting = webHostSetting;
     }
 
-    public async Task<string> SaveImage( IFormFile image, string directoryName )
+    public async Task<string> SaveImage( IFormFile image )
     {
-        return await SaveFile( image, directoryName );
+        return await SaveFile( image, _imagePathName );
     }
 
-    public void RemoveImage( string imageName, string directoryName )
+    public void RemoveImage( string imageName )
     {
-        RemoveFile( imageName, directoryName );
+        RemoveFile( imageName, _imagePathName );
     }
 
-    public async Task<string> UpdateImage( IFormFile actualImage, string oldPathToImage, string directoryName )
+    public async Task<string> UpdateImage( IFormFile actualImage, string oldPathToImage )
     {
-        return await UpdateFile( actualImage, oldPathToImage, directoryName );
+        return await UpdateFile( actualImage, oldPathToImage, _imagePathName );
     }
 
     /// <summary>

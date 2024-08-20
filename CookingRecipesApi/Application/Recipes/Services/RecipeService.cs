@@ -14,8 +14,6 @@ public class RecipeService : IRecipeService
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
 
-    private const string _imagePathName = "images";
-
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
         IFileService fileService,
@@ -31,7 +29,7 @@ public class RecipeService : IRecipeService
 
     public async Task CreateRecipe( Entities.Recipe recipe )
     {
-        string pathToFile = await _fileService.SaveImage( recipe.Avatar, _imagePathName );
+        string pathToFile = await _fileService.SaveImage( recipe.Avatar );
         Recipe recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
         await _tagService.ActualizeTags( recipeDomain );
@@ -42,7 +40,7 @@ public class RecipeService : IRecipeService
     public async Task UpdateRecipe( Entities.Recipe actualRecipe, int recipeId )
     {
         Recipe oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
-        string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar, _imagePathName );
+        string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar );
         Recipe recipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
         await _tagService.ActualizeTags( recipe );
@@ -56,7 +54,7 @@ public class RecipeService : IRecipeService
     {
         Recipe recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
-        _fileService.RemoveImage( recipe.Avatar, _imagePathName );
+        _fileService.RemoveImage( recipe.Avatar );
 
         recipe.Tags.Clear();
         _recipeRepository.RemoveRecipe( recipe );
