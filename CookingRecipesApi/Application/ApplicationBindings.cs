@@ -9,7 +9,7 @@ namespace Application;
 
 public static class ApplicationBindings
 {
-    public static IServiceCollection AddApplicationServices( this IServiceCollection services )
+    public static IServiceCollection AddApplication( this IServiceCollection services )
     {
         services.AddScoped<IRecipeCreator, RecipeCreator>();
         services.AddScoped<IAuthService, AuthService>();

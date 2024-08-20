@@ -14,11 +14,9 @@ IServiceCollection services = builder.Services;
 
 // Add services to the container.
 
-services.AddApplicationServices();
+services.AddApplication();
 
-services.AddInfrastructureRepositories()
-    .AddInfrastructureServices()
-    .AddInfrastructureDatabase( configuration );
+services.AddInfrastructure( configuration );
 
 AuthSettings authSettings = configuration.GetSection( "Auth" ).Get<AuthSettings>();
 services.AddScoped( sp => authSettings );
@@ -26,7 +24,7 @@ services.AddScoped( sp => authSettings );
 string webRootPath = builder.Environment.WebRootPath;
 services.AddSingleton( new WebHostSetting { WebRootPath = webRootPath } );
 
-services.AddCookingRecipesApiValidation();
+services.AddCookingRecipesApi();
 
 services.AddControllers();
 

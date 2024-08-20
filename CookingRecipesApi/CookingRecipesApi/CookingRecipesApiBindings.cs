@@ -6,13 +6,14 @@ namespace CookingRecipesApi;
 
 public static class CookingRecipesApiBindings
 {
-    public static IServiceCollection AddCookingRecipesApiValidation( this IServiceCollection services )
+    public static IServiceCollection AddCookingRecipesApi( this IServiceCollection services )
     {
         services.AddValidatorsFromAssemblyContaining<RegisterDto>();
         services.AddValidatorsFromAssemblyContaining<LoginDto>();
         services.AddValidatorsFromAssemblyContaining<RecipeDto>();
         services.AddValidatorsFromAssemblyContaining<StepDto>();
         services.AddValidatorsFromAssemblyContaining<IngredientDto>();
+
         return services;
     }
 }

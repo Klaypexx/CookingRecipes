@@ -21,26 +21,16 @@ namespace Infrastructure;
 
 public static class InfrastructureBindings
 {
-    public static IServiceCollection AddInfrastructureRepositories( this IServiceCollection services )
+    public static IServiceCollection AddInfrastructure( this IServiceCollection services, IConfiguration configuration )
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRecipeRepository, RecipeRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
 
-        return services;
-    }
-
-    public static IServiceCollection AddInfrastructureServices( this IServiceCollection services )
-    {
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IFileService, FileService>();
 
-        return services;
-    }
-
-    public static IServiceCollection AddInfrastructureDatabase( this IServiceCollection services, IConfiguration configuration )
-    {
         string connectionString = configuration.GetConnectionString( "CookingRecipes" );
         services.AddDbContext<AppDbContext>( options => options.UseSqlServer( connectionString ) );
         services.AddScoped<IUnitOfWork, UnitOfWork>();
