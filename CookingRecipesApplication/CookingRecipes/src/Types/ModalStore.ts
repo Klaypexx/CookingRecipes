@@ -3,8 +3,6 @@ export default interface ModalStore {
   isLogin: boolean;
   isRegister: boolean;
   isLogout: boolean;
-  fromPath: string | undefined;
-  setFromPath: (state: string | undefined) => void;
   setAuth: (state: boolean) => void;
   setLogin: (state: boolean) => void;
   setRegister: (state: boolean) => void;

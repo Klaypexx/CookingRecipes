@@ -5,6 +5,6 @@ public interface ILikeService
 {
     Task AddLike( int userId, int recipeId );
     Task RemoveLike( int userId, int recipeId );
-    List<int> GetRecipesIdsThatUserLike( int userId, List<Recipe> recipes );
+    IReadOnlyList<int> GetRecipesIdsThatUserLike( int userId, IReadOnlyList<Recipe> recipes );
     bool HaveRecipeLikeFromUser( int userId, Recipe recipe );
 }

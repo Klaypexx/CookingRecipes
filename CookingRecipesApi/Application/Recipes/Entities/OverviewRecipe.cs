@@ -9,5 +9,6 @@ public class OverviewRecipe
     public int CookingTime { get; set; }
     public int Portion { get; set; }
     public string AvatarPath { get; set; }
+    public bool IsLike { get; set; }
     public List<Tag> Tags { get; set; }
 }

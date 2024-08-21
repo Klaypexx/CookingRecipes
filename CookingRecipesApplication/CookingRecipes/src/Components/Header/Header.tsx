@@ -8,11 +8,13 @@ import { useEffect, useState } from 'react';
 import UserService from '../../Services/UserService';
 import useModalStore from '../../Stores/useModalStore';
 import TokenService from '../../Services/TokenService';
+import useAuthStore from '../../Stores/useAuthStore';
 
 const Header = () => {
   const [userName, setUserName] = useState<string>();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const token = TokenService.getAccessToken();
+  const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     if (token) {
@@ -24,7 +26,7 @@ const Header = () => {
       };
       fetchUsername();
     }
-  }, [token]);
+  }, [isAuthorized]);
 
   const handleLogin = () => {
     setAuth(isAuth);

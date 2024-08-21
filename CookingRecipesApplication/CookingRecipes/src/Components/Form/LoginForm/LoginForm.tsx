@@ -6,22 +6,18 @@ import BaseField from '../../Field/BaseField/BaseField';
 import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import loginValidation from './LoginValidation';
 import LoginValues from '../../../Types/LoginValues';
-import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../../../Stores/useAuthStore';
 
 const LoginForm = () => {
-  const { unsetAll, fromPath, setFromPath } = useModalStore();
-  const navigation = useNavigate();
+  const { unsetAll } = useModalStore();
+  const { setAuthorized } = useAuthStore();
 
   const handleLogin = async (values: LoginValues) => {
     const result = await AuthService.login(values);
 
     if (result.response && result.response.status === 200) {
       successToast('Вы успешно вошли в систему!');
-      console.log(fromPath);
-      if (fromPath) {
-        navigation(fromPath);
-        setFromPath(undefined);
-      }
+      setAuthorized(true);
       unsetAll();
     }
   };

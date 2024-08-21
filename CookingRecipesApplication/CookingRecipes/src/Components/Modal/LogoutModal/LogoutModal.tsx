@@ -16,9 +16,9 @@ const LogoutModal = () => {
 
   const handleLogout = async () => {
     await AuthService.logout();
+    successToast('Вы успешно вышли из системы!');
     unsetAll();
     navigate('/');
-    successToast('Вы успешно вышли из системы!');
   };
 
   return (

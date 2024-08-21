@@ -31,7 +31,7 @@ public class LikeService : ILikeService
         await _unitOfWork.Save();
     }
 
-    public List<int> GetRecipesIdsThatUserLike( int userId, List<Recipe> recipes )
+    public IReadOnlyList<int> GetRecipesIdsThatUserLike( int userId, IReadOnlyList<Recipe> recipes )
     {
         return recipes
                 .Where( recipe => recipe.Likes.Any( like => like.UserId == userId ) )

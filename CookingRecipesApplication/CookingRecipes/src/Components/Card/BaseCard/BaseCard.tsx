@@ -4,8 +4,9 @@ import timeIcon from '../../../resources/icons/time.svg';
 import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
 import CardProps from '../../../Types/CardProps';
+import LikeButton from '../../Button/LikeButton/LikeButton';
 
-const BaseCard: React.FC<CardProps> = ({ className, props }) => {
+const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
   return (
     <div className={classNames(styles.cardContainer, className)}>
       <div className={styles.avatarImageBox}>
@@ -28,6 +29,7 @@ const BaseCard: React.FC<CardProps> = ({ className, props }) => {
                 </div>
               ))}
             </div>
+            <LikeButton isLikePressed={props.isLike} recipeId={recipeId} />
           </div>
         )}
         {props?.description && props.cookingTime && props.portion && (

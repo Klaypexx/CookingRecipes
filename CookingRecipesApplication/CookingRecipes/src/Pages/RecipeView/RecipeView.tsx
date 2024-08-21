@@ -11,13 +11,17 @@ import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import UserService from '../../Services/UserService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import TokenService from '../../Services/TokenService';
+import useAuthStore from '../../Stores/useAuthStore';
+import Spinner from '../../Components/Spinner/Spinner';
 
 const RecipeView = () => {
   const token = TokenService.getAccessToken();
+  let [loading, setLoading] = useState(true);
   const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
   const navigate = useNavigate();
+  const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,10 +33,11 @@ const RecipeView = () => {
 
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
+        setLoading(false);
       }
     };
     fetchRecipes();
-  }, []);
+  }, [isAuthorized]);
 
   useEffect(() => {
     if (values && token) {
@@ -56,6 +61,10 @@ const RecipeView = () => {
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <section className={styles.recipeView}>
       <Subheader backward headerText={values?.name}>
@@ -70,8 +79,7 @@ const RecipeView = () => {
           )}
         </div>
       </Subheader>
-
-      <BaseCard props={values} />
+      <BaseCard props={values} recipeId={recipeId!} />
       <div className={styles.mainContainer}>
         <div className={styles.ingredientsContainer}>
           <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>

@@ -60,7 +60,6 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           await AuthService.logout();
-          location.reload();
         }
       }
     }

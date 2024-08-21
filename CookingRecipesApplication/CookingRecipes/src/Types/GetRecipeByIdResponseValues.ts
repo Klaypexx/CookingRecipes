@@ -3,6 +3,7 @@ export default interface GetRecipeByIdResponseValues {
   description: string;
   avatarPath?: string;
   authorName: string;
+  isLike: boolean;
   tags?: Array<{
     name: string;
   }>;

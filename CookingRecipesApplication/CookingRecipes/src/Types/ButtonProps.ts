@@ -8,6 +8,6 @@ export default interface ButtonProps {
   navigation?: string;
   newStyle?: CSSProperties;
   buttonText?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   children?: React.ReactNode;
 }

@@ -62,7 +62,7 @@ const RecipesList = () => {
           <>
             {values.map((value, index) => (
               <Link key={index} to={`/recipes/${value.id}`}>
-                <BaseCard props={value} />
+                <BaseCard props={value} recipeId={value.id.toString()} />
               </Link>
             ))}
           </>

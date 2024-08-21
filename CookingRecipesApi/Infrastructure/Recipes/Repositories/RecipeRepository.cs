@@ -33,7 +33,7 @@ public class RecipeRepository : IRecipeRepository
         return await _entities.Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Author )
-         .OrderBy( recipe => recipe.Id )
+         .Include( recipe => recipe.Likes )
          .Skip( skipRange )
          .Take( pageAmount )
          .ToListAsync();
@@ -47,6 +47,7 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Ingredients )
          .Include( recipe => recipe.Steps )
          .Include( recipe => recipe.Author )
+         .Include( recipe => recipe.Likes )
          .FirstOrDefaultAsync();
     }
 
