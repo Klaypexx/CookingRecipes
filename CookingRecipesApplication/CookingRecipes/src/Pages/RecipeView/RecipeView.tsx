@@ -10,12 +10,10 @@ import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import UserService from '../../Services/UserService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import TokenService from '../../Services/TokenService';
 import useAuthStore from '../../Stores/useAuthStore';
 import Spinner from '../../Components/Spinner/Spinner';
 
 const RecipeView = () => {
-  const token = TokenService.getAccessToken();
   let [loading, setLoading] = useState(true);
   const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
@@ -28,12 +26,12 @@ const RecipeView = () => {
   }, []);
 
   useEffect(() => {
+    console.log('Обновление');
     const fetchRecipes = async () => {
       const result = await RecipeService.GetRecipeById(recipeId!);
 
       if (result.response && result.response.status === 200) {
         setValues(result.response.data);
-        setLoading(false);
       }
     };
     fetchRecipes();
@@ -50,6 +48,7 @@ const RecipeView = () => {
       };
       fetchUsername();
     }
+    setLoading(false);
   }, [values]);
 
   const handleRemove = async () => {
