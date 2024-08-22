@@ -90,7 +90,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.RemoveRecipe( recipeId );
+            await _recipeService.RemoveRecipe( authorId, recipeId );
 
             return Ok();
         }

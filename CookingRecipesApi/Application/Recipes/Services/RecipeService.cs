@@ -56,13 +56,16 @@ public class RecipeService : IRecipeService
         await RemoveUnusedTags();
     }
 
-    public async Task RemoveRecipe( int recipeId )
+    public async Task RemoveRecipe( int authorId, int recipeId )
     {
         RecipeDomain recipe = await _recipeRepository.GetByIdWithTag( recipeId );
 
         _fileService.RemoveImage( recipe.Avatar );
 
+        await _likeService.RemoveLike( authorId, recipeId );
+
         recipe.Tags.Clear();
+
         _recipeRepository.RemoveRecipe( recipe );
         await _unitOfWork.Save();
 

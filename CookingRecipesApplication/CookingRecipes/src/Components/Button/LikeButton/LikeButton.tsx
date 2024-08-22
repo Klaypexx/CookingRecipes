@@ -12,17 +12,17 @@ const LikeButton: React.FC<LikeButtonProps> = ({ isLikePressed, recipeId }) => {
   useEffect(() => {
     setIsLike(isLikePressed);
     setLoading(false);
-  });
-
-  if (loading) {
-    return undefined;
-  }
+  }, []);
 
   const handleChangeLike = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     setIsLike((isLike) => !isLike);
   };
+
+  if (loading) {
+    return undefined;
+  }
 
   return (
     <BaseButton className={styles.like} buttonText="12" onClick={handleChangeLike}>

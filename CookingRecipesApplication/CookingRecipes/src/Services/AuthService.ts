@@ -9,6 +9,7 @@ const endpoints = {
   register: '/users/register',
   refresh: '/users/refresh',
   logout: '/users/logout',
+  isAuth: '/users/isAuth',
 };
 
 const register = async (values: RegisterValues) => {
@@ -52,11 +53,20 @@ const logout = async () => {
   return response;
 };
 
+const isAuth = async () => {
+  try {
+    await api.post(endpoints.isAuth);
+  } catch (error) {
+    return error;
+  }
+};
+
 const AuthService = {
   register,
   login,
   refresh,
   logout,
+  isAuth,
 };
 
 export default AuthService;

@@ -40,7 +40,7 @@ const RecipeView = () => {
   }, [isAuthorized]);
 
   useEffect(() => {
-    if (values && token) {
+    if (values && isAuthorized) {
       const fetchUsername = async () => {
         const result = await UserService.username();
         if (result.response && result.response.status === 200) {
