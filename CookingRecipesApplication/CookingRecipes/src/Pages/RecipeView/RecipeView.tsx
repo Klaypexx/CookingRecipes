@@ -26,7 +26,7 @@ const RecipeView = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Обновление');
+    setLoading(true);
     const fetchRecipes = async () => {
       const result = await RecipeService.GetRecipeById(recipeId!);
 

@@ -12,5 +12,6 @@ export default interface CardProps {
     cookingTime: number;
     portion: number;
     isLike: boolean;
+    likeCount: number;
   };
 }

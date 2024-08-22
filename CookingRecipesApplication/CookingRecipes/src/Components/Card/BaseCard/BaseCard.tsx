@@ -29,7 +29,7 @@ const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
                 </div>
               ))}
             </div>
-            <LikeButton isLikePressed={props.isLike} recipeId={recipeId} />
+            <LikeButton isLikePressed={props.isLike} likeCount={props.likeCount} recipeId={recipeId} />
           </div>
         )}
         {props?.description && props.cookingTime && props.portion && (

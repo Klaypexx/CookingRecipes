@@ -16,6 +16,7 @@ public static class CompleteRecipeExtension
             AvatarPath = recipe.Avatar,
             AuthorName = recipe.Author.UserName,
             IsLike = isRecipeLiked,
+            LikeCount = recipe.Likes.Count,
             Tags = recipe.Tags.Select( recipeTag => new Tag
             {
                 Name = recipeTag.Tag.Name

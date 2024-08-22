@@ -17,6 +17,7 @@ public static class OverviewRecipeExtension
             AvatarPath = recipe.Avatar,
             AuthorName = recipe.Author.UserName,
             IsLike = likedIds.Contains( recipe.Id ),
+            LikeCount = recipe.Likes.Count,
             Tags = recipe.Tags.Select( recipeTag => new Tag
             {
                 Name = recipeTag.Tag.Name

@@ -10,5 +10,6 @@ public class OverviewRecipeDto
     public int Portion { get; set; }
     public string AvatarPath { get; set; }
     public bool IsLike { get; set; }
+    public int LikeCount { get; set; }
     public List<TagDto> Tags { get; set; }
 }

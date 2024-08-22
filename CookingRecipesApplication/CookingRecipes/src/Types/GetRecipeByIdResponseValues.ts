@@ -4,6 +4,7 @@ export default interface GetRecipeByIdResponseValues {
   avatarPath?: string;
   authorName: string;
   isLike: boolean;
+  likeCount: number;
   tags?: Array<{
     name: string;
   }>;
