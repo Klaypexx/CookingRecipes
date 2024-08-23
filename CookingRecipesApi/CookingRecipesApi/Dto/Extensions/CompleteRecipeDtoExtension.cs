@@ -17,6 +17,8 @@ public static class CompleteRecipeDtoExtension
             AuthorName = recipe.AuthorName,
             IsLike = recipe.IsLike,
             LikeCount = recipe.LikeCount,
+            IsFavourite = recipe.IsFavourite,
+            FavouriteCount = recipe.FavouriteCount,
             Tags = recipe.Tags.Select( recipeTag => new TagDto
             {
                 Name = recipeTag.Name

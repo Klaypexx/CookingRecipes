@@ -39,7 +39,7 @@ public class LikeService : ILikeService
                 .ToList();
     }
 
-    public bool HaveRecipeLikeFromUser( int userId, Recipe recipe )
+    public bool HaveRecipeLikeConnectionFromUser( int userId, Recipe recipe )
     {
         return recipe.Likes.Any( like => like.UserId == userId );
     }

@@ -34,6 +34,7 @@ public class RecipeRepository : IRecipeRepository
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Author )
          .Include( recipe => recipe.Likes )
+         .Include( recipe => recipe.FavouriteRecipes )
          .Skip( skipRange )
          .Take( pageAmount )
          .ToListAsync();
@@ -48,6 +49,7 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Steps )
          .Include( recipe => recipe.Author )
          .Include( recipe => recipe.Likes )
+         .Include( recipe => recipe.FavouriteRecipes )
          .FirstOrDefaultAsync();
     }
 

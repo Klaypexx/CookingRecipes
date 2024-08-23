@@ -10,6 +10,8 @@ public class CompleteRecipe
     public string AvatarPath { get; set; }
     public bool IsLike { get; set; }
     public int LikeCount { get; set; }
+    public bool IsFavourite { get; set; }
+    public int FavouriteCount { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public List<Step> Steps { get; set; }
     public List<Tag> Tags { get; set; }

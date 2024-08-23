@@ -6,6 +6,7 @@ using Application.Tags.Services;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using Application.Recipes.Extensions;
 using Application.Likes.Services;
+using Application.Favourites.Services;
 
 namespace Application.Recipes.Services;
 
@@ -15,6 +16,7 @@ public class RecipeService : IRecipeService
     private readonly ITagService _tagService;
     private readonly IFileService _fileService;
     private readonly ILikeService _likeService;
+    private readonly IFavouriteRecipeService _favouriteRecipeService;
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -22,6 +24,7 @@ public class RecipeService : IRecipeService
         ITagService tagService,
         IFileService fileService,
         ILikeService likeService,
+        IFavouriteRecipeService favouriteRecipeService,
         IRecipeCreator recipeCreator,
         IUnitOfWork unitOfWork )
     {
@@ -29,6 +32,7 @@ public class RecipeService : IRecipeService
         _tagService = tagService;
         _fileService = fileService;
         _likeService = likeService;
+        _favouriteRecipeService = favouriteRecipeService;
         _recipeCreator = recipeCreator;
         _unitOfWork = unitOfWork;
     }
@@ -63,6 +67,7 @@ public class RecipeService : IRecipeService
         _fileService.RemoveImage( recipe.Avatar );
 
         await _likeService.RemoveLike( authorId, recipeId );
+        await _favouriteRecipeService.RemoveFavouriteRecipe( authorId, recipeId );
 
         recipe.Tags.Clear();
 
@@ -86,17 +91,19 @@ public class RecipeService : IRecipeService
         IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount );
 
         IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
+        IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
 
-        return recipes.ToOverviewRecipe( likedIds );
+        return recipes.ToOverviewRecipe( likedIds, favouritedIds );
     }
 
     public async Task<CompleteRecipe> GetRecipeById( int recipeId, int authorId )
     {
         RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
 
-        bool isRecipeLiked = _likeService.HaveRecipeLikeFromUser( authorId, recipe );
+        bool isRecipeLiked = _likeService.HaveRecipeLikeConnectionFromUser( authorId, recipe );
+        bool isRecipeInFavourite = _favouriteRecipeService.HaveFavouriteRecipeConnectionFromUser( authorId, recipe );
 
-        return recipe.ToCompleteRecipe( isRecipeLiked );
+        return recipe.ToCompleteRecipe( isRecipeLiked, isRecipeInFavourite );
     }
 
     public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )

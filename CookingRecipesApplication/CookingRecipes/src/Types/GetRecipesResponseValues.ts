@@ -11,4 +11,6 @@ export default interface GetRecipesResponseValues {
   portion: number;
   isLike: boolean;
   likeCount: number;
+  isFavourite: boolean;
+  favouriteCount: number;
 }

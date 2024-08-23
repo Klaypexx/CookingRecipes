@@ -5,6 +5,7 @@ import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
 import CardProps from '../../../Types/CardProps';
 import LikeButton from '../../Button/LikeButton/LikeButton';
+import FavouriteRecipeButton from '../../Button/FavouriteRecipeButton/FavouriteRecipeButton';
 
 const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
   return (
@@ -29,7 +30,14 @@ const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
                 </div>
               ))}
             </div>
-            <LikeButton isLikePressed={props.isLike} likeCount={props.likeCount} recipeId={recipeId} />
+            <div className={styles.interactiveBlock}>
+              <FavouriteRecipeButton
+                isFavouritePressed={props.isFavourite}
+                favouriteRecipeCount={props.favouriteCount}
+                recipeId={recipeId}
+              />
+              <LikeButton isLikePressed={props.isLike} likeCount={props.likeCount} recipeId={recipeId} />
+            </div>
           </div>
         )}
         {props?.description && props.cookingTime && props.portion && (

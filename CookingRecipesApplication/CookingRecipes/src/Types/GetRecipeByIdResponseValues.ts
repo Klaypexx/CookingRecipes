@@ -5,6 +5,8 @@ export default interface GetRecipeByIdResponseValues {
   authorName: string;
   isLike: boolean;
   likeCount: number;
+  isFavourite: boolean;
+  favouriteCount: number;
   tags?: Array<{
     name: string;
   }>;

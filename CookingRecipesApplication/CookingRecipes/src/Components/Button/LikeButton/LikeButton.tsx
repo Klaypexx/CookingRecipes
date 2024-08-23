@@ -15,8 +15,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({ isLikePressed, likeCount, recip
 
   useEffect(() => {
     console.log(`${isLikePressed}`);
-    setIsLike(isLikePressed);
     setLoading(false);
+    setIsLike(isLikePressed);
     setCount(likeCount);
   }, []);
 

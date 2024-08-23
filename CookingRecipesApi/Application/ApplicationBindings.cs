@@ -1,4 +1,5 @@
 ﻿using Application.Auth.Services;
+using Application.Favourites.Services;
 using Application.Likes.Services;
 using Application.Recipes;
 using Application.Recipes.Services;
@@ -17,6 +18,7 @@ public static class ApplicationBindings
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ILikeService, LikeService>();
+        services.AddScoped<IFavouriteRecipeService, FavouriteRecipeService>();
 
         return services;
     }

@@ -1,31 +1,29 @@
-﻿using Application.Likes.Services;
+﻿using Application.Favourites.Services;
 using CookingRecipesApi.Utilities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;
 
-[Route( "likes" )]
+[Route( "favourites" )]
 [ApiController]
-[Authorize]
-public class LikeController : ControllerBase
+public class FavouriteRecipeController : ControllerBase
 {
-    private readonly ILikeService _likeService;
+    private readonly IFavouriteRecipeService _favouriteService;
 
-    public LikeController( ILikeService likeService )
+    public FavouriteRecipeController( IFavouriteRecipeService favouriteService )
     {
-        _likeService = likeService;
+        _favouriteService = favouriteService;
     }
 
     [HttpPost]
     [Route( "" )]
-    public async Task<IActionResult> AddLike( [FromQuery] int recipeId )
+    public async Task<IActionResult> AddFavouriteRecipe( [FromQuery] int recipeId )
     {
         try
         {
             int userId = int.Parse( User.GetUserId() );
 
-            await _likeService.AddLike( userId, recipeId );
+            await _favouriteService.AddFavouriteRecipe( userId, recipeId );
 
             return Ok();
         }
@@ -37,13 +35,13 @@ public class LikeController : ControllerBase
 
     [HttpDelete]
     [Route( "" )]
-    public async Task<IActionResult> RemoveLike( [FromQuery] int recipeId )
+    public async Task<IActionResult> RemoveFavouriteRecipe( [FromQuery] int recipeId )
     {
         try
         {
             int userId = int.Parse( User.GetUserId() );
 
-            await _likeService.RemoveLike( userId, recipeId );
+            await _favouriteService.RemoveFavouriteRecipe( userId, recipeId );
 
             return Ok();
         }
@@ -52,5 +50,4 @@ public class LikeController : ControllerBase
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
     }
-
 }
