@@ -6,5 +6,5 @@ public interface IFavouriteRecipeRepository
 {
     Task AddFavouriteRecipe( FavouriteRecipe favouriteRecipe );
     void RemoveFavouriteRecipe( FavouriteRecipe favouriteRecipe );
-    Task<FavouriteRecipe> GetFavouriteRecipeConnection( int userId, int recipeId );
+    Task<FavouriteRecipe> GetFavouriteRecipe( int userId, int recipeId );
 }

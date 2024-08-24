@@ -25,7 +25,7 @@ public class FavouriteRecipeService : IFavouriteRecipeService
 
     public async Task RemoveFavouriteRecipe( int userId, int recipeId )
     {
-        FavouriteRecipe favouriteRecipeToRemove = await _favouriteRepository.GetFavouriteRecipeConnection( userId, recipeId );
+        FavouriteRecipe favouriteRecipeToRemove = await _favouriteRepository.GetFavouriteRecipe( userId, recipeId );
 
         _favouriteRepository.RemoveFavouriteRecipe( favouriteRecipeToRemove );
 
@@ -40,7 +40,7 @@ public class FavouriteRecipeService : IFavouriteRecipeService
                 .ToList();
     }
 
-    public bool HaveFavouriteRecipeConnectionFromUser( int userId, Recipe recipe )
+    public bool HaveFavouriteRecipeFromUser( int userId, Recipe recipe )
     {
         return recipe.FavouriteRecipes.Any( favouriteRecipe => favouriteRecipe.UserId == userId );
     }

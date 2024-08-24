@@ -90,7 +90,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.RemoveRecipe( authorId, recipeId );
+            await _recipeService.RemoveRecipe( recipeId );
 
             return Ok();
         }
@@ -102,7 +102,7 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "" )]
-    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1 )
+    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1, [FromQuery] string searchString = "" )
     {
         try
         {
@@ -112,7 +112,25 @@ public class RecipeController : ControllerBase
                 authorId = int.Parse( User.GetUserId() );
             }
 
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId );
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
+            return Ok( recipesDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+    }
+
+    [HttpGet]
+    [Route( "favourites" )]
+    [Authorize]
+    public async Task<IActionResult> GetFavouritesRecipes( [FromQuery] int pageNumber = 1 )
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
             IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
             return Ok( recipesDto );
         }

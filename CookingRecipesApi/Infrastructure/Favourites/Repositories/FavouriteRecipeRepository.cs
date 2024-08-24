@@ -13,6 +13,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         _entities = context.Set<FavouriteRecipe>();
     }
+
     public async Task AddFavouriteRecipe( FavouriteRecipe favouriteRecipe )
     {
         await _entities.AddAsync( favouriteRecipe );
@@ -23,7 +24,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         _entities.Remove( favouriteRecipe );
     }
 
-    public async Task<FavouriteRecipe> GetFavouriteRecipeConnection( int userId, int recipeId )
+    public async Task<FavouriteRecipe> GetFavouriteRecipe( int userId, int recipeId )
     {
         return await _entities.Where( favouriteRecipe => favouriteRecipe.UserId == userId && favouriteRecipe.RecipeId == recipeId ).FirstOrDefaultAsync();
     }

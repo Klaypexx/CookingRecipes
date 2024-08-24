@@ -60,14 +60,15 @@ public class RecipeService : IRecipeService
         await RemoveUnusedTags();
     }
 
-    public async Task RemoveRecipe( int authorId, int recipeId )
+    public async Task RemoveRecipe( int recipeId )
     {
-        RecipeDomain recipe = await _recipeRepository.GetByIdWithTag( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
 
         _fileService.RemoveImage( recipe.Avatar );
 
-        await _likeService.RemoveLike( authorId, recipeId );
-        await _favouriteRecipeService.RemoveFavouriteRecipe( authorId, recipeId );
+        recipe.Likes.Clear();
+
+        recipe.FavouriteRecipes.Clear();
 
         recipe.Tags.Clear();
 
@@ -83,12 +84,25 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task<IReadOnlyList<OverviewRecipe>> GetRecipes( int pageNumber, int authorId )
+    public async Task<IReadOnlyList<OverviewRecipe>> GetRecipes( int pageNumber, int authorId, string searchString )
     {
         int pageAmount = 4;
         int skipRange = ( pageNumber - 1 ) * pageAmount;
 
-        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount, searchString.ToLower() );
+
+        IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
+        IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
+
+        return recipes.ToOverviewRecipe( likedIds, favouritedIds );
+    }
+
+    public async Task<IReadOnlyList<OverviewRecipe>> GetFavouriteRecipes( int pageNumber, int authorId )
+    {
+        int pageAmount = 4;
+        int skipRange = ( pageNumber - 1 ) * pageAmount;
+
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipes( skipRange, pageAmount, authorId );
 
         IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
         IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
@@ -101,7 +115,7 @@ public class RecipeService : IRecipeService
         RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
 
         bool isRecipeLiked = _likeService.HaveRecipeLikeConnectionFromUser( authorId, recipe );
-        bool isRecipeInFavourite = _favouriteRecipeService.HaveFavouriteRecipeConnectionFromUser( authorId, recipe );
+        bool isRecipeInFavourite = _favouriteRecipeService.HaveFavouriteRecipeFromUser( authorId, recipe );
 
         return recipe.ToCompleteRecipe( isRecipeLiked, isRecipeInFavourite );
     }

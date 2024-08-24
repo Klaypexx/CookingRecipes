@@ -1,22 +1,7 @@
-.recipesListSection {
+.favouritesSection {
   max-width: 1200px;
   min-height: 70vh;
   margin: 0 auto;
-}
-
-.tagListBlock {
-  margin-bottom: 50px;
-}
-
-.tagList {
-  box-sizing: border-box;
-  width: 278px;
-  height: 164px;
-  padding: 24px 0px 36px 24px;
-}
-
-.searchBlock {
-  margin-bottom: 108px;
 }
 
 .recipesListBlock {

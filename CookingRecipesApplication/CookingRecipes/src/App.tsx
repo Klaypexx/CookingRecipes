@@ -13,27 +13,42 @@ import useAuthStore from './Stores/useAuthStore';
 
 function App() {
   const token = TokenService.getAccessToken();
-  const { setAuthorized } = useAuthStore();
-  let [loading, setLoading] = useState(true);
+  const { setAuthorized, isAuthorized } = useAuthStore();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Перезагрузка');
-    if (token) {
-      const fetchAuth = async () => {
-        try {
+    const fetchAuth = async () => {
+      try {
+        if (token) {
           await AuthService.isAuth();
           setAuthorized(true);
-        } catch (error) {
-          setAuthorized(false);
         }
-      };
-      fetchAuth();
-    }
-    setLoading(false);
+      } catch (error) {
+        setAuthorized(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAuth();
   }, []);
 
+  useEffect(() => {
+    if (isAuthorized) {
+      const interval = setInterval(async () => {
+        try {
+          await AuthService.refresh();
+        } catch (err) {
+          setAuthorized(false);
+          await AuthService.logout();
+        }
+      }, 150000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isAuthorized]);
+
   if (loading) {
-    return;
+    return <Spinner />;
   }
 
   return (
@@ -42,9 +57,9 @@ function App() {
       <Suspense fallback={<Spinner />}>
         <Outlet />
       </Suspense>
-      <Footer />
       <ModalBlock />
       <ToastContainer />
+      <Footer />
     </>
   );
 }
