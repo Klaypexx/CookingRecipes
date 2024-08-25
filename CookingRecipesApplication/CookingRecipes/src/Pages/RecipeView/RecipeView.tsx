@@ -25,31 +25,29 @@ const RecipeView = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  //Фетчинг рецептов
   useEffect(() => {
     setLoading(true);
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipeById(recipeId!);
+      try {
+        const result = await RecipeService.GetRecipeById(recipeId!);
 
-      if (result.response && result.response.status === 200) {
         setValues(result.response.data);
+        const authorName = result.response.data.authorName;
+
+        if (isAuthorized) {
+          const result = await UserService.username();
+
+          const userName = result.response.data.userName;
+          setRecipeOwner(authorName === userName);
+        }
+        setLoading(false);
+      } catch {
+        navigate(-1);
       }
     };
     fetchRecipes();
   }, [isAuthorized]);
-
-  useEffect(() => {
-    if (values && isAuthorized) {
-      const fetchUsername = async () => {
-        const result = await UserService.username();
-        if (result.response && result.response.status === 200) {
-          const userName = result.response.data.userName;
-          setRecipeOwner(values.authorName === userName);
-        }
-      };
-      fetchUsername();
-    }
-    setLoading(false);
-  }, [values]);
 
   const handleRemove = async () => {
     const result = await RecipeService.removeRecipe(recipeId!);
@@ -59,10 +57,6 @@ const RecipeView = () => {
       navigate(-1);
     }
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <div className={styles.recipeView}>
@@ -81,31 +75,35 @@ const RecipeView = () => {
         </Subheader>
       </section>
 
-      <section>
-        <BaseCard props={values} recipeId={recipeId!} />
-        <div className={styles.flexContainer}>
-          <div>
-            <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
-            {values?.ingredients.map((ingredient, index) => (
-              <div key={index} className={styles.ingredientBox}>
-                <p className={styles.ingredientsName}>{ingredient.name}</p>
-                <p className={styles.ingredientsText}>{ingredient.product}</p>
-              </div>
-            ))}
-          </div>
-          <div>
-            {values?.steps.map((step, index) => (
-              <div key={index} className={styles.stepBox}>
-                <p className={styles.stepHeader}>Шаг {index + 1}</p>
-                <div className={styles.stepTextBox}>
-                  <p>{step.description}</p>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <section>
+          <BaseCard props={values} recipeId={recipeId!} />
+          <div className={styles.flexContainer}>
+            <div>
+              <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
+              {values?.ingredients.map((ingredient, index) => (
+                <div key={index} className={styles.ingredientBox}>
+                  <p className={styles.ingredientsName}>{ingredient.name}</p>
+                  <p className={styles.ingredientsText}>{ingredient.product}</p>
                 </div>
-              </div>
-            ))}
-            <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
+              ))}
+            </div>
+            <div>
+              {values?.steps.map((step, index) => (
+                <div key={index} className={styles.stepBox}>
+                  <p className={styles.stepHeader}>Шаг {index + 1}</p>
+                  <div className={styles.stepTextBox}>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+              ))}
+              <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 };

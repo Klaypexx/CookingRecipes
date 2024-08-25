@@ -16,11 +16,6 @@ const HomePage = () => {
     navigation('/recipes');
   };
 
-  const handleTagsBlockClick = (value: string) => {
-    setSearchString(value);
-    navigation('/recipes');
-  };
-
   return (
     <>
       <section>
@@ -34,7 +29,7 @@ const HomePage = () => {
             Добавляй рецепты и указывай наиболее популярные теги. Это позволит быстро находить любые категории.
           </p>
         </div>
-        <TagsBlockList text className={styles.tagList} onClick={handleTagsBlockClick} />
+        <TagsBlockList text className={styles.tagList} />
       </section>
 
       <section className={styles.customCardSection}>

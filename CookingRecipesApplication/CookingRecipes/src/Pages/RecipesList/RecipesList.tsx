@@ -24,6 +24,22 @@ const RecipesList = () => {
   const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  //Для обновления состояния лайков и избранных после логинации
+  useEffect(() => {
+    if (isFirstMount) {
+      setIsFirstMount(false);
+      return;
+    }
+    setLoading(true);
+    setSearchString('');
+    setValues([]);
+    setPageNumber(1);
+  }, [isAuthorized]);
+
+  useEffect(() => {
     const fetchRecipes = async () => {
       const result = await RecipeService.GetRecipes(pageNumber, searchString);
       if (result.response && result.response.status === 200) {
@@ -35,49 +51,21 @@ const RecipesList = () => {
       }
     };
     fetchRecipes();
-  }, [pageNumber]);
+  }, [pageNumber, searchString, isAuthorized]);
 
-  useEffect(() => {
-    if (isFirstMount) {
-      setIsFirstMount(false);
+  const handleSubmit = async (value: SearchBlockValues) => {
+    if (searchString == value.searchString) {
       return;
     }
-    const fetchRecipes = async () => {
-      setLoading(true);
-      const result = await RecipeService.GetRecipes(1, searchString);
-      if (result.response && result.response.status === 200) {
-        if (!result.response.data.length) {
-          setIsLoadButton(false);
-        }
-        setValues(() => [...result.response.data]);
-        setLoading(false);
-      }
-    };
-    fetchRecipes();
-  }, [isAuthorized, searchString]);
 
-  const handleSubmit = async (values: SearchBlockValues) => {
-    const result = await RecipeService.GetRecipes(pageNumber, values.searchString);
-    if (result.response && result.response.status === 200) {
-      if (!result.response.data.length) {
-        setIsLoadButton(false);
-      }
-      setValues(() => [...result.response.data]);
-      setSearchString(values.searchString);
-    }
-  };
-
-  const handleTagsBlockClick = (value: string) => {
-    setSearchString(value);
+    setValues([]);
+    setPageNumber(1);
+    setSearchString(value.searchString);
   };
 
   const handleClick = () => {
     setPageNumber((pageNumber) => pageNumber + 1);
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <div className={styles.recipesList}>
@@ -85,9 +73,11 @@ const RecipesList = () => {
         <Subheader text="Рецепты">
           <BaseLink base primary to="/recipes/create" text="Добавить рецепт" />
         </Subheader>
+      </section>
 
+      <section>
         <div className={styles.tagListContainer}>
-          <TagsBlockList className={styles.tagList} onClick={handleTagsBlockClick} />
+          <TagsBlockList className={styles.tagList} />
         </div>
       </section>
 
@@ -95,24 +85,32 @@ const RecipesList = () => {
         <div className={styles.searchContainer}>
           <SearchBlock text onSubmit={handleSubmit} />
         </div>
-
-        <div className={styles.recipesContainer}>
-          {values.length > 0 ? (
-            <>
-              {values.map((value, index) => (
-                <Link key={index} to={`/recipes/${value.id}`}>
-                  <BaseCard props={value} recipeId={value.id.toString()} />
-                </Link>
-              ))}
-            </>
-          ) : (
-            <div className={styles.noRecipesBox}>
-              <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-            </div>
-          )}
-        </div>
-        {isLoadButton && <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />}
       </section>
+
+      {loading ? (
+        <Spinner />
+      ) : (
+        <section>
+          <div className={styles.recipesContainer}>
+            {values.length > 0 ? (
+              <>
+                {values.map((value, index) => (
+                  <Link key={index} to={`/recipes/${value.id}`}>
+                    <BaseCard props={value} recipeId={value.id.toString()} />
+                  </Link>
+                ))}
+              </>
+            ) : (
+              <div className={styles.noRecipesBox}>
+                <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
+              </div>
+            )}
+          </div>
+          {isLoadButton && (
+            <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
+          )}
+        </section>
+      )}
     </div>
   );
 };

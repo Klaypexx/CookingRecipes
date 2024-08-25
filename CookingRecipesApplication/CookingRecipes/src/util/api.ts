@@ -42,7 +42,7 @@ api.interceptors.response.use(
       }
       setTimeout(() => {
         location.reload();
-      }, 60000);
+      }, 15000);
     }
 
     if (err.response) {

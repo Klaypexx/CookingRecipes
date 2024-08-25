@@ -1,7 +1,5 @@
-.favouritesSection {
-  max-width: 1200px;
+.favourites {
   min-height: 70vh;
-  margin: 0 auto;
 }
 
 .recipesListBlock {

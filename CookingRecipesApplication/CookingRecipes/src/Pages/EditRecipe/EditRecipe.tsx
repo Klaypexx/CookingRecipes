@@ -5,6 +5,7 @@ import RecipeFormValues from '../../Types/RecipeFormValues';
 import { useParams } from 'react-router-dom';
 import Subheader from '../../Components/Subheader/Subheader';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import Spinner from '../../Components/Spinner/Spinner';
 
 const EditRecipe = () => {
   const [values, setValues] = useState<RecipeFormValues>();
@@ -25,12 +26,20 @@ const EditRecipe = () => {
   };
 
   return (
-    <section>
-      <Subheader backward text={'Редактировать рецепт'}>
-        <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />
-      </Subheader>
-      {values && <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />}
-    </section>
+    <>
+      <section>
+        <Subheader backward text={'Редактировать рецепт'}>
+          <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />
+        </Subheader>
+      </section>
+      <section>
+        {!values ? (
+          <Spinner />
+        ) : (
+          <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />
+        )}
+      </section>
+    </>
   );
 };
 
