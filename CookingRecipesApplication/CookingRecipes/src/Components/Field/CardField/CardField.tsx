@@ -24,8 +24,7 @@ const CardField = () => {
 
   return (
     <div className={styles.cardContainer}>
-      <div className={styles.cardBackground}></div>
-      <div className={styles.cardPhoto}>
+      <div className={styles.cardPhotoBox}>
         {(file || avatarPath) && (
           <img
             src={file ? URL.createObjectURL(file) : IMAGE_URL + avatarPath}
@@ -38,9 +37,9 @@ const CardField = () => {
           name="avatar"
           accept="image/png, image/jpeg"
           onChange={handleFileChange}
-          className={styles.inputPhoto}
+          className={styles.inputAvatar}
         />
-        <div className={styles.inputPhotoContainer}>
+        <div className={styles.inputPhoto}>
           {!file && (
             <div className={styles.inputPhotoBox}>
               <img src={cloudDownload} alt="cloud download" className={styles.cloudDownload} />
@@ -51,7 +50,7 @@ const CardField = () => {
         <ErrorMessage name="avatar" component="div" className={styles.baseErrorStyle} />
       </div>
       <div className={styles.cardInformation}>
-        <div className={styles.cardFormContainer}>
+        <div className={styles.cardFormBox}>
           <BaseField
             className={styles.inputRecipeNameFormSize}
             margin
@@ -67,8 +66,8 @@ const CardField = () => {
             placeholder={`Краткое описание рецепта (${DESCRIPTION_MAX_WORDS} символов)`}
           />
           <TagsField name="tags" />
-          <div className={styles.optionContainer}>
-            <div className={styles.optionBox}>
+          <div className={styles.optionBox}>
+            <div className={styles.optionFlex}>
               <BaseField select as="select" name="cookingTime" className={styles.optionForm}>
                 <option value="">Время готовки</option>
                 {COOKING_TIMES.map((time, index) => (
@@ -79,7 +78,7 @@ const CardField = () => {
               </BaseField>
               <p className={styles.optionText}>Минут</p>
             </div>
-            <div className={styles.optionBox}>
+            <div className={styles.optionFlex}>
               <BaseField select as="select" name="portion" className={styles.optionForm}>
                 <option value="">Порций в блюде</option>
                 {PORTION_COUNT.map((portion, index) => (

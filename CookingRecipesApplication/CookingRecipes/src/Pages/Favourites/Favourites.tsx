@@ -38,7 +38,7 @@ const Favourites = () => {
 
   return (
     <section className={styles.favouritesSection}>
-      <Subheader headerText="Избранное" />
+      <Subheader text="Избранное" />
       <div className={styles.recipesListBlock}>
         {values.length > 0 ? (
           <>

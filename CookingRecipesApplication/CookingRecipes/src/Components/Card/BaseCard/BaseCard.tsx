@@ -15,22 +15,22 @@ const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
           <p className={styles.authorRecipeText}>{`@${props?.authorName}`}</p>
         </div>
         {props?.avatarPath ? (
-          <img src={IMAGE_URL + props.avatarPath} alt="avatar" className={styles.avatarImage} />
+          <img src={IMAGE_URL + props.avatarPath} alt="avatarImage" className={styles.avatarImage} />
         ) : (
           <div className={styles.avatarNoImage}></div>
         )}
       </div>
-      <div className={styles.cardInformation}>
+      <div className={styles.cardInformationBox}>
         {props?.tags && (
-          <div className={styles.cardHeader}>
-            <div className={styles.tagsContainer}>
+          <div className={styles.cardHeaderBox}>
+            <div className={styles.tagsFlex}>
               {props.tags.map((tag, index) => (
                 <div key={index} className={styles.tagBox}>
                   <p className={styles.tagText}>{tag.name}</p>
                 </div>
               ))}
             </div>
-            <div className={styles.interactiveBlock}>
+            <div className={styles.interactiveBox}>
               <FavouriteRecipeButton
                 isFavouritePressed={props.isFavourite}
                 favouriteRecipeCount={props.favouriteCount}
@@ -42,14 +42,14 @@ const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
         )}
         {props?.description && props.cookingTime && props.portion && (
           <>
-            <div className={styles.mainContainer}>
-              <div className={styles.cardInfoContainer}>
+            <div className={styles.gridBox}>
+              <div className={styles.cardInfoBox}>
                 {props.name && <h3 className={styles.cardInfoHeader}>{props.name}</h3>}
                 <div className={styles.cardInfoTextBox}>
                   <p className={styles.cardInfoText}>{props?.description}</p>
                 </div>
               </div>
-              <div className={styles.cardNumerableContainer}>
+              <div className={styles.cardNumerableFlex}>
                 <div className={styles.cardNumerableBox}>
                   <img src={timeIcon} alt="time-icon" className={styles.timeIcon} />
                   <div className={styles.cardNumerableTextBox}>

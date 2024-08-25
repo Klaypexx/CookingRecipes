@@ -84,12 +84,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
         onSubmit={handleSubmit}
       >
         <CardField />
-        <div className={styles.mainContainer}>
-          <div className={styles.ingredientBlock}>
+        <div className={styles.flexContainer}>
+          <div>
             <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
             <IngredientField name="ingredients" />
           </div>
-          <div className={styles.stepBlock}>
+          <div>
             <StepField name="steps" />
           </div>
         </div>

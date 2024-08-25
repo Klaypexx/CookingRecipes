@@ -1,6 +1,5 @@
 .recipeView {
-  max-width: 1200px;
-  margin: 0 auto;
+  min-height: 70vh;
 }
 
 .buttonBox {
@@ -22,7 +21,7 @@
   margin-left: 18px;
 }
 
-.mainContainer {
+.flexContainer {
   display: flex;
   justify-content: space-between;
   margin-bottom: 103px;

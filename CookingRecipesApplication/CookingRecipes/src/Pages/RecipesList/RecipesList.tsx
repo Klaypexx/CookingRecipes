@@ -73,34 +73,40 @@ const RecipesList = () => {
   }
 
   return (
-    <section className={styles.recipesListSection}>
-      <Subheader headerText="Рецепты">
-        <BaseLink base primary to="/recipes/create" linkText="Добавить рецепт" />
-      </Subheader>
-      <div className={styles.tagListBlock}>
-        <TagsBlockList className={styles.tagList} />
-      </div>
-      <div className={styles.searchBlock}>
-        <SearchBlock text onSubmit={handleSubmit} />
-      </div>
+    <div className={styles.recipesList}>
+      <section>
+        <Subheader text="Рецепты">
+          <BaseLink base primary to="/recipes/create" text="Добавить рецепт" />
+        </Subheader>
 
-      <div className={styles.recipesListBlock}>
-        {values.length > 0 ? (
-          <>
-            {values.map((value, index) => (
-              <Link key={index} to={`/recipes/${value.id}`}>
-                <BaseCard props={value} recipeId={value.id.toString()} />
-              </Link>
-            ))}
-          </>
-        ) : (
-          <div className={styles.noRecipesBlock}>
-            <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-          </div>
-        )}
-      </div>
-      {isLoadButton && <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />}
-    </section>
+        <div className={styles.tagListContainer}>
+          <TagsBlockList className={styles.tagList} />
+        </div>
+      </section>
+
+      <section>
+        <div className={styles.searchContainer}>
+          <SearchBlock text onSubmit={handleSubmit} />
+        </div>
+
+        <div className={styles.recipesContainer}>
+          {values.length > 0 ? (
+            <>
+              {values.map((value, index) => (
+                <Link key={index} to={`/recipes/${value.id}`}>
+                  <BaseCard props={value} recipeId={value.id.toString()} />
+                </Link>
+              ))}
+            </>
+          ) : (
+            <div className={styles.noRecipesBox}>
+              <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
+            </div>
+          )}
+        </div>
+        {isLoadButton && <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />}
+      </section>
+    </div>
   );
 };
 

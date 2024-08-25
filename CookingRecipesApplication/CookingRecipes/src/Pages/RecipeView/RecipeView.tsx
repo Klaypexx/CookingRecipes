@@ -65,43 +65,48 @@ const RecipeView = () => {
   }
 
   return (
-    <section className={styles.recipeView}>
-      <Subheader backward headerText={values?.name}>
-        <div className={styles.buttonBox}>
-          {isRecipeOwner && (
-            <>
-              <BaseButton className={styles.removeRecipe} onClick={handleRemove}>
-                <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
-              </BaseButton>
-              <BaseLink primary linkText="Редактировать" className={styles.editBtn} to={`/recipes/edit/${recipeId}`} />
-            </>
-          )}
-        </div>
-      </Subheader>
-      <BaseCard props={values} recipeId={recipeId!} />
-      <div className={styles.mainContainer}>
-        <div className={styles.ingredientsContainer}>
-          <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
-          {values?.ingredients.map((ingredient, index) => (
-            <div key={index} className={styles.ingredientBox}>
-              <p className={styles.ingredientsName}>{ingredient.name}</p>
-              <p className={styles.ingredientsText}>{ingredient.product}</p>
-            </div>
-          ))}
-        </div>
-        <div className={styles.stepsContainer}>
-          {values?.steps.map((step, index) => (
-            <div key={index} className={styles.stepBox}>
-              <p className={styles.stepHeader}>Шаг {index + 1}</p>
-              <div className={styles.stepTextBox}>
-                <p className={styles.stepText}>{step.description}</p>
+    <div className={styles.recipeView}>
+      <section>
+        <Subheader backward text={values?.name}>
+          <div className={styles.buttonBox}>
+            {isRecipeOwner && (
+              <>
+                <BaseButton className={styles.removeRecipe} onClick={handleRemove}>
+                  <img src={removeIcon} alt="removeIcon" className={styles.removeIcon} />
+                </BaseButton>
+                <BaseLink primary text="Редактировать" className={styles.editBtn} to={`/recipes/edit/${recipeId}`} />
+              </>
+            )}
+          </div>
+        </Subheader>
+      </section>
+
+      <section>
+        <BaseCard props={values} recipeId={recipeId!} />
+        <div className={styles.flexContainer}>
+          <div>
+            <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
+            {values?.ingredients.map((ingredient, index) => (
+              <div key={index} className={styles.ingredientBox}>
+                <p className={styles.ingredientsName}>{ingredient.name}</p>
+                <p className={styles.ingredientsText}>{ingredient.product}</p>
               </div>
-            </div>
-          ))}
-          <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
+            ))}
+          </div>
+          <div>
+            {values?.steps.map((step, index) => (
+              <div key={index} className={styles.stepBox}>
+                <p className={styles.stepHeader}>Шаг {index + 1}</p>
+                <div className={styles.stepTextBox}>
+                  <p>{step.description}</p>
+                </div>
+              </div>
+            ))}
+            <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

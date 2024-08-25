@@ -29,7 +29,7 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
           <>
             {steps.map((step: { description: string }, index: number) => (
               <div key={index}>
-                <div className={styles.stepContainer}>
+                <div className={styles.step}>
                   <div className={styles.stepBox}>
                     <p className={styles.stepText}>Шаг {index + 1}</p>
                     <button type="button" onClick={() => handlerDeleteCurrentField(arrayHelpers, index)}>

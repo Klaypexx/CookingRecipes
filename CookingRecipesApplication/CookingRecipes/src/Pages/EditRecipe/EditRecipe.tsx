@@ -1,4 +1,3 @@
-import styles from './EditRecipe.module.css';
 import RecipeForm from '../../Components/Form/RecipeForm/RecipeForm';
 import RecipeService from '../../Services/RecipeService';
 import { useEffect, useState } from 'react';
@@ -26,8 +25,8 @@ const EditRecipe = () => {
   };
 
   return (
-    <section className={styles.formSection}>
-      <Subheader backward headerText={'Редактировать рецепт'}>
+    <section>
+      <Subheader backward text={'Редактировать рецепт'}>
         <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />
       </Subheader>
       {values && <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />}

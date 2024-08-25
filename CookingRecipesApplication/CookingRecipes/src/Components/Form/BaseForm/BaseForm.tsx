@@ -5,20 +5,11 @@ import classNames from 'classnames';
 import styles from './BaseFormLabel.module.css';
 import FormProps from '../../../Types/FormProps';
 
-const BaseForm: React.FC<FormProps> = ({
-  primary,
-  id,
-  initialValues,
-  validationSchema,
-  onSubmit,
-  errorText,
-  children,
-}) => {
+const BaseForm: React.FC<FormProps> = ({ primary, id, initialValues, validationSchema, onSubmit, children }) => {
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
       {() => (
         <Form id={id} className={classNames(primary && styles.baseFormStyle)}>
-          {errorText && <h4 className={styles.errorText}>{errorText}</h4>}
           {children}
         </Form>
       )}

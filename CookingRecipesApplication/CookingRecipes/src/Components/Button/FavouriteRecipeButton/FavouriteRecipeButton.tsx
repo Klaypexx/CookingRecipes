@@ -50,7 +50,7 @@ const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
 
   return (
     <BaseButton className={styles.favourite} buttonText={count.toString()} onClick={handleChangeLike}>
-      <img src={isFavourite ? favouriteActive : favourite} alt="like" className={styles.favouriteImage} />
+      <img src={isFavourite ? favouriteActive : favourite} alt="favouriteImage" className={styles.favouriteImage} />
     </BaseButton>
   );
 };

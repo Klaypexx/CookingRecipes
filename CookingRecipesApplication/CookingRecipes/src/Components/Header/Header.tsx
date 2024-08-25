@@ -1,6 +1,6 @@
 import styles from './Header.module.css';
-import logo from '../../resources/img/Logo.png';
-import userIcon from '../../resources/icons/user.svg';
+import logoImage from '../../resources/img/Logo.png';
+import userAvatar from '../../resources/icons/user.svg';
 import exitIcon from '../../resources/icons/exit.svg';
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
@@ -36,50 +36,48 @@ const Header = () => {
 
   return (
     <header>
-      <div className={styles.container}>
-        <div className={styles.navigation}>
-          <Link to={'/'}>
-            <img src={logo} alt="header_logo" className={styles.imageLogo} />
-          </Link>
-          <div className={styles.containerButtons}>
-            <NavLink
-              className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
-              to={'/'}
-            >
-              Главная
-            </NavLink>
-            <NavLink
-              className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
-              to={'/recipes'}
-            >
-              Рецепты
-            </NavLink>
-            <NavLink
-              className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
-              to={'/favourites'}
-              state={{ from: location.pathname }}
-            >
-              Избранное
-            </NavLink>
-          </div>
-        </div>
+      <div className={styles.navigation}>
+        <Link to={'/'}>
+          <img src={logoImage} alt="logoImage" className={styles.logoImage} />
+        </Link>
+        <nav className={styles.linksFlex}>
+          <NavLink
+            className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
+            to={'/'}
+          >
+            Главная
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
+            to={'/recipes'}
+          >
+            Рецепты
+          </NavLink>
+          <NavLink
+            className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
+            to={'/favourites'}
+            state={{ from: location.pathname }}
+          >
+            Избранное
+          </NavLink>
+        </nav>
+      </div>
 
-        <div className={styles.authContainer}>
-          <div className={styles.userAvatar}>
-            <img src={userIcon} alt="User Icon" className={styles.userAvatarImg} />
-          </div>
-          {isAuthorized && userName ? (
-            <div className={styles.authBlock}>
-              <p className={styles.authText}>Привет, {userName}</p>
-              <div className={styles.line}></div>
-              <img src={exitIcon} alt="" className={styles.exit} onClick={handleLogout} />
-            </div>
-          ) : (
-            <p className={styles.avatarText} onClick={handleLogin}>
-              Войти
-            </p>
-          )}
+      <div className={styles.authFlex}>
+        <div className={styles.userAvatarBox}>
+          <img src={userAvatar} alt="User Icon" className={styles.userAvatarImage} />
         </div>
+        {isAuthorized && userName ? (
+          <div className={styles.authBox}>
+            <p className={styles.authText}>Привет, {userName}</p>
+            <div className={styles.line}></div>
+            <img src={exitIcon} alt="" className={styles.exit} onClick={handleLogout} />
+          </div>
+        ) : (
+          <p className={styles.authText} onClick={handleLogin}>
+            Войти
+          </p>
+        )}
       </div>
     </header>
   );
