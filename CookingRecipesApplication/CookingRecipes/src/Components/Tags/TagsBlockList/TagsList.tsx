@@ -29,11 +29,11 @@ const tagsData = [
   },
 ];
 
-const TagsBlockList: React.FC<TagsBlockListProps> = ({ text, className }) => {
+const TagsBlockList: React.FC<TagsBlockListProps> = ({ text, onClick, className }) => {
   return (
     <div className={styles.tagListFlex}>
       {tagsData.map((tags, index) => (
-        <div key={index} className={classNames(styles.tagListBox, className)}>
+        <div key={index} onClick={() => onClick(tags.header)} className={classNames(styles.tagListBox, className)}>
           <div className={styles.iconBox}>
             <img src={tags.icon} alt="icon" className={styles.icon} />
           </div>

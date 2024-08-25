@@ -12,6 +12,7 @@ import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { Link } from 'react-router-dom';
 import useAuthStore from '../../Stores/useAuthStore';
 import SearchBlockValues from '../../Types/SearchBlockValues';
+import useSearchStore from '../../Stores/useSearchStore';
 
 const RecipesList = () => {
   let [loading, setLoading] = useState(true);
@@ -19,11 +20,12 @@ const RecipesList = () => {
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [values, setValues] = useState<RecipeListValues[]>([]);
   const [isFirstMount, setIsFirstMount] = useState(true);
+  const { searchString, setSearchString } = useSearchStore();
   const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipes(pageNumber, '');
+      const result = await RecipeService.GetRecipes(pageNumber, searchString);
       if (result.response && result.response.status === 200) {
         if (!result.response.data.length) {
           setIsLoadButton(false);
@@ -42,7 +44,7 @@ const RecipesList = () => {
     }
     const fetchRecipes = async () => {
       setLoading(true);
-      const result = await RecipeService.GetRecipes(1, '');
+      const result = await RecipeService.GetRecipes(1, searchString);
       if (result.response && result.response.status === 200) {
         if (!result.response.data.length) {
           setIsLoadButton(false);
@@ -52,7 +54,7 @@ const RecipesList = () => {
       }
     };
     fetchRecipes();
-  }, [isAuthorized]);
+  }, [isAuthorized, searchString]);
 
   const handleSubmit = async (values: SearchBlockValues) => {
     const result = await RecipeService.GetRecipes(pageNumber, values.searchString);
@@ -61,7 +63,12 @@ const RecipesList = () => {
         setIsLoadButton(false);
       }
       setValues(() => [...result.response.data]);
+      setSearchString(values.searchString);
     }
+  };
+
+  const handleTagsBlockClick = (value: string) => {
+    setSearchString(value);
   };
 
   const handleClick = () => {
@@ -80,7 +87,7 @@ const RecipesList = () => {
         </Subheader>
 
         <div className={styles.tagListContainer}>
-          <TagsBlockList className={styles.tagList} />
+          <TagsBlockList className={styles.tagList} onClick={handleTagsBlockClick} />
         </div>
       </section>
 

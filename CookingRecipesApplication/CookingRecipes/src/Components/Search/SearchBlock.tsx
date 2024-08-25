@@ -1,3 +1,4 @@
+import useSearchStore from '../../Stores/useSearchStore';
 import SearchBlockProps from '../../Types/SearchBlockProps';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import BaseButton from '../Button/BaseButton/BaseButton';
@@ -6,8 +7,10 @@ import BaseForm from '../Form/BaseForm/BaseForm';
 import styles from './SearchBlock.module.css';
 
 const SearchBlock: React.FC<SearchBlockProps> = ({ text, onSubmit }) => {
+  const { searchString } = useSearchStore();
+
   const initialValues: SearchBlockValues = {
-    searchString: '',
+    searchString: searchString,
   };
 
   return (
