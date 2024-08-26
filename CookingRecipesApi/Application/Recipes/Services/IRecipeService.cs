@@ -9,6 +9,7 @@ public interface IRecipeService
     Task RemoveRecipe( int recipeId );
     Task<IReadOnlyList<OverviewRecipe>> GetRecipes( int pageNumber, int authorId, string searchString );
     Task<IReadOnlyList<OverviewRecipe>> GetFavouriteRecipes( int pageNumber, int authorId );
-    Task<CompleteRecipe> GetRecipeById( int recipeId, int authorId );
+    Task<MostLikedRecipe> GetMostLikedRecipe();
+    Task<CompleteRecipe> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId );
     Task<bool> HasAccessToRecipe( int recipeId, int authorId );
 }

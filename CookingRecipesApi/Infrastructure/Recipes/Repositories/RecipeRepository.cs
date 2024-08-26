@@ -54,7 +54,15 @@ public class RecipeRepository : IRecipeRepository
          .ToListAsync();
     }
 
-    public async Task<Recipe> GetRecipeById( int recipeId )
+    public async Task<Recipe> GetMostLikedRecipe()
+    {
+        return await _entities.Include( recipe => recipe.Author )
+            .Include( recipe => recipe.Likes )
+            .OrderByDescending( recipe => recipe.Likes.Count )
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Recipe> GetRecipeByIdIncludingDependentEntities( int recipeId )
     {
         return await _entities.Where( recipe => recipe.Id == recipeId )
          .Include( recipe => recipe.Tags )
@@ -67,7 +75,7 @@ public class RecipeRepository : IRecipeRepository
          .FirstOrDefaultAsync();
     }
 
-    public async Task<Recipe> GetById( int recipeId )
+    public async Task<Recipe> GetRecipeById( int recipeId )
     {
         return await _entities.Where( recipe => recipe.Id == recipeId )
             .FirstOrDefaultAsync();

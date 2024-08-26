@@ -7,6 +7,13 @@
   display: flex;
 }
 
+.avatarImage {
+  width: 543px;
+  height: 543px;
+  border-radius: 72px 0px 72px 0px;
+  object-fit: fill;
+}
+
 .avatarImageBox {
   position: relative;
 }

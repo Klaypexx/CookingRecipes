@@ -142,8 +142,25 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
+    [Route( "mostLiked" )]
+    public async Task<IActionResult> GetMostLikedRecipe()
+    {
+        try
+        {
+            MostLikedRecipe recipe = await _recipeService.GetMostLikedRecipe();
+            MostLikedRecipeDto recipeDto = recipe.ToMostLikedRecipeDto();
+            return Ok( recipeDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+
+    }
+
+    [HttpGet]
     [Route( "{recipeId}" )]
-    public async Task<IActionResult> GetRecipeById( [FromRoute] int recipeId )
+    public async Task<IActionResult> GetRecipeByIdIncludingDependentEntities( [FromRoute] int recipeId )
     {
         try
         {
@@ -153,7 +170,7 @@ public class RecipeController : ControllerBase
                 authorId = int.Parse( User.GetUserId() );
             }
 
-            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId, authorId );
+            CompleteRecipe recipes = await _recipeService.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );
             CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
             return Ok( recipeDto );
         }

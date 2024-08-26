@@ -10,7 +10,7 @@ const CustomCard: React.FC<CustomCardProps> = ({ props }) => {
     <div className={styles.cardContainer}>
       <div className={styles.avatarImageBox}>
         <div className={styles.authorRecipeBox}>
-          <p className={styles.authorRecipeText}>{`@${props?.authorName}`}</p>
+          <p className={styles.authorRecipeText}>{`@${props.authorName}`}</p>
         </div>
         {props?.avatarPath ? (
           <img src={IMAGE_URL + props.avatarPath} alt="avatarImage" className={styles.avatarImage} />
@@ -22,22 +22,19 @@ const CustomCard: React.FC<CustomCardProps> = ({ props }) => {
         <div className={styles.numerableBox}>
           <div className={styles.flexContent}>
             <img src={like} alt="like" className={styles.numerableIcon} />
-            <p className={styles.numerableText}>0</p>
+            <p className={styles.numerableText}>{props.likeCount}</p>
           </div>
           <div className={styles.flexContent}>
             <img src={timer} alt="timer" className={styles.numerableIcon} />
-            <p className={styles.numerableText}>30 минут</p>
+            <p className={styles.numerableText}>{props.cookingTime} минут</p>
           </div>
         </div>
         <div className={styles.yummyBox}>
           <img src={yummyIcon} alt="yummyIcon" className={styles.yummyIcon} />
         </div>
         <div className={styles.textBox}>
-          <h2 className={styles.headerText}>Тыквенный Cупчик На Кокосовом Молоке</h2>
-          <p className={styles.text}>
-            Если у вас осталась тыква, и вы не знаете что с ней сделать, то это решение для вас! Ароматный, согревающий
-            суп-пюре на кокосовом молоке. Можно даже в Пост!
-          </p>
+          <h2 className={styles.headerText}>{props.name}</h2>
+          <p className={styles.text}>{props.description}</p>
         </div>
       </div>
     </div>

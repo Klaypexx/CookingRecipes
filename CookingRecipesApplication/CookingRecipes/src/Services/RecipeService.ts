@@ -1,7 +1,8 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import api from '../util/api';
 import GetRecipesResponseValues from '../Types/GetRecipesResponseValues';
 import GetRecipeByIdResponseValues from '../Types/GetRecipeByIdResponseValues';
+import GetMostLikedRecipeResponseValue from '../Types/GetMostLikedRecipeResponseValue';
 import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
@@ -10,6 +11,7 @@ const endpoints = {
   remove: '/recipes/',
   getRecipes: '/recipes?pageNumber=',
   getFavouriteRecipes: '/recipes/favourites?pageNumber=',
+  getMostLikedRecipe: '/recipes/mostLiked',
   getCurrentRecipe: '/recipes/',
 };
 
@@ -72,6 +74,17 @@ const GetFavouriteRecipes = async (pageNumber: number) => {
   }
 };
 
+const GetMostLikedRecipe = async () => {
+  try {
+    const response: AxiosResponse<GetMostLikedRecipeResponseValue, any> = await api.get(
+      `${endpoints.getMostLikedRecipe}`,
+    );
+    return { response };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 const GetRecipeById = async (recipeId: string) => {
   try {
     const response: AxiosResponse<GetRecipeByIdResponseValues, any> = await api.get(
@@ -89,6 +102,7 @@ const RecipeService = {
   removeRecipe,
   GetRecipes,
   GetFavouriteRecipes,
+  GetMostLikedRecipe,
   GetRecipeById,
 };
 

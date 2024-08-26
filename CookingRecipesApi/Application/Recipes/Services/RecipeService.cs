@@ -49,7 +49,7 @@ public class RecipeService : IRecipeService
 
     public async Task UpdateRecipe( Recipe actualRecipe, int recipeId )
     {
-        RecipeDomain oldRecipe = await _recipeRepository.GetRecipeById( recipeId );
+        RecipeDomain oldRecipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
         string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar );
         RecipeDomain recipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
@@ -62,7 +62,7 @@ public class RecipeService : IRecipeService
 
     public async Task RemoveRecipe( int recipeId )
     {
-        RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
         _fileService.RemoveImage( recipe.Avatar );
 
@@ -110,9 +110,16 @@ public class RecipeService : IRecipeService
         return recipes.ToOverviewRecipe( likedIds, favouritedIds );
     }
 
-    public async Task<CompleteRecipe> GetRecipeById( int recipeId, int authorId )
+    public async Task<MostLikedRecipe> GetMostLikedRecipe()
     {
-        RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetMostLikedRecipe();
+
+        return recipe.ToMostLikedRecipe();
+    }
+
+    public async Task<CompleteRecipe> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId )
+    {
+        RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
         bool isRecipeLiked = _likeService.HaveRecipeLikeConnectionFromUser( authorId, recipe );
         bool isRecipeInFavourite = _favouriteRecipeService.HaveFavouriteRecipeFromUser( authorId, recipe );
@@ -122,7 +129,7 @@ public class RecipeService : IRecipeService
 
     public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )
     {
-        RecipeDomain recipe = await _recipeRepository.GetById( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
 
         return recipe.AuthorId == authorId;
     }
