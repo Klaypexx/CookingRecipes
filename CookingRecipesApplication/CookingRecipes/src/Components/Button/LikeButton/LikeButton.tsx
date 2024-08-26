@@ -14,7 +14,6 @@ const LikeButton: React.FC<LikeButtonProps> = ({ isLikePressed, likeCount, recip
   const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
-    console.log(`${isLikePressed}`);
     setLoading(false);
     setIsLike(isLikePressed);
     setCount(likeCount);

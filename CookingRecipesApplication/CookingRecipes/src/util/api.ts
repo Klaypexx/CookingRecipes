@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import TokenService from '../Services/TokenService';
 import AuthService from '../Services/AuthService';
 import { BASE_URL } from '../Constants/httpUrl';
@@ -40,6 +40,7 @@ api.interceptors.response.use(
       if (token) {
         TokenService.removeToken();
       }
+
       setTimeout(() => {
         location.reload();
       }, 15000);
@@ -54,7 +55,6 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           await AuthService.logout();
-          // location.reload();
         }
       }
     }

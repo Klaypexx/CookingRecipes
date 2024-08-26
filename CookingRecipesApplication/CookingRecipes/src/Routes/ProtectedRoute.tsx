@@ -8,7 +8,6 @@ function ProtectedRoute({ redirectPath = '/', children }: any) {
   const location = useLocation();
 
   useEffect(() => {
-    console.log('статус ' + isAuthorized);
     if (!isAuthorized) {
       warnToast('Вы не вошли в систему');
     }
