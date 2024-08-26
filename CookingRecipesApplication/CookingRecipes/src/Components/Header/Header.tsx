@@ -7,15 +7,15 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import UserService from '../../Services/UserService';
 import useModalStore from '../../Stores/useModalStore';
-import TokenService from '../../Services/TokenService';
+import useAuthStore from '../../Stores/useAuthStore';
 
 const Header = () => {
   const [userName, setUserName] = useState<string>();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
-  const token = TokenService.getAccessToken();
+  const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
-    if (token) {
+    if (isAuthorized) {
       const fetchUsername = async () => {
         const result = await UserService.username();
         if (result.response && result.response.status === 200) {
@@ -24,7 +24,7 @@ const Header = () => {
       };
       fetchUsername();
     }
-  }, [token]);
+  }, [isAuthorized]);
 
   const handleLogin = () => {
     setAuth(isAuth);
@@ -68,7 +68,7 @@ const Header = () => {
           <div className={styles.userAvatar}>
             <img src={userIcon} alt="User Icon" className={styles.userAvatarImg} />
           </div>
-          {token && userName ? (
+          {isAuthorized && userName ? (
             <div className={styles.authBlock}>
               <p className={styles.authText}>Привет, {userName}</p>
               <div className={styles.line}></div>

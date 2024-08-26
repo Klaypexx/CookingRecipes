@@ -8,4 +8,10 @@ public class FavouriteRecipe
     public int RecipeId { get; private set; }
     public User User { get; private set; }
     public Recipe Recipe { get; private set; }
+
+    public FavouriteRecipe( int userId, int recipeId )
+    {
+        UserId = userId;
+        RecipeId = recipeId;
+    }
 }

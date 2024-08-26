@@ -5,19 +5,61 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './Components/Footer/Footer';
 import ModalBlock from './Components/Modal/ModalBlock/ModaBlock';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Spinner from './Components/Spinner/Spinner';
+import TokenService from './Services/TokenService';
+import AuthService from './Services/AuthService';
+import useAuthStore from './Stores/useAuthStore';
 
 function App() {
+  const token = TokenService.getAccessToken();
+  const { setAuthorized, isAuthorized } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAuth = async () => {
+      try {
+        if (token) {
+          await AuthService.isAuth();
+          setAuthorized(true);
+        }
+      } catch (error) {
+        setAuthorized(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAuth();
+  }, []);
+
+  useEffect(() => {
+    if (isAuthorized) {
+      const interval = setInterval(async () => {
+        try {
+          await AuthService.refresh();
+        } catch (err) {
+          setAuthorized(false);
+          await AuthService.logout();
+        }
+      }, 150000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isAuthorized]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <Header />
       <Suspense fallback={<Spinner />}>
         <Outlet />
       </Suspense>
-      <Footer />
       <ModalBlock />
       <ToastContainer />
+      <Footer />
     </>
   );
 }

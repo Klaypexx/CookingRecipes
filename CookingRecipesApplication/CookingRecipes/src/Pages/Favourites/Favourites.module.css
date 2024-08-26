@@ -1,0 +1,25 @@
+.favouritesSection {
+  max-width: 1200px;
+  min-height: 70vh;
+  margin: 0 auto;
+}
+
+.recipesListBlock {
+  margin-bottom: 65px;
+}
+
+.loadButton {
+  margin: 0 auto;
+  width: 309px;
+  margin-bottom: 108px;
+}
+
+.noRecipesBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noRecipeText {
+  color: rgb(253, 177, 0);
+}

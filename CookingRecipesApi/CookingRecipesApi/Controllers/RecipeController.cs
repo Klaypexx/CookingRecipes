@@ -102,11 +102,35 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "" )]
-    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1 )
+    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1, [FromQuery] string searchString = "" )
     {
         try
         {
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber );
+            int authorId = 0;
+            if ( User.Identity.IsAuthenticated )
+            {
+                authorId = int.Parse( User.GetUserId() );
+            }
+
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
+            return Ok( recipesDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+    }
+
+    [HttpGet]
+    [Route( "favourites" )]
+    [Authorize]
+    public async Task<IActionResult> GetFavouritesRecipes( [FromQuery] int pageNumber = 1 )
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
             IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
             return Ok( recipesDto );
         }
@@ -123,7 +147,13 @@ public class RecipeController : ControllerBase
     {
         try
         {
-            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId );
+            int authorId = 0;
+            if ( User.Identity.IsAuthenticated )
+            {
+                authorId = int.Parse( User.GetUserId() );
+            }
+
+            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId, authorId );
             CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
             return Ok( recipeDto );
         }

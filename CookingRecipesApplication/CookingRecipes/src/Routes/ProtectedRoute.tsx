@@ -1,31 +1,20 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import TokenService from '../Services/TokenService';
 import { warnToast } from '../Components/Toast/Toast';
 import { useEffect } from 'react';
-import useModalStore from '../Stores/useModalStore';
 import useAuthStore from '../Stores/useAuthStore';
 
 function ProtectedRoute({ redirectPath = '/', children }: any) {
-  const { isAuthorized, setAuthorized } = useAuthStore();
-  const { isAuth, setAuth, setFromPath } = useModalStore();
-  const token = TokenService.getAccessToken();
+  const { isAuthorized } = useAuthStore();
   const location = useLocation();
 
   useEffect(() => {
+    console.log('статус ' + isAuthorized);
     if (!isAuthorized) {
-      if (!token) {
-        warnToast('Вы не вошли в систему');
-        setFromPath(location.pathname);
-        setAuth(isAuth);
-      } else {
-        setAuthorized(true);
-      }
-    } else {
-      setAuthorized(false);
+      warnToast('Вы не вошли в систему');
     }
-  }, [token]);
+  }, [isAuthorized]);
 
-  if (!token) {
+  if (!isAuthorized) {
     return <Navigate to={location.state?.from || redirectPath} replace />;
   }
 

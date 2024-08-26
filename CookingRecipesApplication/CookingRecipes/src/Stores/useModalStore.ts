@@ -6,9 +6,7 @@ const useModalStore = create<ModalStore>()((set) => ({
   isLogin: false,
   isRegister: false,
   isLogout: false,
-  fromPath: undefined,
 
-  setFromPath: (state) => set({ fromPath: state }),
   setAuth: () => set((state) => ({ isAuth: !state.isAuth })),
   setLogin: () => set((state) => ({ isLogin: !state.isLogin })),
   setRegister: () => set((state) => ({ isRegister: !state.isRegister })),

@@ -55,6 +55,7 @@
 
 .cardHeader {
   display: flex;
+  justify-content: space-between;
   height: 50px;
   width: 100%;
   align-items: center;
@@ -86,6 +87,10 @@
   font-size: 14px;
   font-weight: 400;
   opacity: 1;
+}
+
+.interactiveBlock {
+  display: flex;
 }
 
 .mainContainer {

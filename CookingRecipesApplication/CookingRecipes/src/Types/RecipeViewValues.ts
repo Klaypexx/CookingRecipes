@@ -3,6 +3,10 @@ export default interface RecipeViewValues {
   description: string;
   avatarPath?: string;
   authorName: string;
+  isLike: boolean;
+  likeCount: number;
+  isFavourite: boolean;
+  favouriteCount: number;
   tags?: Array<{
     name: string;
   }>;

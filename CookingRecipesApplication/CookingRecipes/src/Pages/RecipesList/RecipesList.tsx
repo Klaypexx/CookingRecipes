@@ -10,16 +10,20 @@ import Spinner from '../../Components/Spinner/Spinner';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { Link } from 'react-router-dom';
+import useAuthStore from '../../Stores/useAuthStore';
+import SearchBlockValues from '../../Types/SearchBlockValues';
 
 const RecipesList = () => {
   let [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [values, setValues] = useState<RecipeListValues[]>([]);
+  const [isFirstMount, setIsFirstMount] = useState(true);
+  const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipes(pageNumber);
+      const result = await RecipeService.GetRecipes(pageNumber, '');
       if (result.response && result.response.status === 200) {
         if (!result.response.data.length) {
           setIsLoadButton(false);
@@ -31,8 +35,33 @@ const RecipesList = () => {
     fetchRecipes();
   }, [pageNumber]);
 
-  const handleSubmit = () => {
-    return;
+  useEffect(() => {
+    if (isFirstMount) {
+      setIsFirstMount(false);
+      return;
+    }
+    const fetchRecipes = async () => {
+      setLoading(true);
+      const result = await RecipeService.GetRecipes(1, '');
+      if (result.response && result.response.status === 200) {
+        if (!result.response.data.length) {
+          setIsLoadButton(false);
+        }
+        setValues(() => [...result.response.data]);
+        setLoading(false);
+      }
+    };
+    fetchRecipes();
+  }, [isAuthorized]);
+
+  const handleSubmit = async (values: SearchBlockValues) => {
+    const result = await RecipeService.GetRecipes(pageNumber, values.searchString);
+    if (result.response && result.response.status === 200) {
+      if (!result.response.data.length) {
+        setIsLoadButton(false);
+      }
+      setValues(() => [...result.response.data]);
+    }
   };
 
   const handleClick = () => {
@@ -51,18 +80,16 @@ const RecipesList = () => {
       <div className={styles.tagListBlock}>
         <TagsBlockList className={styles.tagList} />
       </div>
-      {values.length > 0 && (
-        <div className={styles.searchBlock}>
-          <SearchBlock text onSubmit={handleSubmit} />
-        </div>
-      )}
+      <div className={styles.searchBlock}>
+        <SearchBlock text onSubmit={handleSubmit} />
+      </div>
 
       <div className={styles.recipesListBlock}>
         {values.length > 0 ? (
           <>
             {values.map((value, index) => (
               <Link key={index} to={`/recipes/${value.id}`}>
-                <BaseCard props={value} />
+                <BaseCard props={value} recipeId={value.id.toString()} />
               </Link>
             ))}
           </>

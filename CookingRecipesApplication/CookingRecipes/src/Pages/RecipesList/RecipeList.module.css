@@ -1,5 +1,6 @@
 .recipesListSection {
   max-width: 1200px;
+  min-height: 70vh;
   margin: 0 auto;
 }
 

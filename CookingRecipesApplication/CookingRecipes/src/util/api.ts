@@ -36,11 +36,13 @@ api.interceptors.response.use(
     const originalConfig = err.config;
 
     if (!err.response) {
-      alert('Не удалось подключиться к серверу. Пожалуйста, проверьте ваше интернет-соединение или попробуйте позже.');
+      errorToast('Не удалось подключиться к серверу.');
       if (token) {
         TokenService.removeToken();
       }
-      location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 60000);
     }
 
     if (err.response) {
@@ -60,7 +62,7 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           await AuthService.logout();
-          location.reload();
+          // location.reload();
         }
       }
     }

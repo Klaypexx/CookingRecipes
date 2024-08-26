@@ -86,6 +86,14 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost]
+    [Route( "isAuth" )]
+    [Authorize]
+    public IActionResult CheckAuth()
+    {
+        return Ok();
+    }
+
+    [HttpPost]
     [Route( "refresh" )]
     public async Task<IActionResult> Refresh()
     {

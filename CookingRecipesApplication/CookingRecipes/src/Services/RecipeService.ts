@@ -7,7 +7,8 @@ const endpoints = {
   create: '/recipes/',
   update: '/recipes/',
   remove: '/recipes/',
-  getRecipe: '/recipes?pageNumber=',
+  getRecipes: '/recipes?pageNumber=',
+  getFavouriteRecipes: '/recipes/favourites?pageNumber=',
   getCurrentRecipe: '/recipes/',
 };
 
@@ -57,10 +58,24 @@ const removeRecipe = async (recipeId: string) => {
   }
 };
 
-const GetRecipes = async (pageNumber: number) => {
+const GetRecipes = async (pageNumber: number, searchString: string) => {
   try {
     const response: AxiosResponse<GetRecipesResponseValues[], any> = await api.get(
-      `${endpoints.getRecipe}${pageNumber}`,
+      `${endpoints.getRecipes}${pageNumber}&searchString=${searchString}`,
+    );
+    return { response };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw Error(error.response?.data?.errors);
+    }
+    throw Error('Произошла неизвестная ошибка при входе');
+  }
+};
+
+const GetFavouriteRecipes = async (pageNumber: number) => {
+  try {
+    const response: AxiosResponse<GetRecipesResponseValues[], any> = await api.get(
+      `${endpoints.getFavouriteRecipes}${pageNumber}`,
     );
     return { response };
   } catch (error) {
@@ -90,6 +105,7 @@ const RecipeService = {
   editRecipe,
   removeRecipe,
   GetRecipes,
+  GetFavouriteRecipes,
   GetRecipeById,
 };
 
