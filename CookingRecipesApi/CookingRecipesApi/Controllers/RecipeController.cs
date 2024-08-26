@@ -90,7 +90,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.RemoveRecipe( recipeId );
+            await _recipeService.RemoveRecipe( authorId, recipeId );
 
             return Ok();
         }
@@ -106,7 +106,13 @@ public class RecipeController : ControllerBase
     {
         try
         {
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber );
+            int authorId = 0;
+            if ( User.Identity.IsAuthenticated )
+            {
+                authorId = int.Parse( User.GetUserId() );
+            }
+
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId );
             IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
             return Ok( recipesDto );
         }
@@ -123,7 +129,13 @@ public class RecipeController : ControllerBase
     {
         try
         {
-            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId );
+            int authorId = 0;
+            if ( User.Identity.IsAuthenticated )
+            {
+                authorId = int.Parse( User.GetUserId() );
+            }
+
+            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId, authorId );
             CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
             return Ok( recipeDto );
         }

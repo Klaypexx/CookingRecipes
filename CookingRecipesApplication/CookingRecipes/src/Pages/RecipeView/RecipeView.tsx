@@ -10,20 +10,23 @@ import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import UserService from '../../Services/UserService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import TokenService from '../../Services/TokenService';
+import useAuthStore from '../../Stores/useAuthStore';
+import Spinner from '../../Components/Spinner/Spinner';
 
 const RecipeView = () => {
-  const token = TokenService.getAccessToken();
+  let [loading, setLoading] = useState(true);
   const [isRecipeOwner, setRecipeOwner] = useState(false);
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
   const navigate = useNavigate();
+  const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     const fetchRecipes = async () => {
       const result = await RecipeService.GetRecipeById(recipeId!);
 
@@ -32,10 +35,10 @@ const RecipeView = () => {
       }
     };
     fetchRecipes();
-  }, []);
+  }, [isAuthorized]);
 
   useEffect(() => {
-    if (values && token) {
+    if (values && isAuthorized) {
       const fetchUsername = async () => {
         const result = await UserService.username();
         if (result.response && result.response.status === 200) {
@@ -45,6 +48,7 @@ const RecipeView = () => {
       };
       fetchUsername();
     }
+    setLoading(false);
   }, [values]);
 
   const handleRemove = async () => {
@@ -55,6 +59,10 @@ const RecipeView = () => {
       navigate(-1);
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <section className={styles.recipeView}>
@@ -70,8 +78,7 @@ const RecipeView = () => {
           )}
         </div>
       </Subheader>
-
-      <BaseCard props={values} />
+      <BaseCard props={values} recipeId={recipeId!} />
       <div className={styles.mainContainer}>
         <div className={styles.ingredientsContainer}>
           <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>

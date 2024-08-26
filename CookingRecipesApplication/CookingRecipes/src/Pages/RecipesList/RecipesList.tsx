@@ -10,12 +10,15 @@ import Spinner from '../../Components/Spinner/Spinner';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { Link } from 'react-router-dom';
+import useAuthStore from '../../Stores/useAuthStore';
 
 const RecipesList = () => {
   let [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [values, setValues] = useState<RecipeListValues[]>([]);
+  const [isFirstMount, setIsFirstMount] = useState(true);
+  const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -30,6 +33,25 @@ const RecipesList = () => {
     };
     fetchRecipes();
   }, [pageNumber]);
+
+  useEffect(() => {
+    if (isFirstMount) {
+      setIsFirstMount(false);
+      return;
+    }
+    const fetchRecipes = async () => {
+      setLoading(true);
+      const result = await RecipeService.GetRecipes(1);
+      if (result.response && result.response.status === 200) {
+        if (!result.response.data.length) {
+          setIsLoadButton(false);
+        }
+        setValues(() => [...result.response.data]);
+        setLoading(false);
+      }
+    };
+    fetchRecipes();
+  }, [isAuthorized]);
 
   const handleSubmit = () => {
     return;
@@ -62,7 +84,7 @@ const RecipesList = () => {
           <>
             {values.map((value, index) => (
               <Link key={index} to={`/recipes/${value.id}`}>
-                <BaseCard props={value} />
+                <BaseCard props={value} recipeId={value.id.toString()} />
               </Link>
             ))}
           </>

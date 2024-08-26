@@ -5,7 +5,7 @@ namespace Application.Recipes.Extensions;
 
 public static class CompleteRecipeExtension
 {
-    public static CompleteRecipe ToCompleteRecipe( this RecipeDomain recipe )
+    public static CompleteRecipe ToCompleteRecipe( this RecipeDomain recipe, bool isRecipeLiked )
     {
         return new()
         {
@@ -15,6 +15,8 @@ public static class CompleteRecipeExtension
             Portion = recipe.Portion,
             AvatarPath = recipe.Avatar,
             AuthorName = recipe.Author.UserName,
+            IsLike = isRecipeLiked,
+            LikeCount = recipe.Likes.Count,
             Tags = recipe.Tags.Select( recipeTag => new Tag
             {
                 Name = recipeTag.Tag.Name
