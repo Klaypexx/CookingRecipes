@@ -41,14 +41,15 @@ const RecipesList = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipes(pageNumber, searchString);
-      if (result.response && result.response.status === 200) {
-        if (!result.response.data.length) {
-          setIsLoadButton(false);
+      await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
+        if (res) {
+          if (!res.response.data.length) {
+            setIsLoadButton(false);
+          }
+          setValues((prevValues) => [...prevValues, ...res.response.data]);
+          setLoading(false);
         }
-        setValues((prevValues) => [...prevValues, ...result.response.data]);
-        setLoading(false);
-      }
+      });
     };
     fetchRecipes();
   }, [pageNumber, searchString, isAuthorized]);

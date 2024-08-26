@@ -18,16 +18,16 @@ function App() {
 
   useEffect(() => {
     const fetchAuth = async () => {
-      try {
-        if (token) {
-          await AuthService.isAuth();
-          setAuthorized(true);
-        }
-      } catch (error) {
-        setAuthorized(false);
-      } finally {
-        setLoading(false);
+      if (token) {
+        await AuthService.isAuth()
+          .then(() => {
+            setAuthorized(true);
+          })
+          .catch(() => {
+            setAuthorized(false);
+          });
       }
+      setLoading(false);
     };
     fetchAuth();
   }, []);
@@ -35,12 +35,10 @@ function App() {
   useEffect(() => {
     if (isAuthorized) {
       const interval = setInterval(async () => {
-        try {
-          await AuthService.refresh();
-        } catch (err) {
+        await AuthService.refresh().catch(async () => {
           setAuthorized(false);
           await AuthService.logout();
-        }
+        });
       }, 150000);
 
       return () => clearInterval(interval);

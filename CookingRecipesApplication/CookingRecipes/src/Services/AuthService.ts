@@ -1,8 +1,9 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import api from '../util/api';
 import TokenService from './TokenService';
 import RegisterValues from '../Types/RegisterValues';
 import LoginValues from '../Types/LoginValues';
+import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
   login: '/users/login',
@@ -17,10 +18,7 @@ const register = async (values: RegisterValues) => {
     const response: AxiosResponse<null, any> = await api.post(endpoints.register, values);
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -32,32 +30,37 @@ const login = async (values: LoginValues) => {
     }
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
 const refresh = async () => {
-  const response: AxiosResponse<string, any> = await api.post(endpoints.refresh);
-  if (response.data) {
-    TokenService.updateAccessToken(response.data);
+  try {
+    const response: AxiosResponse<string, any> = await api.post(endpoints.refresh);
+    if (response.data) {
+      TokenService.updateAccessToken(response.data);
+    }
+    return response;
+  } catch (error) {
+    handleError(error);
   }
-  return response;
 };
 
 const logout = async () => {
-  const response: AxiosResponse<null, any> = await api.post(endpoints.logout);
-  TokenService.removeToken();
-  return response;
+  try {
+    const response: AxiosResponse<null, any> = await api.post(endpoints.logout);
+    TokenService.removeToken();
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
 const isAuth = async () => {
   try {
     await api.post(endpoints.isAuth);
   } catch (error) {
-    return error;
+    handleError(error);
   }
 };
 

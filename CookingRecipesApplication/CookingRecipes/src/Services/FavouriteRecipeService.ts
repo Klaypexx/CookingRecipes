@@ -1,5 +1,6 @@
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import api from '../util/api';
+import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
   addFavouriteRecipe: '/favourites?recipeId=',
@@ -11,10 +12,7 @@ const addFavouriteRecipe = async (recipeId: string) => {
     const response: AxiosResponse<null, any> = await api.post(`${endpoints.addFavouriteRecipe}${recipeId}`);
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -23,10 +21,7 @@ const removeFavouriteRecipe = async (recipeId: string) => {
     const response: AxiosResponse<null, any> = await api.delete(`${endpoints.removeFavouriteRecipe}${recipeId}`);
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 

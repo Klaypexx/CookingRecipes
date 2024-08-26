@@ -16,14 +16,15 @@ const Favourites = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetFavouriteRecipes(pageNumber);
-      if (result.response && result.response.status === 200) {
-        if (!result.response.data.length) {
-          setIsLoadButton(false);
+      await RecipeService.GetFavouriteRecipes(pageNumber).then((res) => {
+        if (res) {
+          if (!res.response.data.length) {
+            setIsLoadButton(false);
+          }
+          setValues((prevValues) => [...prevValues, ...res.response.data]);
+          setLoading(false);
         }
-        setValues((prevValues) => [...prevValues, ...result.response.data]);
-        setLoading(false);
-      }
+      });
     };
     fetchRecipes();
   }, [pageNumber]);

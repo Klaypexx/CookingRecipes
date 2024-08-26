@@ -12,13 +12,13 @@ const RegisterForm = () => {
   const { isLogin, setLogin, unsetAll } = useModalStore();
 
   const handleRegister = async (values: RegisterValues) => {
-    const result = await AuthService.register(values);
-
-    if (result.response && result.response.status === 200) {
-      unsetAll();
-      setLogin(isLogin);
-      successToast('Вы успешно зарегестрировались!');
-    }
+    await AuthService.register(values).then((res) => {
+      if (res) {
+        unsetAll();
+        setLogin(isLogin);
+        successToast('Вы успешно зарегестрировались!');
+      }
+    });
   };
 
   const handleExit = () => {

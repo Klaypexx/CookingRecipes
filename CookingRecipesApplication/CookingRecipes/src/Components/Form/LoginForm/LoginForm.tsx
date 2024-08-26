@@ -13,13 +13,13 @@ const LoginForm = () => {
   const { setAuthorized } = useAuthStore();
 
   const handleLogin = async (values: LoginValues) => {
-    const result = await AuthService.login(values);
-
-    if (result.response && result.response.status === 200) {
-      successToast('Вы успешно вошли в систему!');
-      setAuthorized(true);
-      unsetAll();
-    }
+    await AuthService.login(values).then((res) => {
+      if (res) {
+        successToast('Вы успешно вошли в систему!');
+        setAuthorized(true);
+        unsetAll();
+      }
+    });
   };
 
   const handleExit = () => {

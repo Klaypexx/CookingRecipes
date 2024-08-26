@@ -13,10 +13,11 @@ const EditRecipe = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const result = await RecipeService.GetRecipeById(recipeId!);
-      if (result.response && result.response.status === 200) {
-        setValues(result.response.data);
-      }
+      await RecipeService.GetRecipeById(recipeId!).then((res) => {
+        if (res) {
+          setValues(res.response.data);
+        }
+      });
     };
     fetchRecipes();
   }, []);

@@ -27,17 +27,15 @@ const LikeButton: React.FC<LikeButtonProps> = ({ isLikePressed, likeCount, recip
       return;
     }
     if (isLike) {
-      const result = await LikeService.removeLike(recipeId);
-      if (result.response && result.response.status === 200) {
+      await LikeService.removeLike(recipeId).then(() => {
         setCount((count) => count - 1);
         setIsLike(false);
-      }
+      });
     } else {
-      const result = await LikeService.addLike(recipeId);
-      if (result.response && result.response.status === 200) {
+      await LikeService.addLike(recipeId).then(() => {
         setCount((count) => count + 1);
         setIsLike(true);
-      }
+      });
     }
   };
 

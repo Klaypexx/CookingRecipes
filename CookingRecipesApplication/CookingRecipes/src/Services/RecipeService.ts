@@ -2,6 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import api from '../util/api';
 import GetRecipesResponseValues from '../Types/GetRecipesResponseValues';
 import GetRecipeByIdResponseValues from '../Types/GetRecipeByIdResponseValues';
+import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
   create: '/recipes/',
@@ -22,10 +23,7 @@ const createRecipe = async (values: FormData) => {
     });
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -39,10 +37,7 @@ const editRecipe = async (values: FormData, recipeId: string) => {
     });
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -51,10 +46,7 @@ const removeRecipe = async (recipeId: string) => {
     const response: AxiosResponse<null, any> = await api.delete(`${endpoints.remove}${recipeId}`);
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -65,10 +57,7 @@ const GetRecipes = async (pageNumber: number, searchString: string) => {
     );
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -79,10 +68,7 @@ const GetFavouriteRecipes = async (pageNumber: number) => {
     );
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 
@@ -93,10 +79,7 @@ const GetRecipeById = async (recipeId: string) => {
     );
     return { response };
   } catch (error) {
-    if (error instanceof AxiosError) {
-      throw Error(error.response?.data?.errors);
-    }
-    throw Error('Произошла неизвестная ошибка при входе');
+    handleError(error);
   }
 };
 

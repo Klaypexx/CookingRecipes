@@ -17,11 +17,12 @@ const LogoutModal = () => {
   };
 
   const handleLogout = async () => {
-    await AuthService.logout();
-    successToast('Вы успешно вышли из системы!');
-    unsetAll();
-    setAuthorized(false);
-    navigate('/');
+    await AuthService.logout().then(() => {
+      successToast('Вы успешно вышли из системы!');
+      unsetAll();
+      setAuthorized(false);
+      navigate('/');
+    });
   };
 
   return (

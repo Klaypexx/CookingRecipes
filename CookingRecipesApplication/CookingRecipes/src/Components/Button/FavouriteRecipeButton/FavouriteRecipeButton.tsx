@@ -23,24 +23,22 @@ const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
     setCount(favouriteRecipeCount);
   }, []);
 
-  const handleChangeLike = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleChangeFavourite = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     if (!isAuthorized) {
       return;
     }
     if (isFavourite) {
-      const result = await FavouriteRecipeService.removeFavouriteRecipe(recipeId);
-      if (result.response && result.response.status === 200) {
+      await FavouriteRecipeService.removeFavouriteRecipe(recipeId).then(() => {
         setCount((count) => count - 1);
         setIsFavourite(false);
-      }
+      });
     } else {
-      const result = await FavouriteRecipeService.addFavouriteRecipe(recipeId);
-      if (result.response && result.response.status === 200) {
+      await FavouriteRecipeService.addFavouriteRecipe(recipeId).then(() => {
         setCount((count) => count + 1);
         setIsFavourite(true);
-      }
+      });
     }
   };
 
@@ -49,7 +47,7 @@ const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
   }
 
   return (
-    <BaseButton className={styles.favourite} buttonText={count.toString()} onClick={handleChangeLike}>
+    <BaseButton className={styles.favourite} buttonText={count.toString()} onClick={handleChangeFavourite}>
       <img src={isFavourite ? favouriteActive : favourite} alt="favouriteImage" className={styles.favouriteImage} />
     </BaseButton>
   );

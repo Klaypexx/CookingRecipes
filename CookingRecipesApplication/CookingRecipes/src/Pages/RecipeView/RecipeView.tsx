@@ -29,33 +29,38 @@ const RecipeView = () => {
   useEffect(() => {
     setLoading(true);
     const fetchRecipes = async () => {
-      try {
-        const result = await RecipeService.GetRecipeById(recipeId!);
+      await RecipeService.GetRecipeById(recipeId!)
+        .then(async (res) => {
+          if (res && res.response.status == 200) {
+            setValues(res.response.data);
 
-        setValues(result.response.data);
-        const authorName = result.response.data.authorName;
+            const authorName = res.response.data.authorName;
 
-        if (isAuthorized) {
-          const result = await UserService.username();
-
-          const userName = result.response.data.userName;
-          setRecipeOwner(authorName === userName);
-        }
-        setLoading(false);
-      } catch {
-        navigate(-1);
-      }
+            if (isAuthorized) {
+              await UserService.username().then((res) => {
+                if (res) {
+                  const userName = res.response.data.userName;
+                  setRecipeOwner(authorName === userName);
+                }
+              });
+            }
+            setLoading(false);
+          } else {
+            navigate(-1);
+          }
+        })
+        .catch(() => {
+          navigate(-1);
+        });
     };
     fetchRecipes();
   }, [isAuthorized]);
 
   const handleRemove = async () => {
-    const result = await RecipeService.removeRecipe(recipeId!);
-
-    if (result.response && result.response.status === 200) {
+    await RecipeService.removeRecipe(recipeId!).then(() => {
       successToast('Рецепт успешно удален');
       navigate(-1);
-    }
+    });
   };
 
   return (
