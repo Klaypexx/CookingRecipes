@@ -1,4 +1,4 @@
-export default interface GetMostLikedRecipeResponseValue {
+export default interface MostLikedRecipeResponseValue {
   id: number;
   name: string;
   description: string;

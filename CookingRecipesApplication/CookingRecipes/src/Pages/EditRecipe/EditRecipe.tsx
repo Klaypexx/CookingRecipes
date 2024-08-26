@@ -1,14 +1,14 @@
 import RecipeForm from '../../Components/Form/RecipeForm/RecipeForm';
 import RecipeService from '../../Services/RecipeService';
 import { useEffect, useState } from 'react';
-import RecipeFormValues from '../../Types/RecipeFormValues';
 import { useParams } from 'react-router-dom';
 import Subheader from '../../Components/Subheader/Subheader';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import Spinner from '../../Components/Spinner/Spinner';
+import EditRecipeValues from '../../Types/EditRecipeValues';
 
 const EditRecipe = () => {
-  const [values, setValues] = useState<RecipeFormValues>();
+  const [values, setValues] = useState<EditRecipeValues>();
   const { recipeId } = useParams();
 
   useEffect(() => {

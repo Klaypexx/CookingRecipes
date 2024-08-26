@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import Subheader from '../../Components/Subheader/Subheader';
 import styles from './Favourites.module.css';
 import RecipeService from '../../Services/RecipeService';
-import RecipeListValues from '../../Types/RecipeListValues';
 import { Link } from 'react-router-dom';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import Spinner from '../../Components/Spinner/Spinner';
+import FavouritesRecipeValues from '../../Types/FavouritesRecipeValues';
 
 const Favourites = () => {
   let [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
-  const [values, setValues] = useState<RecipeListValues[]>([]);
+  const [values, setValues] = useState<FavouritesRecipeValues[]>([]);
 
   useEffect(() => {
     const fetchRecipes = async () => {

@@ -7,12 +7,7 @@ import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
 import recipeValidation from './RecipeValidation';
 import RecipeFormValues from '../../../Types/RecipeFormValues';
-
-interface RecipeFormProps {
-  onSubmit: (formData: FormData, recipeId?: string) => any;
-  values?: RecipeFormValues;
-  toastMessage: string;
-}
+import RecipeFormProps from '../../../Types/RecipeFormProps';
 
 const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage }) => {
   const navigate = useNavigate();
@@ -55,7 +50,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
         formData.append(`Tags[${index}].Name`, tag.name);
       });
     } else {
-      formData.append('Tags', ''); // Append an empty string if there are no tags
+      formData.append('Tags', '');
     }
 
     values.ingredients.forEach((ingredient, index) => {
