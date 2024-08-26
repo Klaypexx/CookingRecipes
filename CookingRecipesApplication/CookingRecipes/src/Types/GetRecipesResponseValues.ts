@@ -9,4 +9,8 @@ export default interface GetRecipesResponseValues {
   }>;
   cookingTime: number;
   portion: number;
+  isLike: boolean;
+  likeCount: number;
+  isFavourite: boolean;
+  favouriteCount: number;
 }

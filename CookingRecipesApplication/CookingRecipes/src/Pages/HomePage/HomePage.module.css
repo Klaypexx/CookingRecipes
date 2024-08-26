@@ -1,9 +1,54 @@
 .container {
-    margin-top: 40px;
-    text-align: center;
+  margin-top: 40px;
+  text-align: center;
 }
 
 .navigation {
-    height: 38px;
-    display: flex;
+  height: 38px;
+  display: flex;
+}
+
+.tagsSection {
+  margin-bottom: 157px;
+}
+
+.tagTextBox {
+  margin-bottom: 42px;
+}
+
+.tagText {
+  margin-top: 16px;
+  max-width: 700px;
+  line-height: 32px;
+}
+
+.tagList {
+  box-sizing: border-box;
+  width: 278px;
+  height: 271px;
+  padding: 24px 24px 32px 24px;
+}
+
+.customCardSection {
+  margin-bottom: 150px;
+}
+
+.searchSection {
+  margin-bottom: 106px;
+}
+
+.searchTextBox {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.searchHeader {
+  margin-bottom: 16px;
+}
+
+.tagList {
+  box-sizing: border-box;
+  width: 278px;
+  height: 271px;
+  padding: 24px 24px 36px 24px;
 }

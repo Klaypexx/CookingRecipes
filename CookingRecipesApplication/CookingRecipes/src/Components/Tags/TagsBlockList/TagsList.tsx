@@ -6,7 +6,7 @@ import feastIcon from '../../../resources/icons/ic-feast.svg';
 import styles from './TagsList.module.css';
 import TagsBlockListProps from '../../../Types/TagsBlockListProps';
 
-const tagsBd = [
+const tagsData = [
   {
     icon: bookIcon,
     header: 'Простые блюда',
@@ -31,14 +31,14 @@ const tagsBd = [
 
 const TagsBlockList: React.FC<TagsBlockListProps> = ({ text, className }) => {
   return (
-    <div className={styles.tagListContainer}>
-      {tagsBd.map((tags, index) => (
-        <div key={index} className={classNames(styles.tagListBlockBase, className)}>
-          <div className={styles.iconBlock}>
-            <img src={tags.icon} alt="photo" className={styles.icon} />
+    <div className={styles.tagListFlex}>
+      {tagsData.map((tags, index) => (
+        <div key={index} className={classNames(styles.tagListBox, className)}>
+          <div className={styles.iconBox}>
+            <img src={tags.icon} alt="icon" className={styles.icon} />
           </div>
           <h3>{tags.header}</h3>
-          {text && <p>{tags.text}</p>}
+          {text && <p className={styles.tagTextBase}>{tags.text}</p>}
         </div>
       ))}
     </div>

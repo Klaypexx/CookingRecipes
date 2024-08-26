@@ -102,11 +102,35 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "" )]
-    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1 )
+    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1, [FromQuery] string searchString = "" )
     {
         try
         {
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber );
+            int authorId = 0;
+            if ( User.Identity.IsAuthenticated )
+            {
+                authorId = int.Parse( User.GetUserId() );
+            }
+
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
+            return Ok( recipesDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+    }
+
+    [HttpGet]
+    [Route( "favourites" )]
+    [Authorize]
+    public async Task<IActionResult> GetFavouritesRecipes( [FromQuery] int pageNumber = 1 )
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
             IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
             return Ok( recipesDto );
         }
@@ -118,12 +142,35 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "{recipeId}" )]
-    public async Task<IActionResult> GetRecipeById( [FromRoute] int recipeId )
+    [Route( "mostLiked" )]
+    public async Task<IActionResult> GetMostLikedRecipe()
     {
         try
         {
-            CompleteRecipe recipes = await _recipeService.GetRecipeById( recipeId );
+            MostLikedRecipe recipe = await _recipeService.GetMostLikedRecipe();
+            MostLikedRecipeDto recipeDto = recipe.ToMostLikedRecipeDto();
+            return Ok( recipeDto );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+
+    }
+
+    [HttpGet]
+    [Route( "{recipeId}" )]
+    public async Task<IActionResult> GetRecipeByIdIncludingDependentEntities( [FromRoute] int recipeId )
+    {
+        try
+        {
+            int authorId = 0;
+            if ( User.Identity.IsAuthenticated )
+            {
+                authorId = int.Parse( User.GetUserId() );
+            }
+
+            CompleteRecipe recipes = await _recipeService.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );
             CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
             return Ok( recipeDto );
         }

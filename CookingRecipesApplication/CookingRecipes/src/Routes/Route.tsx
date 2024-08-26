@@ -7,6 +7,7 @@ import RecipesList from '../Pages/RecipesList/RecipesList';
 import RecipeView from '../Pages/RecipeView/RecipeView';
 import ErrorPage from '../Pages/ErrorPage/ErrorPage';
 import EditRecipe from '../Pages/EditRecipe/EditRecipe';
+import Favourites from '../Pages/Favourites/Favourites';
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
         path: 'favourites',
         element: (
           <ProtectedRoute>
-            <HomePage />
+            <Favourites />
           </ProtectedRoute>
         ),
       },

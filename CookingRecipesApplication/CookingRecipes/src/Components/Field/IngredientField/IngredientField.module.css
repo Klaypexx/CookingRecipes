@@ -1,3 +1,19 @@
+.ingredient {
+  margin-bottom: 15px;
+}
+
+.ingredientButtonBox {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 15px;
+}
+
+.ingredientCloseIcon {
+  width: 14px;
+  height: 14px;
+}
+
 .ingredientBox {
   box-sizing: border-box;
   width: 380px;
@@ -23,22 +39,6 @@
   width: 380px;
   height: 60px;
   margin-left: 0;
-}
-
-.ingredientContainer {
-  margin-bottom: 15px;
-}
-
-.ingredientButtonBox {
-  width: 100%;
-  display: flex;
-  flex-direction: row-reverse;
-  margin-bottom: 15px;
-}
-
-.ingredientCloseIcon {
-  width: 14px;
-  height: 14px;
 }
 
 .plusIcon {

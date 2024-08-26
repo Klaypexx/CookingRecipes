@@ -4,9 +4,8 @@ export default interface LinkProps {
   base?: boolean;
   primary?: boolean;
   to?: string;
-  newStyle?: CSSProperties;
   className?: string;
-  linkText?: string;
+  text?: string;
   onClick?: () => void;
   children?: React.ReactNode;
 }

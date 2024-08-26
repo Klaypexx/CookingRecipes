@@ -29,8 +29,8 @@ a:visited,
 a:hover,
 a:active {
   text-decoration: none;
-  background-color: transparent;
 }
+
 abbr[title] {
   border-bottom: none;
   text-decoration: underline;
@@ -168,6 +168,13 @@ a {
   margin: 0;
 }
 
+p,
+a {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
 h1,
 h2,
 h3,
@@ -196,11 +203,6 @@ h4 {
   line-height: 30px;
 }
 
-p,
-a {
-  font-size: 18px;
-}
-
 input::placeholder {
   color: rgba(37, 41, 45, 0.5);
   font-size: 16px;
@@ -213,4 +215,10 @@ textarea::placeholder {
   font-size: 16px;
   font-weight: 400;
   font-family: Montserrat;
+}
+
+section {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
 }

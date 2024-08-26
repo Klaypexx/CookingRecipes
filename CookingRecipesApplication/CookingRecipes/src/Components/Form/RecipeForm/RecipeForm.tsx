@@ -7,10 +7,9 @@ import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
 import recipeValidation from './RecipeValidation';
 import RecipeFormValues from '../../../Types/RecipeFormValues';
-import { AxiosResponse } from 'axios';
 
 interface RecipeFormProps {
-  onSubmit: (formData: FormData, recipeId?: string) => Promise<{ response?: AxiosResponse; message?: string }>;
+  onSubmit: (formData: FormData, recipeId?: string) => any;
   values?: RecipeFormValues;
   toastMessage: string;
 }
@@ -68,11 +67,10 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
       formData.append(`Steps[${index}].Description`, step.description);
     });
 
-    const result = await onSubmit(formData);
-    if (result.response && result.response.status === 200) {
+    await onSubmit(formData).then(() => {
       successToast(toastMessage);
       navigate(-1);
-    }
+    });
   };
 
   return (
@@ -84,12 +82,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
         onSubmit={handleSubmit}
       >
         <CardField />
-        <div className={styles.mainContainer}>
-          <div className={styles.ingredientBlock}>
+        <div className={styles.flexContainer}>
+          <div>
             <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
             <IngredientField name="ingredients" />
           </div>
-          <div className={styles.stepBlock}>
+          <div>
             <StepField name="steps" />
           </div>
         </div>
