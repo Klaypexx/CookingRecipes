@@ -28,18 +28,41 @@ public class RecipeRepository : IRecipeRepository
         _entities.Remove( recipe );
     }
 
-    public async Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount )
+    public async Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount, string searchString )
     {
         return await _entities.Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
          .Include( recipe => recipe.Author )
-         .OrderBy( recipe => recipe.Id )
+         .Include( recipe => recipe.Likes )
+         .Include( recipe => recipe.FavouriteRecipes )
+         .Where( recipe => string.IsNullOrEmpty( searchString ) || recipe.Name.ToLower().Contains( searchString ) || recipe.Tags.Any( tag => tag.Tag.Name.ToLower().Contains( searchString ) ) )
          .Skip( skipRange )
          .Take( pageAmount )
          .ToListAsync();
     }
 
-    public async Task<Recipe> GetRecipeById( int recipeId )
+    public async Task<IReadOnlyList<Recipe>> GetFavouriteRecipes( int skipRange, int pageAmount, int authorId )
+    {
+        return await _entities.Include( recipe => recipe.Tags )
+         .ThenInclude( recipeTag => recipeTag.Tag )
+         .Include( recipe => recipe.Author )
+         .Include( recipe => recipe.Likes )
+         .Include( recipe => recipe.FavouriteRecipes )
+         .Where( recipe => recipe.FavouriteRecipes.Any( favouriteRecipe => favouriteRecipe.UserId == authorId ) )
+         .Skip( skipRange )
+         .Take( pageAmount )
+         .ToListAsync();
+    }
+
+    public async Task<Recipe> GetMostLikedRecipe()
+    {
+        return await _entities.Include( recipe => recipe.Author )
+            .Include( recipe => recipe.Likes )
+            .OrderByDescending( recipe => recipe.Likes.Count )
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Recipe> GetRecipeByIdIncludingDependentEntities( int recipeId )
     {
         return await _entities.Where( recipe => recipe.Id == recipeId )
          .Include( recipe => recipe.Tags )
@@ -47,18 +70,12 @@ public class RecipeRepository : IRecipeRepository
          .Include( recipe => recipe.Ingredients )
          .Include( recipe => recipe.Steps )
          .Include( recipe => recipe.Author )
+         .Include( recipe => recipe.Likes )
+         .Include( recipe => recipe.FavouriteRecipes )
          .FirstOrDefaultAsync();
     }
 
-    public async Task<Recipe> GetByIdWithTag( int recipeId )
-    {
-        return await _entities.Where( recipe => recipe.Id == recipeId )
-            .Include( recipe => recipe.Tags )
-            .ThenInclude( tag => tag.Tag )
-            .FirstOrDefaultAsync();
-    }
-
-    public async Task<Recipe> GetById( int recipeId )
+    public async Task<Recipe> GetRecipeById( int recipeId )
     {
         return await _entities.Where( recipe => recipe.Id == recipeId )
             .FirstOrDefaultAsync();

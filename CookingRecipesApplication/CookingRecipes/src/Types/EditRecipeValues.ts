@@ -1,8 +1,8 @@
-export default interface GetRecipeByIdResponseValues {
+export default interface EditRecipeValues {
   name: string;
   description: string;
-  avatarPath?: string;
-  authorName: string;
+  avatar?: File | null;
+  avatarPath?: string | undefined;
   tags?: Array<{
     name: string;
   }>;

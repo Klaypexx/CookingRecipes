@@ -11,8 +11,8 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
 }) => {
   return (
     <div className={styles.linkBlock}>
-      <Link primary linkText={linkPrimaryText} onClick={onClickPrimary}></Link>
-      <Link linkText={linkSecondaryText} onClick={onClickSecondary}></Link>
+      <Link primary text={linkPrimaryText} onClick={onClickPrimary}></Link>
+      <Link text={linkSecondaryText} onClick={onClickSecondary}></Link>
     </div>
   );
 };

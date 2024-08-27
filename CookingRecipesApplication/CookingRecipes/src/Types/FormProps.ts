@@ -4,6 +4,5 @@ export default interface FormProps {
   initialValues: any;
   validationSchema?: any;
   onSubmit: (values: any) => void;
-  errorText?: string;
   children?: React.ReactNode;
 }

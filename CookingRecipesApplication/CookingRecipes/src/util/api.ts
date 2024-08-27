@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import TokenService from '../Services/TokenService';
 import AuthService from '../Services/AuthService';
 import { BASE_URL } from '../Constants/httpUrl';
@@ -36,22 +36,17 @@ api.interceptors.response.use(
     const originalConfig = err.config;
 
     if (!err.response) {
-      alert('Не удалось подключиться к серверу. Пожалуйста, проверьте ваше интернет-соединение или попробуйте позже.');
+      errorToast('Не удалось подключиться к серверу.');
       if (token) {
         TokenService.removeToken();
       }
-      location.reload();
+
+      setTimeout(() => {
+        location.reload();
+      }, 15000);
     }
 
     if (err.response) {
-      if (err.response.status === 400 || err.response.status === 403) {
-        if (err instanceof AxiosError) {
-          err.response?.data?.errors.forEach((message: string) => {
-            errorToast(message);
-          });
-        }
-      }
-
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
 
@@ -60,7 +55,6 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           await AuthService.logout();
-          location.reload();
         }
       }
     }

@@ -1,3 +1,3 @@
 export default interface SearchBlockValues {
-  name: string;
+  searchString: string;
 }

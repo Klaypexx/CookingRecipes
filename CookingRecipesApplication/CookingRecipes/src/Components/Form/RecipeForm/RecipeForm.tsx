@@ -7,13 +7,7 @@ import IngredientField from '../../Field/IngredientField/IngredientField';
 import StepField from '../../Field/StepField/StepField';
 import recipeValidation from './RecipeValidation';
 import RecipeFormValues from '../../../Types/RecipeFormValues';
-import { AxiosResponse } from 'axios';
-
-interface RecipeFormProps {
-  onSubmit: (formData: FormData, recipeId?: string) => Promise<{ response?: AxiosResponse; message?: string }>;
-  values?: RecipeFormValues;
-  toastMessage: string;
-}
+import RecipeFormProps from '../../../Types/RecipeFormProps';
 
 const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage }) => {
   const navigate = useNavigate();
@@ -56,7 +50,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
         formData.append(`Tags[${index}].Name`, tag.name);
       });
     } else {
-      formData.append('Tags', ''); // Append an empty string if there are no tags
+      formData.append('Tags', '');
     }
 
     values.ingredients.forEach((ingredient, index) => {
@@ -68,11 +62,10 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
       formData.append(`Steps[${index}].Description`, step.description);
     });
 
-    const result = await onSubmit(formData);
-    if (result.response && result.response.status === 200) {
+    await onSubmit(formData).then(() => {
       successToast(toastMessage);
       navigate(-1);
-    }
+    });
   };
 
   return (
@@ -84,12 +77,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
         onSubmit={handleSubmit}
       >
         <CardField />
-        <div className={styles.mainContainer}>
-          <div className={styles.ingredientBlock}>
+        <div className={styles.flexContainer}>
+          <div>
             <h4 className={styles.ingredientHeader}>Ингридиенты</h4>
             <IngredientField name="ingredients" />
           </div>
-          <div className={styles.stepBlock}>
+          <div>
             <StepField name="steps" />
           </div>
         </div>

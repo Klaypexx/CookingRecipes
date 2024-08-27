@@ -1,15 +1,15 @@
-.tagListContainer {
+.tagListFlex {
   display: flex;
   justify-content: space-between;
 }
 
-.tagListBlockBase {
+.tagListBox {
   border-radius: 24px;
   box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
   background: rgb(255, 255, 255);
 }
 
-.iconBlock {
+.iconBox {
   box-sizing: border-box;
   width: 50px;
   height: 50px;
@@ -22,4 +22,10 @@
 .icon {
   width: 22px;
   height: 24px;
+}
+
+.tagTextBase {
+  color: rgb(74, 82, 90);
+  line-height: 30px;
+  margin-top: 16px;
 }

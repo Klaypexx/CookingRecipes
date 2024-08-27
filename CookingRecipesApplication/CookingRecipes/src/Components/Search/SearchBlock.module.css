@@ -1,7 +1,11 @@
-.searchBlock {
+.searchBox {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+}
+
+.searchFormText {
+  margin-right: 56px;
 }
 
 .serchFormField {
@@ -11,6 +15,7 @@
   border: none;
   box-shadow: 0px 8px 42px 0px rgba(34, 39, 47, 0.04);
   background: rgb(255, 255, 255);
+  margin-right: 16px;
 }
 
 .searchFormButton {

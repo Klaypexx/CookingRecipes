@@ -8,4 +8,10 @@ public class Like
     public int RecipeId { get; private set; }
     public User User { get; private set; }
     public Recipe Recipe { get; private set; }
+
+    public Like( int userId, int recipeId )
+    {
+        UserId = userId;
+        RecipeId = recipeId;
+    }
 }

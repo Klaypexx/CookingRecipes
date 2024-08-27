@@ -1,9 +1,8 @@
-.recipesListSection {
-  max-width: 1200px;
-  margin: 0 auto;
+.recipesList {
+  min-height: 70vh;
 }
 
-.tagListBlock {
+.tagListContainer {
   margin-bottom: 50px;
 }
 
@@ -14,11 +13,11 @@
   padding: 24px 0px 36px 24px;
 }
 
-.searchBlock {
+.searchContainer {
   margin-bottom: 108px;
 }
 
-.recipesListBlock {
+.recipesContainer {
   margin-bottom: 65px;
 }
 
@@ -28,7 +27,7 @@
   margin-bottom: 108px;
 }
 
-.noRecipesBlock {
+.noRecipesBox {
   display: flex;
   align-items: center;
   justify-content: center;

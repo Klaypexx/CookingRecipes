@@ -1,12 +1,9 @@
-export default interface GetRecipesResponseValues {
+export default interface MostLikedRecipeResponseValue {
   id: number;
   name: string;
   description: string;
   avatarPath?: string;
   authorName: string;
-  tags?: Array<{
-    name: string;
-  }>;
   cookingTime: number;
-  portion: number;
+  likeCount: number;
 }

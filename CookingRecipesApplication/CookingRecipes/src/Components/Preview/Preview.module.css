@@ -1,46 +1,35 @@
-.previewSection {
-  width: 1440px;
-  margin: 0 auto;
-}
-
-.previewContainer {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-}
-
-.headerPreview {
+.homePageImage {
+  position: absolute;
   width: 602px;
   height: 800px;
-  transform: translateY(-77px);
+  top: -211px;
+  right: -100px;
   z-index: -1;
 }
 
-.previewBlock {
+.previewContainer {
   max-width: 688px;
-  margin: 133px 0 0 120px;
+  margin: 133px 0 352px 0;
+  position: relative;
 }
 
-.headText {
-  text-align: left;
-}
-
-.subheadingText {
+.text {
   color: rgb(74, 82, 90);
   width: 566px;
-  font-weight: 400;
-  line-height: 28px;
-  text-align: left;
   margin-top: 16px;
   margin-bottom: 42px;
 }
 
-.links {
+.linksBox {
   display: flex;
 }
 
-.plus {
+.plusIcon {
   width: 14px;
   height: 14px;
   margin-right: 28px;
+}
+
+.loginButton {
+  width: 216px;
 }

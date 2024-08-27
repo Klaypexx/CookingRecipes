@@ -7,10 +7,13 @@
   align-items: center;
 }
 
+.linkPrimary {
+  background: rgb(253, 177, 0);
+}
+
 .linkSecondary {
   box-sizing: border-box;
   border: 1px solid rgb(253, 177, 0);
-  margin-left: 24px;
 }
 
 .baseText {

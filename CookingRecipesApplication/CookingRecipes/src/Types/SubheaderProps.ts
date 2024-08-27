@@ -1,5 +1,5 @@
 export default interface SubheaderProps {
   backward?: boolean;
-  headerText?: string;
+  text?: string;
   children?: React.ReactNode;
 }

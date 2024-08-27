@@ -6,8 +6,7 @@ export default interface ButtonProps {
   type?: 'button' | 'reset' | 'submit' | undefined;
   form?: string;
   navigation?: string;
-  newStyle?: CSSProperties;
   buttonText?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   children?: React.ReactNode;
 }
