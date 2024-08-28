@@ -67,6 +67,11 @@ header {
   align-items: center;
 }
 
+.authLink {
+  display: flex;
+  align-items: center;
+}
+
 .authText {
   color: rgb(253, 177, 0);
   font-weight: 600;

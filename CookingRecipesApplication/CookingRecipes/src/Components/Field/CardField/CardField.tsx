@@ -56,7 +56,7 @@ const CardField = () => {
             margin
             name="name"
             type="text"
-            placeholder="Название рецепта"
+            labelText="Название рецепта"
           />
           <BaseField
             margin

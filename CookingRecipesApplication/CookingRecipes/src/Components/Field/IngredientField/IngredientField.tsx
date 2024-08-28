@@ -43,7 +43,7 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
                       margin
                       name={`${name}.${index}.name`}
                       type="text"
-                      placeholder="Заголовок для ингридиентов"
+                      labelText="Заголовок для ингридиентов"
                     />
                     <BaseField
                       className={styles.textareaIngredientFormSize}

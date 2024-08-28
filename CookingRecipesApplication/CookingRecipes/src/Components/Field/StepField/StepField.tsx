@@ -1,4 +1,4 @@
-import { FieldArray, FieldArrayRenderProps, ErrorMessage } from 'formik';
+import { FieldArray, FieldArrayRenderProps } from 'formik';
 import BaseField from '../BaseField/BaseField';
 import styles from './StepField.module.css';
 import closeIcon from '../../../resources/icons/close.svg';

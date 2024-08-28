@@ -88,30 +88,32 @@ const RecipesList = () => {
         </div>
       </section>
 
-      {loading ? (
-        <Spinner />
-      ) : (
-        <section>
-          <div className={styles.recipesContainer}>
-            {values.length > 0 ? (
-              <>
-                {values.map((value, index) => (
-                  <Link key={index} to={`/recipes/${value.id}`}>
-                    <BaseCard props={value} recipeId={value.id.toString()} />
-                  </Link>
-                ))}
-              </>
-            ) : (
-              <div className={styles.noRecipesBox}>
-                <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-              </div>
+      <section className={styles.recipesListSection}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className={styles.recipesContainer}>
+              {values.length > 0 ? (
+                <>
+                  {values.map((value, index) => (
+                    <Link key={index} to={`/recipes/${value.id}`}>
+                      <BaseCard props={value} recipeId={value.id.toString()} />
+                    </Link>
+                  ))}
+                </>
+              ) : (
+                <div className={styles.noRecipesBox}>
+                  <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
+                </div>
+              )}
+            </div>
+            {isLoadButton && (
+              <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
             )}
-          </div>
-          {isLoadButton && (
-            <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-          )}
-        </section>
-      )}
+          </>
+        )}
+      </section>
     </div>
   );
 };

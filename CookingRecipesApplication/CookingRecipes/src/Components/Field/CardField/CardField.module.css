@@ -73,7 +73,6 @@
 
 .inputRecipeNameFormSize {
   width: 647px;
-  padding: 11px 24px;
 }
 
 .cardFormBox {
@@ -97,8 +96,6 @@
 }
 
 .optionForm {
-  box-sizing: border-box;
-  padding: 11px 18px;
   width: 220px;
   margin-right: 11px;
   color: rgba(37, 41, 45, 0.5);

@@ -70,8 +70,10 @@ const Header = () => {
         </div>
         {isAuthorized && userName ? (
           <div className={styles.authBox}>
-            <p className={styles.authText}>Привет, {userName}</p>
-            <div className={styles.line}></div>
+            <Link className={styles.authLink} to={'profile'}>
+              <p className={styles.authText}>Привет, {userName}</p>
+              <div className={styles.line}></div>
+            </Link>
             <img src={exitIcon} alt="" className={styles.exit} onClick={handleLogout} />
           </div>
         ) : (

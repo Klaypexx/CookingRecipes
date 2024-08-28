@@ -23,7 +23,6 @@ const HomePage = () => {
         if (res) {
           setValues(() => res.response.data);
           setLoading(false);
-          console.log(res.response.data);
         }
       });
     };
