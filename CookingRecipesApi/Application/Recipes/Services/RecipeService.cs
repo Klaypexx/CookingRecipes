@@ -91,14 +91,11 @@ public class RecipeService : IRecipeService
 
         IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount, searchString.ToLower() );
 
-        IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
-        IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
-
         bool isLastRecipes = recipes.Count <= 4;
 
         IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
 
-        return new( currentRecipesCountToTake.ToOverviewRecipe( likedIds, favouritedIds ), isLastRecipes );
+        return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
     }
 
     public async Task<RecipesData<OverviewRecipe>> GetFavouriteRecipes( int pageNumber, int authorId )
@@ -108,14 +105,11 @@ public class RecipeService : IRecipeService
 
         IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipes( skipRange, pageAmount, authorId );
 
-        IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
-        IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
-
         bool isLastRecipes = recipes.Count <= 4;
 
         IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
 
-        return new( currentRecipesCountToTake.ToOverviewRecipe( likedIds, favouritedIds ), isLastRecipes );
+        return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
     }
 
     public async Task<MostLikedRecipe> GetMostLikedRecipe()
@@ -134,10 +128,7 @@ public class RecipeService : IRecipeService
     {
         RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
-        bool isRecipeLiked = _likeService.HaveRecipeLikeConnectionFromUser( authorId, recipe );
-        bool isRecipeInFavourite = _favouriteRecipeService.HaveFavouriteRecipeFromUser( authorId, recipe );
-
-        return recipe.ToCompleteRecipe( isRecipeLiked, isRecipeInFavourite );
+        return recipe.ToCompleteRecipe( authorId );
     }
 
     public async Task<bool> HasAccessToRecipe( int recipeId, int authorId )

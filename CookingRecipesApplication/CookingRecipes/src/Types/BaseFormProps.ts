@@ -1,4 +1,4 @@
-export default interface FormProps {
+export default interface BaseFormProps {
   primary?: boolean;
   id?: string;
   initialValues: any;

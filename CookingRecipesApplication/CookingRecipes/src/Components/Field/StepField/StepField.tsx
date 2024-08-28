@@ -8,7 +8,7 @@ import plusImg from '../../../resources/icons/plus-orange.svg';
 
 const StepField: React.FC<StepFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
-    arrayHelpers.push({ description: '' }); // Ensure we push an object with a description
+    arrayHelpers.push({ description: '' });
   };
 
   const handlerDeleteCurrentField = (arrayHelpers: FieldArrayRenderProps, index: number) => {

@@ -1,4 +1,4 @@
-export default interface ModalProps {
+export default interface BaseModalProps {
   primary?: boolean;
   headerClassName?: string | string[];
   haederText?: string;

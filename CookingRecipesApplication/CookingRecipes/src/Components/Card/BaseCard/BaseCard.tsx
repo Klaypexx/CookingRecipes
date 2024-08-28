@@ -3,11 +3,11 @@ import styles from './BaseCard.module.css';
 import timeIcon from '../../../resources/icons/time.svg';
 import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
-import CardProps from '../../../Types/CardProps';
+import BaseCardProps from '../../../Types/BaseCardProps';
 import LikeButton from '../../Button/LikeButton/LikeButton';
 import FavouriteRecipeButton from '../../Button/FavouriteRecipeButton/FavouriteRecipeButton';
 
-const BaseCard: React.FC<CardProps> = ({ className, props, recipeId }) => {
+const BaseCard: React.FC<BaseCardProps> = ({ className, props, recipeId }) => {
   return (
     <div className={classNames(styles.cardContainer, className)}>
       <div className={styles.avatarImageBox}>

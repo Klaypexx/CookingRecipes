@@ -1,4 +1,4 @@
-export default interface CardProps {
+export default interface BaseCardProps {
   className?: string;
   recipeId: string;
   props?: {

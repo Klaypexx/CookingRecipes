@@ -1,6 +1,4 @@
-import { CSSProperties } from 'react';
-
-export default interface LinkProps {
+export default interface BaseLinkProps {
   base?: boolean;
   primary?: boolean;
   to?: string;
