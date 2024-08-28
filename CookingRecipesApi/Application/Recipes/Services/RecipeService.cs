@@ -91,6 +91,8 @@ public class RecipeService : IRecipeService
 
         IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount, searchString.ToLower() );
 
+        List<RecipeDomain> test = recipes.Take( 5 ).ToList();
+
         IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
         IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
 
@@ -113,6 +115,11 @@ public class RecipeService : IRecipeService
     public async Task<MostLikedRecipe> GetMostLikedRecipe()
     {
         RecipeDomain recipe = await _recipeRepository.GetMostLikedRecipe();
+
+        if ( recipe == null )
+        {
+            return null;
+        }
 
         return recipe.ToMostLikedRecipe();
     }

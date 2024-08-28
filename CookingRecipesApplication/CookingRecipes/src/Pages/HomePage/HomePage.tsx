@@ -14,7 +14,7 @@ import Spinner from '../../Components/Spinner/Spinner';
 const HomePage = () => {
   let [loading, setLoading] = useState(true);
   const { setSearchString } = useSearchStore();
-  const [values, setValues] = useState<HomePageRecipeValues>();
+  const [values, setValues] = useState<HomePageRecipeValues | null>();
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -50,15 +50,19 @@ const HomePage = () => {
         <TagsBlockList text className={styles.tagList} />
       </section>
 
-      {loading ? (
-        <Spinner />
-      ) : (
-        <section className={styles.customCardSection}>
-          <Link to={`/recipes/${values!.id}`}>
-            <CustomCard props={values!} />
-          </Link>
-        </section>
-      )}
+      <section className={styles.customCardSection}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            {values && (
+              <Link to={`/recipes/${values!.id}`}>
+                <CustomCard props={values!} />
+              </Link>
+            )}
+          </>
+        )}
+      </section>
 
       <section className={styles.searchSection}>
         <div className={styles.searchTextBox}>

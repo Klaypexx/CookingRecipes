@@ -148,6 +148,12 @@ public class RecipeController : ControllerBase
         try
         {
             MostLikedRecipe recipe = await _recipeService.GetMostLikedRecipe();
+
+            if ( recipe == null )
+            {
+                return Ok();
+            }
+
             MostLikedRecipeDto recipeDto = recipe.ToMostLikedRecipeDto();
             return Ok( recipeDto );
         }

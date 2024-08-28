@@ -77,7 +77,9 @@ const GetFavouriteRecipes = async (pageNumber: number) => {
 
 const GetMostLikedRecipe = async () => {
   try {
-    const response: AxiosResponse<MostLikedRecipeResponseValue, any> = await api.get(`${endpoints.getMostLikedRecipe}`);
+    const response: AxiosResponse<MostLikedRecipeResponseValue | null, any> = await api.get(
+      `${endpoints.getMostLikedRecipe}`,
+    );
     return { response };
   } catch (error) {
     handleError(error);
