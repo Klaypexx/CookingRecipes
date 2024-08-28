@@ -1,10 +1,11 @@
 ﻿using Application.Recipes.Entities;
+using Application.ResultObject;
 
 namespace Application.Recipes.Services;
 
 public interface IRecipeService
 {
-    Task CreateRecipe( Recipe recipe );
+    Task<Result> CreateRecipe( Recipe recipe );
     Task UpdateRecipe( Recipe recipe, int recipeId );
     Task RemoveRecipe( int recipeId );
     Task<IReadOnlyList<OverviewRecipe>> GetRecipes( int pageNumber, int authorId, string searchString );

@@ -7,6 +7,8 @@ using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using Application.Recipes.Extensions;
 using Application.Likes.Services;
 using Application.Favourites.Services;
+using Application.ResultObject;
+using Application.Validation;
 
 namespace Application.Recipes.Services;
 
@@ -19,6 +21,7 @@ public class RecipeService : IRecipeService
     private readonly IFavouriteRecipeService _favouriteRecipeService;
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<Recipe> _recipeValidator;
 
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
@@ -26,7 +29,8 @@ public class RecipeService : IRecipeService
         ILikeService likeService,
         IFavouriteRecipeService favouriteRecipeService,
         IRecipeCreator recipeCreator,
-        IUnitOfWork unitOfWork )
+        IUnitOfWork unitOfWork,
+        IValidator<Recipe> recipeValidator )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
@@ -35,16 +39,32 @@ public class RecipeService : IRecipeService
         _favouriteRecipeService = favouriteRecipeService;
         _recipeCreator = recipeCreator;
         _unitOfWork = unitOfWork;
+        _recipeValidator = recipeValidator;
     }
 
-    public async Task CreateRecipe( Recipe recipe )
+    public async Task<Result> CreateRecipe( Recipe recipe )
     {
-        string pathToFile = await _fileService.SaveImage( recipe.Avatar );
-        RecipeDomain recipeDomain = _recipeCreator.Create( recipe, pathToFile );
+        try
+        {
+            Result result = _recipeValidator.Validate( recipe );
 
-        await _tagService.ActualizeTags( recipeDomain );
-        await _recipeRepository.CreateRecipe( recipeDomain );
-        await _unitOfWork.Save();
+            if ( !result.IsSuccess )
+            {
+                return result;
+            }
+
+            string pathToFile = await _fileService.SaveImage( recipe.Avatar );
+            RecipeDomain recipeDomain = _recipeCreator.Create( recipe, pathToFile );
+
+            await _tagService.ActualizeTags( recipeDomain );
+            await _recipeRepository.CreateRecipe( recipeDomain );
+            await _unitOfWork.Save();
+            return new Result();
+        }
+        catch ( Exception e )
+        {
+            return new Result( new Error( e.Message ) );
+        }
     }
 
     public async Task UpdateRecipe( Recipe actualRecipe, int recipeId )

@@ -1,5 +1,7 @@
-﻿using Application.Recipes.Entities;
+﻿using System;
+using Application.Recipes.Entities;
 using Application.Recipes.Services;
+using Application.ResultObject;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
@@ -16,6 +18,9 @@ public class RecipeController : ControllerBase
 {
     private readonly IRecipeService _recipeService;
     private readonly IValidator<RecipeDto> _recipeDtoValidator;
+
+    private int AuthorId => int.Parse( User.GetUserId() );
+
     public RecipeController( IRecipeService recipeService, IValidator<RecipeDto> recipeDtoValidator )
     {
         _recipeService = recipeService;
@@ -27,25 +32,36 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
-        ValidationResult validationResult = await _recipeDtoValidator.ValidateAsync( recipeDto );
+        //ValidationResult validationResult = await _recipeDtoValidator.ValidateAsync( recipeDto );
 
-        if ( !validationResult.IsValid )
+        //if ( !validationResult.IsValid )
+        //{
+        //    return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
+        //}
+
+        //try
+        //{
+        //    int authorId = int.Parse( User.GetUserId() );
+
+        //    Result result = await _recipeService.CreateRecipe( recipeDto.ToApplication( authorId ) );
+
+        //    return Ok();
+        //}
+        //catch ( Exception exception )
+        //{
+        //    return BadRequest( new ErrorResponse( exception.Message ) );
+        //}
+
+
+        Result result = await _recipeService.CreateRecipe( recipeDto.ToApplication( AuthorId ) );
+
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
+            return BadRequest( result.Errors.ToDto() ); //new ErrorResponse(  )
         }
 
-        try
-        {
-            int authorId = int.Parse( User.GetUserId() );
+        return Ok();
 
-            await _recipeService.CreateRecipe( recipeDto.ToApplication( authorId ) );
-
-            return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
     }
 
     [HttpPut]
@@ -109,7 +125,7 @@ public class RecipeController : ControllerBase
             int authorId = 0;
             if ( User.Identity.IsAuthenticated )
             {
-                authorId = int.Parse( User.GetUserId() );
+                authorId = AuthorId;
             }
 
             IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
