@@ -18,10 +18,8 @@ const Favourites = () => {
     const fetchRecipes = async () => {
       await RecipeService.GetFavouriteRecipes(pageNumber).then((res) => {
         if (res) {
-          if (!res.response.data.length) {
-            setIsLoadButton(false);
-          }
-          setValues((prevValues) => [...prevValues, ...res.response.data]);
+          setIsLoadButton(!res.response.data.isLastRecipes);
+          setValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
           setLoading(false);
         }
       });

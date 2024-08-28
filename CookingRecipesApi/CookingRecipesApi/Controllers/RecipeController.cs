@@ -112,9 +112,9 @@ public class RecipeController : ControllerBase
                 authorId = int.Parse( User.GetUserId() );
             }
 
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
-            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
-            return Ok( recipesDto );
+            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
+            return Ok( recipesDtoData );
         }
         catch ( Exception exception )
         {
@@ -130,9 +130,9 @@ public class RecipeController : ControllerBase
         try
         {
             int authorId = int.Parse( User.GetUserId() );
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
-            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
-            return Ok( recipesDto );
+            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
+            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
+            return Ok( recipesDtoData );
         }
         catch ( Exception exception )
         {

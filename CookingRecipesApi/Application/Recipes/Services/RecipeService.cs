@@ -84,32 +84,38 @@ public class RecipeService : IRecipeService
         await _unitOfWork.Save();
     }
 
-    public async Task<IReadOnlyList<OverviewRecipe>> GetRecipes( int pageNumber, int authorId, string searchString )
+    public async Task<RecipesData<OverviewRecipe>> GetRecipes( int pageNumber, int authorId, string searchString )
     {
-        int pageAmount = 4;
-        int skipRange = ( pageNumber - 1 ) * pageAmount;
+        int pageAmount = 5;
+        int skipRange = ( pageNumber - 1 ) * ( pageAmount - 1 );
 
         IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount, searchString.ToLower() );
-
-        List<RecipeDomain> test = recipes.Take( 5 ).ToList();
 
         IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
         IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
 
-        return recipes.ToOverviewRecipe( likedIds, favouritedIds );
+        bool isLastRecipes = recipes.Count <= 4;
+
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
+
+        return new( currentRecipesCountToTake.ToOverviewRecipe( likedIds, favouritedIds ), isLastRecipes );
     }
 
-    public async Task<IReadOnlyList<OverviewRecipe>> GetFavouriteRecipes( int pageNumber, int authorId )
+    public async Task<RecipesData<OverviewRecipe>> GetFavouriteRecipes( int pageNumber, int authorId )
     {
-        int pageAmount = 4;
-        int skipRange = ( pageNumber - 1 ) * pageAmount;
+        int pageAmount = 5;
+        int skipRange = ( pageNumber - 1 ) * ( pageAmount - 1 );
 
         IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipes( skipRange, pageAmount, authorId );
 
         IReadOnlyList<int> likedIds = _likeService.GetRecipesIdsThatUserLike( authorId, recipes );
         IReadOnlyList<int> favouritedIds = _favouriteRecipeService.GetRecipesIdsThatUserAddToFavourite( authorId, recipes );
 
-        return recipes.ToOverviewRecipe( likedIds, favouritedIds );
+        bool isLastRecipes = recipes.Count <= 4;
+
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
+
+        return new( currentRecipesCountToTake.ToOverviewRecipe( likedIds, favouritedIds ), isLastRecipes );
     }
 
     public async Task<MostLikedRecipe> GetMostLikedRecipe()
