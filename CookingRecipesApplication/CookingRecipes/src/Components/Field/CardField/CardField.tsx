@@ -63,7 +63,7 @@ const CardField = () => {
             className={styles.textareaFormSize}
             as="textarea"
             name="description"
-            placeholder={`Краткое описание рецепта (${DESCRIPTION_MAX_WORDS} символов)`}
+            labelText={`Краткое описание рецепта (${DESCRIPTION_MAX_WORDS} символов)`}
           />
           <TagsField name="tags" />
           <div className={styles.optionBox}>

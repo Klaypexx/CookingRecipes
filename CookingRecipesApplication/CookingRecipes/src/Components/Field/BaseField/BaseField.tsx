@@ -27,7 +27,7 @@ const BaseField: React.FC<BaseFieldProps> = ({
         placeholder={placeholder || ' '}
         as={as}
         maxLength={maxLength}
-        className={classNames(className, style.baseField, select && style.selectField)}
+        className={classNames(className, style.baseField, select && style.selectField, labelText && style.textPadding)}
         styles={styles}
       >
         {children}

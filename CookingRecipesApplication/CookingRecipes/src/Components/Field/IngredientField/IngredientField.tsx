@@ -49,7 +49,7 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
                       className={styles.textareaIngredientFormSize}
                       as="textarea"
                       name={`${name}.${index}.product`}
-                      placeholder="Список подуктов для категории"
+                      labelText="Список подуктов для категории"
                     />
                   </div>
                 </div>

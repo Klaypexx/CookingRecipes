@@ -3,7 +3,7 @@ using Application.Auth.Entities;
 using Application.Auth.Repositories;
 using Application.Auth.Services;
 using Application.Foundation;
-using Domain.Auth.Entities;
+using UserDomain = Domain.Auth.Entities.User;
 
 namespace Application.Users.Services;
 
@@ -22,7 +22,7 @@ public class AuthService : IAuthService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task RegisterUser( User user )
+    public async Task RegisterUser( UserDomain user )
     {
         bool isUniqueUserName = await IsUniqueUsername( user.UserName );
 
@@ -40,7 +40,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthTokenSet> SignIn( string userName, string password, int lifetime )
     {
-        User user = await _userRepository.GetByUsername( userName );
+        UserDomain user = await _userRepository.GetByUsername( userName );
 
         if ( user is null )
         {
@@ -63,7 +63,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )
     {
-        User user = await _userRepository.GetByRefreshToken( cookieRefreshToken );
+        UserDomain user = await _userRepository.GetByRefreshToken( cookieRefreshToken );
 
         if ( user is null )
         {
@@ -82,13 +82,13 @@ public class AuthService : IAuthService
         return tokens;
     }
 
-    private async Task SetToken( User user, string refreshToken, int lifetime )
+    private async Task SetToken( UserDomain user, string refreshToken, int lifetime )
     {
         user.SetRefreshToken( refreshToken, lifetime );
         await _unitOfWork.Save();
     }
 
-    private AuthTokenSet GetTokens( User user )
+    private AuthTokenSet GetTokens( UserDomain user )
     {
         string jwtToken = _tokenService.GenerateJwtToken( user );
         string refreshToken = _tokenService.GenerateRefreshToken();
@@ -104,7 +104,7 @@ public class AuthService : IAuthService
 
     private async Task<bool> IsUniqueUsername( string username )
     {
-        User user = await _userRepository.GetByUsername( username );
+        UserDomain user = await _userRepository.GetByUsername( username );
 
         return user is null;
     }

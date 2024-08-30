@@ -8,7 +8,6 @@
   width: 580px;
   height: 50px;
   padding: 0 26px;
-  padding-top: 15px;
   border: 1px solid rgba(145, 150, 161, 0.4);
   border-radius: 16px;
   margin: 0;
@@ -20,8 +19,15 @@
   font-family: Montserrat;
 }
 
+.textPadding {
+  padding-top: 15px;
+}
+
 textarea.baseField {
-  padding: 15px 25px 15px 26px;
+  border: white;
+  border-top: 20px solid white;
+  box-shadow: 0 0 0 1px rgba(145, 150, 161, 0.4);
+  padding: 0px 25px 15px 26px;
 }
 
 select.baseField {

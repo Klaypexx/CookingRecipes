@@ -1,7 +1,6 @@
 ﻿using Application.Auth;
 using Application.Auth.Entities;
 using Application.Auth.Services;
-using Application.Foundation;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Utilities;
 using FluentValidation;
@@ -16,22 +15,16 @@ namespace CookingRecipesApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IPasswordHasher _passwordHasher;
     private readonly AuthSettings _authSettings;
     private readonly IValidator<RegisterDto> _registerDtoValidator;
     private readonly IValidator<LoginDto> _loginDtoValidator;
 
     public AuthController( IAuthService authService,
-        IUnitOfWork unitOfWork,
-        IPasswordHasher passwordHasher,
         AuthSettings authSettings,
         IValidator<RegisterDto> registerDtoValidator,
         IValidator<LoginDto> loginDtoValidator )
     {
         _authService = authService;
-        _unitOfWork = unitOfWork;
-        _passwordHasher = passwordHasher;
         _authSettings = authSettings;
         _registerDtoValidator = registerDtoValidator;
         _loginDtoValidator = loginDtoValidator;
@@ -130,13 +123,30 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet]
+    [Route( "" )]
+    [Authorize]
+    public async Task<IActionResult> GetUser()
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+
+            return Ok();
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+    }
+
+    [HttpGet]
     [Route( "username" )]
     [Authorize]
     public IActionResult GetUsername()
     {
         try
         {
-            UserDto username = new() { UserName = User.GetUserName() };
+            UserNameDto username = new() { UserName = User.GetUserName() };
             return Ok( username );
         }
         catch ( Exception exception )

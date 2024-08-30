@@ -41,7 +41,7 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
                     margin
                     name={`${name}.${index}.description`}
                     as="textarea"
-                    placeholder="Описание шага"
+                    labelText="Описание шага"
                   />
                 </div>
               </div>

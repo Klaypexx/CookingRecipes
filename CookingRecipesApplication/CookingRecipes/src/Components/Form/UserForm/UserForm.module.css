@@ -1,5 +1,5 @@
 .userProfileContainer {
-  display: flex;
+  position: relative;
   box-sizing: border-box;
   padding: 60px 73px;
   width: 1200px;
@@ -11,4 +11,25 @@
 
 .field {
   width: 542px;
+}
+
+.updateBox {
+  position: absolute;
+  top: 23px;
+  right: 23px;
+}
+
+.updatePencil {
+  width: 18px;
+  height: 18px;
+}
+
+.userInformation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.description {
+  width: 473px;
+  min-height: 191px;
 }
