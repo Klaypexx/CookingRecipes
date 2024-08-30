@@ -1,5 +1,6 @@
 ﻿using Application.Auth;
 using Application.Auth.Entities;
+using Application.Auth.Extensions;
 using Application.Auth.Repositories;
 using Application.Auth.Services;
 using Application.Foundation;
@@ -12,13 +13,15 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IUserCreator _userCreator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AuthService( IUserRepository userRepository, ITokenService tokenService, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork )
+    public AuthService( IUserRepository userRepository, ITokenService tokenService, IPasswordHasher passwordHasher, IUserCreator userCreator, IUnitOfWork unitOfWork )
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
         _passwordHasher = passwordHasher;
+        _userCreator = userCreator;
         _unitOfWork = unitOfWork;
     }
 
@@ -61,6 +64,23 @@ public class AuthService : IAuthService
         return tokens;
     }
 
+    public async Task UpdateUser( User user, string userName )
+    {
+        if ( user.UserName != userName )
+        {
+            bool isUniqueUserName = await IsUniqueUsername( user.UserName );
+
+            if ( !isUniqueUserName )
+            {
+                throw new Exception( "Логин пользователя должен быть уникальным" );
+            }
+        }
+
+        UserDomain userDomain = await _userRepository.GetByUsername( userName );
+
+        userDomain.UpdateUser( _userCreator.Create( user ) );
+    }
+
     public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )
     {
         UserDomain user = await _userRepository.GetByRefreshToken( cookieRefreshToken );
@@ -80,6 +100,13 @@ public class AuthService : IAuthService
         await SetToken( user, tokens.RefreshToken, lifetime );
 
         return tokens;
+    }
+
+    public async Task<UserInfo> GetUser( string userName )
+    {
+        UserDomain user = await _userRepository.GetByUsername( userName );
+
+        return user.ToUser();
     }
 
     private async Task SetToken( UserDomain user, string refreshToken, int lifetime )

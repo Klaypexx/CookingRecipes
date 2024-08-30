@@ -6,7 +6,11 @@ import styles from './UserForm.module.css';
 import UserFormProps from '../../../Types/UserFormProps';
 
 const UserForm: React.FC<UserFormProps> = ({ values }) => {
-  const initialValues: UserFormValues = { ...values! };
+  const initialValues: UserFormValues = {
+    ...values,
+    description: values.description ? values.description : '',
+    password: '',
+  };
 
   return (
     <div className={styles.userProfileContainer}>
@@ -25,7 +29,7 @@ const UserForm: React.FC<UserFormProps> = ({ values }) => {
           <div className={styles.userInformation}>
             <div>
               <BaseField className={styles.field} name="name" labelText="Имя" margin />
-              <BaseField className={styles.field} name="username" labelText="Логин" margin />
+              <BaseField className={styles.field} name="userName" labelText="Логин" margin />
               <BaseField className={styles.field} name="password" type="password" placeholder="Пароль" />
             </div>
             <div>

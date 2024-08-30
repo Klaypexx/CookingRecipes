@@ -7,6 +7,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CookingRecipesApi.Dto.Extensions;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -78,6 +79,25 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpPut]
+    [Route( "" )]
+    [Authorize]
+    public async Task<IActionResult> UpdateUser( [FromBody] UserDto userDto )
+    {
+        try
+        {
+            string userName = User.GetUserName();
+
+            await _authService.UpdateUser( userDto.ToApplication(), userName );
+
+            return Ok();
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+    }
+
     [HttpPost]
     [Route( "isAuth" )]
     [Authorize]
@@ -129,9 +149,12 @@ public class AuthController : ControllerBase
     {
         try
         {
-            int authorId = int.Parse( User.GetUserId() );
+            string userName = User.GetUserName();
 
-            return Ok();
+            UserInfo user = await _authService.GetUser( userName );
+            UserInfoDto userDto = user.ToUserDto();
+
+            return Ok( userDto );
         }
         catch ( Exception exception )
         {

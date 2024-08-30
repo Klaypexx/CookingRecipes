@@ -7,5 +7,7 @@ public interface IAuthService
 {
     Task RegisterUser( UserDomain user );
     Task<AuthTokenSet> SignIn( string userName, string password, int lifetime );
+    Task UpdateUser( User user, string userName );
     Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime );
+    Task<UserInfo> GetUser( string userName );
 }

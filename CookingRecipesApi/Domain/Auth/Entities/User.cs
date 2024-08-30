@@ -24,6 +24,25 @@ public class User
         Password = password;
     }
 
+    public User( string name, string username, string description, string password )
+    {
+        Name = name;
+        UserName = username;
+        Description = description;
+        Password = password;
+    }
+
+    public void UpdateUser( User user )
+    {
+        Name = user.Name;
+        UserName = user.UserName;
+        Description = user.Description;
+        if ( !string.IsNullOrWhiteSpace( user.Password ) )
+        {
+            Password = user.Password;
+        }
+    }
+
     public void SetPassword( string password )
     {
         Password = password;

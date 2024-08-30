@@ -1,5 +1,5 @@
-import UserFormValues from './UserFormValues';
+import UserValues from './UserValues';
 
 export default interface UserFormProps {
-  values: UserFormValues;
+  values: UserValues;
 }
