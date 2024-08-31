@@ -24,9 +24,11 @@ public class UserRepository : IUserRepository
             .Where( u => u.UserName == username )
             .FirstOrDefaultAsync();
     }
-    public async Task<User> GetUserByUsernameWithRecipes( string username )
+    public async Task<User> GetUserByUsernameIncludingDependentEntities( string username )
     {
         return await _entities.Include( user => user.Recipes )
+            .Include( user => user.Likes )
+            .Include( user => user.FavouriteRecipes )
             .Where( u => u.UserName == username )
             .FirstOrDefaultAsync();
     }

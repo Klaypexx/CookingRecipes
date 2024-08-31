@@ -6,7 +6,7 @@ public interface IUserRepository
 {
     Task AddUser( User user );
     Task<User> GetUserByUsername( string username );
-    Task<User> GetUserByUsernameWithRecipes( string username );
+    Task<User> GetUserByUsernameIncludingDependentEntities( string username );
     Task<User> GetUserByRefreshToken( string token );
 
 }

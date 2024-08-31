@@ -47,7 +47,7 @@ const username = async () => {
 
 const getUserStatistic = async () => {
   try {
-    const response: AxiosResponse<UserStatisticResponseValues, any> = await api.get(`${endpoints.getUser}`);
+    const response: AxiosResponse<UserStatisticResponseValues, any> = await api.get(`${endpoints.staticstic}`);
     return { response };
   } catch (error) {
     handleError(error);

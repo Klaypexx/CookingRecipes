@@ -1,7 +1,7 @@
 export default interface BaseCardProps {
   className?: string;
   recipeId: string;
-  props: {
+  props?: {
     name: string;
     description: string;
     avatarPath: string | null;

@@ -119,7 +119,7 @@ public class AuthService : IAuthService
 
     public async Task<UserStatistic> GetUserStatistic( string userName )
     {
-        UserDomain userStatistic = await _userRepository.GetUserByUsernameWithRecipes( userName );
+        UserDomain userStatistic = await _userRepository.GetUserByUsernameIncludingDependentEntities( userName );
 
         return userStatistic.ToUserStatistic();
     }

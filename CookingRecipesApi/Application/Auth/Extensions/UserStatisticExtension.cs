@@ -10,7 +10,7 @@ public static class UserStatisticExtension
         return new()
         {
             RecipesCount = user.Recipes.Count,
-            LikeCount = user.Likes.Count,
+            LikesCount = user.Likes.Count,
             FavouritesCount = user.FavouriteRecipes.Count,
         };
     }

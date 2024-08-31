@@ -112,6 +112,20 @@ public class RecipeService : IRecipeService
         return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
     }
 
+    public async Task<RecipesData<OverviewRecipe>> GetUserRecipes( int pageNumber, int authorId )
+    {
+        int pageAmount = 5;
+        int skipRange = ( pageNumber - 1 ) * ( pageAmount - 1 );
+
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetUserRecipes( skipRange, pageAmount, authorId );
+
+        bool isLastRecipes = recipes.Count <= 4;
+
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
+
+        return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
+    }
+
     public async Task<MostLikedRecipe> GetMostLikedRecipe()
     {
         RecipeDomain recipe = await _recipeRepository.GetMostLikedRecipe();

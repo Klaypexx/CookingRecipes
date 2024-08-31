@@ -10,7 +10,7 @@ public static class UserStatisticDtoExtension
         return new()
         {
             RecipesCount = user.RecipesCount,
-            LikeCount = user.LikeCount,
+            LikesCount = user.LikesCount,
             FavouritesCount = user.FavouritesCount,
         };
     }

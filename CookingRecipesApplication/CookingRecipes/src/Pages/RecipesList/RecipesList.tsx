@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import SearchBlock from '../../Components/Search/SearchBlock';
 import Subheader from '../../Components/Subheader/Subheader';
-import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
+import TagsList from '../../Components/Tags/TagsList/TagsList';
 import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import RecipeListValues from '../../Types/RecipeListValues';
@@ -75,7 +75,7 @@ const RecipesList = () => {
 
       <section>
         <div className={styles.tagListContainer}>
-          <TagsBlockList className={styles.tagList} />
+          <TagsList className={styles.tagList} />
         </div>
       </section>
 

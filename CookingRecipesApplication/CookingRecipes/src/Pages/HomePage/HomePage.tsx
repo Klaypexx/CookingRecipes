@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CustomCard from '../../Components/Card/CustomCard/CustomCard';
 import Preview from '../../Components/Preview/Preview';
 import SearchBlock from '../../Components/Search/SearchBlock';
-import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
+import TagsList from '../../Components/Tags/TagsList/TagsList';
 import useSearchStore from '../../Stores/useSearchStore';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './HomePage.module.css';
@@ -47,7 +47,7 @@ const HomePage = () => {
             Добавляй рецепты и указывай наиболее популярные теги. Это позволит быстро находить любые категории.
           </p>
         </div>
-        <TagsBlockList text className={styles.tagList} />
+        <TagsList text className={styles.tagList} />
       </section>
 
       <section className={styles.customCardSection}>

@@ -138,7 +138,24 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
+    }
 
+    [HttpGet]
+    [Route( "userRecipes" )]
+    [Authorize]
+    public async Task<IActionResult> GetUserRecipes( [FromQuery] int pageNumber = 1 )
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetUserRecipes( pageNumber, authorId );
+            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
+            return Ok( recipesDtoData );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpGet]
@@ -161,7 +178,6 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
-
     }
 
     [HttpGet]
