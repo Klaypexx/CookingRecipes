@@ -1,5 +1,6 @@
 ﻿using Application.Recipes.Entities;
 using CookingRecipesApi.Dto.RecipesDto;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CookingRecipesApi.Dto.Extensions;
 
@@ -24,7 +25,7 @@ public static class RecipeDtoExtension
             {
                 Description = stepDto.Description,
             } ).ToList(),
-            Tags = recipeDto.Tags.Select( tagDto => new Tag
+            Tags = recipeDto.Tags.IsNullOrEmpty() ? [] : recipeDto.Tags.Select( tagDto => new Tag
             {
                 Name = tagDto.Name,
             } ).ToList(),

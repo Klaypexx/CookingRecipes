@@ -12,16 +12,16 @@ const BaseCard: React.FC<BaseCardProps> = ({ className, props, recipeId }) => {
     <div className={classNames(styles.cardContainer, className)}>
       <div className={styles.avatarImageBox}>
         <div className={styles.authorRecipeBox}>
-          <p className={styles.authorRecipeText}>{`@${props?.authorName}`}</p>
+          <p className={styles.authorRecipeText}>{`@${props.authorName}`}</p>
         </div>
-        {props?.avatarPath ? (
+        {props.avatarPath ? (
           <img src={IMAGE_URL + props.avatarPath} alt="avatarImage" className={styles.avatarImage} />
         ) : (
           <div className={styles.avatarNoImage}></div>
         )}
       </div>
       <div className={styles.cardInformationBox}>
-        {props?.tags && (
+        {props.tags && (
           <div className={styles.cardHeaderBox}>
             <div className={styles.tagsFlex}>
               {props.tags.map((tag, index) => (
@@ -40,13 +40,13 @@ const BaseCard: React.FC<BaseCardProps> = ({ className, props, recipeId }) => {
             </div>
           </div>
         )}
-        {props?.description && props.cookingTime && props.portion && (
+        {props.description && props.cookingTime && props.portion && (
           <>
             <div className={styles.gridBox}>
               <div className={styles.cardInfoBox}>
                 {props.name && <h3 className={styles.cardInfoHeader}>{props.name}</h3>}
                 <div className={styles.cardInfoTextBox}>
-                  <p className={styles.cardInfoText}>{props?.description}</p>
+                  <p className={styles.cardInfoText}>{props.description}</p>
                 </div>
               </div>
               <div className={styles.cardNumerableFlex}>

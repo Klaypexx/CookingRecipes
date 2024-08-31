@@ -3,9 +3,11 @@ export default interface RecipeFormValues {
   description: string;
   avatar?: File | null;
   avatarPath: string | null;
-  tags?: Array<{
-    name: string;
-  }>;
+  tags:
+    | Array<{
+        name: string;
+      }>
+    | [];
   cookingTime: number;
   portion: number;
   steps: Array<{

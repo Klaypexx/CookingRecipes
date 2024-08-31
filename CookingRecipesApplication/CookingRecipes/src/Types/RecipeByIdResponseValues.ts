@@ -7,9 +7,11 @@ export default interface RecipeByIdResponseValues {
   likeCount: number;
   isFavourite: boolean;
   favouriteCount: number;
-  tags?: Array<{
-    name: string;
-  }>;
+  tags:
+    | Array<{
+        name: string;
+      }>
+    | [];
   cookingTime: number;
   portion: number;
   steps: Array<{

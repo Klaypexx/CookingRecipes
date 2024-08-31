@@ -1,14 +1,16 @@
 export default interface BaseCardProps {
   className?: string;
   recipeId: string;
-  props?: {
+  props: {
     name: string;
     description: string;
     avatarPath: string | null;
     authorName: string;
-    tags?: Array<{
-      name: string;
-    }>;
+    tags:
+      | Array<{
+          name: string;
+        }>
+      | [];
     cookingTime: number;
     portion: number;
     isLike: boolean;

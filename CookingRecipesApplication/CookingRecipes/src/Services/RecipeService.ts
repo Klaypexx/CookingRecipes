@@ -59,6 +59,7 @@ const GetRecipes = async (pageNumber: number, searchString: string) => {
     const response: AxiosResponse<RecipesDataResponse<RecipeResponseValues>, any> = await api.get(
       `${endpoints.getRecipes}${pageNumber}&searchString=${searchString}`,
     );
+    console.log(response.data.recipes);
     return { response };
   } catch (error) {
     handleError(error);
