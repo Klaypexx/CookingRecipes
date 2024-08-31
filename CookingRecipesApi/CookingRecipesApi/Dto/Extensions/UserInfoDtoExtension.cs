@@ -5,7 +5,7 @@ namespace CookingRecipesApi.Dto.Extensions;
 
 public static class UserInfoDtoExtension
 {
-    public static UserInfoDto ToUserDto( this UserInfo user )
+    public static UserInfoDto ToUserInfoDto( this UserInfo user )
     {
         return new()
         {

@@ -16,7 +16,7 @@ const CardField = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const selectedFile = event.currentTarget.files[0];
-      setAvatarPath(undefined);
+      setAvatarPath(null);
       setFile(selectedFile);
       setFieldValue('avatar', selectedFile);
     }

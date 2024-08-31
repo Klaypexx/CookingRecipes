@@ -3,11 +3,13 @@ import api from '../util/api';
 import UsernameResponseValues from '../Types/UsernameResponseValues';
 import { handleError } from '../Helpers/ErrorHandler';
 import UserResponseValues from '../Types/UserResponseValues';
+import UserStatisticResponseValues from '../Types/UserStatisticResponseValues';
 
 const endpoints = {
   update: '/users',
   getUser: '/users',
   username: '/users/username',
+  staticstic: '/users/statistic',
 };
 
 const updateUser = async (values: FormData) => {
@@ -43,10 +45,20 @@ const username = async () => {
   }
 };
 
+const getUserStatistic = async () => {
+  try {
+    const response: AxiosResponse<UserStatisticResponseValues, any> = await api.get(`${endpoints.getUser}`);
+    return { response };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 const UserService = {
   updateUser,
   getUser,
   username,
+  getUserStatistic,
 };
 
 export default UserService;

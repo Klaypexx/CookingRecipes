@@ -43,7 +43,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthTokenSet> SignIn( string userName, string password, int lifetime )
     {
-        UserDomain user = await _userRepository.GetByUsername( userName );
+        UserDomain user = await _userRepository.GetUserByUsername( userName );
 
         if ( user is null )
         {
@@ -76,7 +76,7 @@ public class AuthService : IAuthService
             }
         }
 
-        UserDomain userDomain = await _userRepository.GetByUsername( userName );
+        UserDomain userDomain = await _userRepository.GetUserByUsername( userName );
 
         string hashedPassword = string.Empty;
         if ( !string.IsNullOrEmpty( user.Password ) )
@@ -91,7 +91,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )
     {
-        UserDomain user = await _userRepository.GetByRefreshToken( cookieRefreshToken );
+        UserDomain user = await _userRepository.GetUserByRefreshToken( cookieRefreshToken );
 
         if ( user is null )
         {
@@ -112,9 +112,16 @@ public class AuthService : IAuthService
 
     public async Task<UserInfo> GetUser( string userName )
     {
-        UserDomain user = await _userRepository.GetByUsername( userName );
+        UserDomain user = await _userRepository.GetUserByUsername( userName );
 
-        return user.ToUser();
+        return user.ToUserInfo();
+    }
+
+    public async Task<UserStatistic> GetUserStatistic( string userName )
+    {
+        UserDomain userStatistic = await _userRepository.GetUserByUsernameWithRecipes( userName );
+
+        return userStatistic.ToUserStatistic();
     }
 
     private async Task SetToken( UserDomain user, string refreshToken, int lifetime )
@@ -139,7 +146,7 @@ public class AuthService : IAuthService
 
     private async Task<bool> IsUniqueUsername( string username )
     {
-        UserDomain user = await _userRepository.GetByUsername( username );
+        UserDomain user = await _userRepository.GetUserByUsername( username );
 
         return user is null;
     }

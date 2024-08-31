@@ -162,7 +162,7 @@ public class AuthController : ControllerBase
             string userName = User.GetUserName();
 
             UserInfo user = await _authService.GetUser( userName );
-            UserInfoDto userDto = user.ToUserDto();
+            UserInfoDto userDto = user.ToUserInfoDto();
 
             return Ok( userDto );
         }
@@ -181,6 +181,26 @@ public class AuthController : ControllerBase
         {
             UserNameDto username = new() { UserName = User.GetUserName() };
             return Ok( username );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
+    }
+
+    [HttpGet]
+    [Route( "statistic" )]
+    [Authorize]
+    public async Task<IActionResult> GetUserStatistic()
+    {
+        try
+        {
+            string userName = User.GetUserName();
+
+            UserStatistic userStatistic = await _authService.GetUserStatistic( userName );
+            UserStatisticDto userStatisticDto = userStatistic.ToUserStatisticDto();
+
+            return Ok( userStatisticDto );
         }
         catch ( Exception exception )
         {

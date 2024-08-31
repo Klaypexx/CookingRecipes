@@ -10,4 +10,5 @@ public interface IAuthService
     Task UpdateUser( User user, string userName );
     Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime );
     Task<UserInfo> GetUser( string userName );
+    Task<UserStatistic> GetUserStatistic( string userName );
 }
