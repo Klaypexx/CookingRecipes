@@ -1,7 +1,7 @@
 export default interface RecipeViewValues {
   name: string;
   description: string;
-  avatarPath?: string;
+  avatarPath: string | null;
   authorName: string;
   isLike: boolean;
   likeCount: number;

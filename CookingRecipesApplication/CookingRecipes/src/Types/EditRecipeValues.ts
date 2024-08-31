@@ -1,8 +1,7 @@
 export default interface EditRecipeValues {
   name: string;
   description: string;
-  avatar?: File | null;
-  avatarPath?: string | undefined;
+  avatarPath: string | null;
   tags?: Array<{
     name: string;
   }>;

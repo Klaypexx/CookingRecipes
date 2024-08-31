@@ -2,9 +2,9 @@ export default interface RecipeResponseValues {
   id: number;
   name: string;
   description: string;
-  avatarPath?: string;
+  avatarPath: string | null;
   authorName: string;
-  tags?: Array<{
+  tags: Array<{
     name: string;
   }>;
   cookingTime: number;

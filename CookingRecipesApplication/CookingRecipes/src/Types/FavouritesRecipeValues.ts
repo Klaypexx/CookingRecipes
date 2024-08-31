@@ -2,7 +2,7 @@ export default interface FavouriteRecipeValues {
   id: number;
   name: string;
   description: string;
-  avatarPath?: string;
+  avatarPath: string | null;
   authorName: string;
   tags?: Array<{
     name: string;

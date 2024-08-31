@@ -16,8 +16,8 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
     : {
         name: '',
         description: '',
-        avatar: undefined,
-        avatarPath: undefined,
+        avatar: null,
+        avatarPath: null,
         tags: undefined,
         cookingTime: 0,
         portion: 0,
