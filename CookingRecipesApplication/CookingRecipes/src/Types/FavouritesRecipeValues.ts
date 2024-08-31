@@ -2,11 +2,13 @@ export default interface FavouriteRecipeValues {
   id: number;
   name: string;
   description: string;
-  avatarPath?: string;
+  avatarPath: string | null;
   authorName: string;
-  tags?: Array<{
-    name: string;
-  }>;
+  tags:
+    | Array<{
+        name: string;
+      }>
+    | [];
   cookingTime: number;
   portion: number;
   isLike: boolean;

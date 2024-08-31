@@ -1,0 +1,35 @@
+.userProfileContainer {
+  position: relative;
+  box-sizing: border-box;
+  padding: 60px 73px;
+  width: 1200px;
+  height: 311px;
+  box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+  background: rgb(255, 255, 255);
+  border-radius: 24px;
+}
+
+.field {
+  width: 542px;
+}
+
+.updateBox {
+  position: absolute;
+  top: 23px;
+  right: 23px;
+}
+
+.updatePencil {
+  width: 18px;
+  height: 18px;
+}
+
+.userInformation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.description {
+  width: 473px;
+  min-height: 191px;
+}

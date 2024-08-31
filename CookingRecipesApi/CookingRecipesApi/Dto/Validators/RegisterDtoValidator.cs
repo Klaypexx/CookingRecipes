@@ -13,21 +13,21 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
     private const int _passwordMinWords = 8;
     private const int _passwordMaxWords = 25;
 
-    public RegisterDtoValidator( IUserRepository userRepository )
+    public RegisterDtoValidator()
     {
         RuleFor( registerDto => registerDto.Name )
             .MinimumLength( _nameMinWords )
-            .WithMessage( "Имя пользователя должно включать не менее" + _nameMinWords + "символов" )
+            .WithMessage( "Имя пользователя должно включать не менее " + _nameMinWords + " символов" )
             .MaximumLength( _nameMaxWords )
-            .WithMessage( "Имя пользователя должно включать не более" + _nameMaxWords + "символов" )
+            .WithMessage( "Имя пользователя должно включать не более " + _nameMaxWords + " символов" )
             .NotEmpty()
             .WithMessage( "Имя пользователя не может быть пустым" );
 
         RuleFor( registerDto => registerDto.UserName )
             .MinimumLength( _usernameMinWords )
-            .WithMessage( "Логин пользователя должен включать не менее" + _usernameMinWords + "символов" )
+            .WithMessage( "Логин пользователя должен включать не менее " + _usernameMinWords + " символов" )
             .MaximumLength( _usernameMaxWords )
-            .WithMessage( "Логин пользователя должен включать не более" + _usernameMaxWords + "символов" )
+            .WithMessage( "Логин пользователя должен включать не более " + _usernameMaxWords + " символов" )
             .NotEmpty()
             .WithMessage( "Логин пользователя не может быть пустым" );
 
@@ -35,8 +35,8 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
             .NotEmpty()
             .WithMessage( "Пароль не может быть пустым" )
             .MinimumLength( _passwordMinWords )
-            .WithMessage( "Пароль должен включать не менее" + _passwordMinWords + "символов" )
+            .WithMessage( "Пароль должен включать не менее " + _passwordMinWords + " символов" )
             .MaximumLength( _passwordMaxWords )
-            .WithMessage( "Пароль должен включать не более" + _passwordMaxWords + "символов" );
+            .WithMessage( "Пароль должен включать не более " + _passwordMaxWords + " символов" );
     }
 }

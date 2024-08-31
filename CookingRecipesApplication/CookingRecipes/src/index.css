@@ -203,18 +203,12 @@ h4 {
   line-height: 30px;
 }
 
-input::placeholder {
+label {
   color: rgba(37, 41, 45, 0.5);
   font-size: 16px;
   font-weight: 400;
   font-family: Montserrat;
-}
-
-textarea::placeholder {
-  color: rgba(37, 41, 45, 0.5);
-  font-size: 16px;
-  font-weight: 400;
-  font-family: Montserrat;
+  line-height: 28px;
 }
 
 section {

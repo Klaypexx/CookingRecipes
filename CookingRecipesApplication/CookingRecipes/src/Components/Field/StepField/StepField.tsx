@@ -1,4 +1,4 @@
-import { FieldArray, FieldArrayRenderProps, ErrorMessage } from 'formik';
+import { FieldArray, FieldArrayRenderProps } from 'formik';
 import BaseField from '../BaseField/BaseField';
 import styles from './StepField.module.css';
 import closeIcon from '../../../resources/icons/close.svg';
@@ -8,7 +8,7 @@ import plusImg from '../../../resources/icons/plus-orange.svg';
 
 const StepField: React.FC<StepFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {
-    arrayHelpers.push({ description: '' }); // Ensure we push an object with a description
+    arrayHelpers.push({ description: '' });
   };
 
   const handlerDeleteCurrentField = (arrayHelpers: FieldArrayRenderProps, index: number) => {
@@ -41,7 +41,7 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
                     margin
                     name={`${name}.${index}.description`}
                     as="textarea"
-                    placeholder="Описание шага"
+                    labelText="Описание шага"
                   />
                 </div>
               </div>

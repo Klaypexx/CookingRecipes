@@ -1,0 +1,4 @@
+.statisticListFlex {
+  display: flex;
+  justify-content: space-between;
+}

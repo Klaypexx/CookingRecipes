@@ -1,24 +1,24 @@
 footer {
-    display: flex;
-    height: 113px;
-    background: rgb(251, 249, 244);
+  display: flex;
+  height: 113px;
+  background: rgb(251, 249, 244);
 }
 
 .footerBox {
-    width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .imageLogo {
-    height: 39px;
-    width: 132px;
+  height: 39px;
+  width: 132px;
 }
 
 .footerText {
-    color: rgb(74, 82, 90);
-    font-size: 20px;
-    font-weight: 500;
+  color: rgb(74, 82, 90);
+  font-size: 20px;
+  font-weight: 500;
 }

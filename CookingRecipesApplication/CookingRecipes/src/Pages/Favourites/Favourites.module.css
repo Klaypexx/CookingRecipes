@@ -1,5 +1,9 @@
 .favourites {
-  min-height: 70vh;
+  min-height: 73.9vh;
+}
+
+.recipesListSection {
+  margin-bottom: 108px;
 }
 
 .recipesListBlock {
@@ -9,7 +13,6 @@
 .loadButton {
   margin: 0 auto;
   width: 309px;
-  margin-bottom: 108px;
 }
 
 .noRecipesBlock {

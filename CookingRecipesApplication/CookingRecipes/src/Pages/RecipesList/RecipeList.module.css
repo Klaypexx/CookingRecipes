@@ -1,5 +1,5 @@
 .recipesList {
-  min-height: 70vh;
+  min-height: 73.9vh;
 }
 
 .tagListContainer {
@@ -17,6 +17,10 @@
   margin-bottom: 108px;
 }
 
+.recipesListSection {
+  margin-bottom: 108px;
+}
+
 .recipesContainer {
   margin-bottom: 65px;
 }
@@ -24,7 +28,6 @@
 .loadButton {
   margin: 0 auto;
   width: 309px;
-  margin-bottom: 108px;
 }
 
 .noRecipesBox {

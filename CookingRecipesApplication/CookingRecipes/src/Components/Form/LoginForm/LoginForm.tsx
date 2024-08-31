@@ -34,8 +34,8 @@ const LoginForm = () => {
   return (
     <>
       <BaseForm primary initialValues={initialValues} validationSchema={loginValidation} onSubmit={handleLogin}>
-        <BaseField margin name="username" type="text" placeholder="Логин" />
-        <BaseField name="password" type="password" placeholder="Пароль" />
+        <BaseField margin name="username" type="text" labelText="Логин" />
+        <BaseField name="password" type="password" labelText="Пароль" />
         <ButtonBlock
           primaryButtonText="Войти"
           secondaryButtonText="Отмена"

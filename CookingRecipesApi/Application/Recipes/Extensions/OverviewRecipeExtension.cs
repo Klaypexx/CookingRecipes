@@ -5,7 +5,7 @@ namespace Application.Recipes.Extensions;
 
 public static class OverviewRecipeExtension
 {
-    public static OverviewRecipe ToOverviewRecipe( this RecipeDomain recipe, IReadOnlyList<int> likedIds, IReadOnlyList<int> favouritedIds )
+    public static OverviewRecipe ToOverviewRecipe( this RecipeDomain recipe, int authorId )
     {
         return new OverviewRecipe
         {
@@ -16,9 +16,9 @@ public static class OverviewRecipeExtension
             Portion = recipe.Portion,
             AvatarPath = recipe.Avatar,
             AuthorName = recipe.Author.UserName,
-            IsLike = likedIds.Contains( recipe.Id ),
+            IsLike = recipe.Likes.Any( like => like.UserId == authorId ),
             LikeCount = recipe.Likes.Count,
-            IsFavourite = favouritedIds.Contains( recipe.Id ),
+            IsFavourite = recipe.FavouriteRecipes.Any( favourite => favourite.UserId == authorId ),
             FavouriteCount = recipe.FavouriteRecipes.Count,
             Tags = recipe.Tags.Select( recipeTag => new Tag
             {
@@ -27,8 +27,8 @@ public static class OverviewRecipeExtension
         };
     }
 
-    public static IReadOnlyList<OverviewRecipe> ToOverviewRecipe( this IReadOnlyList<RecipeDomain> recipes, IReadOnlyList<int> likedIds, IReadOnlyList<int> favouritedIds )
+    public static IReadOnlyList<OverviewRecipe> ToOverviewRecipe( this IReadOnlyList<RecipeDomain> recipes, int authorId )
     {
-        return recipes.Select( recipe => recipe.ToOverviewRecipe( likedIds, favouritedIds ) ).ToList();
+        return recipes.Select( recipe => recipe.ToOverviewRecipe( authorId ) ).ToList();
     }
 }

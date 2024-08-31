@@ -16,9 +16,9 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
     : {
         name: '',
         description: '',
-        avatar: undefined,
-        avatarPath: undefined,
-        tags: undefined,
+        avatar: null,
+        avatarPath: null,
+        tags: [],
         cookingTime: 0,
         portion: 0,
         steps: [
@@ -49,8 +49,6 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
       values.tags.forEach((tag, index) => {
         formData.append(`Tags[${index}].Name`, tag.name);
       });
-    } else {
-      formData.append('Tags', '');
     }
 
     values.ingredients.forEach((ingredient, index) => {

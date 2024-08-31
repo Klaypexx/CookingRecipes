@@ -8,9 +8,11 @@ import { useEffect, useState } from 'react';
 import UserService from '../../Services/UserService';
 import useModalStore from '../../Stores/useModalStore';
 import useAuthStore from '../../Stores/useAuthStore';
+import useUserStore from '../../Stores/useUserStore';
 
 const Header = () => {
   const [userName, setUserName] = useState<string>();
+  const { isUserUpdate } = useUserStore();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const { isAuthorized } = useAuthStore();
 
@@ -25,7 +27,7 @@ const Header = () => {
       };
       fetchUsername();
     }
-  }, [isAuthorized]);
+  }, [isAuthorized, isUserUpdate]);
 
   const handleLogin = () => {
     setAuth(isAuth);
@@ -70,8 +72,10 @@ const Header = () => {
         </div>
         {isAuthorized && userName ? (
           <div className={styles.authBox}>
-            <p className={styles.authText}>Привет, {userName}</p>
-            <div className={styles.line}></div>
+            <Link className={styles.authLink} to={'profile'}>
+              <p className={styles.authText}>Привет, {userName}</p>
+              <div className={styles.line}></div>
+            </Link>
             <img src={exitIcon} alt="" className={styles.exit} onClick={handleLogout} />
           </div>
         ) : (

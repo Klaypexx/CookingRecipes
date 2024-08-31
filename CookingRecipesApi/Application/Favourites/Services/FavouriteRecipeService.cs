@@ -31,17 +31,4 @@ public class FavouriteRecipeService : IFavouriteRecipeService
 
         await _unitOfWork.Save();
     }
-
-    public IReadOnlyList<int> GetRecipesIdsThatUserAddToFavourite( int userId, IReadOnlyList<Recipe> recipes )
-    {
-        return recipes
-                .Where( recipe => recipe.FavouriteRecipes.Any( favouriteRecipe => favouriteRecipe.UserId == userId ) )
-                .Select( recipe => recipe.Id )
-                .ToList();
-    }
-
-    public bool HaveFavouriteRecipeFromUser( int userId, Recipe recipe )
-    {
-        return recipe.FavouriteRecipes.Any( favouriteRecipe => favouriteRecipe.UserId == userId );
-    }
 }

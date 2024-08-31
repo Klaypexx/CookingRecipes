@@ -112,9 +112,9 @@ public class RecipeController : ControllerBase
                 authorId = int.Parse( User.GetUserId() );
             }
 
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
-            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
-            return Ok( recipesDto );
+            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
+            return Ok( recipesDtoData );
         }
         catch ( Exception exception )
         {
@@ -130,15 +130,32 @@ public class RecipeController : ControllerBase
         try
         {
             int authorId = int.Parse( User.GetUserId() );
-            IReadOnlyList<OverviewRecipe> recipes = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
-            IReadOnlyList<OverviewRecipeDto> recipesDto = recipes.ToOverviewRecipeDto();
-            return Ok( recipesDto );
+            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
+            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
+            return Ok( recipesDtoData );
         }
         catch ( Exception exception )
         {
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
+    }
 
+    [HttpGet]
+    [Route( "userRecipes" )]
+    [Authorize]
+    public async Task<IActionResult> GetUserRecipes( [FromQuery] int pageNumber = 1 )
+    {
+        try
+        {
+            int authorId = int.Parse( User.GetUserId() );
+            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetUserRecipes( pageNumber, authorId );
+            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
+            return Ok( recipesDtoData );
+        }
+        catch ( Exception exception )
+        {
+            return BadRequest( new ErrorResponse( exception.Message ) );
+        }
     }
 
     [HttpGet]
@@ -148,6 +165,12 @@ public class RecipeController : ControllerBase
         try
         {
             MostLikedRecipe recipe = await _recipeService.GetMostLikedRecipe();
+
+            if ( recipe == null )
+            {
+                return Ok();
+            }
+
             MostLikedRecipeDto recipeDto = recipe.ToMostLikedRecipeDto();
             return Ok( recipeDto );
         }
@@ -155,7 +178,6 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( new ErrorResponse( exception.Message ) );
         }
-
     }
 
     [HttpGet]

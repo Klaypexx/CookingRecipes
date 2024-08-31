@@ -1,15 +1,17 @@
 export default interface RecipeByIdResponseValues {
   name: string;
   description: string;
-  avatarPath?: string;
+  avatarPath: string | null;
   authorName: string;
   isLike: boolean;
   likeCount: number;
   isFavourite: boolean;
   favouriteCount: number;
-  tags?: Array<{
-    name: string;
-  }>;
+  tags:
+    | Array<{
+        name: string;
+      }>
+    | [];
   cookingTime: number;
   portion: number;
   steps: Array<{

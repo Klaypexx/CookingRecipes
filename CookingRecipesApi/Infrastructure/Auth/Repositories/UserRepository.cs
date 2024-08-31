@@ -17,14 +17,23 @@ public class UserRepository : IUserRepository
         await _entities.AddAsync( user );
     }
 
-    public async Task<User> GetByUsername( string username )
+
+    public async Task<User> GetUserByUsername( string username )
     {
         return await _entities
             .Where( u => u.UserName == username )
             .FirstOrDefaultAsync();
     }
+    public async Task<User> GetUserByUsernameIncludingDependentEntities( string username )
+    {
+        return await _entities.Include( user => user.Recipes )
+            .Include( user => user.Likes )
+            .Include( user => user.FavouriteRecipes )
+            .Where( u => u.UserName == username )
+            .FirstOrDefaultAsync();
+    }
 
-    public async Task<User> GetByRefreshToken( string token )
+    public async Task<User> GetUserByRefreshToken( string token )
     {
         return await _entities
             .Where( u => u.RefreshToken == token )

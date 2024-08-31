@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CustomCard from '../../Components/Card/CustomCard/CustomCard';
 import Preview from '../../Components/Preview/Preview';
 import SearchBlock from '../../Components/Search/SearchBlock';
-import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
+import TagsList from '../../Components/Tags/TagsList/TagsList';
 import useSearchStore from '../../Stores/useSearchStore';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './HomePage.module.css';
@@ -14,7 +14,7 @@ import Spinner from '../../Components/Spinner/Spinner';
 const HomePage = () => {
   let [loading, setLoading] = useState(true);
   const { setSearchString } = useSearchStore();
-  const [values, setValues] = useState<HomePageRecipeValues>();
+  const [values, setValues] = useState<HomePageRecipeValues | null>();
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,6 @@ const HomePage = () => {
         if (res) {
           setValues(() => res.response.data);
           setLoading(false);
-          console.log(res.response.data);
         }
       });
     };
@@ -48,18 +47,22 @@ const HomePage = () => {
             Добавляй рецепты и указывай наиболее популярные теги. Это позволит быстро находить любые категории.
           </p>
         </div>
-        <TagsBlockList text className={styles.tagList} />
+        <TagsList text className={styles.tagList} />
       </section>
 
-      {loading ? (
-        <Spinner />
-      ) : (
-        <section className={styles.customCardSection}>
-          <Link to={`/recipes/${values!.id}`}>
-            <CustomCard props={values!} />
-          </Link>
-        </section>
-      )}
+      <section className={styles.customCardSection}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            {values && (
+              <Link to={`/recipes/${values!.id}`}>
+                <CustomCard props={values!} />
+              </Link>
+            )}
+          </>
+        )}
+      </section>
 
       <section className={styles.searchSection}>
         <div className={styles.searchTextBox}>

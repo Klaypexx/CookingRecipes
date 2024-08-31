@@ -5,6 +5,7 @@ export default interface BaseFieldProps {
   as?: string;
   className?: string;
   name: string;
+  labelText?: string;
   placeholder?: string;
   maxLength?: number;
   styles?: string;

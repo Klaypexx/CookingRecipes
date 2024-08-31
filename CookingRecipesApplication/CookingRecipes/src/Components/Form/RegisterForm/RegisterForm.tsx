@@ -35,15 +35,15 @@ const RegisterForm = () => {
   return (
     <>
       <BaseForm primary initialValues={initialValues} validationSchema={registerValidation} onSubmit={handleRegister}>
-        <BaseField margin name="name" type="text" placeholder="Имя" />
-        <BaseField margin name="username" type="text" placeholder="Логин" />
+        <BaseField margin name="name" type="text" labelText="Имя" />
+        <BaseField margin name="username" type="text" labelText="Логин" />
         <div className={styles.smallnputBox}>
-          <BaseField margin className={styles.smallInput} name="password" type="password" placeholder="Пароль" />
+          <BaseField margin className={styles.smallInput} name="password" type="password" labelText="Пароль" />
           <BaseField
             className={styles.smallInput}
             name="confirmPassword"
             type="password"
-            placeholder="Повторит пароль"
+            labelText="Повторите пароль"
           />
         </div>
         <ButtonBlock

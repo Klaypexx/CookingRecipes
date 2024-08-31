@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import SearchBlock from '../../Components/Search/SearchBlock';
 import Subheader from '../../Components/Subheader/Subheader';
-import TagsBlockList from '../../Components/Tags/TagsBlockList/TagsList';
+import TagsList from '../../Components/Tags/TagsList/TagsList';
 import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import RecipeListValues from '../../Types/RecipeListValues';
@@ -43,10 +43,8 @@ const RecipesList = () => {
     const fetchRecipes = async () => {
       await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
         if (res) {
-          if (!res.response.data.length) {
-            setIsLoadButton(false);
-          }
-          setValues((prevValues) => [...prevValues, ...res.response.data]);
+          setIsLoadButton(!res.response.data.isLastRecipes);
+          setValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
           setLoading(false);
         }
       });
@@ -58,7 +56,6 @@ const RecipesList = () => {
     if (searchString == value.searchString) {
       return;
     }
-
     setValues([]);
     setPageNumber(1);
     setSearchString(value.searchString);
@@ -78,7 +75,7 @@ const RecipesList = () => {
 
       <section>
         <div className={styles.tagListContainer}>
-          <TagsBlockList className={styles.tagList} />
+          <TagsList className={styles.tagList} />
         </div>
       </section>
 
@@ -88,30 +85,32 @@ const RecipesList = () => {
         </div>
       </section>
 
-      {loading ? (
-        <Spinner />
-      ) : (
-        <section>
-          <div className={styles.recipesContainer}>
-            {values.length > 0 ? (
-              <>
-                {values.map((value, index) => (
-                  <Link key={index} to={`/recipes/${value.id}`}>
-                    <BaseCard props={value} recipeId={value.id.toString()} />
-                  </Link>
-                ))}
-              </>
-            ) : (
-              <div className={styles.noRecipesBox}>
-                <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-              </div>
+      <section className={styles.recipesListSection}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className={styles.recipesContainer}>
+              {values.length > 0 ? (
+                <>
+                  {values.map((value, index) => (
+                    <Link key={index} to={`/recipes/${value.id}`}>
+                      <BaseCard props={value} recipeId={value.id.toString()} />
+                    </Link>
+                  ))}
+                </>
+              ) : (
+                <div className={styles.noRecipesBox}>
+                  <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
+                </div>
+              )}
+            </div>
+            {isLoadButton && (
+              <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
             )}
-          </div>
-          {isLoadButton && (
-            <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-          )}
-        </section>
-      )}
+          </>
+        )}
+      </section>
     </div>
   );
 };

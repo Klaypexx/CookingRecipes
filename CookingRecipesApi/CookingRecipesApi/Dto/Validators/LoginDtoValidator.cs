@@ -13,9 +13,9 @@ public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
         RuleFor( loginDto => loginDto.UserName )
             .MinimumLength( _usernameMinWords )
-            .WithMessage( "Логин должен включать не менее" + _usernameMinWords + "символов" )
+            .WithMessage( "Логин должен включать не менее " + _usernameMinWords + " символов" )
             .MaximumLength( _usernameMaxWords )
-            .WithMessage( "Логин должен включать не более" + _usernameMaxWords + "символов" )
+            .WithMessage( "Логин должен включать не более " + _usernameMaxWords + " символов" )
             .NotEmpty()
             .WithMessage( "Логин не может быть пустым" );
 
@@ -23,8 +23,8 @@ public class LoginDtoValidator : AbstractValidator<LoginDto>
             .NotEmpty()
             .WithMessage( "Пароль не может быть пустым" )
             .MinimumLength( _passwordMinWords )
-            .WithMessage( "Пароль должен включать не менее" + _passwordMinWords + "символов" )
+            .WithMessage( "Пароль должен включать не менее " + _passwordMinWords + " символов" )
             .MaximumLength( _passwordMaxWords )
-            .WithMessage( "Пароль должен включать не более" + _passwordMaxWords + "символов" );
+            .WithMessage( "Пароль должен включать не более " + _passwordMaxWords + " символов" );
     }
 }

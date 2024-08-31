@@ -22,6 +22,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName( "username" )
             .IsRequired( true );
 
+
+        builder.Property( x => x.Description )
+           .HasColumnName( "description" )
+           .IsRequired( false );
+
+
         builder.Property( x => x.Password )
             .HasColumnName( "password" )
             .IsRequired( true );

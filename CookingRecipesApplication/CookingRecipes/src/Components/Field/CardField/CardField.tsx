@@ -16,7 +16,7 @@ const CardField = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       const selectedFile = event.currentTarget.files[0];
-      setAvatarPath(undefined);
+      setAvatarPath(null);
       setFile(selectedFile);
       setFieldValue('avatar', selectedFile);
     }
@@ -56,14 +56,14 @@ const CardField = () => {
             margin
             name="name"
             type="text"
-            placeholder="Название рецепта"
+            labelText="Название рецепта"
           />
           <BaseField
             margin
             className={styles.textareaFormSize}
             as="textarea"
             name="description"
-            placeholder={`Краткое описание рецепта (${DESCRIPTION_MAX_WORDS} символов)`}
+            labelText={`Краткое описание рецепта (${DESCRIPTION_MAX_WORDS} символов)`}
           />
           <TagsField name="tags" />
           <div className={styles.optionBox}>

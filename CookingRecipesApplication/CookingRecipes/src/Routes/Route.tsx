@@ -8,6 +8,7 @@ import RecipeView from '../Pages/RecipeView/RecipeView';
 import ErrorPage from '../Pages/ErrorPage/ErrorPage';
 import EditRecipe from '../Pages/EditRecipe/EditRecipe';
 import Favourites from '../Pages/Favourites/Favourites';
+import UserProfile from '../Pages/UserProfile/UserProfile';
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Favourites />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'profile',
+        element: (
+          <ProtectedRoute>
+            <UserProfile />
           </ProtectedRoute>
         ),
       },
