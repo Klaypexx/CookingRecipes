@@ -5,5 +5,5 @@ namespace Application.Auth;
 
 public interface IUserCreator
 {
-    UserDomain Create( User user );
+    UserDomain Create( User user, string hashedPassword );
 }

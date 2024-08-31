@@ -5,8 +5,8 @@ namespace Application.Auth;
 
 public class UserCreator : IUserCreator
 {
-    public UserDomain Create( User user )
+    public UserDomain Create( User user, string hashedPassword )
     {
-        return new UserDomain( user.Name, user.UserName, user.Description, user.Password );
+        return new UserDomain( user.Name, user.UserName, user.Description, hashedPassword );
     }
 }

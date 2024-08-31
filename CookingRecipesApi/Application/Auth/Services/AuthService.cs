@@ -78,7 +78,15 @@ public class AuthService : IAuthService
 
         UserDomain userDomain = await _userRepository.GetByUsername( userName );
 
-        userDomain.UpdateUser( _userCreator.Create( user ) );
+        string hashedPassword = string.Empty;
+        if ( !string.IsNullOrEmpty( user.Password ) )
+        {
+            hashedPassword = _passwordHasher.GeneratePasswordHash( user.Password );
+        }
+
+        userDomain.UpdateUser( _userCreator.Create( user, hashedPassword ) );
+
+        await _unitOfWork.Save();
     }
 
     public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )

@@ -7,7 +7,7 @@ public class User
     public int Id { get; private set; }
     public string Name { get; private set; }
     public string UserName { get; private set; }
-    public string Description { get; private set; }
+    public string Description { get; private set; } = string.Empty;
     public string Password { get; private set; }
     public string RefreshToken { get; private set; }
     public DateTime RefreshTokenExpiryTime { get; private set; }
@@ -36,8 +36,8 @@ public class User
     {
         Name = user.Name;
         UserName = user.UserName;
-        Description = user.Description;
-        if ( !string.IsNullOrWhiteSpace( user.Password ) )
+        Description = string.IsNullOrEmpty( user.Description ) ? string.Empty : user.Description;
+        if ( !string.IsNullOrEmpty( user.Password ) )
         {
             Password = user.Password;
         }
