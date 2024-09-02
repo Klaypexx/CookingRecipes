@@ -1,6 +1,7 @@
 using Application;
 using Application.Auth;
 using CookingRecipesApi;
+using CookingRecipesApi.Middlewares;
 using Infrastructure;
 using Infrastructure.Auth;
 using Infrastructure.Files;
@@ -83,11 +84,14 @@ if ( app.Environment.IsDevelopment() )
 app.UseHttpsRedirection();
 
 app.UseCors( "MyPolicy" );
+
 app.UseStaticFiles();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
