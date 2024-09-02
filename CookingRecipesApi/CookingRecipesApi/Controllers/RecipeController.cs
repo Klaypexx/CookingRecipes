@@ -1,10 +1,10 @@
 ﻿using Application.Recipes.Entities;
 using Application.Recipes.Services;
+using Application.ResultObject;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +16,9 @@ public class RecipeController : ControllerBase
 {
     private readonly IRecipeService _recipeService;
     private readonly IValidator<RecipeDto> _recipeDtoValidator;
+
+    private int AuthorId => int.Parse( User.GetUserId() );
+
     public RecipeController( IRecipeService recipeService, IValidator<RecipeDto> recipeDtoValidator )
     {
         _recipeService = recipeService;
@@ -27,25 +30,14 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
-        ValidationResult validationResult = await _recipeDtoValidator.ValidateAsync( recipeDto );
+        Result result = await _recipeService.CreateRecipe( recipeDto.ToApplication( AuthorId ) );
 
-        if ( !validationResult.IsValid )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
+            return BadRequest( result.Errors.ToDto() ); //new ErrorResponse(  )
         }
 
-        try
-        {
-            int authorId = int.Parse( User.GetUserId() );
-
-            await _recipeService.CreateRecipe( recipeDto.ToApplication( authorId ) );
-
-            return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
+        return Ok();
     }
 
     [HttpPut]
