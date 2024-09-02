@@ -3,6 +3,7 @@ using Application.Auth;
 using CookingRecipesApi;
 using Infrastructure;
 using Infrastructure.Auth;
+using Infrastructure.Files;
 using Infrastructure.Files.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +21,9 @@ services.AddInfrastructure( configuration );
 
 AuthSettings authSettings = configuration.GetSection( "Auth" ).Get<AuthSettings>();
 services.AddScoped( sp => authSettings );
+
+FileSettings fileSettings = configuration.GetSection( "Files" ).Get<FileSettings>();
+services.AddScoped( sp => fileSettings );
 
 string webRootPath = builder.Environment.WebRootPath;
 services.AddSingleton( new WebHostSetting { WebRootPath = webRootPath } );

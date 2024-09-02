@@ -20,6 +20,8 @@ public class RecipeService : IRecipeService
     private readonly IRecipeCreator _recipeCreator;
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly int _pageAmount = 5;
+
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
         IFileService fileService,
@@ -78,50 +80,41 @@ public class RecipeService : IRecipeService
         await RemoveUnusedTags();
     }
 
-    private async Task RemoveUnusedTags()
-    {
-        await _tagService.RemoveUnusedTags();
-        await _unitOfWork.Save();
-    }
-
     public async Task<RecipesData<OverviewRecipe>> GetRecipes( int pageNumber, int authorId, string searchString )
     {
-        int pageAmount = 5;
-        int skipRange = ( pageNumber - 1 ) * ( pageAmount - 1 );
+        int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, pageAmount, searchString.ToLower() );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, _pageAmount, searchString.ToLower() );
 
         bool isLastRecipes = recipes.Count <= 4;
 
-        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
 
         return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
     }
 
     public async Task<RecipesData<OverviewRecipe>> GetFavouriteRecipes( int pageNumber, int authorId )
     {
-        int pageAmount = 5;
-        int skipRange = ( pageNumber - 1 ) * ( pageAmount - 1 );
+        int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipes( skipRange, pageAmount, authorId );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipes( skipRange, _pageAmount, authorId );
 
         bool isLastRecipes = recipes.Count <= 4;
 
-        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
 
         return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
     }
 
     public async Task<RecipesData<OverviewRecipe>> GetUserRecipes( int pageNumber, int authorId )
     {
-        int pageAmount = 5;
-        int skipRange = ( pageNumber - 1 ) * ( pageAmount - 1 );
+        int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetUserRecipes( skipRange, pageAmount, authorId );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetUserRecipes( skipRange, _pageAmount, authorId );
 
         bool isLastRecipes = recipes.Count <= 4;
 
-        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( pageAmount - 1 ).ToList();
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
 
         return new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
     }
@@ -150,5 +143,11 @@ public class RecipeService : IRecipeService
         RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
 
         return recipe.AuthorId == authorId;
+    }
+
+    private async Task RemoveUnusedTags()
+    {
+        await _tagService.RemoveUnusedTags();
+        await _unitOfWork.Save();
     }
 }

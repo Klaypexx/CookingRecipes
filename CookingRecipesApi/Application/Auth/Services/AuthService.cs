@@ -31,7 +31,7 @@ public class AuthService : IAuthService
 
         if ( !isUniqueUserName )
         {
-            throw new Exception( "Логин пользователя должен быть уникальным" );
+            throw new ArgumentException( "Логин пользователя должен быть уникальным" );
         }
 
         string password = _passwordHasher.GeneratePasswordHash( user.Password );
@@ -47,14 +47,14 @@ public class AuthService : IAuthService
 
         if ( user is null )
         {
-            throw new Exception( "Пользователь не найден" );
+            throw new ArgumentException( "Пользователь не найден" );
         }
 
         bool result = _passwordHasher.VerifyPasswordHash( password, user.Password );
 
         if ( !result )
         {
-            throw new Exception( "Неверный пароль" );
+            throw new ArgumentException( "Неверный пароль" );
         }
 
         AuthTokenSet tokens = GetTokens( user );
@@ -72,7 +72,7 @@ public class AuthService : IAuthService
 
             if ( !isUniqueUserName )
             {
-                throw new Exception( "Логин пользователя должен быть уникальным" );
+                throw new ArgumentException( "Логин пользователя должен быть уникальным" );
             }
         }
 
@@ -95,12 +95,12 @@ public class AuthService : IAuthService
 
         if ( user is null )
         {
-            throw new Exception( "Токен обновления не существует" );
+            throw new ArgumentException( "Токен обновления не существует" );
         }
 
         if ( user.RefreshTokenExpiryTime <= DateTime.Now )
         {
-            throw new Exception( "Срок действия токена обновления истек" );
+            throw new ArgumentException( "Срок действия токена обновления истек" );
         }
 
         AuthTokenSet tokens = GetTokens( user );

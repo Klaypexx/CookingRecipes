@@ -3,13 +3,13 @@ import api from '../util/api';
 import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
-  addFavouriteRecipe: '/favourites?recipeId=',
-  removeFavouriteRecipe: '/favourites?recipeId=',
+  addFavouriteRecipe: '/favourites',
+  removeFavouriteRecipe: '/favourites/',
 };
 
 const addFavouriteRecipe = async (recipeId: string) => {
   try {
-    const response: AxiosResponse<null, any> = await api.post(`${endpoints.addFavouriteRecipe}${recipeId}`);
+    const response: AxiosResponse<null, any> = await api.post(endpoints.addFavouriteRecipe, recipeId);
     return { response };
   } catch (error) {
     handleError(error);

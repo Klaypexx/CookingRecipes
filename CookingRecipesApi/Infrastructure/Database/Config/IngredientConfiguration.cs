@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Config;
+
 public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
 {
     public void Configure( EntityTypeBuilder<Ingredient> builder )

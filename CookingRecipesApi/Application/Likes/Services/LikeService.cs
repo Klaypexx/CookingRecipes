@@ -3,6 +3,7 @@ using Application.Likes.Repositories;
 using Domain.Recipes.Entities;
 
 namespace Application.Likes.Services;
+
 public class LikeService : ILikeService
 {
     private readonly ILikeRepository _likeRepository;
@@ -13,6 +14,7 @@ public class LikeService : ILikeService
         _likeRepository = likeRepository;
         _unitOfWork = unitOfWork;
     }
+
     public async Task AddLike( int userId, int recipeId )
     {
         Like likeToAdd = new( userId, recipeId );
