@@ -17,16 +17,12 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Запрос');
     const fetchAuth = async () => {
+      console.log('Я в фетче');
       if (token) {
-        await AuthService.isAuth()
-          .then(() => {
-            setAuthorized(true);
-          })
-          .catch(() => {
-            setAuthorized(false);
-          });
+        await AuthService.isAuth().then(() => {
+          setAuthorized(true);
+        });
       }
       setLoading(false);
     };
@@ -36,10 +32,7 @@ function App() {
   useEffect(() => {
     if (isAuthorized) {
       const interval = setInterval(async () => {
-        await AuthService.refresh().catch(async () => {
-          setAuthorized(false);
-          await AuthService.logout();
-        });
+        await AuthService.refresh();
       }, 150000);
 
       return () => clearInterval(interval);
