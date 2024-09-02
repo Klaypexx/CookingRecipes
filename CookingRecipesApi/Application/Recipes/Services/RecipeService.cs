@@ -17,10 +17,8 @@ public class RecipeService : IRecipeService
     private readonly IRecipeRepository _recipeRepository;
     private readonly ITagService _tagService;
     private readonly IFileService _fileService;
-    private readonly ILikeService _likeService;
-    private readonly IFavouriteRecipeService _favouriteRecipeService;
     private readonly IRecipeCreator _recipeCreator;
-    private readonly IValidator<Recipe> _recipeValidator;
+    public readonly IValidator<Recipe> _recipeValidator;
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly int _pageAmount = 5;
@@ -28,8 +26,6 @@ public class RecipeService : IRecipeService
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
         IFileService fileService,
-        ILikeService likeService,
-        IFavouriteRecipeService favouriteRecipeService,
         IRecipeCreator recipeCreator,
         IValidator<Recipe> recipeValidator,
         IUnitOfWork unitOfWork )
@@ -37,8 +33,6 @@ public class RecipeService : IRecipeService
         _recipeRepository = recipeRepository;
         _tagService = tagService;
         _fileService = fileService;
-        _likeService = likeService;
-        _favouriteRecipeService = favouriteRecipeService;
         _recipeCreator = recipeCreator;
         _recipeValidator = recipeValidator;
         _unitOfWork = unitOfWork;

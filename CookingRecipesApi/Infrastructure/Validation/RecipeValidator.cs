@@ -6,14 +6,14 @@ using FluentValidation.Results;
 
 namespace Infrastructure.Validation;
 
-public class RecipeDtoValidator : AbstractValidator<Recipe>, Application.Validation.IValidator<Recipe>
+public class RecipeValidator : AbstractValidator<Recipe>, Application.Validation.IValidator<Recipe>
 {
     private readonly FileValidationRules _fileValidationRules;
 
     private const int _nameMaxWords = 50;
     private const int _descriptionMaxWords = 150;
 
-    public RecipeDtoValidator()
+    public RecipeValidator()
     {
         _fileValidationRules = new FileValidationRules();
 
@@ -37,15 +37,15 @@ public class RecipeDtoValidator : AbstractValidator<Recipe>, Application.Validat
             .NotEmpty().WithMessage( "Количество порций обязательно" );
 
         RuleForEach( r => r.Tags )
-           .SetValidator( new TagDtoValidator() );
+           .SetValidator( new TagValidator() );
 
         RuleForEach( r => r.Steps )
             .NotEmpty().WithMessage( "Поле шагов не должно быть пустым" )
-            .SetValidator( new StepDtoValidator() );
+            .SetValidator( new StepValidator() );
 
         RuleForEach( r => r.Ingredients )
             .NotEmpty().WithMessage( "Поле ингредиентов не должно быть пустым" )
-            .SetValidator( new IngredientDtoValidator() );
+            .SetValidator( new IngredientValidator() );
     }
 
     Result Application.Validation.IValidator<Recipe>.Validate( Recipe entity )
@@ -61,20 +61,20 @@ public class RecipeDtoValidator : AbstractValidator<Recipe>, Application.Validat
     }
 }
 
-public class TagDtoValidator : AbstractValidator<Tag>
+public class TagValidator : AbstractValidator<Tag>
 {
     private const int _tagMaxWords = 20;
-    public TagDtoValidator()
+    public TagValidator()
     {
         RuleFor( s => s.Name )
             .MaximumLength( _tagMaxWords ).WithMessage( "Тег не должен превышать" + _tagMaxWords + "символов" );
     }
 }
 
-public class StepDtoValidator : AbstractValidator<Step>
+public class StepValidator : AbstractValidator<Step>
 {
     private const int _stepsDescriptionMaxWords = 300;
-    public StepDtoValidator()
+    public StepValidator()
     {
         RuleFor( s => s.Description )
             .NotEmpty().WithMessage( "Описание шага обязательно" )
@@ -82,11 +82,11 @@ public class StepDtoValidator : AbstractValidator<Step>
     }
 }
 
-public class IngredientDtoValidator : AbstractValidator<Ingredient>
+public class IngredientValidator : AbstractValidator<Ingredient>
 {
     private const int _ingredientsNameMaxWords = 20;
     private const int _ingredientsProductMaxWords = 300;
-    public IngredientDtoValidator()
+    public IngredientValidator()
     {
         RuleFor( i => i.Name )
             .NotEmpty().WithMessage( "Название ингредиента обязательно" )

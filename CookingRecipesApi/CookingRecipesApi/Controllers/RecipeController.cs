@@ -4,7 +4,6 @@ using Application.ResultObject;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
 using CookingRecipesApi.Utilities;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +14,12 @@ namespace CookingRecipesApi.Controllers;
 public class RecipeController : ControllerBase
 {
     private readonly IRecipeService _recipeService;
-    private readonly IValidator<RecipeDto> _recipeDtoValidator;
 
     private int AuthorId => int.Parse( User.GetUserId() );
 
-    public RecipeController( IRecipeService recipeService, IValidator<RecipeDto> recipeDtoValidator )
+    public RecipeController( IRecipeService recipeService )
     {
         _recipeService = recipeService;
-        _recipeDtoValidator = recipeDtoValidator;
     }
 
     [HttpPost]
