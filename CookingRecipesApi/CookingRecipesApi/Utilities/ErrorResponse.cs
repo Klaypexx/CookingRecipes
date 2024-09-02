@@ -1,4 +1,6 @@
-﻿namespace CookingRecipesApi.Utilities;
+﻿using Application.ResultObject;
+
+namespace CookingRecipesApi.Utilities;
 
 public class ErrorResponse
 {
@@ -18,4 +20,16 @@ public class ErrorResponse
             Errors.AddRange( pair.Value );
         }
     }
+
+    public ErrorResponse( IReadOnlyList<Error> errors )
+    {
+        Errors = new();
+
+        foreach ( Error error in errors )
+        {
+            // Wrap the error message in an array to use AddRange
+            Errors.AddRange( [ error.Message ] );
+        }
+    }
 }
+

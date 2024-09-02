@@ -43,6 +43,7 @@ const refresh = async () => {
     return response;
   } catch (error) {
     handleError(error);
+    throw error;
   }
 };
 

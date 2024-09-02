@@ -9,10 +9,8 @@ public static class CookingRecipesApiBindings
 {
     public static IServiceCollection AddCookingRecipesApi( this IServiceCollection services )
     {
-        services.AddValidatorsFromAssemblyContaining<RegisterDto>();
         services.AddValidatorsFromAssemblyContaining<LoginDto>();
         services.AddValidatorsFromAssemblyContaining<UserDto>();
-        services.AddValidatorsFromAssemblyContaining<RecipeDto>();
         services.AddValidatorsFromAssemblyContaining<StepDto>();
         services.AddValidatorsFromAssemblyContaining<IngredientDto>();
 

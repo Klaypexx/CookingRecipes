@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Application.ResultObject;
+﻿namespace Application.ResultObject;
 
 public class BaseResult
 {

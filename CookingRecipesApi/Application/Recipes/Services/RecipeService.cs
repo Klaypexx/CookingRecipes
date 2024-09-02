@@ -5,8 +5,6 @@ using Application.Recipes.Repositories;
 using Application.Tags.Services;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using Application.Recipes.Extensions;
-using Application.Likes.Services;
-using Application.Favourites.Services;
 using Application.ResultObject;
 using Application.Validation;
 
@@ -18,7 +16,7 @@ public class RecipeService : IRecipeService
     private readonly ITagService _tagService;
     private readonly IFileService _fileService;
     private readonly IRecipeCreator _recipeCreator;
-    public readonly IValidator<Recipe> _recipeValidator;
+    private readonly IValidator<Recipe> _recipeValidator;
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly int _pageAmount = 5;
@@ -55,6 +53,7 @@ public class RecipeService : IRecipeService
             await _tagService.ActualizeTags( recipeDomain );
             await _recipeRepository.CreateRecipe( recipeDomain );
             await _unitOfWork.Save();
+
             return new Result();
         }
         catch ( Exception e )
