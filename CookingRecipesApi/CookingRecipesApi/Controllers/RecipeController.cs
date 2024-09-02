@@ -159,7 +159,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet]
-    [Route( "mostLiked" )]
+    [Route( "liked" )]
     public async Task<IActionResult> GetMostLikedRecipe()
     {
         try

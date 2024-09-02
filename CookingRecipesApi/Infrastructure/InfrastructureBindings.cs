@@ -12,6 +12,7 @@ using Infrastructure.Auth.Repositories;
 using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
 using Infrastructure.Favourites.Repositories;
+using Infrastructure.Files;
 using Infrastructure.Files.Services;
 using Infrastructure.Foundation;
 using Infrastructure.Likes.Repositories;

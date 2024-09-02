@@ -19,7 +19,7 @@ public class LikeController : ControllerBase
 
     [HttpPost]
     [Route( "" )]
-    public async Task<IActionResult> AddLike( [FromQuery] int recipeId )
+    public async Task<IActionResult> AddLike( [FromBody] int recipeId )
     {
         try
         {
@@ -36,8 +36,8 @@ public class LikeController : ControllerBase
     }
 
     [HttpDelete]
-    [Route( "" )]
-    public async Task<IActionResult> RemoveLike( [FromQuery] int recipeId )
+    [Route( "{recipeId}" )]
+    public async Task<IActionResult> RemoveLike( [FromRoute] int recipeId )
     {
         try
         {

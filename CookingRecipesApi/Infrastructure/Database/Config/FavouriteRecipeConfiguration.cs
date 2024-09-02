@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Config;
+
 public class FavouriteRecipeConfiguration : IEntityTypeConfiguration<FavouriteRecipe>
 {
     public void Configure( EntityTypeBuilder<FavouriteRecipe> builder )

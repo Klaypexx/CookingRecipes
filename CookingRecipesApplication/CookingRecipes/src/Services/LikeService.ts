@@ -3,13 +3,13 @@ import api from '../util/api';
 import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
-  addLike: '/likes?recipeId=',
-  removeLike: '/likes?recipeId=',
+  addLike: '/likes',
+  removeLike: '/likes/',
 };
 
 const addLike = async (recipeId: string) => {
   try {
-    const response: AxiosResponse<null, any> = await api.post(`${endpoints.addLike}${recipeId}`);
+    const response: AxiosResponse<null, any> = await api.post(endpoints.addLike, recipeId);
     return { response };
   } catch (error) {
     handleError(error);

@@ -17,7 +17,7 @@ public class FavouriteRecipeController : ControllerBase
 
     [HttpPost]
     [Route( "" )]
-    public async Task<IActionResult> AddFavouriteRecipe( [FromQuery] int recipeId )
+    public async Task<IActionResult> AddFavouriteRecipe( [FromBody] int recipeId )
     {
         try
         {
@@ -34,8 +34,8 @@ public class FavouriteRecipeController : ControllerBase
     }
 
     [HttpDelete]
-    [Route( "" )]
-    public async Task<IActionResult> RemoveFavouriteRecipe( [FromQuery] int recipeId )
+    [Route( "{recipeId}" )]
+    public async Task<IActionResult> RemoveFavouriteRecipe( [FromRoute] int recipeId )
     {
         try
         {

@@ -1,6 +1,7 @@
 ﻿using Domain.Recipes.Entities;
 
 namespace Application.Likes.Repositories;
+
 public interface ILikeRepository
 {
     Task AddLike( Like like );

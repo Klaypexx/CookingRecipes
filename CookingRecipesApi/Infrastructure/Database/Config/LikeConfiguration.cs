@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Database.Config;
+
 public class LikeConfiguration : IEntityTypeConfiguration<Like>
 {
     public void Configure( EntityTypeBuilder<Like> builder )

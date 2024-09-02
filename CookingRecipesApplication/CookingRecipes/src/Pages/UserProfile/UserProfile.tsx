@@ -77,7 +77,6 @@ const UserProfile = () => {
       ) : (
         <>
           <section className={styles.UserFormSection}>
-            {' '}
             <UserForm values={user!} />
           </section>
           <section className={styles.StatisticListSection}>

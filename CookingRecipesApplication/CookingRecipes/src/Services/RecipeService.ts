@@ -15,7 +15,7 @@ const endpoints = {
   getRecipes: '/recipes?pageNumber=',
   getFavouriteRecipes: '/recipes/favourites?pageNumber=',
   getUserRecipes: './recipes/userRecipes?pageNumber=',
-  getMostLikedRecipe: '/recipes/mostLiked',
+  getMostLikedRecipe: '/recipes/liked',
   getCurrentRecipe: '/recipes/',
 };
 
