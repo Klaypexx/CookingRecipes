@@ -1,8 +1,9 @@
-﻿namespace CookingRecipesApi.Dto.AuthDto;
+﻿namespace Application.Users.Entities;
 
-public class UserStatisticDto
+public class UserStatistic
 {
     public int RecipesCount { get; set; }
     public int LikesCount { get; set; }
     public int FavouritesCount { get; set; }
 }
+

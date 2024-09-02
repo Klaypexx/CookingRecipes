@@ -1,14 +1,11 @@
 ﻿using Application.Auth.Entities;
-using UserDomain = Domain.Auth.Entities.User;
+using Domain.Auth.Entities;
 
 namespace Application.Auth.Services;
 
 public interface IAuthService
 {
-    Task RegisterUser( UserDomain user );
+    Task RegisterUser( User user );
     Task<AuthTokenSet> SignIn( string userName, string password, int lifetime );
-    Task UpdateUser( User user, string userName );
     Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime );
-    Task<UserInfo> GetUser( string userName );
-    Task<UserStatistic> GetUserStatistic( string userName );
 }

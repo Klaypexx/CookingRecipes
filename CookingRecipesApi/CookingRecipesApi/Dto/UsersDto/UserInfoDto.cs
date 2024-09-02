@@ -1,4 +1,4 @@
-﻿namespace CookingRecipesApi.Dto.AuthDto;
+﻿namespace CookingRecipesApi.Dto.UsersDto;
 
 public class UserInfoDto
 {

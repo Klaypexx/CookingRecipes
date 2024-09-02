@@ -1,7 +1,7 @@
-﻿using Application.Auth.Entities;
+﻿using Application.Users.Entities;
 using UserDomain = Domain.Auth.Entities.User;
 
-namespace Application.Auth;
+namespace Application.Users;
 
 public interface IUserCreator
 {

@@ -1,5 +1,4 @@
-﻿using Application.Auth.Repositories;
-using CookingRecipesApi.Dto.AuthDto;
+﻿using CookingRecipesApi.Dto.AuthDto;
 using FluentValidation;
 
 namespace CookingRecipesApi.Dto.Validators;

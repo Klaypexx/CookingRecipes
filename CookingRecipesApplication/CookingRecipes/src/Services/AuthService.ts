@@ -6,11 +6,11 @@ import LoginValues from '../Types/LoginValues';
 import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
-  login: '/users/login',
-  register: '/users/register',
-  refresh: '/users/refresh',
-  logout: '/users/logout',
-  isAuth: '/users/isAuth',
+  login: '/auth/login',
+  register: '/auth/register',
+  refresh: '/auth/refresh',
+  logout: '/auth/logout',
+  isAuth: '/auth/isAuth',
 };
 
 const register = async (values: RegisterValues) => {

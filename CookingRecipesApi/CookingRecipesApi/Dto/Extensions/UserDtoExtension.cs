@@ -1,6 +1,5 @@
-﻿using Application.Auth.Entities;
-using CookingRecipesApi.Dto.AuthDto;
-using CookingRecipesApi.Dto.RecipesDto;
+﻿using Application.Users.Entities;
+using CookingRecipesApi.Dto.UsersDto;
 
 namespace CookingRecipesApi.Dto.Extensions;
 

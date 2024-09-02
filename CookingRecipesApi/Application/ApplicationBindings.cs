@@ -1,10 +1,10 @@
-﻿using Application.Auth;
-using Application.Auth.Services;
+﻿using Application.Auth.Services;
 using Application.Favourites.Services;
 using Application.Likes.Services;
 using Application.Recipes;
 using Application.Recipes.Services;
 using Application.Tags.Services;
+using Application.Users;
 using Application.Users.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +17,7 @@ public static class ApplicationBindings
         services.AddScoped<IRecipeCreator, RecipeCreator>();
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserCreator, UserCreator>();
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<ILikeService, LikeService>();

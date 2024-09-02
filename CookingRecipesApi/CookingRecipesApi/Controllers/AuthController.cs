@@ -7,11 +7,10 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CookingRecipesApi.Dto.Extensions;
 
 namespace CookingRecipesApi.Controllers;
 
-[Route( "users" )]
+[Route( "auth" )]
 [ApiController]
 public class AuthController : ControllerBase
 {
@@ -19,19 +18,16 @@ public class AuthController : ControllerBase
     private readonly AuthSettings _authSettings;
     private readonly IValidator<RegisterDto> _registerDtoValidator;
     private readonly IValidator<LoginDto> _loginDtoValidator;
-    private readonly IValidator<UserDto> _userDtoValidator;
 
     public AuthController( IAuthService authService,
         AuthSettings authSettings,
         IValidator<RegisterDto> registerDtoValidator,
-        IValidator<LoginDto> loginDtoValidator,
-        IValidator<UserDto> userDtoValidator )
+        IValidator<LoginDto> loginDtoValidator )
     {
         _authService = authService;
         _authSettings = authSettings;
         _registerDtoValidator = registerDtoValidator;
         _loginDtoValidator = loginDtoValidator;
-        _userDtoValidator = userDtoValidator;
     }
 
     [HttpPost]
@@ -82,32 +78,6 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPut]
-    [Route( "" )]
-    [Authorize]
-    public async Task<IActionResult> UpdateUser( [FromForm] UserDto userDto )
-    {
-        ValidationResult validationResult = await _userDtoValidator.ValidateAsync( userDto );
-
-        if ( !validationResult.IsValid )
-        {
-            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
-        }
-
-        try
-        {
-            string userName = User.GetUserName();
-
-            await _authService.UpdateUser( userDto.ToApplication(), userName );
-
-            return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
-    }
-
     [HttpPost]
     [Route( "isAuth" )]
     [Authorize]
@@ -145,62 +115,6 @@ public class AuthController : ControllerBase
             HttpContext.Response.Cookies.Delete( "refreshToken" );
 
             return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
-    }
-
-    [HttpGet]
-    [Route( "" )]
-    [Authorize]
-    public async Task<IActionResult> GetUser()
-    {
-        try
-        {
-            string userName = User.GetUserName();
-
-            UserInfo user = await _authService.GetUser( userName );
-            UserInfoDto userDto = user.ToUserInfoDto();
-
-            return Ok( userDto );
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
-    }
-
-    [HttpGet]
-    [Route( "username" )]
-    [Authorize]
-    public IActionResult GetUsername()
-    {
-        try
-        {
-            UserNameDto username = new() { UserName = User.GetUserName() };
-            return Ok( username );
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
-    }
-
-    [HttpGet]
-    [Route( "statistic" )]
-    [Authorize]
-    public async Task<IActionResult> GetUserStatistic()
-    {
-        try
-        {
-            string userName = User.GetUserName();
-
-            UserStatistic userStatistic = await _authService.GetUserStatistic( userName );
-            UserStatisticDto userStatisticDto = userStatistic.ToUserStatisticDto();
-
-            return Ok( userStatisticDto );
         }
         catch ( Exception exception )
         {
