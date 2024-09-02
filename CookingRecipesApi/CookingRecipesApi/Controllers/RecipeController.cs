@@ -34,7 +34,7 @@ public class RecipeController : ControllerBase
 
         if ( !result.IsSuccess )
         {
-            return BadRequest( result.Errors.ToDto() ); //new ErrorResponse(  )
+            return BadRequest( result.Errors ); //new ErrorResponse(  )
         }
 
         return Ok();
@@ -45,9 +45,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
-        int authorId = int.Parse( User.GetUserId() );
-
-        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, authorId );
+        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, AuthorId );
 
         if ( !hasAccess )
         {
@@ -56,7 +54,7 @@ public class RecipeController : ControllerBase
 
         try
         {
-            await _recipeService.UpdateRecipe( recipeDto.ToApplication( authorId ), recipeId );
+            await _recipeService.UpdateRecipe( recipeDto.ToApplication( AuthorId ), recipeId );
 
             return Ok();
         }
@@ -71,9 +69,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
     {
-        int authorId = int.Parse( User.GetUserId() );
-
-        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, authorId );
+        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, AuthorId );
 
         if ( !hasAccess )
         {
@@ -101,7 +97,7 @@ public class RecipeController : ControllerBase
             int authorId = 0;
             if ( User.Identity.IsAuthenticated )
             {
-                authorId = int.Parse( User.GetUserId() );
+                authorId = AuthorId;
             }
 
             RecipesData<OverviewRecipe> recipesData = await _recipeService.GetRecipes( pageNumber, authorId, searchString );

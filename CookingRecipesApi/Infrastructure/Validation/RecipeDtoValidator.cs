@@ -1,10 +1,12 @@
-﻿using Application.Validation;
-using CookingRecipesApi.Dto.RecipesDto;
+﻿using Application.Recipes.Entities;
+using Application.ResultObject;
+using Application.Validation;
 using FluentValidation;
+using FluentValidation.Results;
 
-namespace CookingRecipesApi.Dto.Validators;
+namespace Infrastructure.Validation;
 
-public class RecipeDtoValidator : AbstractValidator<RecipeDto>
+public class RecipeDtoValidator : AbstractValidator<Recipe>, Application.Validation.IValidator<Recipe>
 {
     private readonly FileValidationRules _fileValidationRules;
 
@@ -17,11 +19,11 @@ public class RecipeDtoValidator : AbstractValidator<RecipeDto>
 
         RuleFor( r => r.Name )
             .NotEmpty().WithMessage( "Название рецепта обязательно" )
-            .MaximumLength( _nameMaxWords ).WithMessage( "Название не должно превышать " + _nameMaxWords + " символов" );
+            .MaximumLength( _nameMaxWords ).WithMessage( "Название не должно превышать" + _nameMaxWords + "символов" );
 
         RuleFor( r => r.Description )
             .NotEmpty().WithMessage( "Описание рецепта обязательно" )
-            .MaximumLength( _descriptionMaxWords ).WithMessage( "Описание не должно превышать " + _descriptionMaxWords + " символов" );
+            .MaximumLength( _descriptionMaxWords ).WithMessage( "Описание не должно превышать" + _descriptionMaxWords + "символов" );
 
         RuleFor( item => item )
             .Must( ( item, cancellation ) => _fileValidationRules.IsImage( item.Avatar ) )
@@ -45,30 +47,42 @@ public class RecipeDtoValidator : AbstractValidator<RecipeDto>
             .NotEmpty().WithMessage( "Поле ингредиентов не должно быть пустым" )
             .SetValidator( new IngredientDtoValidator() );
     }
+
+    Result Application.Validation.IValidator<Recipe>.Validate( Recipe entity )
+    {
+        ValidationResult result = Validate( entity );
+
+        if ( result.IsValid )
+        {
+            return new Result();
+        }
+
+        return new Result( result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList() );
+    }
 }
 
-public class TagDtoValidator : AbstractValidator<TagDto>
+public class TagDtoValidator : AbstractValidator<Tag>
 {
     private const int _tagMaxWords = 20;
     public TagDtoValidator()
     {
         RuleFor( s => s.Name )
-            .MaximumLength( _tagMaxWords ).WithMessage( "Тег не должен превышать " + _tagMaxWords + " символов" );
+            .MaximumLength( _tagMaxWords ).WithMessage( "Тег не должен превышать" + _tagMaxWords + "символов" );
     }
 }
 
-public class StepDtoValidator : AbstractValidator<StepDto>
+public class StepDtoValidator : AbstractValidator<Step>
 {
     private const int _stepsDescriptionMaxWords = 300;
     public StepDtoValidator()
     {
         RuleFor( s => s.Description )
             .NotEmpty().WithMessage( "Описание шага обязательно" )
-            .MaximumLength( _stepsDescriptionMaxWords ).WithMessage( "Описание шага не должно превышать " + _stepsDescriptionMaxWords + " символов" );
+            .MaximumLength( _stepsDescriptionMaxWords ).WithMessage( "Описание шага не должно превышать" + _stepsDescriptionMaxWords + "символов" );
     }
 }
 
-public class IngredientDtoValidator : AbstractValidator<IngredientDto>
+public class IngredientDtoValidator : AbstractValidator<Ingredient>
 {
     private const int _ingredientsNameMaxWords = 20;
     private const int _ingredientsProductMaxWords = 300;
@@ -76,10 +90,10 @@ public class IngredientDtoValidator : AbstractValidator<IngredientDto>
     {
         RuleFor( i => i.Name )
             .NotEmpty().WithMessage( "Название ингредиента обязательно" )
-            .MaximumLength( _ingredientsNameMaxWords ).WithMessage( "Название ингредиента не должно превышать " + _ingredientsNameMaxWords + " символов" );
+            .MaximumLength( _ingredientsNameMaxWords ).WithMessage( "Название ингредиента не должно превышать" + _ingredientsNameMaxWords + "символов" );
 
         RuleFor( i => i.Product )
             .NotEmpty().WithMessage( "Продукт обязателен" )
-            .MaximumLength( _ingredientsProductMaxWords ).WithMessage( "Продукт не должен превышать " + _ingredientsProductMaxWords + " символов" );
+            .MaximumLength( _ingredientsProductMaxWords ).WithMessage( "Продукт не должен превышать" + _ingredientsProductMaxWords + "символов" );
     }
 }
