@@ -1,9 +1,9 @@
-﻿using Application.Auth.Repositories;
+﻿using Application.Users.Repositories;
 using Domain.Auth.Entities;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Auth.Repositories;
+namespace Infrastructure.Users.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly DbSet<User> _entities;
@@ -16,7 +16,6 @@ public class UserRepository : IUserRepository
     {
         await _entities.AddAsync( user );
     }
-
 
     public async Task<User> GetUserByUsername( string username )
     {

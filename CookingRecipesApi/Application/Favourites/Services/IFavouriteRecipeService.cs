@@ -1,9 +1,10 @@
-﻿using Domain.Recipes.Entities;
+﻿using Application.ResultObject;
+using Domain.Recipes.Entities;
 
 namespace Application.Favourites.Services;
 
 public interface IFavouriteRecipeService
 {
-    Task AddFavouriteRecipe( int userId, int recipeId );
-    Task RemoveFavouriteRecipe( int userId, int recipeId );
+    Task<Result> AddFavouriteRecipe( int userId, int recipeId );
+    Task<Result> RemoveFavouriteRecipe( int userId, int recipeId );
 }

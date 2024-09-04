@@ -1,7 +1,7 @@
-﻿using Application.Auth.Entities;
+﻿using Application.Users.Entities;
 using UserDomain = Domain.Auth.Entities.User;
 
-namespace Application.Auth.Extensions;
+namespace Application.Users.Extensions;
 
 public static class UserInfoExtension
 {

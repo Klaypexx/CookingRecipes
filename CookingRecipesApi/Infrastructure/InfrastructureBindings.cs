@@ -1,23 +1,27 @@
 ﻿using Application.Auth;
-using Application.Auth.Repositories;
+using Application.Auth.Entities;
 using Application.Auth.Services;
 using Application.Favourites.Repositories;
 using Application.Files.Services;
 using Application.Foundation;
 using Application.Likes.Repositories;
+using Application.Recipes.Entities;
 using Application.Recipes.Repositories;
 using Application.Tags.Repositories;
+using Application.Users.Entities;
+using Application.Users.Repositories;
+using Application.Validation;
 using Infrastructure.Auth;
-using Infrastructure.Auth.Repositories;
 using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
 using Infrastructure.Favourites.Repositories;
-using Infrastructure.Files;
 using Infrastructure.Files.Services;
 using Infrastructure.Foundation;
 using Infrastructure.Likes.Repositories;
 using Infrastructure.Recipes.Repositories;
 using Infrastructure.Tags.Repository;
+using Infrastructure.Users.Repositories;
+using Infrastructure.Validation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +37,11 @@ public static class InfrastructureBindings
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IFavouriteRecipeRepository, FavouriteRecipeRepository>();
+
+        services.AddScoped<IValidator<User>, UserValidator>();
+        services.AddScoped<IValidator<Register>, RegisterValidator>();
+        services.AddScoped<IValidator<Login>, LoginValidator>();
+        services.AddScoped<IValidator<Recipe>, RecipeValidator>();
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();

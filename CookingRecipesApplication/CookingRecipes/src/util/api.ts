@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import TokenService from '../Services/TokenService';
 import AuthService from '../Services/AuthService';
@@ -55,6 +54,7 @@ api.interceptors.response.use(
           return api(originalConfig);
         } catch (_error) {
           await AuthService.logout();
+          location.reload();
         }
       }
     }

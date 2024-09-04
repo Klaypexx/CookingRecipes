@@ -1,5 +1,6 @@
 ﻿using Application.Foundation;
 using Application.Likes.Repositories;
+using Application.ResultObject;
 using Domain.Recipes.Entities;
 
 namespace Application.Likes.Services;
@@ -15,21 +16,39 @@ public class LikeService : ILikeService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task AddLike( int userId, int recipeId )
+    public async Task<Result> AddLike( int userId, int recipeId )
     {
-        Like likeToAdd = new( userId, recipeId );
+        try
+        {
+            Like likeToAdd = new( userId, recipeId );
 
-        await _likeRepository.AddLike( likeToAdd );
+            await _likeRepository.AddLike( likeToAdd );
 
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
+
+            return new Result();
+        }
+        catch ( Exception e )
+        {
+            return new Result( new Error( e.Message ) );
+        }
     }
 
-    public async Task RemoveLike( int userId, int recipeId )
+    public async Task<Result> RemoveLike( int userId, int recipeId )
     {
-        Like likeToRemove = await _likeRepository.GetLikeConnectionByRecipeAndUserId( userId, recipeId );
+        try
+        {
+            Like likeToRemove = await _likeRepository.GetLikeConnectionByRecipeAndUserId( userId, recipeId );
 
-        _likeRepository.RemoveLike( likeToRemove );
+            _likeRepository.RemoveLike( likeToRemove );
 
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
+
+            return new Result();
+        }
+        catch ( Exception e )
+        {
+            return new Result( new Error( e.Message ) );
+        }
     }
 }

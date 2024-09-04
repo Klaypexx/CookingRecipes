@@ -1,4 +1,4 @@
 export default interface UserStore {
-  isUserUpdate: boolean;
-  setUserUpdate: (state: boolean) => void;
+  userName: string;
+  setUserName: (state: string) => void;
 }

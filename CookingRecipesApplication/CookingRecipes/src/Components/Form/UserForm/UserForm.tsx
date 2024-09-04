@@ -11,7 +11,7 @@ import AuthService from '../../../Services/AuthService';
 import useUserStore from '../../../Stores/useUserStore';
 
 const UserForm: React.FC<UserFormProps> = ({ values }) => {
-  const { isUserUpdate, setUserUpdate } = useUserStore();
+  const { setUserName } = useUserStore();
 
   const initialValues: UserFormValues = {
     ...values,
@@ -39,7 +39,7 @@ const UserForm: React.FC<UserFormProps> = ({ values }) => {
 
     await AuthService.refresh().then((res) => {
       if (res) {
-        setUserUpdate(isUserUpdate);
+        setUserName(values.userName);
       }
     });
   };

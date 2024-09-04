@@ -1,4 +1,5 @@
 ﻿using Application.Favourites.Services;
+using Application.ResultObject;
 using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,8 @@ public class FavouriteRecipeController : ControllerBase
 {
     private readonly IFavouriteRecipeService _favouriteService;
 
+    private int AuthorId => int.Parse( User.GetUserId() );
+
     public FavouriteRecipeController( IFavouriteRecipeService favouriteService )
     {
         _favouriteService = favouriteService;
@@ -19,35 +22,27 @@ public class FavouriteRecipeController : ControllerBase
     [Route( "" )]
     public async Task<IActionResult> AddFavouriteRecipe( [FromBody] int recipeId )
     {
-        try
-        {
-            int userId = int.Parse( User.GetUserId() );
+        Result result = await _favouriteService.AddFavouriteRecipe( AuthorId, recipeId );
 
-            await _favouriteService.AddFavouriteRecipe( userId, recipeId );
-
-            return Ok();
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        return Ok();
     }
 
     [HttpDelete]
     [Route( "{recipeId}" )]
     public async Task<IActionResult> RemoveFavouriteRecipe( [FromRoute] int recipeId )
     {
-        try
-        {
-            int userId = int.Parse( User.GetUserId() );
+        Result result = await _favouriteService.RemoveFavouriteRecipe( AuthorId, recipeId );
 
-            await _favouriteService.RemoveFavouriteRecipe( userId, recipeId );
-
-            return Ok();
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        return Ok();
     }
 }

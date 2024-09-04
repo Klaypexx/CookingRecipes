@@ -1,127 +1,141 @@
-﻿using Application.Auth;
+﻿using System.ComponentModel.DataAnnotations;
+using Application.Auth;
 using Application.Auth.Entities;
-using Application.Auth.Extensions;
-using Application.Auth.Repositories;
 using Application.Auth.Services;
 using Application.Foundation;
+using Application.ResultObject;
+using Application.Users.Repositories;
+using Application.Validation;
 using UserDomain = Domain.Auth.Entities.User;
 
 namespace Application.Users.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly IUserService _userService;
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserCreator _userCreator;
+    private readonly IValidator<Register> _registerValidator;
+    private readonly IValidator<Login> _loginValidator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AuthService( IUserRepository userRepository, ITokenService tokenService, IPasswordHasher passwordHasher, IUserCreator userCreator, IUnitOfWork unitOfWork )
+    public AuthService( IUserService userService,
+        IUserRepository userRepository,
+        ITokenService tokenService,
+        IPasswordHasher passwordHasher,
+        IUserCreator userCreator,
+        IValidator<Register> registerValidator,
+        IValidator<Login> loginValidator,
+        IUnitOfWork unitOfWork )
     {
+        _userService = userService;
         _userRepository = userRepository;
         _tokenService = tokenService;
         _passwordHasher = passwordHasher;
         _userCreator = userCreator;
+        _registerValidator = registerValidator;
+        _loginValidator = loginValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task RegisterUser( UserDomain user )
+    public async Task<Result> RegisterUser( Register register )
     {
-        bool isUniqueUserName = await IsUniqueUsername( user.UserName );
-
-        if ( !isUniqueUserName )
+        try
         {
-            throw new ArgumentException( "Логин пользователя должен быть уникальным" );
-        }
+            Result result = _registerValidator.Validate( register );
 
-        string password = _passwordHasher.GeneratePasswordHash( user.Password );
-        user.SetPassword( password );
-        await _userRepository.AddUser( user );
+            if ( !result.IsSuccess )
+            {
+                return result;
+            }
 
-        await _unitOfWork.Save();
-    }
-
-    public async Task<AuthTokenSet> SignIn( string userName, string password, int lifetime )
-    {
-        UserDomain user = await _userRepository.GetUserByUsername( userName );
-
-        if ( user is null )
-        {
-            throw new ArgumentException( "Пользователь не найден" );
-        }
-
-        bool result = _passwordHasher.VerifyPasswordHash( password, user.Password );
-
-        if ( !result )
-        {
-            throw new ArgumentException( "Неверный пароль" );
-        }
-
-        AuthTokenSet tokens = GetTokens( user );
-
-        await SetToken( user, tokens.RefreshToken, lifetime );
-
-        return tokens;
-    }
-
-    public async Task UpdateUser( User user, string userName )
-    {
-        if ( user.UserName != userName )
-        {
-            bool isUniqueUserName = await IsUniqueUsername( user.UserName );
+            bool isUniqueUserName = await _userService.IsUniqueUsername( register.UserName );
 
             if ( !isUniqueUserName )
             {
                 throw new ArgumentException( "Логин пользователя должен быть уникальным" );
             }
+
+            string hashedPassword = _passwordHasher.GeneratePasswordHash( register.Password );
+
+            await _userRepository.AddUser( _userCreator.Create( register, hashedPassword ) );
+
+            await _unitOfWork.Save();
+
+            return new Result();
+
         }
-
-        UserDomain userDomain = await _userRepository.GetUserByUsername( userName );
-
-        string hashedPassword = string.Empty;
-        if ( !string.IsNullOrEmpty( user.Password ) )
+        catch ( Exception e )
         {
-            hashedPassword = _passwordHasher.GeneratePasswordHash( user.Password );
+            return new Result( new Error( e.Message ) );
         }
-
-        userDomain.UpdateUser( _userCreator.Create( user, hashedPassword ) );
-
-        await _unitOfWork.Save();
     }
 
-    public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )
+    public async Task<Result<AuthTokenSet>> SignIn( Login login, int lifeTime )
     {
-        UserDomain user = await _userRepository.GetUserByRefreshToken( cookieRefreshToken );
-
-        if ( user is null )
+        try
         {
-            throw new ArgumentException( "Токен обновления не существует" );
-        }
+            Result result = _loginValidator.Validate( login );
 
-        if ( user.RefreshTokenExpiryTime <= DateTime.Now )
+            if ( !result.IsSuccess )
+            {
+                return new Result<AuthTokenSet>( result.Errors );
+            }
+
+            UserDomain user = await _userRepository.GetUserByUsername( login.UserName );
+
+            if ( user is null )
+            {
+                throw new ArgumentException( "Пользователь не найден" );
+            }
+
+            bool hashResult = _passwordHasher.VerifyPasswordHash( login.Password, user.Password );
+
+            if ( !hashResult )
+            {
+                throw new ArgumentException( "Неверный пароль" );
+            }
+
+            AuthTokenSet tokens = GetTokens( user );
+
+            await SetToken( user, tokens.RefreshToken, lifeTime );
+
+            return new Result<AuthTokenSet>( tokens );
+        }
+        catch ( Exception e )
         {
-            throw new ArgumentException( "Срок действия токена обновления истек" );
+            return new Result<AuthTokenSet>( new Error( e.Message ) );
         }
-
-        AuthTokenSet tokens = GetTokens( user );
-
-        await SetToken( user, tokens.RefreshToken, lifetime );
-
-        return tokens;
     }
 
-    public async Task<UserInfo> GetUser( string userName )
+    public async Task<Result<AuthTokenSet>> Refresh( string cookieRefreshToken, int lifetime )
     {
-        UserDomain user = await _userRepository.GetUserByUsername( userName );
+        try
+        {
+            UserDomain user = await _userRepository.GetUserByRefreshToken( cookieRefreshToken );
 
-        return user.ToUserInfo();
-    }
+            if ( user is null )
+            {
+                throw new ArgumentException( "Токен обновления не существует" );
+            }
 
-    public async Task<UserStatistic> GetUserStatistic( string userName )
-    {
-        UserDomain userStatistic = await _userRepository.GetUserByUsernameIncludingDependentEntities( userName );
+            if ( user.RefreshTokenExpiryTime <= DateTime.Now )
+            {
+                throw new ArgumentException( "Срок действия токена обновления истек" );
+            }
 
-        return userStatistic.ToUserStatistic();
+            AuthTokenSet tokens = GetTokens( user );
+
+            await SetToken( user, tokens.RefreshToken, lifetime );
+
+            return new Result<AuthTokenSet>( tokens );
+        }
+        catch ( Exception e )
+        {
+            return new Result<AuthTokenSet>( new Error( e.Message ) );
+        }
     }
 
     private async Task SetToken( UserDomain user, string refreshToken, int lifetime )
@@ -142,12 +156,5 @@ public class AuthService : IAuthService
         };
 
         return tokens;
-    }
-
-    private async Task<bool> IsUniqueUsername( string username )
-    {
-        UserDomain user = await _userRepository.GetUserByUsername( username );
-
-        return user is null;
     }
 }

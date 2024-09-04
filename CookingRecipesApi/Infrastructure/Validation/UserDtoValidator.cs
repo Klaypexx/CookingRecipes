@@ -1,21 +1,25 @@
-﻿using Application.Auth.Repositories;
-using CookingRecipesApi.Dto.AuthDto;
+﻿using Application.Auth.Entities;
+using Application.ResultObject;
+using Application.Users.Entities;
+using Application.Users.Repositories;
 using FluentValidation;
+using FluentValidation.Results;
 
-namespace CookingRecipesApi.Dto.Validators;
+namespace Infrastructure.Validation;
 
-public class RegisterDtoValidator : AbstractValidator<RegisterDto>
+public class UserValidator : AbstractValidator<User>, Application.Validation.IValidator<User>
 {
     private const int _nameMinWords = 3;
     private const int _nameMaxWords = 25;
     private const int _usernameMinWords = 3;
     private const int _usernameMaxWords = 25;
+    private const int _descriptionMaxWords = 150;
     private const int _passwordMinWords = 8;
     private const int _passwordMaxWords = 25;
 
-    public RegisterDtoValidator()
+    public UserValidator( IUserRepository userRepository )
     {
-        RuleFor( registerDto => registerDto.Name )
+        RuleFor( user => user.Name )
             .MinimumLength( _nameMinWords )
             .WithMessage( "Имя пользователя должно включать не менее " + _nameMinWords + " символов" )
             .MaximumLength( _nameMaxWords )
@@ -23,7 +27,7 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
             .NotEmpty()
             .WithMessage( "Имя пользователя не может быть пустым" );
 
-        RuleFor( registerDto => registerDto.UserName )
+        RuleFor( user => user.UserName )
             .MinimumLength( _usernameMinWords )
             .WithMessage( "Логин пользователя должен включать не менее " + _usernameMinWords + " символов" )
             .MaximumLength( _usernameMaxWords )
@@ -31,12 +35,26 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
             .NotEmpty()
             .WithMessage( "Логин пользователя не может быть пустым" );
 
-        RuleFor( registerDto => registerDto.Password )
-            .NotEmpty()
-            .WithMessage( "Пароль не может быть пустым" )
+        RuleFor( user => user.Description )
+            .MaximumLength( _descriptionMaxWords )
+            .WithMessage( "Описание пользователя должно включать не более " + _descriptionMaxWords + " символов" );
+
+        RuleFor( user => user.Password )
             .MinimumLength( _passwordMinWords )
-            .WithMessage( "Пароль должен включать не менее " + _passwordMinWords + " символов" )
+            .WithMessage( "Пароль должен включать не менее " + _passwordMinWords + "  символов" )
             .MaximumLength( _passwordMaxWords )
             .WithMessage( "Пароль должен включать не более " + _passwordMaxWords + " символов" );
+    }
+
+    Result Application.Validation.IValidator<User>.Validate( User entity )
+    {
+        ValidationResult result = Validate( entity );
+
+        if ( result.IsValid )
+        {
+            return new Result();
+        }
+
+        return new Result( result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList() );
     }
 }

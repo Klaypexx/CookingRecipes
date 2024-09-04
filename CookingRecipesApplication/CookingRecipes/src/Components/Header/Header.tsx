@@ -12,7 +12,7 @@ import useUserStore from '../../Stores/useUserStore';
 
 const Header = () => {
   const [userName, setUserName] = useState<string>();
-  const { isUserUpdate } = useUserStore();
+  const { userName: userNameFromStore } = useUserStore();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const { isAuthorized } = useAuthStore();
 
@@ -27,7 +27,7 @@ const Header = () => {
       };
       fetchUsername();
     }
-  }, [isAuthorized, isUserUpdate]);
+  }, [isAuthorized, userNameFromStore]);
 
   const handleLogin = () => {
     setAuth(isAuth);

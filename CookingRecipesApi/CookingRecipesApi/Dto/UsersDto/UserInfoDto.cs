@@ -1,6 +1,6 @@
-﻿namespace Application.Auth.Entities;
+﻿namespace CookingRecipesApi.Dto.UsersDto;
 
-public class UserInfo
+public class UserInfoDto
 {
     public string Name { get; set; }
     public string UserName { get; set; }

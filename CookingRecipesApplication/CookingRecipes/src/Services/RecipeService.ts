@@ -109,6 +109,7 @@ const GetRecipeById = async (recipeId: string) => {
     return { response };
   } catch (error) {
     handleError(error);
+    throw error;
   }
 };
 
