@@ -31,7 +31,7 @@ public class RecipeController : ControllerBase
 
         if ( !result.IsSuccess )
         {
-            return BadRequest( result.Errors ); //new ErrorResponse(  )
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
 
         return Ok();

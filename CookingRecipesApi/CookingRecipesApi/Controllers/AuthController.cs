@@ -5,8 +5,6 @@ using Application.ResultObject;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Utilities;
-using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

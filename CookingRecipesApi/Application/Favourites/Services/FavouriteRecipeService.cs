@@ -1,5 +1,6 @@
 ﻿using Application.Favourites.Repositories;
 using Application.Foundation;
+using Application.ResultObject;
 using Domain.Recipes.Entities;
 
 namespace Application.Favourites.Services;
@@ -14,21 +15,39 @@ public class FavouriteRecipeService : IFavouriteRecipeService
         _favouriteRepository = favouriteRepository;
         _unitOfWork = unitOfWork;
     }
-    public async Task AddFavouriteRecipe( int userId, int recipeId )
+    public async Task<Result> AddFavouriteRecipe( int userId, int recipeId )
     {
-        FavouriteRecipe favouriteRecipeToAdd = new( userId, recipeId );
+        try
+        {
+            FavouriteRecipe favouriteRecipeToAdd = new( userId, recipeId );
 
-        await _favouriteRepository.AddFavouriteRecipe( favouriteRecipeToAdd );
+            await _favouriteRepository.AddFavouriteRecipe( favouriteRecipeToAdd );
 
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
+
+            return new Result();
+        }
+        catch ( Exception e )
+        {
+            return new Result( new Error( e.Message ) );
+        }
     }
 
-    public async Task RemoveFavouriteRecipe( int userId, int recipeId )
+    public async Task<Result> RemoveFavouriteRecipe( int userId, int recipeId )
     {
-        FavouriteRecipe favouriteRecipeToRemove = await _favouriteRepository.GetFavouriteRecipe( userId, recipeId );
+        try
+        {
+            FavouriteRecipe favouriteRecipeToRemove = await _favouriteRepository.GetFavouriteRecipe( userId, recipeId );
 
-        _favouriteRepository.RemoveFavouriteRecipe( favouriteRecipeToRemove );
+            _favouriteRepository.RemoveFavouriteRecipe( favouriteRecipeToRemove );
 
-        await _unitOfWork.Save();
+            await _unitOfWork.Save();
+
+            return new Result();
+        }
+        catch ( Exception e )
+        {
+            return new Result( new Error( e.Message ) );
+        }
     }
 }

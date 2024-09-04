@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import UserStore from '../Types/UserStore';
 
 const useUserStore = create<UserStore>()((set) => ({
-  isUserUpdate: false,
+  userName: '',
 
-  setUserUpdate: () => set((state) => ({ isUserUpdate: !state.isUserUpdate })),
+  setUserName: (state) => set({ userName: state }),
 }));
 
 export default useUserStore;

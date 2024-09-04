@@ -17,7 +17,6 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Запрос');
     const fetchAuth = async () => {
       if (token) {
         await AuthService.isAuth()

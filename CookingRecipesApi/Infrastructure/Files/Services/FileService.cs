@@ -69,7 +69,7 @@ public class FileService : IFileService
 
         if ( actualfile == null )
         {
-            return null;
+            return oldPathToFile;
         }
 
         string pathToFile = await SaveFile( actualfile, directoryName );

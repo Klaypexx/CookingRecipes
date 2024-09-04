@@ -12,10 +12,12 @@ import { Link } from 'react-router-dom';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import RecipeService from '../../Services/RecipeService';
 import UserProfileRecipesValues from '../../Types/UserProfileRecipesValues';
+import useUserStore from '../../Stores/useUserStore';
 
 const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
+  const { userName } = useUserStore();
   const [user, setUser] = useState<UserValues>();
   const [userStatistic, setUserStatistic] = useState<UserStatisticValues>();
   const [recipes, setRecipes] = useState<UserProfileRecipesValues[]>([]);
@@ -54,6 +56,15 @@ const UserProfile = () => {
     }
     fetchRecipes();
   }, [pageNumber]);
+
+  useEffect(() => {
+    if (isFirstMount) {
+      setIsFirstMount(false);
+      return;
+    }
+    setRecipes([]);
+    fetchRecipes();
+  }, [userName]);
 
   useEffect(() => {
     const fetchData = async () => {

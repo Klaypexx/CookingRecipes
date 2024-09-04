@@ -61,7 +61,7 @@ const isAuth = async () => {
   try {
     await api.post(endpoints.isAuth);
   } catch (error) {
-    handleError(error);
+    throw error;
   }
 };
 

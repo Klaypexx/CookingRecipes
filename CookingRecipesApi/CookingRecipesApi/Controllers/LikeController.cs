@@ -1,4 +1,5 @@
 ﻿using Application.Likes.Services;
+using Application.ResultObject;
 using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,8 @@ public class LikeController : ControllerBase
 {
     private readonly ILikeService _likeService;
 
+    private int UserId => int.Parse( User.GetUserId() );
+
     public LikeController( ILikeService likeService )
     {
         _likeService = likeService;
@@ -21,36 +24,27 @@ public class LikeController : ControllerBase
     [Route( "" )]
     public async Task<IActionResult> AddLike( [FromBody] int recipeId )
     {
-        try
-        {
-            int userId = int.Parse( User.GetUserId() );
+        Result result = await _likeService.AddLike( UserId, recipeId );
 
-            await _likeService.AddLike( userId, recipeId );
-
-            return Ok();
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        return Ok();
     }
 
     [HttpDelete]
     [Route( "{recipeId}" )]
     public async Task<IActionResult> RemoveLike( [FromRoute] int recipeId )
     {
-        try
-        {
-            int userId = int.Parse( User.GetUserId() );
+        Result result = await _likeService.RemoveLike( UserId, recipeId );
 
-            await _likeService.RemoveLike( userId, recipeId );
-
-            return Ok();
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        return Ok();
     }
-
 }
