@@ -1,8 +1,10 @@
 ﻿using Application.Auth;
 using Application.Foundation;
+using Application.ResultObject;
 using Application.Users.Entities;
 using Application.Users.Extensions;
 using Application.Users.Repositories;
+using Application.Validation;
 using UserDomain = Domain.Auth.Entities.User;
 
 namespace Application.Users.Services;
@@ -12,53 +14,86 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserCreator _userCreator;
+    private readonly IValidator<User> _userValidator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UserService( IUserRepository userRepository, IPasswordHasher passwordHasher, IUserCreator userCreator, IUnitOfWork unitOfWork )
+    public UserService( IUserRepository userRepository, IPasswordHasher passwordHasher, IUserCreator userCreator, IValidator<User> userValidator, IUnitOfWork unitOfWork )
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _userCreator = userCreator;
+        _userValidator = userValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task UpdateUser( User user, string userName )
+    public async Task<Result> UpdateUser( User user, string userName )
     {
-        if ( user.UserName != userName )
+        try
         {
-            bool isUniqueUserName = await IsUniqueUsername( user.UserName );
+            Result result = _userValidator.Validate( user );
 
-            if ( !isUniqueUserName )
+            if ( !result.IsSuccess )
             {
-                throw new ArgumentException( "Логин пользователя должен быть уникальным" );
+                return result;
             }
+
+            if ( user.UserName != userName )
+            {
+                bool isUniqueUserName = await IsUniqueUsername( user.UserName );
+
+                if ( !isUniqueUserName )
+                {
+                    throw new ArgumentException( "Логин пользователя должен быть уникальным" );
+                }
+            }
+
+            UserDomain userDomain = await _userRepository.GetUserByUsername( userName );
+
+            string hashedPassword = string.Empty;
+            if ( !string.IsNullOrEmpty( user.Password ) )
+            {
+                hashedPassword = _passwordHasher.GeneratePasswordHash( user.Password );
+            }
+
+            userDomain.UpdateUser( _userCreator.Create( user, hashedPassword ) );
+
+            await _unitOfWork.Save();
+
+            return new Result();
         }
-
-        UserDomain userDomain = await _userRepository.GetUserByUsername( userName );
-
-        string hashedPassword = string.Empty;
-        if ( !string.IsNullOrEmpty( user.Password ) )
+        catch ( Exception e )
         {
-            hashedPassword = _passwordHasher.GeneratePasswordHash( user.Password );
+            return new Result( new Error( e.Message ) );
         }
 
-        userDomain.UpdateUser( _userCreator.Create( user, hashedPassword ) );
-
-        await _unitOfWork.Save();
     }
 
-    public async Task<UserInfo> GetUser( string userName )
+    public async Task<Result<UserInfo>> GetUser( string userName )
     {
-        UserDomain user = await _userRepository.GetUserByUsername( userName );
+        try
+        {
+            UserDomain user = await _userRepository.GetUserByUsername( userName );
 
-        return user.ToUserInfo();
+            return new Result<UserInfo>( user.ToUserInfo() );
+        }
+        catch ( Exception e )
+        {
+            return new Result<UserInfo>( new Error( e.Message ) );
+        }
     }
 
-    public async Task<UserStatistic> GetUserStatistic( string userName )
+    public async Task<Result<UserStatistic>> GetUserStatistic( string userName )
     {
-        UserDomain userStatistic = await _userRepository.GetUserByUsernameIncludingDependentEntities( userName );
+        try
+        {
+            UserDomain userStatistic = await _userRepository.GetUserByUsernameIncludingDependentEntities( userName );
 
-        return userStatistic.ToUserStatistic();
+            return new Result<UserStatistic>( userStatistic.ToUserStatistic() );
+        }
+        catch ( Exception e )
+        {
+            return new Result<UserStatistic>( new Error( e.Message ) );
+        }
     }
 
     public async Task<bool> IsUniqueUsername( string username )

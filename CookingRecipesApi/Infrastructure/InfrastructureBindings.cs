@@ -8,9 +8,9 @@ using Application.Likes.Repositories;
 using Application.Recipes.Entities;
 using Application.Recipes.Repositories;
 using Application.Tags.Repositories;
+using Application.Users.Entities;
 using Application.Users.Repositories;
 using Application.Validation;
-using CookingRecipesApi.Dto.Validators;
 using Infrastructure.Auth;
 using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
@@ -38,6 +38,7 @@ public static class InfrastructureBindings
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IFavouriteRecipeRepository, FavouriteRecipeRepository>();
 
+        services.AddScoped<IValidator<User>, UserValidator>();
         services.AddScoped<IValidator<Register>, RegisterValidator>();
         services.AddScoped<IValidator<Login>, LoginValidator>();
         services.AddScoped<IValidator<Recipe>, RecipeValidator>();

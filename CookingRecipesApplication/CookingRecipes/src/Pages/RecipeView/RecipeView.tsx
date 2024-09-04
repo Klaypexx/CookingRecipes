@@ -57,9 +57,11 @@ const RecipeView = () => {
   }, [isAuthorized]);
 
   const handleRemove = async () => {
-    await RecipeService.removeRecipe(recipeId!).then(() => {
-      successToast('Рецепт успешно удален');
-      navigate(-1);
+    await RecipeService.removeRecipe(recipeId!).then((res) => {
+      if (res) {
+        successToast('Рецепт успешно удален');
+        navigate(-1);
+      }
     });
   };
 

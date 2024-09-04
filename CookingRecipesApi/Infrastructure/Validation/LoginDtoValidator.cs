@@ -3,7 +3,7 @@ using Application.ResultObject;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace CookingRecipesApi.Dto.Validators;
+namespace Infrastructure.Validation;
 
 public class LoginValidator : AbstractValidator<Login>, Application.Validation.IValidator<Login>
 {

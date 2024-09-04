@@ -3,10 +3,9 @@ using CookingRecipesApi.Dto.UsersDto;
 using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
-using FluentValidation.Results;
 using CookingRecipesApi.Dto.Extensions;
 using Application.Users.Services;
+using Application.ResultObject;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -16,56 +15,42 @@ namespace CookingRecipesApi.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-    private readonly IValidator<UserDto> _userDtoValidator;
 
-    public UserController( IUserService userService, IValidator<UserDto> userDtoValidator )
+    private string UserName => User.GetUserName();
+
+    public UserController( IUserService userService )
     {
         _userService = userService;
-        _userDtoValidator = userDtoValidator;
     }
 
     [HttpPut]
     [Route( "" )]
     public async Task<IActionResult> UpdateUser( [FromForm] UserDto userDto )
     {
-        ValidationResult validationResult = await _userDtoValidator.ValidateAsync( userDto );
+        Result result = await _userService.UpdateUser( userDto.ToApplication(), UserName );
 
-        if ( !validationResult.IsValid )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( validationResult.ToDictionary() ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
 
-        try
-        {
-            string userName = User.GetUserName();
-
-            await _userService.UpdateUser( userDto.ToApplication(), userName );
-
-            return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
+        return Ok();
     }
 
     [HttpGet]
     [Route( "" )]
     public async Task<IActionResult> GetUser()
     {
-        try
-        {
-            string userName = User.GetUserName();
+        Result<UserInfo> result = await _userService.GetUser( UserName );
 
-            UserInfo user = await _userService.GetUser( userName );
-            UserInfoDto userDto = user.ToUserInfoDto();
-
-            return Ok( userDto );
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        UserInfoDto userDto = result.Value.ToUserInfoDto();
+
+        return Ok( userDto );
     }
 
     [HttpGet]
@@ -87,18 +72,15 @@ public class UserController : ControllerBase
     [Route( "statistic" )]
     public async Task<IActionResult> GetUserStatistic()
     {
-        try
-        {
-            string userName = User.GetUserName();
+        Result<UserStatistic> result = await _userService.GetUserStatistic( UserName );
 
-            UserStatistic userStatistic = await _userService.GetUserStatistic( userName );
-            UserStatisticDto userStatisticDto = userStatistic.ToUserStatisticDto();
-
-            return Ok( userStatisticDto );
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        UserStatisticDto userStatisticDto = result.Value.ToUserStatisticDto();
+
+        return Ok( userStatisticDto );
     }
 }

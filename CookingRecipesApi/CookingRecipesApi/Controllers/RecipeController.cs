@@ -42,23 +42,15 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
-        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, AuthorId );
+        Result result = await _recipeService.UpdateRecipe( recipeDto.ToApplication( AuthorId ), recipeId );
 
-        if ( !hasAccess )
+        if ( !result.IsSuccess )
         {
-            return StatusCode( 403, new ErrorResponse( "Нет доступа" ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
 
-        try
-        {
-            await _recipeService.UpdateRecipe( recipeDto.ToApplication( AuthorId ), recipeId );
+        return Ok();
 
-            return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
     }
 
     [HttpDelete]
@@ -66,45 +58,36 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
     {
-        bool hasAccess = await _recipeService.HasAccessToRecipe( recipeId, AuthorId );
+        Result result = await _recipeService.RemoveRecipe( recipeId, AuthorId );
 
-        if ( !hasAccess )
+        if ( !result.IsSuccess )
         {
-            return StatusCode( 403, new ErrorResponse( "Нет доступа" ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
 
-        try
-        {
-            await _recipeService.RemoveRecipe( recipeId );
-
-            return Ok();
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
+        return Ok();
     }
 
     [HttpGet]
     [Route( "" )]
     public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1, [FromQuery] string searchString = "" )
     {
-        try
+        int authorId = 0;
+        if ( User.Identity.IsAuthenticated )
         {
-            int authorId = 0;
-            if ( User.Identity.IsAuthenticated )
-            {
-                authorId = AuthorId;
-            }
+            authorId = AuthorId;
+        }
 
-            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
-            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
-            return Ok( recipesDtoData );
-        }
-        catch ( Exception exception )
+        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( result.Value.Recipes.ToOverviewRecipeDto(), result.Value.IsLastRecipes );
+
+        return Ok( recipesDtoData );
     }
 
     [HttpGet]
@@ -112,17 +95,16 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetFavouritesRecipes( [FromQuery] int pageNumber = 1 )
     {
-        try
+        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetFavouriteRecipes( pageNumber, AuthorId );
+
+        if ( !result.IsSuccess )
         {
-            int authorId = int.Parse( User.GetUserId() );
-            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetFavouriteRecipes( pageNumber, authorId );
-            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
-            return Ok( recipesDtoData );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
+
+        RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( result.Value.Recipes.ToOverviewRecipeDto(), result.Value.IsLastRecipes );
+
+        return Ok( recipesDtoData );
     }
 
     [HttpGet]
@@ -130,61 +112,60 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserRecipes( [FromQuery] int pageNumber = 1 )
     {
-        try
+        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetUserRecipes( pageNumber, AuthorId );
+
+        if ( !result.IsSuccess )
         {
-            int authorId = int.Parse( User.GetUserId() );
-            RecipesData<OverviewRecipe> recipesData = await _recipeService.GetUserRecipes( pageNumber, authorId );
-            RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( recipesData.Recipes.ToOverviewRecipeDto(), recipesData.IsLastRecipes );
-            return Ok( recipesDtoData );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
+
+        RecipesDataDto<OverviewRecipeDto> recipesDtoData = new( result.Value.Recipes.ToOverviewRecipeDto(), result.Value.IsLastRecipes );
+
+        return Ok( recipesDtoData );
     }
 
     [HttpGet]
     [Route( "liked" )]
     public async Task<IActionResult> GetMostLikedRecipe()
     {
-        try
-        {
-            MostLikedRecipe recipe = await _recipeService.GetMostLikedRecipe();
+        Result<MostLikedRecipe> result = await _recipeService.GetMostLikedRecipe();
 
-            if ( recipe == null )
-            {
-                return Ok();
-            }
-
-            MostLikedRecipeDto recipeDto = recipe.ToMostLikedRecipeDto();
-            return Ok( recipeDto );
-        }
-        catch ( Exception exception )
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        if ( result.Value == null )
+        {
+            return Ok();
+        }
+
+        MostLikedRecipeDto recipeDto = result.Value.ToMostLikedRecipeDto();
+
+        return Ok( recipeDto );
+
     }
 
     [HttpGet]
     [Route( "{recipeId}" )]
     public async Task<IActionResult> GetRecipeByIdIncludingDependentEntities( [FromRoute] int recipeId )
     {
-        try
+        int authorId = 0;
+        if ( User.Identity.IsAuthenticated )
         {
-            int authorId = 0;
-            if ( User.Identity.IsAuthenticated )
-            {
-                authorId = int.Parse( User.GetUserId() );
-            }
+            authorId = int.Parse( User.GetUserId() );
+        }
 
-            CompleteRecipe recipes = await _recipeService.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );
-            CompletetRecipeDto recipeDto = recipes.ToCompleteRecipeDto();
-            return Ok( recipeDto );
-        }
-        catch ( Exception exception )
+        Result<CompleteRecipe> result = await _recipeService.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );
+
+        if ( !result.IsSuccess )
         {
-            return BadRequest( new ErrorResponse( exception.Message ) );
+            return BadRequest( new ErrorResponse( result.Errors ) );
         }
+
+        CompletetRecipeDto recipeDto = result.Value.ToCompleteRecipeDto();
+
+        return Ok( recipeDto );
 
     }
 }

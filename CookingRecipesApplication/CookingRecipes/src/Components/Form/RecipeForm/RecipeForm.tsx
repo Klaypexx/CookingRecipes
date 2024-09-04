@@ -60,9 +60,11 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
       formData.append(`Steps[${index}].Description`, step.description);
     });
 
-    await onSubmit(formData).then(() => {
-      successToast(toastMessage);
-      navigate(-1);
+    await onSubmit(formData).then((res: any) => {
+      if (res) {
+        successToast(toastMessage);
+        navigate(-1);
+      }
     });
   };
 

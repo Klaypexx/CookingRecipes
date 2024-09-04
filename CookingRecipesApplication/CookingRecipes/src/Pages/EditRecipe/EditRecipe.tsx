@@ -6,7 +6,6 @@ import Subheader from '../../Components/Subheader/Subheader';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import Spinner from '../../Components/Spinner/Spinner';
 import EditRecipeValues from '../../Types/EditRecipeValues';
-import UserService from '../../Services/UserService';
 
 const EditRecipe = () => {
   const [values, setValues] = useState<EditRecipeValues>();
@@ -19,19 +18,7 @@ const EditRecipe = () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
           if (res && res.response.status == 200) {
-            const authorName = res.response.data.authorName;
             setValues(res.response.data);
-
-            await UserService.username().then((res) => {
-              if (res) {
-                const userName = res.response.data.userName;
-                if (authorName !== userName) {
-                  navigate(-1);
-                }
-              }
-            });
-          } else {
-            navigate(-1);
           }
         })
         .catch(() => {
