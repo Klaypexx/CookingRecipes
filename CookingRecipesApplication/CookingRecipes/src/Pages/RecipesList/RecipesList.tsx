@@ -7,11 +7,9 @@ import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
 import RecipeListValues from '../../Types/RecipeListValues';
 import Spinner from '../../Components/Spinner/Spinner';
-import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import BaseCard from '../../Components/Card/BaseCard/BaseCard';
-import { Link } from 'react-router-dom';
 import useAuthStore from '../../Stores/useAuthStore';
 import SearchBlockValues from '../../Types/SearchBlockValues';
+import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import useSearchStore from '../../Stores/useSearchStore';
 
 const RecipesList = () => {
@@ -89,26 +87,7 @@ const RecipesList = () => {
         {loading ? (
           <Spinner />
         ) : (
-          <>
-            <div className={styles.recipesContainer}>
-              {values.length > 0 ? (
-                <>
-                  {values.map((value, index) => (
-                    <Link key={index} to={`/recipes/${value.id}`}>
-                      <BaseCard props={value} recipeId={value.id.toString()} />
-                    </Link>
-                  ))}
-                </>
-              ) : (
-                <div className={styles.noRecipesBox}>
-                  <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-                </div>
-              )}
-            </div>
-            {isLoadButton && (
-              <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-            )}
-          </>
+          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={values} />
         )}
       </section>
     </div>

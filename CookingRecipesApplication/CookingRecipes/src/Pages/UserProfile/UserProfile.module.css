@@ -13,21 +13,7 @@
 .recipesListSection {
   margin-bottom: 108px;
 }
+
 .recipesListHeader {
   margin-bottom: 40px;
-}
-
-.noRecipesBox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.noRecipeText {
-  color: rgb(253, 177, 0);
-}
-
-.loadButton {
-  margin: 0 auto;
-  width: 309px;
 }

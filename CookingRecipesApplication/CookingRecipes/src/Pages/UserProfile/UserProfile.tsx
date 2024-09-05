@@ -7,9 +7,7 @@ import UserValues from '../../Types/UserValues';
 import Spinner from '../../Components/Spinner/Spinner';
 import UserStatisticValues from '../../Types/UserStatisticValues';
 import StatisticList from '../../Components/Statistic/StatisticList/StatisticList';
-import BaseCard from '../../Components/Card/BaseCard/BaseCard';
-import { Link } from 'react-router-dom';
-import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import RecipeService from '../../Services/RecipeService';
 import UserProfileRecipesValues from '../../Types/UserProfileRecipesValues';
 import useUserStore from '../../Stores/useUserStore';
@@ -83,6 +81,7 @@ const UserProfile = () => {
       <section>
         <Subheader backward text="Мой профиль" />
       </section>
+
       {loading ? (
         <Spinner />
       ) : (
@@ -90,30 +89,14 @@ const UserProfile = () => {
           <section className={styles.UserFormSection}>
             <UserForm values={user!} />
           </section>
+
           <section className={styles.StatisticListSection}>
             <StatisticList values={userStatistic!} />
           </section>
+
           <section className={styles.recipesListSection}>
             <h3 className={styles.recipesListHeader}>Мои рецепты</h3>
-
-            <div className={styles.recipesContainer}>
-              {recipes.length > 0 ? (
-                <>
-                  {recipes.map((recipe, index) => (
-                    <Link key={index} to={`/recipes/${recipe.id}`}>
-                      <BaseCard props={recipe} recipeId={recipe.id.toString()} />
-                    </Link>
-                  ))}
-                </>
-              ) : (
-                <div className={styles.noRecipesBox}>
-                  <h4 className={styles.noRecipeText}>Список рецептов пуст</h4>
-                </div>
-              )}
-            </div>
-            {isLoadButton && (
-              <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-            )}
+            <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={recipes} />
           </section>
         </>
       )}
