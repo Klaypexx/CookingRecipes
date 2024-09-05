@@ -18,7 +18,6 @@ const useModalStore = create<ModalStore>()((set) => ({
       isRegister: false,
       isLogout: false,
     })),
-  set,
 }));
 
 export default useModalStore;

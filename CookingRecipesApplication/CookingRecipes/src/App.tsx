@@ -10,24 +10,35 @@ import Spinner from './Components/Spinner/Spinner';
 import TokenService from './Services/TokenService';
 import AuthService from './Services/AuthService';
 import useAuthStore from './Stores/useAuthStore';
+import UserService from './Services/UserService';
+import useUserStore from './Stores/useUserStore';
 
 function App() {
   const token = TokenService.getAccessToken();
   const { setAuthorized, isAuthorized } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const { setUserName } = useUserStore();
 
   useEffect(() => {
     const fetchAuth = async () => {
-      console.log('Я в фетче');
       if (token) {
-        await AuthService.isAuth().then(() => {
-          setAuthorized(true);
+        await AuthService.isAuth()
+          .then(() => {
+            setAuthorized(true);
+          })
+          .catch(() => {
+            setAuthorized(false);
+          });
+        await UserService.username().then((res) => {
+          if (res) {
+            setUserName(res.response.data.userName);
+          }
         });
       }
       setLoading(false);
     };
     fetchAuth();
-  }, []);
+  }, [isAuthorized]);
 
   useEffect(() => {
     if (isAuthorized) {
@@ -46,9 +57,7 @@ function App() {
   return (
     <>
       <Header />
-      <Suspense fallback={<Spinner />}>
-        <Outlet />
-      </Suspense>
+      <Outlet />
       <ModalBlock />
       <ToastContainer />
       <Footer />

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Subheader from '../../Components/Subheader/Subheader';
 import styles from './Favourites.module.css';
 import RecipeService from '../../Services/RecipeService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import Spinner from '../../Components/Spinner/Spinner';

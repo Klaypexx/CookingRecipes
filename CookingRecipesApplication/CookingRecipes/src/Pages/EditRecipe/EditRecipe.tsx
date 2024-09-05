@@ -6,19 +6,27 @@ import Subheader from '../../Components/Subheader/Subheader';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import Spinner from '../../Components/Spinner/Spinner';
 import EditRecipeValues from '../../Types/EditRecipeValues';
+import useUserStore from '../../Stores/useUserStore';
 
 const EditRecipe = () => {
   const [values, setValues] = useState<EditRecipeValues>();
-  const { recipeId } = useParams();
   let [loading, setLoading] = useState(true);
+  const { userName } = useUserStore();
+  const { recipeId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
-          if (res && res.response.status == 200) {
+          if (res) {
             setValues(res.response.data);
+
+            const authorName = res.response.data.authorName;
+
+            if (authorName !== userName) {
+              navigate(-1);
+            }
           }
         })
         .catch(() => {

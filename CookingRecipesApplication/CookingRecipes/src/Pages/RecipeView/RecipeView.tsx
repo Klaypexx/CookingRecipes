@@ -8,14 +8,15 @@ import RecipeService from '../../Services/RecipeService';
 import RecipeViewValues from '../../Types/RecipeViewValues';
 import { successToast } from '../../Components/Toast/Toast';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
-import UserService from '../../Services/UserService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
 import useAuthStore from '../../Stores/useAuthStore';
 import Spinner from '../../Components/Spinner/Spinner';
+import useUserStore from '../../Stores/useUserStore';
 
 const RecipeView = () => {
   let [loading, setLoading] = useState(true);
-  const [isRecipeOwner, setRecipeOwner] = useState(false);
+  const [isRecipeOwner, setIsRecipeOwner] = useState(false);
+  const { userName } = useUserStore();
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
   const navigate = useNavigate();
@@ -31,22 +32,16 @@ const RecipeView = () => {
     const fetchRecipes = async () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
-          if (res && res.response.status == 200) {
+          if (res) {
             setValues(res.response.data);
 
             const authorName = res.response.data.authorName;
 
             if (isAuthorized) {
-              await UserService.username().then((res) => {
-                if (res) {
-                  const userName = res.response.data.userName;
-                  setRecipeOwner(authorName === userName);
-                }
-              });
+              setIsRecipeOwner(authorName === userName);
             }
+
             setLoading(false);
-          } else {
-            navigate(-1);
           }
         })
         .catch(() => {
