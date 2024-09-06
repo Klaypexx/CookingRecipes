@@ -1,3 +1,3 @@
 export default interface NameOfUserResponseValues {
-  Name: string;
+  name: string;
 }

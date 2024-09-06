@@ -57,15 +57,18 @@ public class UserController : ControllerBase
     [Route( "username" )]
     public IActionResult GetUsername()
     {
-        try
-        {
-            UserNameDto username = new() { UserName = User.GetUserName() };
-            return Ok( username );
-        }
-        catch ( Exception exception )
-        {
-            return BadRequest( new ErrorResponse( exception.Message ) );
-        }
+        UserNameDto username = new() { UserName = User.GetUserName() };
+        return Ok( username );
+
+    }
+
+
+    [HttpGet]
+    [Route( "name" )]
+    public IActionResult GetNameOfUser()
+    {
+        NameOfUserDto name = new() { Name = User.GetNameOfUser() };
+        return Ok( name );
     }
 
     [HttpGet]

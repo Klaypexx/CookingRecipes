@@ -23,7 +23,8 @@ public class TokenService : ITokenService
         List<Claim> claims = new()
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim("username", user.UserName),
         };
 
         ClaimsIdentity identity = new( claims, "Token" );
