@@ -1,0 +1,18 @@
+.recipesContainer {
+  margin-bottom: 65px;
+}
+
+.loadButton {
+  margin: 0 auto;
+  width: 309px;
+}
+
+.noRecipesBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noRecipeText {
+  color: rgb(253, 177, 0);
+}

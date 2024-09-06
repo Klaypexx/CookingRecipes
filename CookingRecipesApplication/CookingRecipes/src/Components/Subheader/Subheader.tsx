@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import styles from './Subheader.module.css';
-import arrowIcon from '../../resources/icons/backward-arrow.svg';
 import { useNavigate } from 'react-router-dom';
+import arrowIcon from '../../resources/icons/backward-arrow.svg';
 import SubheaderProps from '../../Types/SubheaderProps';
+import styles from './Subheader.module.css';
 
 const Subheader: React.FC<SubheaderProps> = ({ backward, text, children }) => {
   const navigate = useNavigate();

@@ -1,12 +1,12 @@
-import useModalStore from '../../../Stores/useModalStore';
 import AuthService from '../../../Services/AuthService';
+import useModalStore from '../../../Stores/useModalStore';
+import RegisterValues from '../../../Types/RegisterValues';
+import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
+import BaseField from '../../Field/BaseField/BaseField';
 import { successToast } from '../../Toast/Toast';
 import BaseForm from '../BaseForm/BaseForm';
-import BaseField from '../../Field/BaseField/BaseField';
 import styles from './RegisterForm.module.css';
-import ButtonBlock from '../../Button/ButtonBlock/ButtonBlock';
 import registerValidation from './RegisterValidaton';
-import RegisterValues from '../../../Types/RegisterValues';
 
 const RegisterForm = () => {
   const { isLogin, setLogin, unsetAll } = useModalStore();

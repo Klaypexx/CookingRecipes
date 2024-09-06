@@ -1,24 +1,32 @@
-import RecipeForm from '../../Components/Form/RecipeForm/RecipeForm';
-import RecipeService from '../../Services/RecipeService';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Subheader from '../../Components/Subheader/Subheader';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import RecipeForm from '../../Components/Form/RecipeForm/RecipeForm';
 import Spinner from '../../Components/Spinner/Spinner';
+import Subheader from '../../Components/Subheader/Subheader';
+import RecipeService from '../../Services/RecipeService';
+import useUserStore from '../../Stores/useUserStore';
 import EditRecipeValues from '../../Types/EditRecipeValues';
 
 const EditRecipe = () => {
   const [values, setValues] = useState<EditRecipeValues>();
-  const { recipeId } = useParams();
   let [loading, setLoading] = useState(true);
+  const { userName } = useUserStore();
+  const { recipeId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
-          if (res && res.response.status == 200) {
+          if (res) {
             setValues(res.response.data);
+
+            const authorName = res.response.data.authorName;
+
+            if (authorName !== userName) {
+              navigate(-1);
+            }
           }
         })
         .catch(() => {

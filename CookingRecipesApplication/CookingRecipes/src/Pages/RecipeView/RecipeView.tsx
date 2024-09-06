@@ -1,21 +1,22 @@
-import Subheader from '../../Components/Subheader/Subheader';
-import styles from './RecipeView.module.css';
-import removeIcon from '../../resources/icons/remove.svg';
-import BaseCard from '../../Components/Card/BaseCard/BaseCard';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import RecipeService from '../../Services/RecipeService';
-import RecipeViewValues from '../../Types/RecipeViewValues';
-import { successToast } from '../../Components/Toast/Toast';
-import BaseLink from '../../Components/Link/BaseLink/BaseLink';
-import UserService from '../../Services/UserService';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
-import useAuthStore from '../../Stores/useAuthStore';
+import BaseLink from '../../Components/Link/BaseLink/BaseLink';
+import RecipeViewBlock from '../../Components/Recipe/RecipeView/RecipeView';
 import Spinner from '../../Components/Spinner/Spinner';
+import Subheader from '../../Components/Subheader/Subheader';
+import { successToast } from '../../Components/Toast/Toast';
+import removeIcon from '../../resources/icons/remove.svg';
+import RecipeService from '../../Services/RecipeService';
+import useAuthStore from '../../Stores/useAuthStore';
+import useUserStore from '../../Stores/useUserStore';
+import RecipeViewValues from '../../Types/RecipeViewValues';
+import styles from './RecipeView.module.css';
 
 const RecipeView = () => {
   let [loading, setLoading] = useState(true);
-  const [isRecipeOwner, setRecipeOwner] = useState(false);
+  const [isRecipeOwner, setIsRecipeOwner] = useState(false);
+  const { userName } = useUserStore();
   const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
   const navigate = useNavigate();
@@ -31,22 +32,16 @@ const RecipeView = () => {
     const fetchRecipes = async () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
-          if (res && res.response.status == 200) {
+          if (res) {
             setValues(res.response.data);
 
             const authorName = res.response.data.authorName;
 
             if (isAuthorized) {
-              await UserService.username().then((res) => {
-                if (res) {
-                  const userName = res.response.data.userName;
-                  setRecipeOwner(authorName === userName);
-                }
-              });
+              setIsRecipeOwner(authorName === userName);
             }
+
             setLoading(false);
-          } else {
-            navigate(-1);
           }
         })
         .catch(() => {
@@ -86,29 +81,7 @@ const RecipeView = () => {
         <Spinner />
       ) : (
         <section>
-          <BaseCard props={values} recipeId={recipeId!} />
-          <div className={styles.flexContainer}>
-            <div>
-              <h4 className={styles.ingredientsHeader}>Ингредиенты</h4>
-              {values?.ingredients.map((ingredient, index) => (
-                <div key={index} className={styles.ingredientBox}>
-                  <p className={styles.ingredientsName}>{ingredient.name}</p>
-                  <p className={styles.ingredientsText}>{ingredient.product}</p>
-                </div>
-              ))}
-            </div>
-            <div>
-              {values?.steps.map((step, index) => (
-                <div key={index} className={styles.stepBox}>
-                  <p className={styles.stepHeader}>Шаг {index + 1}</p>
-                  <div className={styles.stepTextBox}>
-                    <p>{step.description}</p>
-                  </div>
-                </div>
-              ))}
-              <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
-            </div>
-          </div>
+          <RecipeViewBlock values={values!} recipeId={recipeId!} />
         </section>
       )}
     </div>

@@ -1,5 +1,5 @@
-import BaseModal from '../BaseModal/BaseModal';
 import LoginForm from '../../Form/LoginForm/LoginForm';
+import BaseModal from '../BaseModal/BaseModal';
 
 const LoginModal = () => {
   return (

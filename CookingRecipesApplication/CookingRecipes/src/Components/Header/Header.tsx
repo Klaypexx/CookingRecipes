@@ -1,33 +1,33 @@
-import styles from './Header.module.css';
-import logoImage from '../../resources/img/Logo.png';
-import userAvatar from '../../resources/icons/user.svg';
-import exitIcon from '../../resources/icons/exit.svg';
-import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import exitIcon from '../../resources/icons/exit.svg';
+import userAvatar from '../../resources/icons/user.svg';
+import logoImage from '../../resources/img/Logo.png';
 import UserService from '../../Services/UserService';
-import useModalStore from '../../Stores/useModalStore';
 import useAuthStore from '../../Stores/useAuthStore';
+import useModalStore from '../../Stores/useModalStore';
 import useUserStore from '../../Stores/useUserStore';
+import styles from './Header.module.css';
 
 const Header = () => {
-  const [userName, setUserName] = useState<string>();
-  const { userName: userNameFromStore } = useUserStore();
+  const [nameOfUser, setNameOfUser] = useState<string>('');
+  const { nameOfUser: name } = useUserStore();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
     if (isAuthorized) {
       const fetchUsername = async () => {
-        await UserService.username().then((res) => {
+        await UserService.nameOfUser().then((res) => {
           if (res) {
-            setUserName(res.response.data.userName);
+            setNameOfUser(res.response.data.name);
           }
         });
       };
       fetchUsername();
     }
-  }, [isAuthorized, userNameFromStore]);
+  }, [isAuthorized, name]);
 
   const handleLogin = () => {
     setAuth(isAuth);
@@ -70,10 +70,10 @@ const Header = () => {
         <div className={styles.userAvatarBox}>
           <img src={userAvatar} alt="User Icon" className={styles.userAvatarImage} />
         </div>
-        {isAuthorized && userName ? (
+        {isAuthorized && nameOfUser ? (
           <div className={styles.authBox}>
             <Link className={styles.authLink} to={'profile'}>
-              <p className={styles.authText}>Привет, {userName}</p>
+              <p className={styles.authText}>Привет, {nameOfUser}</p>
               <div className={styles.line}></div>
             </Link>
             <img src={exitIcon} alt="" className={styles.exit} onClick={handleLogout} />

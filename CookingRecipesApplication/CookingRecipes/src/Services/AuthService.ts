@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios';
+import { handleError } from '../Helpers/ErrorHandler';
+import LoginValues from '../Types/LoginValues';
+import RegisterValues from '../Types/RegisterValues';
 import api from '../util/api';
 import TokenService from './TokenService';
-import RegisterValues from '../Types/RegisterValues';
-import LoginValues from '../Types/LoginValues';
-import { handleError } from '../Helpers/ErrorHandler';
 
 const endpoints = {
   login: '/auth/login',

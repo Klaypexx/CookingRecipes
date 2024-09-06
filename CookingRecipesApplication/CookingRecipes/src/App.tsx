@@ -1,33 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Header from './Components/Header/Header';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './Components/Footer/Footer';
+import Header from './Components/Header/Header';
 import ModalBlock from './Components/Modal/ModalBlock/ModaBlock';
-import { Suspense, useEffect, useState } from 'react';
 import Spinner from './Components/Spinner/Spinner';
-import TokenService from './Services/TokenService';
 import AuthService from './Services/AuthService';
+import TokenService from './Services/TokenService';
+import UserService from './Services/UserService';
 import useAuthStore from './Stores/useAuthStore';
+import useUserStore from './Stores/useUserStore';
 
 function App() {
   const token = TokenService.getAccessToken();
   const { setAuthorized, isAuthorized } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const { setUserName } = useUserStore();
 
   useEffect(() => {
     const fetchAuth = async () => {
-      console.log('Я в фетче');
       if (token) {
-        await AuthService.isAuth().then(() => {
-          setAuthorized(true);
+        await AuthService.isAuth()
+          .then(() => {
+            setAuthorized(true);
+          })
+          .catch(() => {
+            setAuthorized(false);
+          });
+        await UserService.username().then((res) => {
+          if (res) {
+            setUserName(res.response.data.userName);
+          }
         });
       }
       setLoading(false);
     };
     fetchAuth();
-  }, []);
+  }, [isAuthorized]);
 
   useEffect(() => {
     if (isAuthorized) {
@@ -46,9 +57,7 @@ function App() {
   return (
     <>
       <Header />
-      <Suspense fallback={<Spinner />}>
-        <Outlet />
-      </Suspense>
+      <Outlet />
       <ModalBlock />
       <ToastContainer />
       <Footer />

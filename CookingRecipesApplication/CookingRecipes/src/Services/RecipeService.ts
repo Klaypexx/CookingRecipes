@@ -1,12 +1,12 @@
 import { AxiosResponse } from 'axios';
-import api from '../util/api';
-import RecipeResponseValues from '../Types/RecipeResponseValues';
-import RecipeByIdResponseValues from '../Types/RecipeByIdResponseValues';
-import MostLikedRecipeResponseValue from '../Types/MostLikedRecipeResponseValue';
 import { handleError } from '../Helpers/ErrorHandler';
 import FavouriteRecipeResponseValues from '../Types/FavouriteRecipeResponseValues';
+import MostLikedRecipeResponseValue from '../Types/MostLikedRecipeResponseValue';
+import RecipeByIdResponseValues from '../Types/RecipeByIdResponseValues';
+import RecipeResponseValues from '../Types/RecipeResponseValues';
 import RecipesDataResponse from '../Types/RecipesDataResponse';
 import UserRecipeResponseValue from '../Types/UserRecipeResponseValues';
+import api from '../util/api';
 
 const endpoints = {
   create: '/recipes/',
@@ -61,7 +61,6 @@ const GetRecipes = async (pageNumber: number, searchString: string) => {
     const response: AxiosResponse<RecipesDataResponse<RecipeResponseValues>, any> = await api.get(
       `${endpoints.getRecipes}${pageNumber}&searchString=${searchString}`,
     );
-    console.log(response.data.recipes);
     return { response };
   } catch (error) {
     handleError(error);

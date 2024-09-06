@@ -1,8 +1,8 @@
 import axios from 'axios';
-import TokenService from '../Services/TokenService';
-import AuthService from '../Services/AuthService';
-import { BASE_URL } from '../Constants/httpUrl';
 import { errorToast } from '../Components/Toast/Toast';
+import { BASE_URL } from '../Constants/httpUrl';
+import AuthService from '../Services/AuthService';
+import TokenService from '../Services/TokenService';
 
 const api = axios.create({
   baseURL: BASE_URL,

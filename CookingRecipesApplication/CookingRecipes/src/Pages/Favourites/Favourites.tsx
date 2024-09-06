@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import Subheader from '../../Components/Subheader/Subheader';
-import styles from './Favourites.module.css';
-import RecipeService from '../../Services/RecipeService';
-import { Link } from 'react-router-dom';
-import BaseCard from '../../Components/Card/BaseCard/BaseCard';
-import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import Spinner from '../../Components/Spinner/Spinner';
+import Subheader from '../../Components/Subheader/Subheader';
+import RecipeService from '../../Services/RecipeService';
 import FavouritesRecipeValues from '../../Types/FavouritesRecipeValues';
+import styles from './Favourites.module.css';
 
 const Favourites = () => {
   let [loading, setLoading] = useState(true);
@@ -36,30 +34,12 @@ const Favourites = () => {
       <section>
         <Subheader text="Избранное" />
       </section>
+
       <section className={styles.recipesListSection}>
         {loading ? (
           <Spinner />
         ) : (
-          <>
-            <div className={styles.recipesListBlock}>
-              {values.length > 0 ? (
-                <>
-                  {values.map((value, index) => (
-                    <Link key={index} to={`/recipes/${value.id}`}>
-                      <BaseCard props={value} recipeId={value.id.toString()} />
-                    </Link>
-                  ))}
-                </>
-              ) : (
-                <div className={styles.noRecipesBlock}>
-                  <h4 className={styles.noRecipeText}>Ваш список пуст</h4>
-                </div>
-              )}
-            </div>
-            {isLoadButton && (
-              <BaseButton onClick={handleClick} buttonText="Загрузить еще" className={styles.loadButton} />
-            )}
-          </>
+          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={values} />
         )}
       </section>
     </div>

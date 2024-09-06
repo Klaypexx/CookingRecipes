@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import useAuthStore from '../../../Stores/useAuthStore';
 import FavouriteRecipeService from '../../../Services/FavouriteRecipeService';
-import BaseButton from '../BaseButton/BaseButton';
+import useAuthStore from '../../../Stores/useAuthStore';
+import useUserStore from '../../../Stores/useUserStore';
 import FavouriteRecipeButtonProps from '../../../Types/FavouriteRecipeButtonProps';
 import favourite from '../../../resources/icons/favourite.svg';
 import favouriteActive from '../../../resources/icons/favouriteActive.svg';
+import BaseButton from '../BaseButton/BaseButton';
 import styles from './FavouriteRecipeButton.module.css';
 
 const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
@@ -14,6 +15,7 @@ const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
 }) => {
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
+  const { setFavouritesCount } = useUserStore();
   let [loading, setLoading] = useState(true);
   const { isAuthorized } = useAuthStore();
 
@@ -32,11 +34,13 @@ const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
     if (isFavourite) {
       await FavouriteRecipeService.removeFavouriteRecipe(recipeId).then(() => {
         setCount((count) => count - 1);
+        setFavouritesCount(-1);
         setIsFavourite(false);
       });
     } else {
       await FavouriteRecipeService.addFavouriteRecipe(recipeId).then(() => {
         setCount((count) => count + 1);
+        setFavouritesCount(1);
         setIsFavourite(true);
       });
     }

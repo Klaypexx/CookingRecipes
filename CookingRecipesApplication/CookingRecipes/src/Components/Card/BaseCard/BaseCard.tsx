@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import styles from './BaseCard.module.css';
-import timeIcon from '../../../resources/icons/time.svg';
-import personIcon from '../../../resources/icons/person.svg';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
+import personIcon from '../../../resources/icons/person.svg';
+import timeIcon from '../../../resources/icons/time.svg';
 import BaseCardProps from '../../../Types/BaseCardProps';
-import LikeButton from '../../Button/LikeButton/LikeButton';
 import FavouriteRecipeButton from '../../Button/FavouriteRecipeButton/FavouriteRecipeButton';
+import LikeButton from '../../Button/LikeButton/LikeButton';
+import styles from './BaseCard.module.css';
 
 const BaseCard: React.FC<BaseCardProps> = ({ className, props, recipeId }) => {
   return (

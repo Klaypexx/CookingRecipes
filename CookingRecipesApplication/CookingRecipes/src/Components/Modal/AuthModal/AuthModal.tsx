@@ -1,9 +1,9 @@
-import BaseModal from '../BaseModal/BaseModal';
-import styles from './AuthModal.module.css';
-import LoginModal from '../LoginModal/LoginModal';
-import RegisterModal from '../RegisterModal/RegisterModal';
 import useModalStore from '../../../Stores/useModalStore';
 import LinkBlock from '../../Link/LinkBlock/LinkBlock';
+import BaseModal from '../BaseModal/BaseModal';
+import LoginModal from '../LoginModal/LoginModal';
+import RegisterModal from '../RegisterModal/RegisterModal';
+import styles from './AuthModal.module.css';
 
 const AuthModal = () => {
   const { isAuth, isLogin, isRegister, setAuth, setLogin, setRegister } = useModalStore();

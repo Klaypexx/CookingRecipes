@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from './BaseButton.module.css';
 import classNames from 'classnames';
+import React from 'react';
 import ButtonProps from '../../../Types/ButtonProps';
+import styles from './BaseButton.module.css';
 
 const BaseButton: React.FC<ButtonProps> = ({ primary, className, type, form, buttonText, onClick, children }) => {
   const classNameBase = classNames(primary ? styles.buttonPrimary : styles.buttonSecondary, styles.baseButton);

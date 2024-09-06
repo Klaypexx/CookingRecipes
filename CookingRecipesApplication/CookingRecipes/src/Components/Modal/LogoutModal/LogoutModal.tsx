@@ -1,11 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import AuthService from '../../../Services/AuthService';
+import useAuthStore from '../../../Stores/useAuthStore';
 import useModalStore from '../../../Stores/useModalStore';
-import BaseModal from '../BaseModal/BaseModal';
-import styles from './LogoutModule.module.css';
 import LinkBlock from '../../Link/LinkBlock/LinkBlock';
 import { successToast } from '../../Toast/Toast';
-import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../../../Stores/useAuthStore';
+import BaseModal from '../BaseModal/BaseModal';
+import styles from './LogoutModule.module.css';
 
 const LogoutModal = () => {
   const { unsetAll } = useModalStore();

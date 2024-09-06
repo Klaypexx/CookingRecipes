@@ -14,15 +14,13 @@ const SearchBlock: React.FC<SearchBlockProps> = ({ text, onSubmit }) => {
   };
 
   return (
-    <>
-      <BaseForm initialValues={initialValues} onSubmit={onSubmit}>
-        <div className={styles.searchBox}>
-          {text && <h3 className={styles.searchFormText}>Поиск рецепта</h3>}
-          <BaseField name="searchString" className={styles.serchFormField} placeholder="Название блюда..." />
-          <BaseButton primary type="submit" className={styles.searchFormButton} buttonText="Поиск" />
-        </div>
-      </BaseForm>
-    </>
+    <BaseForm initialValues={initialValues} onSubmit={onSubmit}>
+      <div className={styles.searchBox}>
+        {text && <h3 className={styles.searchFormText}>Поиск рецепта</h3>}
+        <BaseField name="searchString" className={styles.serchFormField} placeholder="Название блюда..." />
+        <BaseButton primary type="submit" className={styles.searchFormButton} buttonText="Поиск" />
+      </div>
+    </BaseForm>
   );
 };
 

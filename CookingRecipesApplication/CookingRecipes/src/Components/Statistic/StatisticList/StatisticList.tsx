@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import useUserStore from '../../../Stores/useUserStore';
 import StatisticListProps from '../../../Types/StatisticListProps';
 import BaseStatisticBlock from '../BaseStatisticBlock/BaseStatisticBlock';
 import styles from './StatisticList.module.css';
@@ -6,13 +7,12 @@ import styles from './StatisticList.module.css';
 const statisticValuesNames = ['Всего рецептов', 'Всего лайков', 'В избранных'];
 
 const StatisticList: React.FC<StatisticListProps> = ({ values }) => {
-  const [likesCount, setLikesCount] = useState(0);
-  const [favouritesCount, setFavouritesCount] = useState(0);
+  const { likesCount, favouritesCount, setDefaultLikesCount, setDefaultFavouritesCount } = useUserStore();
 
   useEffect(() => {
-    setLikesCount(values.likesCount);
-    setFavouritesCount(values.favouritesCount);
-  }, [values]);
+    setDefaultLikesCount(values.likesCount);
+    setDefaultFavouritesCount(values.favouritesCount);
+  }, []);
 
   const counts = [values.recipesCount, likesCount, favouritesCount];
 

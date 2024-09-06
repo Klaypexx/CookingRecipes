@@ -1,12 +1,12 @@
+import { ErrorMessage, useFormikContext } from 'formik';
 import { useState } from 'react';
+import { IMAGE_URL } from '../../../Constants/httpUrl';
+import { COOKING_TIMES, DESCRIPTION_MAX_WORDS, PORTION_COUNT } from '../../../Constants/recipe';
+import cloudDownload from '../../../resources/icons/cloud-download.svg';
+import RecipeFormValues from '../../../Types/RecipeFormValues';
 import BaseField from '../BaseField/BaseField';
 import TagsField from '../TagsField/TagsField';
 import styles from './CardField.module.css';
-import { ErrorMessage, useFormikContext } from 'formik';
-import cloudDownload from '../../../resources/icons/cloud-download.svg';
-import { COOKING_TIMES, DESCRIPTION_MAX_WORDS, PORTION_COUNT } from '../../../Constants/recipe';
-import RecipeFormValues from '../../../Types/RecipeFormValues';
-import { IMAGE_URL } from '../../../Constants/httpUrl';
 
 const CardField = () => {
   const { setFieldValue, initialValues } = useFormikContext<RecipeFormValues>();

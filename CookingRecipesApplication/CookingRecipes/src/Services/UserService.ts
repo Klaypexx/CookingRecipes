@@ -1,14 +1,16 @@
 import { AxiosResponse } from 'axios';
-import api from '../util/api';
-import UsernameResponseValues from '../Types/UsernameResponseValues';
 import { handleError } from '../Helpers/ErrorHandler';
+import NameOfUserResponseValues from '../Types/NameOfUserResponseValues';
+import UsernameResponseValues from '../Types/UsernameResponseValues';
 import UserResponseValues from '../Types/UserResponseValues';
 import UserStatisticResponseValues from '../Types/UserStatisticResponseValues';
+import api from '../util/api';
 
 const endpoints = {
   update: '/users',
   getUser: '/users',
   username: '/users/username',
+  nameOfUser: '/users/name',
   staticstic: '/users/statistic',
 };
 
@@ -29,7 +31,6 @@ const updateUser = async (values: FormData) => {
 const getUser = async () => {
   try {
     const response: AxiosResponse<UserResponseValues, any> = await api.get(`${endpoints.getUser}`);
-    console.log(response.data);
     return { response };
   } catch (error) {
     handleError(error);
@@ -39,6 +40,15 @@ const getUser = async () => {
 const username = async () => {
   try {
     const response: AxiosResponse<UsernameResponseValues, any> = await api.get(endpoints.username);
+    return { response };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+const nameOfUser = async () => {
+  try {
+    const response: AxiosResponse<NameOfUserResponseValues, any> = await api.get(endpoints.nameOfUser);
     return { response };
   } catch (error) {
     handleError(error);
@@ -58,6 +68,7 @@ const UserService = {
   updateUser,
   getUser,
   username,
+  nameOfUser,
   getUserStatistic,
 };
 

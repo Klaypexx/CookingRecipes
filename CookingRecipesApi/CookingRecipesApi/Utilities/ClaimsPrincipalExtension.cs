@@ -16,9 +16,21 @@ public static class ClaimsPrincipalExtension
         return claim.Value;
     }
 
-    public static string GetUserName( this ClaimsPrincipal user )
+    public static string GetNameOfUser( this ClaimsPrincipal user )
     {
         Claim claim = user.FindAll( x => x.Type == ClaimTypes.Name ).FirstOrDefault();
+
+        if ( claim is null )
+        {
+            throw new Exception( "Имя пользователя не найдено" );
+        }
+
+        return claim.Value;
+    }
+
+    public static string GetUserName( this ClaimsPrincipal user )
+    {
+        Claim claim = user.FindAll( x => x.Type == "username" ).FirstOrDefault();
 
         if ( claim is null )
         {

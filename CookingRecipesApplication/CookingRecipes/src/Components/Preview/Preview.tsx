@@ -1,10 +1,10 @@
-import styles from './Preview.module.css';
-import homePageImage from '../../resources/img/headerPreview.png';
-import BaseLink from '../Link/BaseLink/BaseLink';
+import useAuthStore from '../../Stores/useAuthStore';
 import useModalStore from '../../Stores/useModalStore';
 import plusIcon from '../../resources/icons/plus-white.svg';
+import homePageImage from '../../resources/img/headerPreview.png';
 import BaseButton from '../Button/BaseButton/BaseButton';
-import useAuthStore from '../../Stores/useAuthStore';
+import BaseLink from '../Link/BaseLink/BaseLink';
+import styles from './Preview.module.css';
 
 const Preview = () => {
   const { isLogin, setLogin } = useModalStore();

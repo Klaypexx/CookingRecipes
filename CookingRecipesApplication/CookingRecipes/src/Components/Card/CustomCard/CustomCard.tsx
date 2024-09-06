@@ -1,9 +1,9 @@
-import styles from './CustomCard.module.css';
 import { IMAGE_URL } from '../../../Constants/httpUrl';
 import CustomCardProps from '../../../Types/CustomCardProps';
 import like from '../../../resources/icons/customLike.svg';
 import timer from '../../../resources/icons/customTimer.svg';
 import yummyIcon from '../../../resources/icons/yummy.svg';
+import styles from './CustomCard.module.css';
 
 const CustomCard: React.FC<CustomCardProps> = ({ props }) => {
   return (
