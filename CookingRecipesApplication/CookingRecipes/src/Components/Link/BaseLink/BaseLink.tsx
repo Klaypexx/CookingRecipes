@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './BaseLink.module.css';
-import classNames from 'classnames';
 import BaseLinkProps from '../../../Types/BaseLinkProps';
+import styles from './BaseLink.module.css';
 
 const BaseLink: React.FC<BaseLinkProps> = ({ primary, to, className, text, onClick, children }) => {
   const classNameBase = classNames(primary ? styles.linkPrimary : styles.linkSecondary, styles.baseLink);

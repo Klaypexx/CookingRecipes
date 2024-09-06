@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import useAuthStore from '../../../Stores/useAuthStore';
 import FavouriteRecipeService from '../../../Services/FavouriteRecipeService';
-import BaseButton from '../BaseButton/BaseButton';
+import useAuthStore from '../../../Stores/useAuthStore';
+import useUserStore from '../../../Stores/useUserStore';
 import FavouriteRecipeButtonProps from '../../../Types/FavouriteRecipeButtonProps';
 import favourite from '../../../resources/icons/favourite.svg';
 import favouriteActive from '../../../resources/icons/favouriteActive.svg';
+import BaseButton from '../BaseButton/BaseButton';
 import styles from './FavouriteRecipeButton.module.css';
-import useUserStore from '../../../Stores/useUserStore';
 
 const FavouriteRecipeButton: React.FC<FavouriteRecipeButtonProps> = ({
   isFavouritePressed,

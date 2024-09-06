@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
+import RecipesListProps from '../../../Types/RecipesListProps';
+import BaseButton from '../../Button/BaseButton/BaseButton';
 import BaseCard from '../../Card/BaseCard/BaseCard';
 import styles from './RecipesList.module.css';
-import BaseButton from '../../Button/BaseButton/BaseButton';
-import RecipesListProps from '../../../Types/RecipesListProps';
 
 const RecipesList: React.FC<RecipesListProps> = ({ isLoadButton, handleClick, values }) => {
   return (

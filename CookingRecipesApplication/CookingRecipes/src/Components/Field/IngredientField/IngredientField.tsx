@@ -1,11 +1,11 @@
-import React from 'react';
 import { FieldArray, FieldArrayRenderProps } from 'formik';
-import styles from './IngredientField.module.css';
-import BaseField from '../BaseField/BaseField';
+import React from 'react';
 import closeIcon from '../../../resources/icons/close.svg';
+import plusImg from '../../../resources/icons/plus-orange.svg';
 import IngredientFieldProps from '../../../Types/IngredientFieldProps';
 import BaseButton from '../../Button/BaseButton/BaseButton';
-import plusImg from '../../../resources/icons/plus-orange.svg';
+import BaseField from '../BaseField/BaseField';
+import styles from './IngredientField.module.css';
 
 const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {

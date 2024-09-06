@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import Subheader from '../../Components/Subheader/Subheader';
-import styles from './Favourites.module.css';
-import RecipeService from '../../Services/RecipeService';
 import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import Spinner from '../../Components/Spinner/Spinner';
+import Subheader from '../../Components/Subheader/Subheader';
+import RecipeService from '../../Services/RecipeService';
 import FavouritesRecipeValues from '../../Types/FavouritesRecipeValues';
+import styles from './Favourites.module.css';
 
 const Favourites = () => {
   let [loading, setLoading] = useState(true);

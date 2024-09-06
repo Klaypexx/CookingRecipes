@@ -1,10 +1,10 @@
 import { FieldArray, FieldArrayRenderProps } from 'formik';
-import BaseField from '../BaseField/BaseField';
-import styles from './StepField.module.css';
 import closeIcon from '../../../resources/icons/close.svg';
+import plusImg from '../../../resources/icons/plus-orange.svg';
 import StepFieldProps from '../../../Types/StepFieldProps';
 import BaseButton from '../../Button/BaseButton/BaseButton';
-import plusImg from '../../../resources/icons/plus-orange.svg';
+import BaseField from '../BaseField/BaseField';
+import styles from './StepField.module.css';
 
 const StepField: React.FC<StepFieldProps> = ({ name }) => {
   const handlerCreateField = (arrayHelpers: FieldArrayRenderProps) => {

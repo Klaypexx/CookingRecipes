@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styles from './TagsField.module.css';
-import closeIcon from '../../../resources/icons/closeTag.svg';
 import { ErrorMessage, FieldArray, FieldArrayRenderProps } from 'formik';
-import TagsFieldProps from '../../../Types/TagsFieldProps';
+import React, { useState } from 'react';
 import { TAG_MAX_WORDS, TAGS_MAX_COUNT } from '../../../Constants/recipe';
+import closeIcon from '../../../resources/icons/closeTag.svg';
+import TagsFieldProps from '../../../Types/TagsFieldProps';
+import styles from './TagsField.module.css';
 
 const TagsField: React.FC<TagsFieldProps> = ({ name }) => {
   const [error, setError] = useState<string | null>(null);

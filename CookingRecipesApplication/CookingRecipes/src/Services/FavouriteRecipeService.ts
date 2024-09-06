@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
-import api from '../util/api';
 import { handleError } from '../Helpers/ErrorHandler';
+import api from '../util/api';
 
 const endpoints = {
   addFavouriteRecipe: '/favourites',

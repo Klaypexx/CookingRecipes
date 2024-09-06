@@ -1,5 +1,3 @@
-import { CSSProperties } from 'react';
-
 export default interface ButtonProps {
   primary?: boolean;
   className?: string;

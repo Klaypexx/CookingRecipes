@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import { Formik, Form } from 'formik';
 import classNames from 'classnames';
-import styles from './BaseFormLabel.module.css';
+import { Form, Formik } from 'formik';
+import React from 'react';
 import BaseFormProps from '../../../Types/BaseFormProps';
+import styles from './BaseFormLabel.module.css';
 
 const BaseForm: React.FC<BaseFormProps> = ({ primary, id, initialValues, validationSchema, onSubmit, children }) => {
   return (

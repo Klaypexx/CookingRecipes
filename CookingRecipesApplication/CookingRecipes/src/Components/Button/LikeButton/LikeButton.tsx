@@ -1,12 +1,12 @@
-import BaseButton from '../BaseButton/BaseButton';
+import { useEffect, useState } from 'react';
 import like from '../../../resources/icons/like.svg';
 import likeActive from '../../../resources/icons/likeActive.svg';
-import styles from './LikeButton.module.css';
-import { useEffect, useState } from 'react';
-import LikeButtonProps from '../../../Types/LikeButtonProps';
 import LikeService from '../../../Services/LikeService';
 import useAuthStore from '../../../Stores/useAuthStore';
 import useUserStore from '../../../Stores/useUserStore';
+import LikeButtonProps from '../../../Types/LikeButtonProps';
+import BaseButton from '../BaseButton/BaseButton';
+import styles from './LikeButton.module.css';
 
 const LikeButton: React.FC<LikeButtonProps> = ({ isLikePressed, likeCount, recipeId }) => {
   const [isLike, setIsLike] = useState<boolean>(false);

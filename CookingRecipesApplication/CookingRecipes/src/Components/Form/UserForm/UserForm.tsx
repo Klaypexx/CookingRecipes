@@ -1,17 +1,17 @@
+import updatePencil from '../../../resources/icons/updatePencil.svg';
+import AuthService from '../../../Services/AuthService';
+import UserService from '../../../Services/UserService';
+import useUserStore from '../../../Stores/useUserStore';
+import UserFormProps from '../../../Types/UserFormProps';
 import UserFormValues from '../../../Types/UserFormValues';
 import BaseField from '../../Field/BaseField/BaseField';
-import BaseForm from '../BaseForm/BaseForm';
-import updatePencil from '../../../resources/icons/updatePencil.svg';
-import styles from './UserForm.module.css';
-import UserFormProps from '../../../Types/UserFormProps';
-import UserService from '../../../Services/UserService';
 import { successToast } from '../../Toast/Toast';
+import BaseForm from '../BaseForm/BaseForm';
+import styles from './UserForm.module.css';
 import userValidation from './UserValidation';
-import AuthService from '../../../Services/AuthService';
-import useUserStore from '../../../Stores/useUserStore';
 
 const UserForm: React.FC<UserFormProps> = ({ values }) => {
-  const { setUserName } = useUserStore();
+  const { setUserName, setNameOfUser } = useUserStore();
 
   const initialValues: UserFormValues = {
     ...values,
@@ -40,6 +40,7 @@ const UserForm: React.FC<UserFormProps> = ({ values }) => {
     await AuthService.refresh().then((res) => {
       if (res) {
         setUserName(values.userName);
+        setNameOfUser(values.name);
       }
     });
   };

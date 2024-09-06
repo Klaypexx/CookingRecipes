@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import UserForm from '../../Components/Form/UserForm/UserForm';
-import Subheader from '../../Components/Subheader/Subheader';
-import styles from './UserProfile.module.css';
-import UserService from '../../Services/UserService';
-import UserValues from '../../Types/UserValues';
-import Spinner from '../../Components/Spinner/Spinner';
-import UserStatisticValues from '../../Types/UserStatisticValues';
-import StatisticList from '../../Components/Statistic/StatisticList/StatisticList';
 import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
+import Spinner from '../../Components/Spinner/Spinner';
+import StatisticList from '../../Components/Statistic/StatisticList/StatisticList';
+import Subheader from '../../Components/Subheader/Subheader';
 import RecipeService from '../../Services/RecipeService';
-import UserProfileRecipesValues from '../../Types/UserProfileRecipesValues';
+import UserService from '../../Services/UserService';
 import useUserStore from '../../Stores/useUserStore';
+import UserProfileRecipesValues from '../../Types/UserProfileRecipesValues';
+import UserStatisticValues from '../../Types/UserStatisticValues';
+import UserValues from '../../Types/UserValues';
+import styles from './UserProfile.module.css';
 
 const UserProfile = () => {
   const [loading, setLoading] = useState(true);

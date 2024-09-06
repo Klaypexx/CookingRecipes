@@ -1,14 +1,16 @@
 import { AxiosResponse } from 'axios';
-import api from '../util/api';
-import UsernameResponseValues from '../Types/UsernameResponseValues';
 import { handleError } from '../Helpers/ErrorHandler';
+import NameOfUserResponseValues from '../Types/NameOfUserResponseValues';
+import UsernameResponseValues from '../Types/UsernameResponseValues';
 import UserResponseValues from '../Types/UserResponseValues';
 import UserStatisticResponseValues from '../Types/UserStatisticResponseValues';
+import api from '../util/api';
 
 const endpoints = {
   update: '/users',
   getUser: '/users',
   username: '/users/username',
+  nameOfUser: '/users/name',
   staticstic: '/users/statistic',
 };
 
@@ -45,6 +47,15 @@ const username = async () => {
   }
 };
 
+const nameOfUser = async () => {
+  try {
+    const response: AxiosResponse<NameOfUserResponseValues, any> = await api.get(endpoints.nameOfUser);
+    return { response };
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 const getUserStatistic = async () => {
   try {
     const response: AxiosResponse<UserStatisticResponseValues, any> = await api.get(`${endpoints.staticstic}`);
@@ -58,6 +69,7 @@ const UserService = {
   updateUser,
   getUser,
   username,
+  nameOfUser,
   getUserStatistic,
 };
 

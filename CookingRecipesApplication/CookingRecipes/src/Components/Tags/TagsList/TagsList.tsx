@@ -1,10 +1,10 @@
-import bookIcon from '../../../resources/icons/ic-menu.svg';
-import cookIcon from '../../../resources/icons/ic-cook.svg';
 import chefIcon from '../../../resources/icons/ic-chef.svg';
+import cookIcon from '../../../resources/icons/ic-cook.svg';
 import feastIcon from '../../../resources/icons/ic-feast.svg';
-import styles from './TagsList.module.css';
+import bookIcon from '../../../resources/icons/ic-menu.svg';
 import TagsListProps from '../../../Types/TagsListProps';
 import BaseTagsBlock from '../BaseTagsBlock/BaseTagsBlock';
+import styles from './TagsList.module.css';
 
 const tagsData = [
   {

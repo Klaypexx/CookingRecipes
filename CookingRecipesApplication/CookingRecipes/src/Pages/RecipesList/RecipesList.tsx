@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
+import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import SearchBlock from '../../Components/Search/SearchBlock';
+import Spinner from '../../Components/Spinner/Spinner';
 import Subheader from '../../Components/Subheader/Subheader';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
-import styles from './RecipeList.module.css';
 import RecipeService from '../../Services/RecipeService';
-import RecipeListValues from '../../Types/RecipeListValues';
-import Spinner from '../../Components/Spinner/Spinner';
 import useAuthStore from '../../Stores/useAuthStore';
-import SearchBlockValues from '../../Types/SearchBlockValues';
-import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import useSearchStore from '../../Stores/useSearchStore';
+import RecipeListValues from '../../Types/RecipeListValues';
+import SearchBlockValues from '../../Types/SearchBlockValues';
+import styles from './RecipeList.module.css';
 
 const RecipesList = () => {
   let [loading, setLoading] = useState(true);

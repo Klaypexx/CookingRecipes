@@ -1,15 +1,15 @@
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CustomCard from '../../Components/Card/CustomCard/CustomCard';
 import Preview from '../../Components/Preview/Preview';
 import SearchBlock from '../../Components/Search/SearchBlock';
+import Spinner from '../../Components/Spinner/Spinner';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
+import RecipeService from '../../Services/RecipeService';
 import useSearchStore from '../../Stores/useSearchStore';
+import HomePageRecipeValues from '../../Types/HomePageRecipeValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './HomePage.module.css';
-import { useEffect, useState } from 'react';
-import RecipeService from '../../Services/RecipeService';
-import HomePageRecipeValues from '../../Types/HomePageRecipeValues';
-import Spinner from '../../Components/Spinner/Spinner';
 
 const HomePage = () => {
   let [loading, setLoading] = useState(true);

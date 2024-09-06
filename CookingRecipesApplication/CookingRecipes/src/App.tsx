@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Header from './Components/Header/Header';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './Components/Footer/Footer';
+import Header from './Components/Header/Header';
 import ModalBlock from './Components/Modal/ModalBlock/ModaBlock';
-import { Suspense, useEffect, useState } from 'react';
 import Spinner from './Components/Spinner/Spinner';
-import TokenService from './Services/TokenService';
 import AuthService from './Services/AuthService';
-import useAuthStore from './Stores/useAuthStore';
+import TokenService from './Services/TokenService';
 import UserService from './Services/UserService';
+import useAuthStore from './Stores/useAuthStore';
 import useUserStore from './Stores/useUserStore';
 
 function App() {

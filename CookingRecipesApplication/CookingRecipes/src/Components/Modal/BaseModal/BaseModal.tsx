@@ -2,8 +2,8 @@
 import classNames from 'classnames';
 import closeIcon from '../../../resources/icons/close.svg';
 import useModalStore from '../../../Stores/useModalStore';
-import styles from './BaseModal.module.css';
 import BaseModalProps from '../../../Types/BaseModalProps';
+import styles from './BaseModal.module.css';
 
 const BaseModal: React.FC<BaseModalProps> = ({ primary, headerClassName, haederText, hasAccountText, children }) => {
   const { isLogin, isRegister, setLogin, setRegister, unsetAll } = useModalStore();

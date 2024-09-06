@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import useUserStore from '../../../Stores/useUserStore';
 import StatisticListProps from '../../../Types/StatisticListProps';
 import BaseStatisticBlock from '../BaseStatisticBlock/BaseStatisticBlock';
 import styles from './StatisticList.module.css';
-import useUserStore from '../../../Stores/useUserStore';
 
 const statisticValuesNames = ['Всего рецептов', 'Всего лайков', 'В избранных'];
 

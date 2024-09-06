@@ -1,18 +1,16 @@
-import styles from './Header.module.css';
-import logoImage from '../../resources/img/Logo.png';
-import userAvatar from '../../resources/icons/user.svg';
-import exitIcon from '../../resources/icons/exit.svg';
-import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import exitIcon from '../../resources/icons/exit.svg';
+import userAvatar from '../../resources/icons/user.svg';
+import logoImage from '../../resources/img/Logo.png';
 import UserService from '../../Services/UserService';
-import useModalStore from '../../Stores/useModalStore';
 import useAuthStore from '../../Stores/useAuthStore';
-import useUserStore from '../../Stores/useUserStore';
+import useModalStore from '../../Stores/useModalStore';
+import styles from './Header.module.css';
 
 const Header = () => {
   const [userName, setUserName] = useState<string>();
-  const { userName: userNameFromStore } = useUserStore();
   const { isAuth, isLogout, setAuth, setLogout } = useModalStore();
   const { isAuthorized } = useAuthStore();
 
@@ -27,7 +25,7 @@ const Header = () => {
       };
       fetchUsername();
     }
-  }, [isAuthorized, userNameFromStore]);
+  }, [isAuthorized]);
 
   const handleLogin = () => {
     setAuth(isAuth);
