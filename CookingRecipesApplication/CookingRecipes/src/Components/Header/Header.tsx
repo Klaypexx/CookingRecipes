@@ -18,11 +18,9 @@ const Header = () => {
 
   useEffect(() => {
     if (isAuthorized) {
-      console.log('Сейчас сделаю запрос');
       const fetchUsername = async () => {
         await UserService.nameOfUser().then((res) => {
           if (res) {
-            console.log(res?.response.data.name);
             setNameOfUser(res.response.data.name);
           }
         });

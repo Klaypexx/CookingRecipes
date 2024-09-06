@@ -31,7 +31,6 @@ const updateUser = async (values: FormData) => {
 const getUser = async () => {
   try {
     const response: AxiosResponse<UserResponseValues, any> = await api.get(`${endpoints.getUser}`);
-    console.log(response.data);
     return { response };
   } catch (error) {
     handleError(error);
