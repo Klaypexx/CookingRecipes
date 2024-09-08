@@ -7,6 +7,7 @@ import Spinner from '../../Components/Spinner/Spinner';
 import MiniTagsList from '../../Components/Tags/MiniTagsList/MiniTagsList';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
 import RecipeService from '../../Services/RecipeService';
+import TagService from '../../Services/TagService';
 import useSearchStore from '../../Stores/useSearchStore';
 import HomePageRecipeValues from '../../Types/HomePageRecipeValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
@@ -15,19 +16,32 @@ import styles from './HomePage.module.css';
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [recipeValues, setRecipeVaues] = useState<HomePageRecipeValues | null>();
+  const [tagsValue, setTagsValue] = useState<string[]>([]);
   const { setSearchString } = useSearchStore();
   const navigation = useNavigate();
 
+  const fetchRecipe = async () => {
+    await RecipeService.GetMostLikedRecipe().then((res) => {
+      if (res) {
+        setRecipeVaues(() => res.response.data);
+      }
+    });
+  };
+
+  const fetchTags = async () => {
+    await TagService.getRandomTags().then((res) => {
+      if (res) {
+        setTagsValue(() => res.response.data);
+      }
+    });
+  };
+
   useEffect(() => {
-    const fetchRecipe = async () => {
-      await RecipeService.GetMostLikedRecipe().then((res) => {
-        if (res) {
-          setRecipeVaues(() => res.response.data);
-          setLoading(false);
-        }
-      });
+    const fetchData = async () => {
+      await Promise.all([fetchRecipe(), fetchTags()]);
+      setLoading(false);
     };
-    fetchRecipe();
+    fetchData();
   }, []);
 
   const handleSearchSubmit = (values: SearchBlockValues) => {
@@ -72,7 +86,7 @@ const HomePage = () => {
         </div>
         <div className={styles.searchBox}>
           <SearchForm onSubmit={handleSearchSubmit} />
-          <MiniTagsList className={styles.miniTags} />
+          <MiniTagsList className={styles.miniTags} values={tagsValue!} />
         </div>
       </section>
     </>

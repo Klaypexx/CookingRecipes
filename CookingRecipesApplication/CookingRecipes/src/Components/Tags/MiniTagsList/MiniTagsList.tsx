@@ -3,9 +3,8 @@ import useSearchStore from '../../../Stores/useSearchStore';
 import MiniTagsListProps from '../../../Types/MiniTagsListProps';
 import styles from './MiniTagsList.module.css';
 
-const MiniTagsList: React.FC<MiniTagsListProps> = ({ className }) => {
+const MiniTagsList: React.FC<MiniTagsListProps> = ({ className, values }) => {
   const { setSearchString } = useSearchStore();
-  const db = ['клубника', 'тест', 'молочка', 'на праздник'];
 
   const handleClick = (value: string) => {
     setSearchString(value);
@@ -13,12 +12,12 @@ const MiniTagsList: React.FC<MiniTagsListProps> = ({ className }) => {
 
   return (
     <div className={classNames(styles.miniTagsListBox, className)}>
-      {db.map((value, index) => (
-        <>
+      {values?.map((value, index) => (
+        <div key={index}>
           <p className={styles.miniTagText} onClick={() => handleClick(value)}>
             {value}
           </p>
-        </>
+        </div>
       ))}
     </div>
   );

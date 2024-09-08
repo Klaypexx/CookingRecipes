@@ -7,6 +7,7 @@ import Subheader from '../../Components/Subheader/Subheader';
 import MiniTagsList from '../../Components/Tags/MiniTagsList/MiniTagsList';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
 import RecipeService from '../../Services/RecipeService';
+import TagService from '../../Services/TagService';
 import useAuthStore from '../../Stores/useAuthStore';
 import RecipeListValues from '../../Types/RecipeListValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
@@ -15,11 +16,25 @@ import styles from './RecipeList.module.css';
 const RecipesList = () => {
   const [loading, setLoading] = useState(true);
   const [recipeValues, setRecipeValues] = useState<RecipeListValues[]>([]);
+  const [tagsValues, setTagsValues] = useState<string[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [searchString, setSearchString] = useState('');
   const { isAuthorized } = useAuthStore();
+
+  const handleSearchSubmit = async (value: SearchBlockValues) => {
+    if (searchString == value.searchString) {
+      return;
+    }
+    setRecipeValues([]);
+    setPageNumber(1);
+    setSearchString(value.searchString);
+  };
+
+  const handlePaginationClick = () => {
+    setPageNumber((pageNumber) => pageNumber + 1);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -50,18 +65,16 @@ const RecipesList = () => {
     fetchRecipes();
   }, [pageNumber, searchString, isAuthorized]);
 
-  const handleSearchSubmit = async (value: SearchBlockValues) => {
-    if (searchString == value.searchString) {
-      return;
-    }
-    setRecipeValues([]);
-    setPageNumber(1);
-    setSearchString(value.searchString);
-  };
-
-  const handlePaginationClick = () => {
-    setPageNumber((pageNumber) => pageNumber + 1);
-  };
+  useEffect(() => {
+    const fetchTags = async () => {
+      await TagService.getRandomTags().then((res) => {
+        if (res) {
+          setTagsValues(res.response.data);
+        }
+      });
+    };
+    fetchTags();
+  }, []);
 
   return (
     <div className={styles.recipesList}>
@@ -80,7 +93,7 @@ const RecipesList = () => {
       <section>
         <div className={styles.searchBox}>
           <SearchForm text onSubmit={handleSearchSubmit} />
-          <MiniTagsList />
+          <MiniTagsList values={tagsValues} />
         </div>
       </section>
 
