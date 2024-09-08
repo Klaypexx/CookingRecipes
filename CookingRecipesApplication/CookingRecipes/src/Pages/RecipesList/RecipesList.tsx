@@ -37,7 +37,6 @@ const RecipesList = () => {
   }, [isAuthorized]);
 
   useEffect(() => {
-    console.log('Фетчинг');
     const fetchRecipes = async () => {
       await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
         if (res) {

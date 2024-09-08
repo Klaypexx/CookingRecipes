@@ -8,6 +8,7 @@ export default interface BaseFieldProps {
   labelText?: string;
   placeholder?: string;
   maxLength?: number;
+  autocomplete?: boolean;
   styles?: string;
   children?: React.ReactNode;
 }

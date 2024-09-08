@@ -14,6 +14,7 @@ const BaseField: React.FC<BaseFieldProps> = ({
   labelText,
   placeholder,
   maxLength,
+  autocomplete,
   styles,
   children,
 }) => {
@@ -29,6 +30,7 @@ const BaseField: React.FC<BaseFieldProps> = ({
         maxLength={maxLength}
         className={classNames(className, style.baseField, select && style.selectField, labelText && style.textPadding)}
         styles={styles}
+        autoComplete={autocomplete ? 'on' : 'off'}
         wrap="hard"
       >
         {children}
