@@ -29,7 +29,7 @@ const HomePage = () => {
     fetchRecipe();
   }, []);
 
-  const handleSubmit = (values: SearchBlockValues) => {
+  const handleSearchSubmit = (values: SearchBlockValues) => {
     setSearchString(values.searchString);
     navigation('/recipes');
   };
@@ -69,7 +69,7 @@ const HomePage = () => {
           <h2 className={styles.searchHeader}>Поиск рецептов</h2>
           <p>Введите примерное название блюда, а мы по тегам найдем его</p>
         </div>
-        <SearchBlock onSubmit={handleSubmit} />
+        <SearchBlock onSubmit={handleSearchSubmit} />
       </section>
     </>
   );

@@ -7,7 +7,6 @@ import Subheader from '../../Components/Subheader/Subheader';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
 import RecipeService from '../../Services/RecipeService';
 import useAuthStore from '../../Stores/useAuthStore';
-import useSearchStore from '../../Stores/useSearchStore';
 import RecipeListValues from '../../Types/RecipeListValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './RecipeList.module.css';
@@ -18,7 +17,7 @@ const RecipesList = () => {
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [values, setValues] = useState<RecipeListValues[]>([]);
   const [isFirstMount, setIsFirstMount] = useState(true);
-  const { searchString, setSearchString } = useSearchStore();
+  const [searchString, setSearchString] = useState('');
   const { isAuthorized } = useAuthStore();
 
   useEffect(() => {
@@ -38,6 +37,7 @@ const RecipesList = () => {
   }, [isAuthorized]);
 
   useEffect(() => {
+    console.log('Фетчинг');
     const fetchRecipes = async () => {
       await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
         if (res) {
@@ -50,7 +50,7 @@ const RecipesList = () => {
     fetchRecipes();
   }, [pageNumber, searchString, isAuthorized]);
 
-  const handleSubmit = async (value: SearchBlockValues) => {
+  const handleSearchSubmit = async (value: SearchBlockValues) => {
     if (searchString == value.searchString) {
       return;
     }
@@ -59,7 +59,7 @@ const RecipesList = () => {
     setSearchString(value.searchString);
   };
 
-  const handleClick = () => {
+  const handlePaginationClick = () => {
     setPageNumber((pageNumber) => pageNumber + 1);
   };
 
@@ -79,7 +79,7 @@ const RecipesList = () => {
 
       <section>
         <div className={styles.searchContainer}>
-          <SearchBlock text onSubmit={handleSubmit} />
+          <SearchBlock text onSubmit={handleSearchSubmit} />
         </div>
       </section>
 
@@ -87,7 +87,7 @@ const RecipesList = () => {
         {loading ? (
           <Spinner />
         ) : (
-          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={values} />
+          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handlePaginationClick()} values={values} />
         )}
       </section>
     </div>

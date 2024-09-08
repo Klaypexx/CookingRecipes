@@ -19,6 +19,15 @@ const UserForm: React.FC<UserFormProps> = ({ values }) => {
   };
 
   const handleSubmit = async (values: UserFormValues) => {
+    if (
+      values.description == initialValues.description &&
+      values.name == initialValues.name &&
+      values.password == initialValues.password &&
+      values.userName == initialValues.userName
+    ) {
+      return;
+    }
+
     let formData = new FormData();
     formData.append('Name', values.name);
     formData.append('UserName', values.userName);
