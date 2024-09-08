@@ -33,6 +33,7 @@ const RecipeView = () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
           if (res) {
+            console.log(res.response.data);
             setValues(res.response.data);
 
             const authorName = res.response.data.authorName;

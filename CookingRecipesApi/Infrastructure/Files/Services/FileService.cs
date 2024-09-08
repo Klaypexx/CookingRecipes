@@ -65,12 +65,12 @@ public class FileService : IFileService
 
     private async Task<string> UpdateFile( IFormFile actualfile, string oldPathToFile, string directoryName )
     {
-        RemoveFile( oldPathToFile, directoryName );
-
         if ( actualfile == null )
         {
             return oldPathToFile;
         }
+
+        RemoveFile( oldPathToFile, directoryName );
 
         string pathToFile = await SaveFile( actualfile, directoryName );
 

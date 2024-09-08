@@ -166,6 +166,8 @@ h4,
 a {
   font-family: Montserrat;
   margin: 0;
+  word-wrap: break-word;
+  white-space: pre-line;
 }
 
 p,

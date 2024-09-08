@@ -104,9 +104,12 @@
   margin-bottom: 16px;
 }
 
+.cardInfoBox {
+  overflow: hidden;
+}
+
 .cardInfoTextBox {
   width: 571px;
-  margin-bottom: 40px;
 }
 
 .cardInfoText {
