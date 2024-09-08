@@ -23,19 +23,6 @@ const RecipesList = () => {
   const [searchString, setSearchString] = useState('');
   const { isAuthorized } = useAuthStore();
 
-  const handleSearchSubmit = async (value: SearchBlockValues) => {
-    if (searchString == value.searchString) {
-      return;
-    }
-    setRecipeValues([]);
-    setPageNumber(1);
-    setSearchString(value.searchString);
-  };
-
-  const handlePaginationClick = () => {
-    setPageNumber((pageNumber) => pageNumber + 1);
-  };
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -75,6 +62,19 @@ const RecipesList = () => {
     };
     fetchTags();
   }, []);
+
+  const handleSearchSubmit = async (value: SearchBlockValues) => {
+    if (searchString == value.searchString) {
+      return;
+    }
+    setRecipeValues([]);
+    setPageNumber(1);
+    setSearchString(value.searchString);
+  };
+
+  const handlePaginationClick = () => {
+    setPageNumber((pageNumber) => pageNumber + 1);
+  };
 
   return (
     <div className={styles.recipesList}>

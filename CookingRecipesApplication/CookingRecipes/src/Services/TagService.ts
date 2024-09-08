@@ -9,7 +9,6 @@ const endpoints = {
 const getRandomTags = async () => {
   try {
     const response: AxiosResponse<string[], any> = await api.get(`${endpoints.getRandomTags}`);
-    console.log(response.data);
     return { response };
   } catch (error) {
     handleError(error);

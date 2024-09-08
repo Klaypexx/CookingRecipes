@@ -22,31 +22,6 @@ const UserProfile = () => {
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
 
-  const fetchRecipes = async () => {
-    await RecipeService.GetUserRecipes(pageNumber).then((res) => {
-      if (res) {
-        setIsLoadButton(!res.response.data.isLastRecipes);
-        setRecipes((prevValues) => [...prevValues, ...res.response.data.recipes]);
-      }
-    });
-  };
-
-  const fetchUser = async () => {
-    await UserService.getUser().then((res) => {
-      if (res) {
-        setUser(res.response.data);
-      }
-    });
-  };
-
-  const fetchUserStatistic = async () => {
-    await UserService.getUserStatistic().then((res) => {
-      if (res) {
-        setUserStatistic(res.response.data);
-      }
-    });
-  };
-
   useEffect(() => {
     if (isFirstMount) {
       setIsFirstMount(false);
@@ -71,6 +46,31 @@ const UserProfile = () => {
     };
     fetchData();
   }, []);
+
+  const fetchRecipes = async () => {
+    await RecipeService.GetUserRecipes(pageNumber).then((res) => {
+      if (res) {
+        setIsLoadButton(!res.response.data.isLastRecipes);
+        setRecipes((prevValues) => [...prevValues, ...res.response.data.recipes]);
+      }
+    });
+  };
+
+  const fetchUser = async () => {
+    await UserService.getUser().then((res) => {
+      if (res) {
+        setUser(res.response.data);
+      }
+    });
+  };
+
+  const fetchUserStatistic = async () => {
+    await UserService.getUserStatistic().then((res) => {
+      if (res) {
+        setUserStatistic(res.response.data);
+      }
+    });
+  };
 
   const handleClick = () => {
     setPageNumber((pageNumber) => pageNumber + 1);

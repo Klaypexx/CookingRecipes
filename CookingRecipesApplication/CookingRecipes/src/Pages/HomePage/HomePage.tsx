@@ -20,6 +20,14 @@ const HomePage = () => {
   const { setSearchString } = useSearchStore();
   const navigation = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([fetchRecipe(), fetchTags()]);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
   const fetchRecipe = async () => {
     await RecipeService.GetMostLikedRecipe().then((res) => {
       if (res) {
@@ -35,14 +43,6 @@ const HomePage = () => {
       }
     });
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([fetchRecipe(), fetchTags()]);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
 
   const handleSearchSubmit = (values: SearchBlockValues) => {
     setSearchString(values.searchString);
