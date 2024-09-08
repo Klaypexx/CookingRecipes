@@ -1,0 +1,19 @@
+.miniTagsListBox {
+  display: flex;
+  position: absolute;
+  left: 287px;
+  bottom: -27px;
+}
+
+.miniTagText {
+  cursor: pointer;
+  color: rgb(128, 128, 128);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.miniTagText:not(:last-child) {
+  margin-right: 25px;
+}

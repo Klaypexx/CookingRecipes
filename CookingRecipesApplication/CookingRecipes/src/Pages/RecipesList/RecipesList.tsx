@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import SearchForm from '../../Components/Form/SearchForm/SearchForm';
 import BaseLink from '../../Components/Link/BaseLink/BaseLink';
 import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
-import SearchBlock from '../../Components/Search/SearchBlock';
 import Spinner from '../../Components/Spinner/Spinner';
 import Subheader from '../../Components/Subheader/Subheader';
+import MiniTagsList from '../../Components/Tags/MiniTagsList/MiniTagsList';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
 import RecipeService from '../../Services/RecipeService';
 import useAuthStore from '../../Stores/useAuthStore';
@@ -12,10 +13,10 @@ import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './RecipeList.module.css';
 
 const RecipesList = () => {
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [recipeValues, setRecipeValues] = useState<RecipeListValues[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
-  const [values, setValues] = useState<RecipeListValues[]>([]);
   const [isFirstMount, setIsFirstMount] = useState(true);
   const [searchString, setSearchString] = useState('');
   const { isAuthorized } = useAuthStore();
@@ -32,7 +33,7 @@ const RecipesList = () => {
     }
     setLoading(true);
     setSearchString('');
-    setValues([]);
+    setRecipeValues([]);
     setPageNumber(1);
   }, [isAuthorized]);
 
@@ -41,7 +42,7 @@ const RecipesList = () => {
       await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
         if (res) {
           setIsLoadButton(!res.response.data.isLastRecipes);
-          setValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
+          setRecipeValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
           setLoading(false);
         }
       });
@@ -53,7 +54,7 @@ const RecipesList = () => {
     if (searchString == value.searchString) {
       return;
     }
-    setValues([]);
+    setRecipeValues([]);
     setPageNumber(1);
     setSearchString(value.searchString);
   };
@@ -71,14 +72,15 @@ const RecipesList = () => {
       </section>
 
       <section>
-        <div className={styles.tagListContainer}>
+        <div className={styles.tagListBox}>
           <TagsList className={styles.tagList} />
         </div>
       </section>
 
       <section>
-        <div className={styles.searchContainer}>
-          <SearchBlock text onSubmit={handleSearchSubmit} />
+        <div className={styles.searchBox}>
+          <SearchForm text onSubmit={handleSearchSubmit} />
+          <MiniTagsList />
         </div>
       </section>
 
@@ -86,7 +88,11 @@ const RecipesList = () => {
         {loading ? (
           <Spinner />
         ) : (
-          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handlePaginationClick()} values={values} />
+          <RecipesListBlock
+            isLoadButton={isLoadButton}
+            handleClick={() => handlePaginationClick()}
+            values={recipeValues}
+          />
         )}
       </section>
     </div>

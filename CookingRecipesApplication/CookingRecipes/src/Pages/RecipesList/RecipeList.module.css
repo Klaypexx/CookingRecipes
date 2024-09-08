@@ -2,7 +2,7 @@
   min-height: 73.9vh;
 }
 
-.tagListContainer {
+.tagListBox {
   margin-bottom: 50px;
 }
 
@@ -13,7 +13,8 @@
   padding: 24px 0px 36px 24px;
 }
 
-.searchContainer {
+.searchBox {
+  position: relative;
   margin-bottom: 108px;
 }
 

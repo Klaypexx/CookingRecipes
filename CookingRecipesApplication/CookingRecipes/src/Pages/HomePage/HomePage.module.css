@@ -52,3 +52,11 @@
   height: 271px;
   padding: 24px 24px 36px 24px;
 }
+
+.searchBox {
+  position: relative;
+}
+
+.miniTags {
+  left: 130px;
+}
