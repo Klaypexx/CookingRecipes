@@ -9,8 +9,8 @@ import useUserStore from '../../Stores/useUserStore';
 import EditRecipeValues from '../../Types/EditRecipeValues';
 
 const EditRecipe = () => {
-  const [values, setValues] = useState<EditRecipeValues>();
-  let [loading, setLoading] = useState(true);
+  const [recipeValues, setRecipeValues] = useState<EditRecipeValues>();
+  const [loading, setLoading] = useState(true);
   const { userName } = useUserStore();
   const { recipeId } = useParams();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const EditRecipe = () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
           if (res) {
-            setValues(res.response.data);
+            setRecipeValues(res.response.data);
 
             const authorName = res.response.data.authorName;
 
@@ -49,10 +49,10 @@ const EditRecipe = () => {
         </Subheader>
       </section>
       <section>
-        {!values || loading ? (
+        {!recipeValues || loading ? (
           <Spinner />
         ) : (
-          <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={values} />
+          <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={recipeValues} />
         )}
       </section>
     </>

@@ -1,35 +1,50 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import CustomCard from '../../Components/Card/CustomCard/CustomCard';
+import SearchForm from '../../Components/Form/SearchForm/SearchForm';
 import Preview from '../../Components/Preview/Preview';
-import SearchBlock from '../../Components/Search/SearchBlock';
 import Spinner from '../../Components/Spinner/Spinner';
+import MiniTagsList from '../../Components/Tags/MiniTagsList/MiniTagsList';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
 import RecipeService from '../../Services/RecipeService';
+import TagService from '../../Services/TagService';
 import useSearchStore from '../../Stores/useSearchStore';
 import HomePageRecipeValues from '../../Types/HomePageRecipeValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [recipeValues, setRecipeVaues] = useState<HomePageRecipeValues | null>();
+  const [tagsValue, setTagsValue] = useState<string[]>([]);
   const { setSearchString } = useSearchStore();
-  const [values, setValues] = useState<HomePageRecipeValues | null>();
   const navigation = useNavigate();
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      await RecipeService.GetMostLikedRecipe().then((res) => {
-        if (res) {
-          setValues(() => res.response.data);
-          setLoading(false);
-        }
-      });
+    const fetchData = async () => {
+      await Promise.all([fetchRecipe(), fetchTags()]);
+      setLoading(false);
     };
-    fetchRecipe();
+    fetchData();
   }, []);
 
-  const handleSubmit = (values: SearchBlockValues) => {
+  const fetchRecipe = async () => {
+    await RecipeService.GetMostLikedRecipe().then((res) => {
+      if (res) {
+        setRecipeVaues(() => res.response.data);
+      }
+    });
+  };
+
+  const fetchTags = async () => {
+    await TagService.getRandomTags().then((res) => {
+      if (res) {
+        setTagsValue(() => res.response.data);
+      }
+    });
+  };
+
+  const handleSearchSubmit = (values: SearchBlockValues) => {
     setSearchString(values.searchString);
     navigation('/recipes');
   };
@@ -55,9 +70,9 @@ const HomePage = () => {
           <Spinner />
         ) : (
           <>
-            {values && (
-              <Link to={`/recipes/${values!.id}`}>
-                <CustomCard props={values!} />
+            {recipeValues && (
+              <Link to={`/recipes/${recipeValues!.id}`}>
+                <CustomCard props={recipeValues!} />
               </Link>
             )}
           </>
@@ -69,7 +84,10 @@ const HomePage = () => {
           <h2 className={styles.searchHeader}>Поиск рецептов</h2>
           <p>Введите примерное название блюда, а мы по тегам найдем его</p>
         </div>
-        <SearchBlock onSubmit={handleSubmit} />
+        <div className={styles.searchBox}>
+          <SearchForm onSubmit={handleSearchSubmit} />
+          <MiniTagsList className={styles.miniTags} values={tagsValue!} />
+        </div>
       </section>
     </>
   );

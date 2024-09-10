@@ -14,13 +14,13 @@ import RecipeViewValues from '../../Types/RecipeViewValues';
 import styles from './RecipeView.module.css';
 
 const RecipeView = () => {
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [recipeValues, setRecipeValues] = useState<RecipeViewValues>();
   const [isRecipeOwner, setIsRecipeOwner] = useState(false);
   const { userName } = useUserStore();
-  const [values, setValues] = useState<RecipeViewValues>();
   const { recipeId } = useParams();
-  const navigate = useNavigate();
   const { isAuthorized } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -33,8 +33,7 @@ const RecipeView = () => {
       await RecipeService.GetRecipeById(recipeId!)
         .then(async (res) => {
           if (res) {
-            console.log(res.response.data);
-            setValues(res.response.data);
+            setRecipeValues(res.response.data);
 
             const authorName = res.response.data.authorName;
 
@@ -64,7 +63,7 @@ const RecipeView = () => {
   return (
     <div className={styles.recipeView}>
       <section>
-        <Subheader backward text={values?.name}>
+        <Subheader backward text={recipeValues?.name}>
           <div className={styles.buttonBox}>
             {isRecipeOwner && (
               <>
@@ -82,7 +81,7 @@ const RecipeView = () => {
         <Spinner />
       ) : (
         <section>
-          <RecipeViewBlock values={values!} recipeId={recipeId!} />
+          <RecipeViewBlock values={recipeValues!} recipeId={recipeId!} />
         </section>
       )}
     </div>

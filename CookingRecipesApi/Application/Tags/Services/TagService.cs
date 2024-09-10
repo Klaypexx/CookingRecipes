@@ -1,4 +1,5 @@
-﻿using Application.Tags.Repositories;
+﻿using Application.ResultObject;
+using Application.Tags.Repositories;
 using Domain.Recipes.Entities;
 
 namespace Application.Tags.Services;
@@ -6,6 +7,8 @@ namespace Application.Tags.Services;
 public class TagService : ITagService
 {
     private readonly ITagRepository _tagRepository;
+    private readonly int _tagsCount = 6;
+
     public TagService( ITagRepository tagRepository )
     {
         _tagRepository = tagRepository;
@@ -43,5 +46,19 @@ public class TagService : ITagService
         List<Tag> tagsToRemove = tags.Where( tag => tag.Recipes.Count == 0 ).ToList();
 
         _tagRepository.RemoveTags( tagsToRemove );
+    }
+
+    public async Task<Result<List<string>>> GetRandomTagsNames()
+    {
+        try
+        {
+            List<string> randomTagsNames = await _tagRepository.GetRandomTagsNames( _tagsCount );
+
+            return new Result<List<string>>( randomTagsNames );
+        }
+        catch ( Exception e )
+        {
+            return new Result<List<string>>( new Error( e.Message ) );
+        }
     }
 }

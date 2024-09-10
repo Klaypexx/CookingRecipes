@@ -30,7 +30,8 @@ header {
 }
 
 .headerTextActive {
-  color: black;
+  color: rgb(58, 60, 65);
+  font-weight: 600;
 }
 
 .headerText:not(:first-child) {
@@ -73,6 +74,7 @@ header {
 }
 
 .authText {
+  cursor: pointer;
   color: rgb(253, 177, 0);
   font-weight: 600;
 }

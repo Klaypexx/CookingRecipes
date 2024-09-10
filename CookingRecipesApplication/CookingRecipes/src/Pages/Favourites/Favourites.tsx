@@ -7,17 +7,17 @@ import FavouritesRecipeValues from '../../Types/FavouritesRecipeValues';
 import styles from './Favourites.module.css';
 
 const Favourites = () => {
-  let [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [recipeValues, setRecipeValues] = useState<FavouritesRecipeValues[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
-  const [values, setValues] = useState<FavouritesRecipeValues[]>([]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       await RecipeService.GetFavouriteRecipes(pageNumber).then((res) => {
         if (res) {
           setIsLoadButton(!res.response.data.isLastRecipes);
-          setValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
+          setRecipeValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
           setLoading(false);
         }
       });
@@ -39,7 +39,7 @@ const Favourites = () => {
         {loading ? (
           <Spinner />
         ) : (
-          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={values} />
+          <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={recipeValues} />
         )}
       </section>
     </div>

@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import chefIcon from '../../../resources/icons/ic-chef.svg';
 import cookIcon from '../../../resources/icons/ic-cook.svg';
 import feastIcon from '../../../resources/icons/ic-feast.svg';
 import bookIcon from '../../../resources/icons/ic-menu.svg';
+import useSearchStore from '../../../Stores/useSearchStore';
 import TagsListProps from '../../../Types/TagsListProps';
 import BaseTagsBlock from '../BaseTagsBlock/BaseTagsBlock';
 import styles from './TagsList.module.css';
@@ -30,10 +32,18 @@ const tagsData = [
 ];
 
 const TagsList: React.FC<TagsListProps> = ({ text, className }) => {
+  const navigation = useNavigate();
+  const { setSearchString } = useSearchStore();
+
+  const handleClick = (value: string) => {
+    setSearchString(value);
+    navigation('/recipes');
+  };
+
   return (
     <div className={styles.tagListFlex}>
       {tagsData.map((tags, index) => (
-        <div key={index}>
+        <div key={index} onClick={() => handleClick(tagsData[index].header)}>
           <BaseTagsBlock text={text} className={className} tag={tags} />
         </div>
       ))}
