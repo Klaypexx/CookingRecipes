@@ -15,29 +15,18 @@ import useUserStore from './Stores/useUserStore';
 
 function App() {
   const token = TokenService.getAccessToken();
-  const { setAuthorized, isAuthorized } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const { setAuthorized, isAuthorized } = useAuthStore();
   const { setUserName } = useUserStore();
 
   useEffect(() => {
-    const fetchAuth = async () => {
+    const fetchData = async () => {
       if (token) {
-        await AuthService.isAuth()
-          .then(() => {
-            setAuthorized(true);
-          })
-          .catch(() => {
-            setAuthorized(false);
-          });
-        await UserService.username().then((res) => {
-          if (res) {
-            setUserName(res.response.data.userName);
-          }
-        });
+        await Promise.all([fetchAuth(), fetchUser()]);
       }
       setLoading(false);
     };
-    fetchAuth();
+    fetchData();
   }, [isAuthorized]);
 
   useEffect(() => {
@@ -49,6 +38,24 @@ function App() {
       return () => clearInterval(interval);
     }
   }, [isAuthorized]);
+
+  const fetchAuth = async () => {
+    await AuthService.isAuth()
+      .then(() => {
+        setAuthorized(true);
+      })
+      .catch(() => {
+        setAuthorized(false);
+      });
+  };
+
+  const fetchUser = async () => {
+    await UserService.username().then((res) => {
+      if (res) {
+        setUserName(res.response.data.userName);
+      }
+    });
+  };
 
   if (loading) {
     return <Spinner />;
