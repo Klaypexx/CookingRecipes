@@ -153,7 +153,7 @@ public class RecipeController : ControllerBase
         int authorId = 0;
         if ( User.Identity.IsAuthenticated )
         {
-            authorId = int.Parse( User.GetUserId() );
+            authorId = AuthorId;
         }
 
         Result<CompleteRecipe> result = await _recipeService.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );

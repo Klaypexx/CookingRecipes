@@ -8,14 +8,14 @@ namespace Infrastructure.Validation;
 
 public class RecipeValidator : AbstractValidator<Recipe>, Application.Validation.IValidator<Recipe>
 {
-    private readonly FileValidationRules _fileValidationRules;
+    private readonly FileValidationRule _fileValidationRules;
 
     private const int _nameMaxWords = 50;
     private const int _descriptionMaxWords = 150;
 
     public RecipeValidator()
     {
-        _fileValidationRules = new FileValidationRules();
+        _fileValidationRules = new FileValidationRule();
 
         RuleFor( r => r.Name )
             .NotEmpty().WithMessage( "Название рецепта обязательно" )
