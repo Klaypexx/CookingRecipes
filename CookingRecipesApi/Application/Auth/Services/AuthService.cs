@@ -3,7 +3,6 @@ using Application.Auth.Entities;
 using Application.Auth.Services;
 using Application.Foundation;
 using Application.Users.Repositories;
-using Application.Validation;
 using UserDomain = Domain.Auth.Entities.User;
 
 namespace Application.Users.Services;
@@ -15,8 +14,6 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserCreator _userCreator;
-    private readonly IValidator<Register> _registerValidator;
-    private readonly IValidator<Login> _loginValidator;
     private readonly IUnitOfWork _unitOfWork;
 
     public AuthService( IUserService userService,
@@ -24,8 +21,6 @@ public class AuthService : IAuthService
         ITokenService tokenService,
         IPasswordHasher passwordHasher,
         IUserCreator userCreator,
-        IValidator<Register> registerValidator,
-        IValidator<Login> loginValidator,
         IUnitOfWork unitOfWork )
     {
         _userService = userService;
@@ -33,8 +28,6 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _passwordHasher = passwordHasher;
         _userCreator = userCreator;
-        _registerValidator = registerValidator;
-        _loginValidator = loginValidator;
         _unitOfWork = unitOfWork;
     }
 

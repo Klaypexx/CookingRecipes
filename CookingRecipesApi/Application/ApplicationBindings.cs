@@ -7,6 +7,7 @@ using Application.Recipes.Facade;
 using Application.Recipes.Services;
 using Application.Tags.Services;
 using Application.Users;
+using Application.Users.Facade;
 using Application.Users.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,7 @@ public static class ApplicationBindings
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<IAuthFacade, AuthFacade>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserFacade, UserFacade>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserCreator, UserCreator>();
         services.AddScoped<ITagService, TagService>();
