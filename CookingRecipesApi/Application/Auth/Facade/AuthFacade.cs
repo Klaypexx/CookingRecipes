@@ -1,15 +1,16 @@
-﻿using Application.Auth;
-using Application.Auth.Entities;
+﻿using Application.Auth.Entities;
 using Application.Auth.Services;
 using Application.Foundation;
 using Application.ResultObject;
 using Application.Users.Repositories;
+using Application.Users.Services;
+using Application.Users;
 using Application.Validation;
 using UserDomain = Domain.Auth.Entities.User;
 
-namespace Application.Users.Services;
+namespace Application.Auth.Facade;
 
-public class AuthService : IAuthService
+public class AuthFacade
 {
     private readonly IUserService _userService;
     private readonly IUserRepository _userRepository;
@@ -20,7 +21,7 @@ public class AuthService : IAuthService
     private readonly IValidator<Login> _loginValidator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AuthService( IUserService userService,
+    public AuthFacade( IUserService userService,
         IUserRepository userRepository,
         ITokenService tokenService,
         IPasswordHasher passwordHasher,

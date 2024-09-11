@@ -1,5 +1,5 @@
 ﻿using Application.Recipes.Entities;
-using Application.Recipes.Services;
+using Application.Recipes.Facade;
 using Application.ResultObject;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
@@ -13,13 +13,13 @@ namespace CookingRecipesApi.Controllers;
 [ApiController]
 public class RecipeController : ControllerBase
 {
-    private readonly IRecipeService _recipeService;
+    private readonly IRecipeFacade _recipeFacade;
 
     private int AuthorId => int.Parse( User.GetUserId() );
 
-    public RecipeController( IRecipeService recipeService )
+    public RecipeController( IRecipeFacade recipeFacade )
     {
-        _recipeService = recipeService;
+        _recipeFacade = recipeFacade;
     }
 
     [HttpPost]
@@ -27,7 +27,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateRecipe( [FromForm] RecipeDto recipeDto )
     {
-        Result result = await _recipeService.CreateRecipe( recipeDto.ToApplication( AuthorId ) );
+        Result result = await _recipeFacade.CreateRecipe( recipeDto.ToApplication( AuthorId ) );
 
         if ( !result.IsSuccess )
         {
@@ -42,7 +42,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateRecipe( [FromForm] RecipeDto recipeDto, [FromRoute] int recipeId )
     {
-        Result result = await _recipeService.UpdateRecipe( recipeDto.ToApplication( AuthorId ), recipeId );
+        Result result = await _recipeFacade.UpdateRecipe( recipeDto.ToApplication( AuthorId ), recipeId );
 
         if ( !result.IsSuccess )
         {
@@ -58,7 +58,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> RemoveRecipe( [FromRoute] int recipeId )
     {
-        Result result = await _recipeService.RemoveRecipe( recipeId, AuthorId );
+        Result result = await _recipeFacade.RemoveRecipe( recipeId, AuthorId );
 
         if ( !result.IsSuccess )
         {
@@ -78,7 +78,7 @@ public class RecipeController : ControllerBase
             authorId = AuthorId;
         }
 
-        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetRecipes( authorId, pageNumber, searchString );
+        Result<RecipesData<OverviewRecipe>> result = await _recipeFacade.GetRecipes( authorId, pageNumber, searchString );
 
         if ( !result.IsSuccess )
         {
@@ -95,7 +95,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetFavouritesRecipes( [FromQuery] int pageNumber = 1 )
     {
-        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetFavouriteRecipeByAuthorId( AuthorId, pageNumber );
+        Result<RecipesData<OverviewRecipe>> result = await _recipeFacade.GetFavouriteRecipeByAuthorId( AuthorId, pageNumber );
 
         if ( !result.IsSuccess )
         {
@@ -112,7 +112,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserRecipes( [FromQuery] int pageNumber = 1 )
     {
-        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetRecipeByAuthorId( AuthorId, pageNumber );
+        Result<RecipesData<OverviewRecipe>> result = await _recipeFacade.GetRecipeByAuthorId( AuthorId, pageNumber );
 
         if ( !result.IsSuccess )
         {
@@ -128,7 +128,7 @@ public class RecipeController : ControllerBase
     [Route( "liked" )]
     public async Task<IActionResult> GetMostLikedRecipe()
     {
-        Result<MostLikedRecipe> result = await _recipeService.GetMostLikedRecipe();
+        Result<MostLikedRecipe> result = await _recipeFacade.GetMostLikedRecipe();
 
         if ( !result.IsSuccess )
         {
@@ -156,7 +156,7 @@ public class RecipeController : ControllerBase
             authorId = AuthorId;
         }
 
-        Result<CompleteRecipe> result = await _recipeService.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );
+        Result<CompleteRecipe> result = await _recipeFacade.GetRecipeByIdIncludingDependentEntities( recipeId, authorId );
 
         if ( !result.IsSuccess )
         {

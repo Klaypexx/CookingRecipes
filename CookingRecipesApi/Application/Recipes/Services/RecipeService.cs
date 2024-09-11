@@ -5,8 +5,6 @@ using Application.Recipes.Repositories;
 using Application.Tags.Services;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 using Application.Recipes.Extensions;
-using Application.ResultObject;
-using Application.Validation;
 
 namespace Application.Recipes.Services;
 
@@ -16,7 +14,6 @@ public class RecipeService : IRecipeService
     private readonly ITagService _tagService;
     private readonly IFileService _fileService;
     private readonly IRecipeCreator _recipeCreator;
-    private readonly IValidator<Recipe> _recipeValidator;
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly int _pageAmount = 5;
@@ -25,212 +22,120 @@ public class RecipeService : IRecipeService
         ITagService tagService,
         IFileService fileService,
         IRecipeCreator recipeCreator,
-        IValidator<Recipe> recipeValidator,
         IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
         _fileService = fileService;
         _recipeCreator = recipeCreator;
-        _recipeValidator = recipeValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> CreateRecipe( Recipe recipe )
+    public async Task CreateRecipe( Recipe recipe )
     {
-        try
-        {
-            Result result = _recipeValidator.Validate( recipe );
+        string pathToFile = await _fileService.SaveImage( recipe.Avatar );
+        RecipeDomain recipeDomain = _recipeCreator.Create( recipe, pathToFile );
 
-            if ( !result.IsSuccess )
-            {
-                return result;
-            }
-
-            string pathToFile = await _fileService.SaveImage( recipe.Avatar );
-            RecipeDomain recipeDomain = _recipeCreator.Create( recipe, pathToFile );
-
-            await _tagService.ActualizeTags( recipeDomain );
-            await _recipeRepository.CreateRecipe( recipeDomain );
-            await _unitOfWork.Save();
-
-            return new Result();
-        }
-        catch ( Exception e )
-        {
-            return new Result( new Error( e.Message ) );
-        }
+        await _tagService.ActualizeTags( recipeDomain );
+        await _recipeRepository.CreateRecipe( recipeDomain );
+        await _unitOfWork.Save();
     }
 
-    public async Task<Result> UpdateRecipe( Recipe actualRecipe, int recipeId )
+    public async Task UpdateRecipe( Recipe actualRecipe, int recipeId )
     {
-        try
-        {
-            bool hasAccess = await HasAccessToRecipe( recipeId, actualRecipe.AuthorId );
+        RecipeDomain oldRecipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
-            if ( !hasAccess )
-            {
-                throw new UnauthorizedAccessException( "Нет доступа" );
-            }
+        string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar );
 
-            RecipeDomain oldRecipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
+        RecipeDomain recipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
-            string pathToFile = await _fileService.UpdateImage( actualRecipe.Avatar, oldRecipe.Avatar );
+        await _tagService.ActualizeTags( recipe );
+        oldRecipe.UpdateRecipe( recipe );
+        await _unitOfWork.Save();
 
-            RecipeDomain recipe = _recipeCreator.Create( actualRecipe, pathToFile );
-
-            await _tagService.ActualizeTags( recipe );
-            oldRecipe.UpdateRecipe( recipe );
-            await _unitOfWork.Save();
-
-            await RemoveUnusedTags();
-
-            return new Result();
-        }
-        catch ( Exception e )
-        {
-            return new Result( new Error( e.Message ) );
-        }
+        await RemoveUnusedTags();
     }
 
-    public async Task<Result> RemoveRecipe( int recipeId, int authorId )
+    public async Task RemoveRecipe( int recipeId, int authorId )
     {
-        try
-        {
-            bool hasAccess = await HasAccessToRecipe( recipeId, authorId );
+        RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
-            if ( !hasAccess )
-            {
-                throw new UnauthorizedAccessException( "Нет доступа" );
-            }
+        _fileService.RemoveImage( recipe.Avatar );
 
-            RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
+        recipe.Likes.Clear();
 
-            _fileService.RemoveImage( recipe.Avatar );
+        recipe.FavouriteRecipes.Clear();
 
-            recipe.Likes.Clear();
+        recipe.Tags.Clear();
 
-            recipe.FavouriteRecipes.Clear();
+        _recipeRepository.RemoveRecipe( recipe );
+        await _unitOfWork.Save();
 
-            recipe.Tags.Clear();
-
-            _recipeRepository.RemoveRecipe( recipe );
-            await _unitOfWork.Save();
-
-            await RemoveUnusedTags();
-
-            return new Result();
-        }
-        catch ( Exception e )
-        {
-            return new Result( new Error( e.Message ) );
-        }
+        await RemoveUnusedTags();
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int authorId, int pageNumber, string searchString )
+    public async Task<RecipesData<OverviewRecipe>> GetRecipes( int authorId, int pageNumber, string searchString )
     {
-        try
-        {
-            int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
+        int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, _pageAmount, searchString.ToLower() );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, _pageAmount, searchString.ToLower() );
 
-            bool isLastRecipes = recipes.Count <= 4;
+        bool isLastRecipes = recipes.Count <= 4;
 
-            IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
 
-            RecipesData<OverviewRecipe> recipeData = new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
+        RecipesData<OverviewRecipe> recipeData = new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
 
-            return new Result<RecipesData<OverviewRecipe>>( recipeData );
-        }
-        catch ( Exception e )
-        {
-            return new Result<RecipesData<OverviewRecipe>>( new Error( e.Message ) );
-        }
+        return recipeData;
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetFavouriteRecipeByAuthorId( int authorId, int pageNumber )
+    public async Task<RecipesData<OverviewRecipe>> GetFavouriteRecipeByAuthorId( int authorId, int pageNumber )
     {
-        try
-        {
-            int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
+        int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipeByAuthorId( authorId, skipRange, _pageAmount );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipeByAuthorId( authorId, skipRange, _pageAmount );
 
-            bool isLastRecipes = recipes.Count <= 4;
+        bool isLastRecipes = recipes.Count <= 4;
 
-            IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
 
-            RecipesData<OverviewRecipe> recipeData = new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
+        RecipesData<OverviewRecipe> recipeData = new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
 
-            return new Result<RecipesData<OverviewRecipe>>( recipeData );
-        }
-        catch ( Exception e )
-        {
-            return new Result<RecipesData<OverviewRecipe>>( new Error( e.Message ) );
-        }
+        return recipeData;
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipeByAuthorId( int authorId, int pageNumber )
+    public async Task<RecipesData<OverviewRecipe>> GetRecipeByAuthorId( int authorId, int pageNumber )
     {
-        try
-        {
-            int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
+        int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipeByAuthorId( authorId, skipRange, _pageAmount );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipeByAuthorId( authorId, skipRange, _pageAmount );
 
-            bool isLastRecipes = recipes.Count <= 4;
+        bool isLastRecipes = recipes.Count <= 4;
 
-            IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
+        IReadOnlyList<RecipeDomain> currentRecipesCountToTake = recipes.Take( _pageAmount - 1 ).ToList();
 
-            RecipesData<OverviewRecipe> recipeData = new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
+        RecipesData<OverviewRecipe> recipeData = new( currentRecipesCountToTake.ToOverviewRecipe( authorId ), isLastRecipes );
 
-            return new Result<RecipesData<OverviewRecipe>>( recipeData );
-        }
-        catch ( Exception e )
-        {
-            return new Result<RecipesData<OverviewRecipe>>( new Error( e.Message ) );
-        }
+        return recipeData;
     }
 
-    public async Task<Result<MostLikedRecipe>> GetMostLikedRecipe()
+    public async Task<MostLikedRecipe> GetMostLikedRecipe()
     {
-        try
-        {
-            RecipeDomain recipe = await _recipeRepository.GetMostLikedRecipe();
+        RecipeDomain recipe = await _recipeRepository.GetMostLikedRecipe();
 
-            if ( recipe == null )
-            {
-                return null;
-            }
-
-            return new Result<MostLikedRecipe>( recipe.ToMostLikedRecipe() );
-        }
-        catch ( Exception e )
+        if ( recipe == null )
         {
-            return new Result<MostLikedRecipe>( new Error( e.Message ) );
+            return null;
         }
+
+        return recipe.ToMostLikedRecipe();
     }
 
-    public async Task<Result<CompleteRecipe>> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId )
+    public async Task<CompleteRecipe> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId )
     {
-        try
-        {
-            RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
+        RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
-            return new Result<CompleteRecipe>( recipe.ToCompleteRecipe( authorId ) );
-        }
-        catch ( Exception e )
-        {
-            return new Result<CompleteRecipe>( new Error( e.Message ) );
-        }
-    }
-
-    private async Task<bool> HasAccessToRecipe( int recipeId, int authorId )
-    {
-        RecipeDomain recipe = await _recipeRepository.GetRecipeById( recipeId );
-
-        return recipe.AuthorId == authorId;
+        return recipe.ToCompleteRecipe( authorId );
     }
 
     private async Task RemoveUnusedTags()
