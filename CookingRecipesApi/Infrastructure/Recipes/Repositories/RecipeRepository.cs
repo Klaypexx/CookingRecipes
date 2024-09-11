@@ -13,6 +13,7 @@ public class RecipeRepository : IRecipeRepository
     {
         _entities = context.Set<Recipe>();
     }
+
     public async Task CreateRecipe( Recipe recipe )
     {
         await _entities.AddAsync( recipe );
@@ -43,7 +44,7 @@ public class RecipeRepository : IRecipeRepository
          .ToListAsync();
     }
 
-    public async Task<IReadOnlyList<Recipe>> GetFavouriteRecipes( int skipRange, int pageAmount, int authorId )
+    public async Task<IReadOnlyList<Recipe>> GetFavouriteRecipeByAuthorId( int authorId, int skipRange, int pageAmount )
     {
         return await _entities.Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )
@@ -56,7 +57,7 @@ public class RecipeRepository : IRecipeRepository
          .ToListAsync();
     }
 
-    public async Task<IReadOnlyList<Recipe>> GetUserRecipes( int skipRange, int pageAmount, int authorId )
+    public async Task<IReadOnlyList<Recipe>> GetRecipeByAuthorId( int authorId, int skipRange, int pageAmount )
     {
         return await _entities.Include( recipe => recipe.Tags )
          .ThenInclude( recipeTag => recipeTag.Tag )

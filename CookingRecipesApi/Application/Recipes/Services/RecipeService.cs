@@ -127,7 +127,7 @@ public class RecipeService : IRecipeService
         }
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int pageNumber, int authorId, string searchString )
+    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int authorId, int pageNumber, string searchString )
     {
         try
         {
@@ -149,13 +149,13 @@ public class RecipeService : IRecipeService
         }
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetFavouriteRecipes( int pageNumber, int authorId )
+    public async Task<Result<RecipesData<OverviewRecipe>>> GetFavouriteRecipeByAuthorId( int authorId, int pageNumber )
     {
         try
         {
             int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipes( skipRange, _pageAmount, authorId );
+            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetFavouriteRecipeByAuthorId( authorId, skipRange, _pageAmount );
 
             bool isLastRecipes = recipes.Count <= 4;
 
@@ -171,13 +171,13 @@ public class RecipeService : IRecipeService
         }
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetUserRecipes( int pageNumber, int authorId )
+    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipeByAuthorId( int authorId, int pageNumber )
     {
         try
         {
             int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetUserRecipes( skipRange, _pageAmount, authorId );
+            IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipeByAuthorId( authorId, skipRange, _pageAmount );
 
             bool isLastRecipes = recipes.Count <= 4;
 

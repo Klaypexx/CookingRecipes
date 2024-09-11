@@ -58,11 +58,13 @@ services.AddAuthentication( JwtBearerDefaults.AuthenticationScheme )
             };
         } );
 
+string policyName = configuration[ "Policy:Name" ];
+
 string serverUrl = configuration[ "Cors:Url" ];
 
 builder.Services.AddCors( options =>
 {
-    options.AddPolicy( "MyPolicy",
+    options.AddPolicy( policyName,
         policy =>
         {
             policy.WithOrigins( serverUrl )
@@ -83,7 +85,7 @@ if ( app.Environment.IsDevelopment() )
 
 app.UseHttpsRedirection();
 
-app.UseCors( "MyPolicy" );
+app.UseCors( policyName );
 
 app.UseStaticFiles();
 

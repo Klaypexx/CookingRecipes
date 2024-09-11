@@ -8,9 +8,9 @@ public interface IRecipeService
     Task<Result> CreateRecipe( Recipe recipe );
     Task<Result> UpdateRecipe( Recipe recipe, int recipeId );
     Task<Result> RemoveRecipe( int recipeId, int authorId );
-    Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int pageNumber, int authorId, string searchString );
-    Task<Result<RecipesData<OverviewRecipe>>> GetFavouriteRecipes( int pageNumber, int authorId );
-    Task<Result<RecipesData<OverviewRecipe>>> GetUserRecipes( int pageNumber, int authorId );
+    Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int authorId, int pageNumber, string searchString );
+    Task<Result<RecipesData<OverviewRecipe>>> GetFavouriteRecipeByAuthorId( int authorId, int pageNumber );
+    Task<Result<RecipesData<OverviewRecipe>>> GetRecipeByAuthorId( int authorId, int pageNumber );
     Task<Result<MostLikedRecipe>> GetMostLikedRecipe();
     Task<Result<CompleteRecipe>> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId );
 }

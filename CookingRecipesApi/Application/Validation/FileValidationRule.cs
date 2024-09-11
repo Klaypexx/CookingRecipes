@@ -2,7 +2,7 @@
 
 namespace Application.Validation;
 
-public class FileValidationRules
+public class FileValidationRule
 {
     public bool IsImage( IFormFile file )
     {

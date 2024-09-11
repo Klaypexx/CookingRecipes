@@ -26,6 +26,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
     public async Task<FavouriteRecipe> GetFavouriteRecipe( int userId, int recipeId )
     {
-        return await _entities.Where( favouriteRecipe => favouriteRecipe.UserId == userId && favouriteRecipe.RecipeId == recipeId ).FirstOrDefaultAsync();
+        return await _entities.Where( favouriteRecipe => favouriteRecipe.UserId == userId && favouriteRecipe.RecipeId == recipeId )
+            .FirstOrDefaultAsync();
     }
 }

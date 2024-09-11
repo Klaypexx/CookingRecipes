@@ -12,7 +12,6 @@ using Application.Users.Entities;
 using Application.Users.Repositories;
 using Application.Validation;
 using Infrastructure.Auth;
-using Infrastructure.Auth.Utils;
 using Infrastructure.Database;
 using Infrastructure.Favourites.Repositories;
 using Infrastructure.Files.Services;

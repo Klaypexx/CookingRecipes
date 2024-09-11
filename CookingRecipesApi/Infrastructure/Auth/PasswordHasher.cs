@@ -1,6 +1,7 @@
 ﻿using Application.Auth;
 
-namespace Infrastructure.Auth.Utils;
+namespace Infrastructure.Auth;
+
 public class PasswordHasher : IPasswordHasher
 {
     public string GeneratePasswordHash( string password ) =>

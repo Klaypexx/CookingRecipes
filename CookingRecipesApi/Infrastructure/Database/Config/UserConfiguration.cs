@@ -6,6 +6,8 @@ namespace Infrastructure.Database.Config;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
+    private const int _usernameMaxLenght = 25;
+
     public void Configure( EntityTypeBuilder<User> builder )
     {
         builder.ToTable( "user" );
@@ -21,13 +23,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property( x => x.UserName )
             .HasColumnName( "username" )
+            .HasMaxLength( _usernameMaxLenght )
             .IsRequired( true );
 
-
         builder.Property( x => x.Description )
-           .HasColumnName( "description" )
-           .IsRequired( false );
-
+           .HasColumnName( "description" );
 
         builder.Property( x => x.Password )
             .HasColumnName( "password" )

@@ -17,7 +17,11 @@ public class UserService : IUserService
     private readonly IValidator<User> _userValidator;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UserService( IUserRepository userRepository, IPasswordHasher passwordHasher, IUserCreator userCreator, IValidator<User> userValidator, IUnitOfWork unitOfWork )
+    public UserService( IUserRepository userRepository,
+        IPasswordHasher passwordHasher,
+        IUserCreator userCreator,
+        IValidator<User> userValidator,
+        IUnitOfWork unitOfWork )
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
@@ -65,7 +69,6 @@ public class UserService : IUserService
         {
             return new Result( new Error( e.Message ) );
         }
-
     }
 
     public async Task<Result<UserInfo>> GetUser( string userName )
@@ -86,7 +89,7 @@ public class UserService : IUserService
     {
         try
         {
-            UserDomain userStatistic = await _userRepository.GetUserByUsernameIncludingDependentEntities( userName );
+            UserDomain userStatistic = await _userRepository.GetUserByUsernameWithDetails( userName );
 
             return new Result<UserStatistic>( userStatistic.ToUserStatistic() );
         }

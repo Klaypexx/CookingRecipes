@@ -6,6 +6,9 @@ namespace Infrastructure.Database.Config;
 
 public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 {
+    private const int _nameMaxLenght = 50;
+    private const int _descriptionMaxLenght = 150;
+
     public void Configure( EntityTypeBuilder<Recipe> builder )
     {
         builder.ToTable( "recipe" );
@@ -17,15 +20,16 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 
         builder.Property( x => x.Name )
             .HasColumnName( "name" )
+            .HasMaxLength( _nameMaxLenght )
             .IsRequired( true );
 
         builder.Property( x => x.Description )
             .HasColumnName( "description" )
+            .HasMaxLength( _descriptionMaxLenght )
             .IsRequired( true );
 
         builder.Property( x => x.Avatar )
-            .HasColumnName( "avatar" )
-            .IsRequired( false );
+            .HasColumnName( "avatar" );
 
         builder.Property( x => x.CookingTime )
             .HasColumnName( "time" )

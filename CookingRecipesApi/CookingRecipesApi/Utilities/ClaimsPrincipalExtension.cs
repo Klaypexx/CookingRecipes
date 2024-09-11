@@ -10,7 +10,7 @@ public static class ClaimsPrincipalExtension
 
         if ( claim is null )
         {
-            throw new Exception( "Id пользователя не найден" );
+            throw new ArgumentException( "Id пользователя не найден" );
         }
 
         return claim.Value;
@@ -22,7 +22,7 @@ public static class ClaimsPrincipalExtension
 
         if ( claim is null )
         {
-            throw new Exception( "Имя пользователя не найдено" );
+            throw new ArgumentException( "Имя пользователя не найдено" );
         }
 
         return claim.Value;
@@ -34,7 +34,7 @@ public static class ClaimsPrincipalExtension
 
         if ( claim is null )
         {
-            throw new Exception( "Username пользователя не найден" );
+            throw new ArgumentException( "Username пользователя не найден" );
         }
 
         return claim.Value;

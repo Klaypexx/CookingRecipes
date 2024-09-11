@@ -30,9 +30,9 @@ public class TagRepository : ITagRepository
     public async Task<List<string>> GetRandomTagsNames( int tagsCount )
     {
         return await _entities.Select( tag => tag.Name )
-                .OrderBy( x => Guid.NewGuid() )
-                .Take( tagsCount )
-                .ToListAsync();
+            .OrderBy( x => Guid.NewGuid() )
+            .Take( tagsCount )
+            .ToListAsync();
     }
 
     public async Task CreateTags( List<Tag> newTags )

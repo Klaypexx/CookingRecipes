@@ -4,6 +4,7 @@ using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Users.Repositories;
+
 public class UserRepository : IUserRepository
 {
     private readonly DbSet<User> _entities;
@@ -23,7 +24,8 @@ public class UserRepository : IUserRepository
             .Where( u => u.UserName == username )
             .FirstOrDefaultAsync();
     }
-    public async Task<User> GetUserByUsernameIncludingDependentEntities( string username )
+
+    public async Task<User> GetUserByUsernameWithDetails( string username )
     {
         return await _entities.Include( user => user.Recipes )
             .Include( user => user.Likes )

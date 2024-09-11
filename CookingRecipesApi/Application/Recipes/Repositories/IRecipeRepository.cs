@@ -8,8 +8,8 @@ public interface IRecipeRepository
     void UpdateRecipe( Recipe recipe );
     void RemoveRecipe( Recipe recipe );
     Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount, string searchString );
-    Task<IReadOnlyList<Recipe>> GetFavouriteRecipes( int skipRange, int pageAmount, int authorId );
-    Task<IReadOnlyList<Recipe>> GetUserRecipes( int skipRange, int pageAmount, int authorId );
+    Task<IReadOnlyList<Recipe>> GetFavouriteRecipeByAuthorId( int authorId, int skipRange, int pageAmount );
+    Task<IReadOnlyList<Recipe>> GetRecipeByAuthorId( int authorId, int skipRange, int pageAmount );
     Task<Recipe> GetMostLikedRecipe();
     Task<Recipe> GetRecipeByIdIncludingDependentEntities( int recipeId );
     Task<Recipe> GetRecipeById( int recipeId );
