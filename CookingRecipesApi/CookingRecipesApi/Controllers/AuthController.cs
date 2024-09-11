@@ -1,6 +1,6 @@
 ﻿using Application.Auth;
 using Application.Auth.Entities;
-using Application.Auth.Services;
+using Application.Auth.Facade;
 using Application.ResultObject;
 using CookingRecipesApi.Dto.AuthDto;
 using CookingRecipesApi.Dto.Extensions;
@@ -14,12 +14,12 @@ namespace CookingRecipesApi.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthFacade _authFacade;
     private readonly AuthSettings _authSettings;
 
-    public AuthController( IAuthService authService, AuthSettings authSettings )
+    public AuthController( IAuthFacade authFacade, AuthSettings authSettings )
     {
-        _authService = authService;
+        _authFacade = authFacade;
         _authSettings = authSettings;
     }
 
@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     [Route( "register" )]
     public async Task<IActionResult> Register( [FromBody] RegisterDto registerDto )
     {
-        Result result = await _authService.RegisterUser( registerDto.ToRegister() );
+        Result result = await _authFacade.RegisterUser( registerDto.ToRegister() );
 
         if ( !result.IsSuccess )
         {
@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
     [Route( "login" )]
     public async Task<IActionResult> Login( [FromBody] LoginDto loginDto )
     {
-        Result<AuthTokenSet> result = await _authService.SignIn( loginDto.ToLogin(), _authSettings.RefreshLifeTime );
+        Result<AuthTokenSet> result = await _authFacade.SignIn( loginDto.ToLogin(), _authSettings.RefreshLifeTime );
 
         if ( !result.IsSuccess )
         {
@@ -67,7 +67,7 @@ public class AuthController : ControllerBase
     {
         HttpContext.Request.Cookies.TryGetValue( "refreshToken", out string cookieRefreshToken );
 
-        Result<AuthTokenSet> result = await _authService.Refresh( cookieRefreshToken, _authSettings.RefreshLifeTime );
+        Result<AuthTokenSet> result = await _authFacade.Refresh( cookieRefreshToken, _authSettings.RefreshLifeTime );
 
         if ( !result.IsSuccess )
         {
@@ -83,10 +83,8 @@ public class AuthController : ControllerBase
     [Route( "logout" )]
     public IActionResult Logout()
     {
-
         HttpContext.Response.Cookies.Delete( "refreshToken" );
 
         return Ok();
-
     }
 }

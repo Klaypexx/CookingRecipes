@@ -1,4 +1,5 @@
-﻿using Application.Auth.Services;
+﻿using Application.Auth.Facade;
+using Application.Auth.Services;
 using Application.Favourites.Services;
 using Application.Likes.Services;
 using Application.Recipes;
@@ -18,6 +19,7 @@ public static class ApplicationBindings
         services.AddScoped<IRecipeCreator, RecipeCreator>();
         services.AddScoped<IRecipeFacade, RecipeFacade>();
         services.AddScoped<IRecipeService, RecipeService>();
+        services.AddScoped<IAuthFacade, AuthFacade>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserCreator, UserCreator>();
