@@ -1,7 +1,5 @@
-﻿using Application.Auth.Entities;
-using Application.ResultObject;
+﻿using Application.ResultObject;
 using Application.Users.Entities;
-using Application.Users.Repositories;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -17,7 +15,7 @@ public class UserValidator : AbstractValidator<User>, Application.Validation.IVa
     private const int _passwordMinWords = 8;
     private const int _passwordMaxWords = 25;
 
-    public UserValidator( IUserRepository userRepository )
+    public UserValidator()
     {
         RuleFor( user => user.Name )
             .MinimumLength( _nameMinWords )
@@ -55,6 +53,8 @@ public class UserValidator : AbstractValidator<User>, Application.Validation.IVa
             return new Result();
         }
 
-        return new Result( result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList() );
+        List<Error> error = result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList();
+
+        return new Result( error );
     }
 }

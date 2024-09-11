@@ -89,7 +89,7 @@ public class UserService : IUserService
     {
         try
         {
-            UserDomain userStatistic = await _userRepository.GetUserByUsernameIncludingDependentEntities( userName );
+            UserDomain userStatistic = await _userRepository.GetUserByUsernameWithDetails( userName );
 
             return new Result<UserStatistic>( userStatistic.ToUserStatistic() );
         }

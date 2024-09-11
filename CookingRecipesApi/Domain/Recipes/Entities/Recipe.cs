@@ -19,7 +19,7 @@ public class Recipe
     public List<FavouriteRecipe> FavouriteRecipes { get; private set; }
 
     // protected конструктор (проверка)
-    public Recipe() { }
+    protected Recipe() { }
 
     public Recipe( string name,
         string description,

@@ -50,6 +50,8 @@ public class RegisterValidator : AbstractValidator<Register>, Application.Valida
             return new Result();
         }
 
-        return new Result( result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList() );
+        List<Error> error = result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList();
+
+        return new Result( error );
     }
 }

@@ -78,7 +78,7 @@ public class RecipeController : ControllerBase
             authorId = AuthorId;
         }
 
-        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetRecipes( pageNumber, authorId, searchString );
+        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetRecipes( authorId, pageNumber, searchString );
 
         if ( !result.IsSuccess )
         {
@@ -95,7 +95,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetFavouritesRecipes( [FromQuery] int pageNumber = 1 )
     {
-        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetFavouriteRecipes( pageNumber, AuthorId );
+        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetFavouriteRecipeByAuthorId( AuthorId, pageNumber );
 
         if ( !result.IsSuccess )
         {
@@ -112,7 +112,7 @@ public class RecipeController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserRecipes( [FromQuery] int pageNumber = 1 )
     {
-        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetUserRecipes( pageNumber, AuthorId );
+        Result<RecipesData<OverviewRecipe>> result = await _recipeService.GetRecipeByAuthorId( AuthorId, pageNumber );
 
         if ( !result.IsSuccess )
         {

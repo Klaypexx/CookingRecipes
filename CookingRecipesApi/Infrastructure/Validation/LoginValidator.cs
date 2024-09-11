@@ -11,6 +11,7 @@ public class LoginValidator : AbstractValidator<Login>, Application.Validation.I
     private const int _usernameMaxWords = 25;
     private const int _passwordMinWords = 8;
     private const int _passwordMaxWords = 25;
+
     public LoginValidator()
     {
         RuleFor( login => login.UserName )
@@ -39,6 +40,8 @@ public class LoginValidator : AbstractValidator<Login>, Application.Validation.I
             return new Result();
         }
 
-        return new Result( result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList() );
+        List<Error> error = result.Errors.Select( x => new Error( x.ErrorMessage ) ).ToList();
+
+        return new Result( error );
     }
 }
