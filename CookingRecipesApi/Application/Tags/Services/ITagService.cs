@@ -7,5 +7,5 @@ public interface ITagService
 {
     Task ActualizeTags( Recipe recipe );
     Task RemoveUnusedTags();
-    Task<Result<List<string>>> GetRandomTagsNames();
+    Task<List<string>> GetRandomTagsNames();
 }

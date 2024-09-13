@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { warnToast } from '../Components/Toast/Toast';
-import { useEffect } from 'react';
 import useAuthStore from '../Stores/useAuthStore';
 
 function ProtectedRoute({ redirectPath = '/', children }: any) {

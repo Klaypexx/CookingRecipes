@@ -1,4 +1,4 @@
-﻿using Application.Favourites.Services;
+﻿using Application.Favourites.Facade;
 using Application.ResultObject;
 using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,20 +9,20 @@ namespace CookingRecipesApi.Controllers;
 [ApiController]
 public class FavouriteRecipeController : ControllerBase
 {
-    private readonly IFavouriteRecipeService _favouriteService;
+    private readonly IFavouriteRecipeFacade _favouriteRecipeFacade;
 
     private int AuthorId => int.Parse( User.GetUserId() );
 
-    public FavouriteRecipeController( IFavouriteRecipeService favouriteService )
+    public FavouriteRecipeController( IFavouriteRecipeFacade favouriteRecipeFacade )
     {
-        _favouriteService = favouriteService;
+        _favouriteRecipeFacade = favouriteRecipeFacade;
     }
 
     [HttpPost]
     [Route( "" )]
     public async Task<IActionResult> AddFavouriteRecipe( [FromBody] int recipeId )
     {
-        Result result = await _favouriteService.AddFavouriteRecipe( AuthorId, recipeId );
+        Result result = await _favouriteRecipeFacade.AddFavouriteRecipe( AuthorId, recipeId );
 
         if ( !result.IsSuccess )
         {
@@ -36,7 +36,7 @@ public class FavouriteRecipeController : ControllerBase
     [Route( "{recipeId}" )]
     public async Task<IActionResult> RemoveFavouriteRecipe( [FromRoute] int recipeId )
     {
-        Result result = await _favouriteService.RemoveFavouriteRecipe( AuthorId, recipeId );
+        Result result = await _favouriteRecipeFacade.RemoveFavouriteRecipe( AuthorId, recipeId );
 
         if ( !result.IsSuccess )
         {

@@ -56,13 +56,17 @@ const Header = () => {
           >
             Рецепты
           </NavLink>
-          <NavLink
-            className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
-            to={'/favourites'}
-            state={{ from: location.pathname }}
-          >
-            Избранное
-          </NavLink>
+          {isAuthorized && (
+            <>
+              <NavLink
+                className={({ isActive }) => classNames(styles.headerText, { [styles.headerTextActive]: isActive })}
+                to={'/favourites'}
+                state={{ from: location.pathname }}
+              >
+                Избранное
+              </NavLink>
+            </>
+          )}
         </nav>
       </div>
 

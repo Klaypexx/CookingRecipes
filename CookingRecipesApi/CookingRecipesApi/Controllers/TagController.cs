@@ -1,4 +1,5 @@
 ﻿using Application.ResultObject;
+using Application.Tags.Facade;
 using Application.Tags.Services;
 using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,18 +10,18 @@ namespace CookingRecipesApi.Controllers;
 [ApiController]
 public class TagController : ControllerBase
 {
-    private readonly ITagService _tagService;
+    private readonly ITagFacade _tagFacade;
 
-    public TagController( ITagService tagService )
+    public TagController( ITagFacade tagFacade )
     {
-        _tagService = tagService;
+        _tagFacade = tagFacade;
     }
 
     [HttpGet]
     [Route( "random" )]
     public async Task<IActionResult> GetRandomTags()
     {
-        Result<List<string>> result = await _tagService.GetRandomTagsNames();
+        Result<List<string>> result = await _tagFacade.GetRandomTagsNames();
 
         if ( !result.IsSuccess )
         {

@@ -15,39 +15,21 @@ public class FavouriteRecipeService : IFavouriteRecipeService
         _favouriteRepository = favouriteRepository;
         _unitOfWork = unitOfWork;
     }
-    public async Task<Result> AddFavouriteRecipe( int userId, int recipeId )
+    public async Task AddFavouriteRecipe( int userId, int recipeId )
     {
-        try
-        {
-            FavouriteRecipe favouriteRecipeToAdd = new( userId, recipeId );
+        FavouriteRecipe favouriteRecipeToAdd = new( userId, recipeId );
 
-            await _favouriteRepository.AddFavouriteRecipe( favouriteRecipeToAdd );
+        await _favouriteRepository.AddFavouriteRecipe( favouriteRecipeToAdd );
 
-            await _unitOfWork.Save();
-
-            return new Result();
-        }
-        catch ( Exception e )
-        {
-            return new Result( new Error( e.Message ) );
-        }
+        await _unitOfWork.Save();
     }
 
-    public async Task<Result> RemoveFavouriteRecipe( int userId, int recipeId )
+    public async Task RemoveFavouriteRecipe( int userId, int recipeId )
     {
-        try
-        {
-            FavouriteRecipe favouriteRecipeToRemove = await _favouriteRepository.GetFavouriteRecipe( userId, recipeId );
+        FavouriteRecipe favouriteRecipeToRemove = await _favouriteRepository.GetFavouriteRecipe( userId, recipeId );
 
-            _favouriteRepository.RemoveFavouriteRecipe( favouriteRecipeToRemove );
+        _favouriteRepository.RemoveFavouriteRecipe( favouriteRecipeToRemove );
 
-            await _unitOfWork.Save();
-
-            return new Result();
-        }
-        catch ( Exception e )
-        {
-            return new Result( new Error( e.Message ) );
-        }
+        await _unitOfWork.Save();
     }
 }
