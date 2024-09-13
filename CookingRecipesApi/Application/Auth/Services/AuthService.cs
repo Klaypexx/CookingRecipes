@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Application.Auth;
+﻿using Application.Auth;
 using Application.Auth.Entities;
 using Application.Auth.Services;
 using Application.Foundation;
-using Application.ResultObject;
 using Application.Users.Repositories;
-using Application.Validation;
 using UserDomain = Domain.Auth.Entities.User;
 
 namespace Application.Users.Services;
@@ -17,8 +14,6 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserCreator _userCreator;
-    private readonly IValidator<Register> _registerValidator;
-    private readonly IValidator<Login> _loginValidator;
     private readonly IUnitOfWork _unitOfWork;
 
     public AuthService( IUserService userService,
@@ -26,8 +21,6 @@ public class AuthService : IAuthService
         ITokenService tokenService,
         IPasswordHasher passwordHasher,
         IUserCreator userCreator,
-        IValidator<Register> registerValidator,
-        IValidator<Login> loginValidator,
         IUnitOfWork unitOfWork )
     {
         _userService = userService;
@@ -35,107 +28,68 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _passwordHasher = passwordHasher;
         _userCreator = userCreator;
-        _registerValidator = registerValidator;
-        _loginValidator = loginValidator;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> RegisterUser( Register register )
+    public async Task RegisterUser( Register register )
     {
-        try
+        bool isUniqueUserName = await _userService.IsUniqueUsername( register.UserName );
+
+        if ( !isUniqueUserName )
         {
-            Result result = _registerValidator.Validate( register );
-
-            if ( !result.IsSuccess )
-            {
-                return result;
-            }
-
-            bool isUniqueUserName = await _userService.IsUniqueUsername( register.UserName );
-
-            if ( !isUniqueUserName )
-            {
-                throw new ArgumentException( "Логин пользователя должен быть уникальным" );
-            }
-
-            string hashedPassword = _passwordHasher.GeneratePasswordHash( register.Password );
-
-            await _userRepository.AddUser( _userCreator.Create( register, hashedPassword ) );
-
-            await _unitOfWork.Save();
-
-            return new Result();
-
+            throw new ArgumentException( "Логин пользователя должен быть уникальным" );
         }
-        catch ( Exception e )
-        {
-            return new Result( new Error( e.Message ) );
-        }
+
+        string hashedPassword = _passwordHasher.GeneratePasswordHash( register.Password );
+
+        await _userRepository.AddUser( _userCreator.Create( register, hashedPassword ) );
+
+        await _unitOfWork.Save();
     }
 
-    public async Task<Result<AuthTokenSet>> SignIn( Login login, int lifeTime )
+    public async Task<AuthTokenSet> SignIn( Login login, int lifeTime )
     {
-        try
+        UserDomain user = await _userRepository.GetUserByUsername( login.UserName );
+
+        if ( user is null )
         {
-            Result result = _loginValidator.Validate( login );
-
-            if ( !result.IsSuccess )
-            {
-                return new Result<AuthTokenSet>( result.Errors );
-            }
-
-            UserDomain user = await _userRepository.GetUserByUsername( login.UserName );
-
-            if ( user is null )
-            {
-                throw new ArgumentException( "Пользователь не найден" );
-            }
-
-            bool hashResult = _passwordHasher.VerifyPasswordHash( login.Password, user.Password );
-
-            if ( !hashResult )
-            {
-                throw new ArgumentException( "Неверный пароль" );
-            }
-
-            AuthTokenSet tokens = GetTokens( user );
-
-            await SetToken( user, tokens.RefreshToken, lifeTime );
-
-            return new Result<AuthTokenSet>( tokens );
+            throw new ArgumentException( "Пользователь не найден" );
         }
-        catch ( Exception e )
+
+        bool hashResult = _passwordHasher.VerifyPasswordHash( login.Password, user.Password );
+
+        if ( !hashResult )
         {
-            return new Result<AuthTokenSet>( new Error( e.Message ) );
+            throw new ArgumentException( "Неверный пароль" );
         }
+
+        AuthTokenSet tokens = GetTokens( user );
+
+        await SetToken( user, tokens.RefreshToken, lifeTime );
+
+        return tokens;
+
     }
 
-    public async Task<Result<AuthTokenSet>> Refresh( string cookieRefreshToken, int lifetime )
+    public async Task<AuthTokenSet> Refresh( string cookieRefreshToken, int lifetime )
     {
-        try
+        UserDomain user = await _userRepository.GetUserByRefreshToken( cookieRefreshToken );
+
+        if ( user is null )
         {
-            UserDomain user = await _userRepository.GetUserByRefreshToken( cookieRefreshToken );
-
-            if ( user is null )
-            {
-                throw new ArgumentException( "Токен обновления не существует" );
-            }
-
-            if ( user.RefreshTokenExpiryTime <= DateTime.Now )
-            {
-                throw new ArgumentException( "Срок действия токена обновления истек" );
-            }
-
-            AuthTokenSet tokens = GetTokens( user );
-
-            await SetToken( user, tokens.RefreshToken, lifetime );
-
-            return new Result<AuthTokenSet>( tokens );
+            throw new ArgumentException( "Токен обновления не существует" );
         }
-        catch ( Exception e )
+
+        if ( user.RefreshTokenExpiryTime <= DateTime.Now )
         {
-            return new Result<AuthTokenSet>( new Error( e.Message ) );
+            throw new ArgumentException( "Срок действия токена обновления истек" );
         }
+
+        AuthTokenSet tokens = GetTokens( user );
+
+        await SetToken( user, tokens.RefreshToken, lifetime );
+
+        return tokens;
     }
 
     private async Task SetToken( UserDomain user, string refreshToken, int lifetime )

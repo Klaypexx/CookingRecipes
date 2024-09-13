@@ -1,4 +1,4 @@
-﻿using Application.Likes.Services;
+﻿using Application.Likes.Facade;
 using Application.ResultObject;
 using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -11,20 +11,20 @@ namespace CookingRecipesApi.Controllers;
 [Authorize]
 public class LikeController : ControllerBase
 {
-    private readonly ILikeService _likeService;
+    private readonly ILikeFacade _likeFacade;
 
     private int UserId => int.Parse( User.GetUserId() );
 
-    public LikeController( ILikeService likeService )
+    public LikeController( ILikeFacade likeFacade )
     {
-        _likeService = likeService;
+        _likeFacade = likeFacade;
     }
 
     [HttpPost]
     [Route( "" )]
     public async Task<IActionResult> AddLike( [FromBody] int recipeId )
     {
-        Result result = await _likeService.AddLike( UserId, recipeId );
+        Result result = await _likeFacade.AddLike( UserId, recipeId );
 
         if ( !result.IsSuccess )
         {
@@ -38,7 +38,7 @@ public class LikeController : ControllerBase
     [Route( "{recipeId}" )]
     public async Task<IActionResult> RemoveLike( [FromRoute] int recipeId )
     {
-        Result result = await _likeService.RemoveLike( UserId, recipeId );
+        Result result = await _likeFacade.RemoveLike( UserId, recipeId );
 
         if ( !result.IsSuccess )
         {

@@ -5,12 +5,12 @@ namespace Application.Recipes.Services;
 
 public interface IRecipeService
 {
-    Task<Result> CreateRecipe( Recipe recipe );
-    Task<Result> UpdateRecipe( Recipe recipe, int recipeId );
-    Task<Result> RemoveRecipe( int recipeId, int authorId );
-    Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int authorId, int pageNumber, string searchString );
-    Task<Result<RecipesData<OverviewRecipe>>> GetFavouriteRecipeByAuthorId( int authorId, int pageNumber );
-    Task<Result<RecipesData<OverviewRecipe>>> GetRecipeByAuthorId( int authorId, int pageNumber );
-    Task<Result<MostLikedRecipe>> GetMostLikedRecipe();
-    Task<Result<CompleteRecipe>> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId );
+    Task CreateRecipe( Recipe recipe );
+    Task UpdateRecipe( Recipe recipe, int recipeId );
+    Task RemoveRecipe( int recipeId, int authorId );
+    Task<RecipesData<OverviewRecipe>> GetRecipes( int authorId, int pageNumber, string searchString );
+    Task<RecipesData<OverviewRecipe>> GetFavouriteRecipeByAuthorId( int authorId, int pageNumber );
+    Task<RecipesData<OverviewRecipe>> GetRecipeByAuthorId( int authorId, int pageNumber );
+    Task<MostLikedRecipe> GetMostLikedRecipe();
+    Task<CompleteRecipe> GetRecipeByIdIncludingDependentEntities( int recipeId, int authorId );
 }

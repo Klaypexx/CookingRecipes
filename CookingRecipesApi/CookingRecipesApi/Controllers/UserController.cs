@@ -4,8 +4,8 @@ using CookingRecipesApi.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CookingRecipesApi.Dto.Extensions;
-using Application.Users.Services;
 using Application.ResultObject;
+using Application.Users.Facade;
 
 namespace CookingRecipesApi.Controllers;
 
@@ -14,20 +14,20 @@ namespace CookingRecipesApi.Controllers;
 [Authorize]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IUserFacade _userFacade;
 
     private string UserName => User.GetUserName();
 
-    public UserController( IUserService userService )
+    public UserController( IUserFacade userFacade )
     {
-        _userService = userService;
+        _userFacade = userFacade;
     }
 
     [HttpPut]
     [Route( "" )]
     public async Task<IActionResult> UpdateUser( [FromForm] UserDto userDto )
     {
-        Result result = await _userService.UpdateUser( userDto.ToApplication(), UserName );
+        Result result = await _userFacade.UpdateUser( userDto.ToApplication(), UserName );
 
         if ( !result.IsSuccess )
         {
@@ -41,7 +41,7 @@ public class UserController : ControllerBase
     [Route( "" )]
     public async Task<IActionResult> GetUser()
     {
-        Result<UserInfo> result = await _userService.GetUser( UserName );
+        Result<UserInfo> result = await _userFacade.GetUser( UserName );
 
         if ( !result.IsSuccess )
         {
@@ -75,7 +75,7 @@ public class UserController : ControllerBase
     [Route( "statistic" )]
     public async Task<IActionResult> GetUserStatistic()
     {
-        Result<UserStatistic> result = await _userService.GetUserStatistic( UserName );
+        Result<UserStatistic> result = await _userFacade.GetUserStatistic( UserName );
 
         if ( !result.IsSuccess )
         {
