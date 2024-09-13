@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserForm from '../../Components/Form/UserForm/UserForm';
 import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import Spinner from '../../Components/Spinner/Spinner';
@@ -21,6 +22,7 @@ const UserProfile = () => {
   const [recipes, setRecipes] = useState<UserProfileRecipesValues[]>([]);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
+  const navigation = useNavigate();
 
   useEffect(() => {
     if (isFirstMount) {
@@ -41,8 +43,14 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchRecipes(), fetchUser(), fetchUserStatistic()]);
-      setLoading(false);
+      await Promise.all([fetchRecipes(), fetchUser(), fetchUserStatistic()])
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => {
+          console.log('мы в catch');
+          navigation(-1);
+        });
     };
     fetchData();
   }, []);

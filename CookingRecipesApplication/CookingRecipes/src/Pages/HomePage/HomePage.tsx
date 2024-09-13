@@ -21,6 +21,10 @@ const HomePage = () => {
   const navigation = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchRecipe(), fetchTags()]);
       setLoading(false);

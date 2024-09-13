@@ -19,7 +19,7 @@ const AuthModal = () => {
 
   return (
     <>
-      <BaseModal haederText="Войдите в профиль">
+      <BaseModal haederText="Войдите в систему">
         <p className={styles.authText}>Расширенные функции доступны только для зарегестрированных пользователей.</p>
         <LinkBlock
           linkPrimaryText="Войти"
