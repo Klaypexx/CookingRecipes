@@ -48,7 +48,6 @@ const UserProfile = () => {
           setLoading(false);
         })
         .catch(() => {
-          console.log('мы в catch');
           navigation(-1);
         });
     };
@@ -94,17 +93,19 @@ const UserProfile = () => {
         <Spinner />
       ) : (
         <>
-          <section className={styles.UserFormSection}>
-            <UserForm values={user!} />
-          </section>
+          <section className={styles.UserFormSection}>{user && <UserForm values={user!} />}</section>
 
           <section className={styles.StatisticListSection}>
-            <StatisticList values={userStatistic!} />
+            {userStatistic && <StatisticList values={userStatistic} />}
           </section>
 
           <section className={styles.recipesListSection}>
-            <h3 className={styles.recipesListHeader}>Мои рецепты</h3>
-            <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={recipes} />
+            {recipes && (
+              <>
+                <h3 className={styles.recipesListHeader}>Мои рецепты</h3>
+                <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={recipes} />
+              </>
+            )}
           </section>
         </>
       )}

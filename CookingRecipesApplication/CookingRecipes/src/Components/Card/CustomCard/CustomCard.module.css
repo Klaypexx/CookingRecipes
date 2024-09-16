@@ -7,6 +7,15 @@
   display: flex;
 }
 
+.cardContainer:hover {
+  transform: translateY(-3px);
+}
+
+.cardContainer:active {
+  transform: translateY(3px); /* Опускаем кнопку вниз */
+  transition: transform 0.5s ease;
+}
+
 .avatarImage {
   width: 543px;
   height: 543px;

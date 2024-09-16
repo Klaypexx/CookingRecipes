@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "CookingRecipes End-to-End tests",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

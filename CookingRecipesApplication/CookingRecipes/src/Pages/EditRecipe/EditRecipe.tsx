@@ -7,6 +7,7 @@ import Subheader from '../../Components/Subheader/Subheader';
 import RecipeService from '../../Services/RecipeService';
 import useUserStore from '../../Stores/useUserStore';
 import EditRecipeValues from '../../Types/EditRecipeValues';
+import styles from './EditRecipe.module.css';
 
 const EditRecipe = () => {
   const [recipeValues, setRecipeValues] = useState<EditRecipeValues>();
@@ -42,7 +43,7 @@ const EditRecipe = () => {
   };
 
   return (
-    <>
+    <div className={styles.editRecipe}>
       <section>
         <Subheader backward text={'Редактировать рецепт'}>
           {!loading && <BaseButton primary type="submit" form="form-submit" buttonText="Редактировать" />}
@@ -55,7 +56,7 @@ const EditRecipe = () => {
           <RecipeForm onSubmit={handleEditRecipe} toastMessage="Рецепт успешно обновлен" values={recipeValues} />
         )}
       </section>
-    </>
+    </div>
   );
 };
 

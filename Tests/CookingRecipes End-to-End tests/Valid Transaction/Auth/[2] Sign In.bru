@@ -1,0 +1,39 @@
+meta {
+  name: [2] Sign In
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {{payload}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isString
+}
+
+script:pre-request {
+  let payload = {
+      "userName": `{{userName}}`,
+      "password": `{{password}}`
+  }
+  
+  // Store the payload in a runtime-only variable 
+  bru.setVar('payload', JSON.stringify(payload));
+}
+
+script:post-response {
+  let responseBody = res.getBody();
+  
+  if (res.getStatus() == 200) {
+    bru.setEnvVar("token", responseBody);
+  }
+  
+}

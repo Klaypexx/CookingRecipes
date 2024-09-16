@@ -1,4 +1,4 @@
-.cardContainer {
+.cardBox {
   background: rgb(255, 255, 255);
   box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
   border-radius: 72px 0px 72px 0px;
@@ -6,6 +6,10 @@
   width: 100%;
   max-height: 430px;
   display: flex;
+}
+
+.cardBoxAnimation:hover {
+  transform: translateY(-3px);
 }
 
 .avatarImageBox {

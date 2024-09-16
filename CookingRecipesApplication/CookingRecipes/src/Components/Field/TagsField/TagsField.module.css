@@ -37,6 +37,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  border-radius: 5px;
   padding: 4px 10px;
   max-height: 50px;
   gap: 10px;
@@ -45,7 +46,7 @@
 }
 
 .name {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 400;
   color: rgb(242, 158, 31);
 }

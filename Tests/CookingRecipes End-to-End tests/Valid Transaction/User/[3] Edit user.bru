@@ -1,0 +1,22 @@
+meta {
+  name: [3] Edit user
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/users
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  Name: Edit Test
+  UserName: Edit Test
+  Description: Edit Test
+  Password: 123456789
+}

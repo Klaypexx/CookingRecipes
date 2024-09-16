@@ -7,6 +7,19 @@
   align-items: center;
 }
 
+.baseLink:hover {
+  box-shadow: 0 0 20px rgb(253, 177, 0.5); /* Эффект свечения */
+  transform: translateY(-2px);
+}
+
+.baseLink:active {
+  transform: translateY(2px); /* Опускаем кнопку вниз */
+  transition:
+    background-color 0.1s ease,
+    box-shadow 0.1s ease,
+    transform 0.1s ease;
+}
+
 .linkPrimary {
   background: rgb(253, 177, 0);
 }

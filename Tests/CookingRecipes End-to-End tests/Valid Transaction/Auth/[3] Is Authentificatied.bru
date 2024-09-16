@@ -1,0 +1,19 @@
+meta {
+  name: [3] Is Authentificatied
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/isAuth
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 200
+}

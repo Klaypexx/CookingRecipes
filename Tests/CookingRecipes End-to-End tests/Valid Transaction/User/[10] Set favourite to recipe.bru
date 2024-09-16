@@ -1,0 +1,23 @@
+meta {
+  name: [10] Set favourite to recipe
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/favourites
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {{recipeId}}
+}
+
+assert {
+  res.status: eq 200
+}

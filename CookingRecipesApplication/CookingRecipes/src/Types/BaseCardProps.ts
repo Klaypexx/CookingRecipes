@@ -1,6 +1,7 @@
 export default interface BaseCardProps {
   className?: string;
   recipeId: string;
+  animation?: boolean;
   props?: {
     name: string;
     description: string;

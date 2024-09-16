@@ -7,9 +7,9 @@ import FavouriteRecipeButton from '../../Button/FavouriteRecipeButton/FavouriteR
 import LikeButton from '../../Button/LikeButton/LikeButton';
 import styles from './BaseCard.module.css';
 
-const BaseCard: React.FC<BaseCardProps> = ({ className, props, recipeId }) => {
+const BaseCard: React.FC<BaseCardProps> = ({ className, animation, props, recipeId }) => {
   return (
-    <div className={classNames(styles.cardContainer, className)}>
+    <div className={classNames(styles.cardBox, animation && styles.cardBoxAnimation, className)}>
       <div className={styles.avatarImageBox}>
         <div className={styles.authorRecipeBox}>
           <p className={styles.authorRecipeText}>{`@${props?.authorName}`}</p>

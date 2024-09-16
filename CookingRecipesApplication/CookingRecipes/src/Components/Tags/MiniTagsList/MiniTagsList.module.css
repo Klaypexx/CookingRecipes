@@ -18,3 +18,12 @@
 .miniTagText:not(:last-child) {
   margin-right: 25px;
 }
+
+.miniTagText:hover {
+  transform: translateY(-1px);
+}
+
+.miniTagText:active {
+  transform: translateY(1px); /* Опускаем кнопку вниз */
+  transition: transform 0.1s ease;
+}

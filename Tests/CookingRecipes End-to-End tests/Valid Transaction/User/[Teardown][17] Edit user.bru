@@ -1,0 +1,22 @@
+meta {
+  name: [Teardown][17] Edit user
+  type: http
+  seq: 17
+}
+
+put {
+  url: {{baseUrl}}/users
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  Name: test
+  UserName: test
+  Description: 
+  Password: 12345678
+}
