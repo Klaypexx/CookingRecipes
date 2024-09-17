@@ -1,0 +1,40 @@
+meta {
+  name: [6] Get user statistic after set favourite
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/users/statistic
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+tests {
+  test("status code 200", function() {
+    const data = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("recipesCount value is 1", function() {
+    const data = res.getBody();
+    expect(data.recipesCount).to.be.a("number");
+    expect(data.recipesCount).to.equal(1);
+  });
+  
+  test("likesCount value is 0", function() {
+    const data = res.getBody();
+    expect(data.likesCount).to.be.a("number");
+    expect(data.likesCount).to.equal(0);
+  });
+  
+  test("favouritesCount value is 1", function() {
+    const data = res.getBody();
+    expect(data.favouritesCount).to.be.a("number");
+    expect(data.favouritesCount).to.equal(1);
+  });
+}

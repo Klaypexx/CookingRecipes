@@ -34,6 +34,7 @@ const getUser = async () => {
     return { response };
   } catch (error) {
     handleError(error);
+    throw error;
   }
 };
 
@@ -61,6 +62,7 @@ const getUserStatistic = async () => {
     return { response };
   } catch (error) {
     handleError(error);
+    throw error;
   }
 };
 

@@ -1,0 +1,24 @@
+meta {
+  name: [4] Edit Recipe
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/recipes/{{recipeId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  Name: Edit Test
+  Description: Edit Description
+  CookingTime: 25
+  Portion: 5
+  Ingredients: {"name": "Edit Test", "product": "Edit Test"}
+  Steps: {"description": "Edit Test"}
+}

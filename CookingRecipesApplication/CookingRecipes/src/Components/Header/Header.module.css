@@ -38,6 +38,15 @@ header {
   margin-left: 41px;
 }
 
+.headerText:hover {
+  transform: translateY(-2px);
+}
+
+.headerText:active {
+  transform: translateY(2px); /* Опускаем кнопку вниз */
+  transition: transform 0.1s ease;
+}
+
 .authFlex {
   display: flex;
   align-items: center;
@@ -79,6 +88,15 @@ header {
   font-weight: 600;
 }
 
+.authText:hover {
+  transform: translateY(-1px);
+}
+
+.authText:active {
+  transform: translateY(1px); /* Опускаем кнопку вниз */
+  transition: transform 0.1s ease;
+}
+
 .line {
   border: 1px solid rgba(253, 177, 0, 0.72);
   width: 0px;
@@ -90,4 +108,13 @@ header {
   width: 25px;
   height: 25px;
   cursor: pointer;
+}
+
+.exit:hover {
+  transform: translateY(-1px);
+}
+
+.exit:active {
+  transform: translateY(1px); /* Опускаем кнопку вниз */
+  transition: transform 0.1s ease;
 }

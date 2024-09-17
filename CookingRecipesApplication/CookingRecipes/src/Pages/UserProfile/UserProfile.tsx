@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserForm from '../../Components/Form/UserForm/UserForm';
 import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import Spinner from '../../Components/Spinner/Spinner';
@@ -21,6 +22,7 @@ const UserProfile = () => {
   const [recipes, setRecipes] = useState<UserProfileRecipesValues[]>([]);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
+  const navigation = useNavigate();
 
   useEffect(() => {
     if (isFirstMount) {
@@ -41,8 +43,13 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchRecipes(), fetchUser(), fetchUserStatistic()]);
-      setLoading(false);
+      await Promise.all([fetchRecipes(), fetchUser(), fetchUserStatistic()])
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => {
+          navigation(-1);
+        });
     };
     fetchData();
   }, []);
@@ -86,17 +93,19 @@ const UserProfile = () => {
         <Spinner />
       ) : (
         <>
-          <section className={styles.UserFormSection}>
-            <UserForm values={user!} />
-          </section>
+          <section className={styles.UserFormSection}>{user && <UserForm values={user!} />}</section>
 
           <section className={styles.StatisticListSection}>
-            <StatisticList values={userStatistic!} />
+            {userStatistic && <StatisticList values={userStatistic} />}
           </section>
 
           <section className={styles.recipesListSection}>
-            <h3 className={styles.recipesListHeader}>Мои рецепты</h3>
-            <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={recipes} />
+            {recipes && (
+              <>
+                <h3 className={styles.recipesListHeader}>Мои рецепты</h3>
+                <RecipesListBlock isLoadButton={isLoadButton} handleClick={() => handleClick()} values={recipes} />
+              </>
+            )}
           </section>
         </>
       )}

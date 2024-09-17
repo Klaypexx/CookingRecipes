@@ -53,14 +53,14 @@ public class AuthService : IAuthService
 
         if ( user is null )
         {
-            throw new ArgumentException( "Пользователь не найден" );
+            throw new ArgumentException( "Неверное имя пользователя или пароль" );
         }
 
         bool hashResult = _passwordHasher.VerifyPasswordHash( login.Password, user.Password );
 
         if ( !hashResult )
         {
-            throw new ArgumentException( "Неверный пароль" );
+            throw new ArgumentException( "Неверное имя пользователя или пароль" );
         }
 
         AuthTokenSet tokens = GetTokens( user );

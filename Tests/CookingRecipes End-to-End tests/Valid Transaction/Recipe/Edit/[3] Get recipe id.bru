@@ -1,0 +1,31 @@
+meta {
+  name: [3] Get recipe id
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/recipes/userRecipes
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+script:post-response {
+  let responseBody = res.getBody();
+  
+  if (res.getStatus() == 200) {
+    bru.setEnvVar("recipeId", responseBody.recipes[0].id);
+  }
+  
+}
+
+tests {
+  test("status code 200", function() {
+    const data = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+  });
+}

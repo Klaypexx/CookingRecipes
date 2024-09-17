@@ -86,6 +86,7 @@ const GetUserRecipes = async (pageNumber: number) => {
     return { response };
   } catch (error) {
     handleError(error);
+    throw error;
   }
 };
 

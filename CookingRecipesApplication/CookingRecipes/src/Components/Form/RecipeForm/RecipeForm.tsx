@@ -69,7 +69,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
   };
 
   return (
-    <>
+    <div className={styles.recipeForm}>
       <BaseForm
         id="form-submit"
         initialValues={initialValues}
@@ -87,7 +87,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ onSubmit, values, toastMessage 
           </div>
         </div>
       </BaseForm>
-    </>
+    </div>
   );
 };
 

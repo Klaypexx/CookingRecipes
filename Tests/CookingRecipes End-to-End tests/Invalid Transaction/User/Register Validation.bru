@@ -1,0 +1,43 @@
+meta {
+  name: Register Validation
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {{payload}}
+}
+
+assert {
+  res.status: eq 400
+}
+
+script:pre-request {
+  var uuid = require('uuid');
+  var guid = uuid.v4().substring(0, 2);
+  
+  let payload = {
+      "name": "u",
+      "userName": guid,
+      "password": "123"
+  }
+  
+  bru.setVar('payload', JSON.stringify(payload));
+  
+}
+
+script:post-response {
+  let requestBody = req.getBody();
+  
+  if (res.getStatus() == 200) {
+    bru.setEnvVar("userName", requestBody.userName);
+    bru.setEnvVar("password", requestBody.password);  
+  }
+  
+}

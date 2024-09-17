@@ -4,7 +4,7 @@ import styles from './RecipeView.module.css';
 
 const RecipeView: React.FC<RecipeViewProps> = ({ recipeId, values }) => {
   return (
-    <>
+    <div className={styles.recipeView}>
       <BaseCard props={values} recipeId={recipeId} />
       <div className={styles.flexContainer}>
         <div>
@@ -28,7 +28,7 @@ const RecipeView: React.FC<RecipeViewProps> = ({ recipeId, values }) => {
           <h3 className={styles.stepsMealEnjoyText}>Приятного Аппетита!</h3>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

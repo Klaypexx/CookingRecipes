@@ -4,6 +4,15 @@
   background: rgb(255, 255, 255);
 }
 
+.tagListBox:hover {
+  transform: translateY(-3px);
+}
+
+.tagListBox:active {
+  transform: translateY(3px); /* Опускаем кнопку вниз */
+  transition: transform 0.1s ease;
+}
+
 .iconBox {
   box-sizing: border-box;
   width: 50px;

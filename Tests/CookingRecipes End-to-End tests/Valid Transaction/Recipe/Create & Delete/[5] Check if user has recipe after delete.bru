@@ -1,0 +1,28 @@
+meta {
+  name: [5] Check if user has recipe after delete
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/recipes/userRecipes
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+tests {
+  test("status code 200", function() {
+    const data = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("recipes is empty array", function() {
+    const data = res.getBody();
+    expect(data.recipes).to.be.an("array");
+    expect(data.recipes).to.be.empty;
+  });
+}

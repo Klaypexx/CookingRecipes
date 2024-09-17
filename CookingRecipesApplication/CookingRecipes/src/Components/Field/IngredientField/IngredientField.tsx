@@ -30,7 +30,7 @@ const IngredientField: React.FC<IngredientFieldProps> = ({ name }) => {
           }> = arrayHelpers.form.values[name] || [];
           return (
             <>
-              {ingredients.map((ingredient: { name: string; product: string }, index: number) => (
+              {ingredients.map((_ingredient: { name: string; product: string }, index: number) => (
                 <div key={index} className={styles.ingredient}>
                   <div className={styles.ingredientButtonBox}>
                     <button type="button" onClick={() => handlerDeleteCurrentField(arrayHelpers, index)}>

@@ -27,7 +27,7 @@ const StepField: React.FC<StepFieldProps> = ({ name }) => {
         }> = arrayHelpers.form.values[name] || [];
         return (
           <>
-            {steps.map((step: { description: string }, index: number) => (
+            {steps.map((_step: { description: string }, index: number) => (
               <div key={index}>
                 <div className={styles.step}>
                   <div className={styles.stepBox}>
