@@ -15,7 +15,7 @@ public class User
     public List<Recipe> Recipes { get; private set; }
     public List<FavouriteRecipe> FavouriteRecipes { get; private set; }
 
-    public User() { }
+    protected User() { }
 
     public User( string name, string username, string password )
     {

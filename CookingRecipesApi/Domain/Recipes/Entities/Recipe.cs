@@ -4,21 +4,20 @@ namespace Domain.Recipes.Entities;
 
 public class Recipe
 {
-    public int Id { get; private set; }
+    public int Id { get; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public int CookingTime { get; private set; }
     public int Portion { get; private set; }
     public string Avatar { get; private set; }
-    public int AuthorId { get; private set; }
-    public List<Like> Likes { get; private set; }
+    public int AuthorId { get; }
+    public List<Like> Likes { get; }
     public List<RecipeTag> Tags { get; private set; }
     public List<Ingredient> Ingredients { get; private set; }
     public List<Step> Steps { get; private set; }
-    public User Author { get; private set; }
-    public List<FavouriteRecipe> FavouriteRecipes { get; private set; }
+    public User Author { get; }
+    public List<FavouriteRecipe> FavouriteRecipes { get; }
 
-    // protected конструктор (проверка)
     protected Recipe() { }
 
     public Recipe( string name,
