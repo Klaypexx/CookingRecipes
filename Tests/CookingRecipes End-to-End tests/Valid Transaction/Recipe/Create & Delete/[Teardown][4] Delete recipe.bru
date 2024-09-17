@@ -1,0 +1,15 @@
+meta {
+  name: [Teardown][4] Delete recipe
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/recipes/{{recipeId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

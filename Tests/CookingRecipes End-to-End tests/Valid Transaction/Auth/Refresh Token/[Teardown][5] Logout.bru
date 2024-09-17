@@ -1,0 +1,27 @@
+meta {
+  name: [Teardown][5] Logout
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/logout
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+script:post-response {
+  let responseBody = res.getBody();
+  
+  if (res.getStatus() == 200) {
+    bru.setEnvVar("token", "")
+  }
+}
