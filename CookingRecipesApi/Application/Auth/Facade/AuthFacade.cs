@@ -1,5 +1,6 @@
 ﻿using Application.Auth.Entities;
 using Application.Auth.Services;
+using Application.Foundation;
 using Application.ResultObject;
 using Application.Validation;
 
@@ -10,14 +11,17 @@ public class AuthFacade : IAuthFacade
     private readonly IAuthService _authService;
     private readonly IValidator<Register> _registerValidator;
     private readonly IValidator<Login> _loginValidator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public AuthFacade( IAuthService authService,
         IValidator<Register> registerValidator,
-        IValidator<Login> loginValidator )
+        IValidator<Login> loginValidator,
+        IUnitOfWork unitOfWork )
     {
         _authService = authService;
         _registerValidator = registerValidator;
         _loginValidator = loginValidator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> RegisterUser( Register register )
@@ -32,6 +36,8 @@ public class AuthFacade : IAuthFacade
             }
 
             await _authService.RegisterUser( register );
+
+            await _unitOfWork.Save();
 
             return new Result();
 
@@ -55,6 +61,8 @@ public class AuthFacade : IAuthFacade
 
             AuthTokenSet tokens = await _authService.SignIn( login, lifeTime );
 
+            await _unitOfWork.Save();
+
             return new Result<AuthTokenSet>( tokens );
         }
         catch ( Exception e )
@@ -68,6 +76,8 @@ public class AuthFacade : IAuthFacade
         try
         {
             AuthTokenSet tokens = await _authService.Refresh( cookieRefreshToken, lifetime );
+
+            await _unitOfWork.Save();
 
             return new Result<AuthTokenSet>( tokens );
         }

@@ -1,5 +1,4 @@
 ﻿using Application.Files.Services;
-using Application.Foundation;
 using Application.Recipes.Entities;
 using Application.Recipes.Repositories;
 using Application.Tags.Services;
@@ -14,21 +13,18 @@ public class RecipeService : IRecipeService
     private readonly ITagService _tagService;
     private readonly IFileService _fileService;
     private readonly IRecipeCreator _recipeCreator;
-    private readonly IUnitOfWork _unitOfWork;
 
     private readonly int _pageAmount = 5;
 
     public RecipeService( IRecipeRepository recipeRepository,
         ITagService tagService,
         IFileService fileService,
-        IRecipeCreator recipeCreator,
-        IUnitOfWork unitOfWork )
+        IRecipeCreator recipeCreator )
     {
         _recipeRepository = recipeRepository;
         _tagService = tagService;
         _fileService = fileService;
         _recipeCreator = recipeCreator;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task CreateRecipe( Recipe recipe )
@@ -38,7 +34,6 @@ public class RecipeService : IRecipeService
 
         await _tagService.ActualizeTags( recipeDomain );
         await _recipeRepository.CreateRecipe( recipeDomain );
-        await _unitOfWork.Save();
     }
 
     public async Task UpdateRecipe( Recipe actualRecipe, int recipeId )
@@ -50,10 +45,8 @@ public class RecipeService : IRecipeService
         RecipeDomain recipe = _recipeCreator.Create( actualRecipe, pathToFile );
 
         await _tagService.ActualizeTags( recipe );
-        oldRecipe.UpdateRecipe( recipe );
-        await _unitOfWork.Save();
 
-        await RemoveUnusedTags();
+        oldRecipe.UpdateRecipe( recipe );
     }
 
     public async Task RemoveRecipe( int recipeId, int authorId )
@@ -69,9 +62,6 @@ public class RecipeService : IRecipeService
         recipe.Tags.Clear();
 
         _recipeRepository.RemoveRecipe( recipe );
-        await _unitOfWork.Save();
-
-        await RemoveUnusedTags();
     }
 
     public async Task<RecipesData<OverviewRecipe>> GetRecipes( int authorId, int pageNumber, string searchString )
@@ -136,11 +126,5 @@ public class RecipeService : IRecipeService
         RecipeDomain recipe = await _recipeRepository.GetRecipeByIdIncludingDependentEntities( recipeId );
 
         return recipe.ToCompleteRecipe( authorId );
-    }
-
-    private async Task RemoveUnusedTags()
-    {
-        await _tagService.RemoveUnusedTags();
-        await _unitOfWork.Save();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.ResultObject;
+﻿using Application.Foundation;
+using Application.ResultObject;
 using Application.Users.Entities;
 using Application.Users.Services;
 using Application.Validation;
@@ -9,12 +10,15 @@ public class UserFacade : IUserFacade
 {
     private readonly IUserService _userService;
     private readonly IValidator<User> _userValidator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public UserFacade( IUserService userService,
-        IValidator<User> userValidator )
+        IValidator<User> userValidator,
+        IUnitOfWork unitOfWork )
     {
         _userService = userService;
         _userValidator = userValidator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> UpdateUser( User user, string userName )
@@ -29,6 +33,8 @@ public class UserFacade : IUserFacade
             }
 
             await _userService.UpdateUser( user, userName );
+
+            await _unitOfWork.Save();
 
             return new Result();
         }

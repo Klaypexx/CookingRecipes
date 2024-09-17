@@ -1,4 +1,5 @@
-﻿using Application.Likes.Services;
+﻿using Application.Foundation;
+using Application.Likes.Services;
 using Application.ResultObject;
 
 namespace Application.Likes.Facade;
@@ -6,10 +7,12 @@ namespace Application.Likes.Facade;
 public class LikeFacade : ILikeFacade
 {
     private readonly ILikeService _likeService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public LikeFacade( ILikeService likeService )
+    public LikeFacade( ILikeService likeService, IUnitOfWork unitOfWork )
     {
         _likeService = likeService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> AddLike( int userId, int recipeId )
@@ -17,6 +20,8 @@ public class LikeFacade : ILikeFacade
         try
         {
             await _likeService.AddLike( userId, recipeId );
+
+            await _unitOfWork.Save();
 
             return new Result();
         }
@@ -31,6 +36,8 @@ public class LikeFacade : ILikeFacade
         try
         {
             await _likeService.RemoveLike( userId, recipeId );
+
+            await _unitOfWork.Save();
 
             return new Result();
         }

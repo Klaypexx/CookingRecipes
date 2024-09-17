@@ -1,7 +1,9 @@
-﻿using Application.Recipes.Entities;
+﻿using Application.Foundation;
+using Application.Recipes.Entities;
 using Application.Recipes.Repositories;
 using Application.Recipes.Services;
 using Application.ResultObject;
+using Application.Tags.Services;
 using Application.Validation;
 using RecipeDomain = Domain.Recipes.Entities.Recipe;
 
@@ -11,15 +13,21 @@ public class RecipeFacade : IRecipeFacade
 {
     private readonly IRecipeRepository _recipeRepository;
     private readonly IRecipeService _recipeService;
+    private readonly ITagService _tagService;
     private readonly IValidator<Recipe> _recipeValidator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public RecipeFacade( IRecipeRepository recipeRepository,
         IRecipeService recipeService,
-        IValidator<Recipe> recipeValidator )
+        ITagService tagService,
+        IValidator<Recipe> recipeValidator,
+        IUnitOfWork unitOfWork )
     {
         _recipeRepository = recipeRepository;
         _recipeService = recipeService;
+        _tagService = tagService;
         _recipeValidator = recipeValidator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> CreateRecipe( Recipe recipe )
@@ -34,6 +42,8 @@ public class RecipeFacade : IRecipeFacade
             }
 
             await _recipeService.CreateRecipe( recipe );
+
+            await _unitOfWork.Save();
 
             return new Result();
         }
@@ -56,6 +66,12 @@ public class RecipeFacade : IRecipeFacade
 
             await _recipeService.UpdateRecipe( actualRecipe, recipeId );
 
+            await _unitOfWork.Save();
+
+            await _tagService.RemoveUnusedTags();
+
+            await _unitOfWork.Save();
+
             return new Result();
         }
         catch ( Exception e )
@@ -76,6 +92,12 @@ public class RecipeFacade : IRecipeFacade
             }
 
             await _recipeService.RemoveRecipe( recipeId, authorId );
+
+            await _unitOfWork.Save();
+
+            await _tagService.RemoveUnusedTags();
+
+            await _unitOfWork.Save();
 
             return new Result();
         }
