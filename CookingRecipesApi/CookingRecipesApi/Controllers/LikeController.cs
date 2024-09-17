@@ -1,6 +1,7 @@
 ﻿using Application.Likes.Facade;
 using Application.ResultObject;
-using CookingRecipesApi.Utilities;
+using CookingRecipesApi.Extensions;
+using Infrastructure.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

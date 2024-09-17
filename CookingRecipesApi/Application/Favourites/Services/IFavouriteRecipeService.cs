@@ -1,7 +1,4 @@
-﻿using Application.ResultObject;
-using Domain.Recipes.Entities;
-
-namespace Application.Favourites.Services;
+﻿namespace Application.Favourites.Services;
 
 public interface IFavouriteRecipeService
 {

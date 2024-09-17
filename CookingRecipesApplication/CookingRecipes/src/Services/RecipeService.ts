@@ -43,6 +43,7 @@ const editRecipe = async (values: FormData, recipeId: string) => {
     });
     return { response };
   } catch (error) {
+    console.log(error);
     handleError(error);
   }
 };

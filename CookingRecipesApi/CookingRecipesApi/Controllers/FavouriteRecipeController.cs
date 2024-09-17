@@ -1,6 +1,7 @@
 ﻿using Application.Favourites.Facade;
 using Application.ResultObject;
-using CookingRecipesApi.Utilities;
+using CookingRecipesApi.Extensions;
+using Infrastructure.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;

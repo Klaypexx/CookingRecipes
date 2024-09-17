@@ -1,6 +1,7 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
-namespace CookingRecipesApi.Middlewares;
+namespace Infrastructure.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
@@ -29,12 +30,10 @@ public class ExceptionHandlingMiddleware
     {
         _logger.LogError( exception, "An unexpected error occurred." );
 
-        ExceptionResponse response = new( HttpStatusCode.InternalServerError, "Internal server error. Please retry later." );
+        ErrorResponse response = new( "Internal server error. Please retry later." );
 
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = ( int )response.StatusCode;
+        context.Response.StatusCode = 500;
         await context.Response.WriteAsJsonAsync( response );
     }
 }
-
-public record ExceptionResponse( HttpStatusCode StatusCode, string Description );

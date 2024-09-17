@@ -1,7 +1,7 @@
 using Application;
 using Application.Auth;
 using CookingRecipesApi;
-using CookingRecipesApi.Middlewares;
+using Infrastructure.Middleware;
 using Infrastructure;
 using Infrastructure.Auth;
 using Infrastructure.Files;

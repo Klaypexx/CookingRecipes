@@ -8,10 +8,8 @@ export const handleError = (error: any) => {
       for (let val of err?.data.errors) {
         errorToast(val);
       }
-    } else if (err?.data) {
-      errorToast(err.data);
     } else if (err?.status == 401) {
-      errorToast('Please login');
+      errorToast('Необходимо войти в систему');
     } else if (err) {
       errorToast(err?.data);
     }
