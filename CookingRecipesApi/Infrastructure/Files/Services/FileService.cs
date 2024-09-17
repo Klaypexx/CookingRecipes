@@ -30,10 +30,10 @@ public class FileService : IFileService
     }
 
     /// <summary>
-    /// Asynchronously saves an uploaded avatar file to a specified directory.
+    /// Asynchronously saves an uploaded  file to a specified directory.
     /// Generates a unique file name for the saved file and returns the path to the file.
     /// </summary>
-    /// <param name="avatar">The avatar file to be uploaded.</param>
+    /// <param name="file">The file to be uploaded.</param>
     /// <returns>A string representing the path to the saved file, or null if no file was provided.</returns>
     private async Task<string> SaveFile( IFormFile file, string directoryName )
     {

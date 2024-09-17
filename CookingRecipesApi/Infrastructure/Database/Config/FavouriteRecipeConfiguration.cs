@@ -8,15 +8,11 @@ public class FavouriteRecipeConfiguration : IEntityTypeConfiguration<FavouriteRe
 {
     public void Configure( EntityTypeBuilder<FavouriteRecipe> builder )
     {
-        builder.ToTable( "favourite_recipe" );
-
         builder.HasKey( x => new { x.UserId, x.RecipeId } );
 
-        builder.Property( x => x.UserId )
-            .HasColumnName( "id_user" );
+        builder.Property( x => x.UserId );
 
-        builder.Property( x => x.RecipeId )
-            .HasColumnName( "id_recipe" );
+        builder.Property( x => x.RecipeId );
 
         builder.HasOne( x => x.User )
             .WithMany( x => x.FavouriteRecipes )

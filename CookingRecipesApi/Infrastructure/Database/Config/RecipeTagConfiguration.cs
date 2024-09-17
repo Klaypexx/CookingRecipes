@@ -8,15 +8,11 @@ public class RecipeTagConfiguration : IEntityTypeConfiguration<RecipeTag>
 {
     public void Configure( EntityTypeBuilder<RecipeTag> builder )
     {
-        builder.ToTable( "recipe_tag" );
-
         builder.HasKey( x => new { x.RecipeId, x.TagId } );
 
-        builder.Property( x => x.RecipeId )
-            .HasColumnName( "id_recipe" );
+        builder.Property( x => x.RecipeId );
 
-        builder.Property( x => x.TagId )
-            .HasColumnName( "id_tag" );
+        builder.Property( x => x.TagId );
 
         builder.HasOne( x => x.Recipe )
             .WithMany( x => x.Tags )
