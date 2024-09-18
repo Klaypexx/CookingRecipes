@@ -39,6 +39,7 @@ public class RecipeRepository : IRecipeRepository
              .Where( recipe => string.IsNullOrEmpty( searchString )
                     || recipe.Name.ToLower().Contains( searchString )
                     || recipe.Tags.Any( tag => tag.Tag.Name.ToLower().Contains( searchString ) ) )
+             .OrderBy( e => e.Id )
              .Skip( skipRange )
              .Take( pageAmount )
              .ToListAsync();
@@ -52,6 +53,7 @@ public class RecipeRepository : IRecipeRepository
              .Include( recipe => recipe.Likes )
              .Include( recipe => recipe.FavouriteRecipes )
              .Where( recipe => recipe.FavouriteRecipes.Any( favouriteRecipe => favouriteRecipe.UserId == authorId ) )
+             .OrderBy( e => e.Id )
              .Skip( skipRange )
              .Take( pageAmount )
              .ToListAsync();
@@ -65,6 +67,7 @@ public class RecipeRepository : IRecipeRepository
              .Include( recipe => recipe.Likes )
              .Include( recipe => recipe.FavouriteRecipes )
              .Where( recipe => recipe.AuthorId == authorId )
+             .OrderBy( e => e.Id )
              .Skip( skipRange )
              .Take( pageAmount )
              .ToListAsync();
