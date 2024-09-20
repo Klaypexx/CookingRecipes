@@ -1,5 +1,4 @@
 ﻿using Application.Auth;
-using Application.Foundation;
 using Application.Users.Entities;
 using Application.Users.Extensions;
 using Application.Users.Repositories;
@@ -12,17 +11,14 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUserCreator _userCreator;
-    private readonly IUnitOfWork _unitOfWork;
 
     public UserService( IUserRepository userRepository,
         IPasswordHasher passwordHasher,
-        IUserCreator userCreator,
-        IUnitOfWork unitOfWork )
+        IUserCreator userCreator )
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _userCreator = userCreator;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task UpdateUser( User user, string userName )
@@ -46,8 +42,6 @@ public class UserService : IUserService
         }
 
         userDomain.UpdateUser( _userCreator.Create( user, hashedPassword ) );
-
-        await _unitOfWork.Save();
     }
 
     public async Task<UserInfo> GetUser( string userName )

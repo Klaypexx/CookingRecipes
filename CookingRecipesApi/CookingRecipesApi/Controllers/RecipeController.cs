@@ -3,7 +3,8 @@ using Application.Recipes.Facade;
 using Application.ResultObject;
 using CookingRecipesApi.Dto.Extensions;
 using CookingRecipesApi.Dto.RecipesDto;
-using CookingRecipesApi.Utilities;
+using CookingRecipesApi.Extensions;
+using Infrastructure.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,6 @@ public class RecipeController : ControllerBase
         }
 
         return Ok();
-
     }
 
     [HttpDelete]
@@ -143,7 +143,6 @@ public class RecipeController : ControllerBase
         MostLikedRecipeDto recipeDto = result.Value.ToMostLikedRecipeDto();
 
         return Ok( recipeDto );
-
     }
 
     [HttpGet]
@@ -163,9 +162,8 @@ public class RecipeController : ControllerBase
             return BadRequest( new ErrorResponse( result.Errors ) );
         }
 
-        CompletetRecipeDto recipeDto = result.Value.ToCompleteRecipeDto();
+        CompleteRecipeDto recipeDto = result.Value.ToCompleteRecipeDto();
 
         return Ok( recipeDto );
-
     }
 }

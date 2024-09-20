@@ -13,4 +13,9 @@ public class AppDbContext : DbContext
 
         modelBuilder.ApplyConfigurationsFromAssembly( Assembly.GetExecutingAssembly() );
     }
+
+    protected override void OnConfiguring( DbContextOptionsBuilder optionsBuilder )
+    {
+        optionsBuilder.UseSnakeCaseNamingConvention();
+    }
 }

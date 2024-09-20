@@ -1,6 +1,6 @@
 ﻿using Application.ResultObject;
 
-namespace CookingRecipesApi.Utilities;
+namespace Infrastructure.Middleware;
 
 public class ErrorResponse
 {
@@ -11,23 +11,12 @@ public class ErrorResponse
         Errors = new() { error };
     }
 
-    public ErrorResponse( IDictionary<string, string[]> errors )
-    {
-        Errors = new();
-
-        foreach ( KeyValuePair<string, string[]> pair in errors )
-        {
-            Errors.AddRange( pair.Value );
-        }
-    }
-
     public ErrorResponse( IReadOnlyList<Error> errors )
     {
         Errors = new();
 
         foreach ( Error error in errors )
         {
-            // Wrap the error message in an array to use AddRange
             Errors.AddRange( [ error.Message ] );
         }
     }

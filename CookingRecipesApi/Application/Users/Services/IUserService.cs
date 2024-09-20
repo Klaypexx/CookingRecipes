@@ -1,5 +1,4 @@
-﻿using Application.ResultObject;
-using Application.Users.Entities;
+﻿using Application.Users.Entities;
 
 namespace Application.Users.Services;
 

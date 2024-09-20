@@ -1,6 +1,4 @@
-﻿using Application.ResultObject;
-
-namespace Application.Likes.Services;
+﻿namespace Application.Likes.Services;
 
 public interface ILikeService
 {

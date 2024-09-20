@@ -2,11 +2,11 @@
 
 public class Ingredient
 {
-    public int Id { get; private set; }
-    public string Name { get; private set; }
-    public string Product { get; private set; }
-    public int RecipeId { get; private set; }
-    public Recipe Recipe { get; private set; }
+    public int Id { get; }
+    public string Name { get; }
+    public string Product { get; }
+    public int RecipeId { get; }
+    public Recipe Recipe { get; }
 
     public Ingredient( string name, string product )
     {

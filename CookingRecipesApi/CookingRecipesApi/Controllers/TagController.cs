@@ -1,7 +1,6 @@
 ﻿using Application.ResultObject;
 using Application.Tags.Facade;
-using Application.Tags.Services;
-using CookingRecipesApi.Utilities;
+using Infrastructure.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesApi.Controllers;

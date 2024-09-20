@@ -2,9 +2,9 @@
 
 public class Tag
 {
-    public int Id { get; private set; }
-    public string Name { get; private set; }
-    public List<RecipeTag> Recipes { get; private set; }
+    public int Id { get; }
+    public string Name { get; }
+    public List<RecipeTag> Recipes { get; }
 
     public Tag( string name )
     {

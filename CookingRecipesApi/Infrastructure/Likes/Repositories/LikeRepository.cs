@@ -25,7 +25,8 @@ public class LikeRepository : ILikeRepository
 
     public async Task<Like> GetLikeConnectionByRecipeAndUserId( int userId, int recipeId )
     {
-        return await _entities.Where( like => like.UserId == userId && like.RecipeId == recipeId ).FirstOrDefaultAsync();
+        return await _entities.Where( like => like.UserId == userId && like.RecipeId == recipeId )
+            .FirstOrDefaultAsync();
     }
 }
 

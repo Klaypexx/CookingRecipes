@@ -1,11 +1,12 @@
 ﻿using Application.Users.Entities;
 using CookingRecipesApi.Dto.UsersDto;
-using CookingRecipesApi.Utilities;
+using CookingRecipesApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CookingRecipesApi.Dto.Extensions;
 using Application.ResultObject;
 using Application.Users.Facade;
+using Infrastructure.Middleware;
 
 namespace CookingRecipesApi.Controllers;
 

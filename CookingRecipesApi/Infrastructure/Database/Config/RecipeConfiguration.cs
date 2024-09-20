@@ -11,36 +11,27 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 
     public void Configure( EntityTypeBuilder<Recipe> builder )
     {
-        builder.ToTable( "recipe" );
-
         builder.HasKey( x => x.Id );
 
-        builder.Property( a => a.Id )
-            .HasColumnName( "id_recipe" );
+        builder.Property( a => a.Id );
 
         builder.Property( x => x.Name )
-            .HasColumnName( "name" )
             .HasMaxLength( _nameMaxLenght )
             .IsRequired( true );
 
         builder.Property( x => x.Description )
-            .HasColumnName( "description" )
             .HasMaxLength( _descriptionMaxLenght )
             .IsRequired( true );
 
-        builder.Property( x => x.Avatar )
-            .HasColumnName( "avatar" );
+        builder.Property( x => x.Avatar );
 
         builder.Property( x => x.CookingTime )
-            .HasColumnName( "time" )
             .IsRequired( true );
 
         builder.Property( x => x.Portion )
-           .HasColumnName( "portion" )
            .IsRequired( true );
 
         builder.Property( x => x.AuthorId )
-           .HasColumnName( "id_author" )
            .IsRequired( true );
 
         builder.HasMany( x => x.Tags )

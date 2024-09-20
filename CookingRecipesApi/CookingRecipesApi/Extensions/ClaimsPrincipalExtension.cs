@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace CookingRecipesApi.Utilities;
+namespace CookingRecipesApi.Extensions;
 
 public static class ClaimsPrincipalExtension
 {
@@ -8,7 +8,7 @@ public static class ClaimsPrincipalExtension
     {
         Claim claim = user.FindAll( x => x.Type == ClaimTypes.NameIdentifier ).FirstOrDefault();
 
-        if ( claim is null )
+        if ( claim?.Value is null )
         {
             throw new ArgumentException( "Id пользователя не найден" );
         }
@@ -20,7 +20,7 @@ public static class ClaimsPrincipalExtension
     {
         Claim claim = user.FindAll( x => x.Type == ClaimTypes.Name ).FirstOrDefault();
 
-        if ( claim is null )
+        if ( claim?.Value is null )
         {
             throw new ArgumentException( "Имя пользователя не найдено" );
         }
@@ -32,7 +32,7 @@ public static class ClaimsPrincipalExtension
     {
         Claim claim = user.FindAll( x => x.Type == "username" ).FirstOrDefault();
 
-        if ( claim is null )
+        if ( claim?.Value is null )
         {
             throw new ArgumentException( "Username пользователя не найден" );
         }

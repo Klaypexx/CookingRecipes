@@ -8,15 +8,11 @@ public class LikeConfiguration : IEntityTypeConfiguration<Like>
 {
     public void Configure( EntityTypeBuilder<Like> builder )
     {
-        builder.ToTable( "like" );
-
         builder.HasKey( x => new { x.UserId, x.RecipeId } );
 
-        builder.Property( x => x.UserId )
-            .HasColumnName( "id_user" );
+        builder.Property( x => x.UserId );
 
-        builder.Property( x => x.RecipeId )
-            .HasColumnName( "id_recipe" );
+        builder.Property( x => x.RecipeId );
 
         builder.HasOne( x => x.User )
             .WithMany( x => x.Likes )

@@ -1,4 +1,5 @@
 ﻿using Application.Favourites.Services;
+using Application.Foundation;
 using Application.ResultObject;
 
 namespace Application.Favourites.Facade;
@@ -6,10 +7,12 @@ namespace Application.Favourites.Facade;
 public class FavouriteRecipeFacade : IFavouriteRecipeFacade
 {
     private readonly IFavouriteRecipeService _favouriteRecipeService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public FavouriteRecipeFacade( IFavouriteRecipeService favouriteRecipeService )
+    public FavouriteRecipeFacade( IFavouriteRecipeService favouriteRecipeService, IUnitOfWork unitOfWork )
     {
         _favouriteRecipeService = favouriteRecipeService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> AddFavouriteRecipe( int userId, int recipeId )
@@ -17,6 +20,8 @@ public class FavouriteRecipeFacade : IFavouriteRecipeFacade
         try
         {
             await _favouriteRecipeService.AddFavouriteRecipe( userId, recipeId );
+
+            await _unitOfWork.Save();
 
             return new Result();
         }
@@ -31,6 +36,8 @@ public class FavouriteRecipeFacade : IFavouriteRecipeFacade
         try
         {
             await _favouriteRecipeService.RemoveFavouriteRecipe( userId, recipeId );
+
+            await _unitOfWork.Save();
 
             return new Result();
         }

@@ -5,7 +5,7 @@ namespace CookingRecipesApi.Dto.Extensions;
 
 public static class CompleteRecipeDtoExtension
 {
-    public static CompletetRecipeDto ToCompleteRecipeDto( this CompleteRecipe recipe )
+    public static CompleteRecipeDto ToCompleteRecipeDto( this CompleteRecipe recipe )
     {
         return new()
         {
