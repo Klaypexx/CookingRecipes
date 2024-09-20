@@ -36,6 +36,7 @@ public class RecipeRepository : IRecipeRepository
              .Include( recipe => recipe.Author )
              .Include( recipe => recipe.Likes )
              .Include( recipe => recipe.FavouriteRecipes )
+             .AsSplitQuery()
              .Where( recipe => string.IsNullOrEmpty( searchString )
                     || recipe.Name.ToLower().Contains( searchString )
                     || recipe.Tags.Any( tag => tag.Tag.Name.ToLower().Contains( searchString ) ) )
