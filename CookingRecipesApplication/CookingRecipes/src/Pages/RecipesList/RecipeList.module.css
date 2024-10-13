@@ -15,7 +15,21 @@
 
 .searchBox {
   position: relative;
+  margin-bottom: 80px;
+}
+
+.paramSection {
   margin-bottom: 108px;
+}
+
+.paramBox {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.paramButton {
+  margin-left: 0;
+  width: 150px;
 }
 
 .recipesListSection {

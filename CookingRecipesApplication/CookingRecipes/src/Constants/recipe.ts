@@ -12,3 +12,10 @@ export const STEPS_DESCRIPTION_MAX_WORDS = 300;
 
 export const INGREDIENTS_NAME_MAX_WORDS = 20;
 export const INGREDIENTS_PRODUCT_MAX_WORDS = 300;
+
+export const RECIPES_SORT_BY: string[] = [
+  'По умолчанию',
+  'По количеству лайков',
+  'По времени приготовления',
+  'По количеству персон',
+];

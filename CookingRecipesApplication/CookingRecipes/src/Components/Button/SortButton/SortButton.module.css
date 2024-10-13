@@ -1,0 +1,39 @@
+.sortButtonBox {
+  position: relative;
+}
+
+.paramButton {
+  margin-left: 0;
+  width: 150px;
+  margin-right: 20px;
+}
+
+.listBox {
+  box-sizing: border-box;
+  top: 80px;
+  right: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 300px;
+  z-index: 1000;
+  background: white;
+  border: 1px solid rgb(253, 177, 0);
+  border-radius: 16px;
+}
+
+.listElement {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.listElement:not(:last-child) {
+  border-bottom: 1px solid rgb(253, 177, 0);
+}
+
+.listElement:hover {
+  background-color: rgb(253, 177, 0, 0.2); /* Optional hover effect */
+}
+
+.active {
+  background-color: rgb(253, 177, 0, 0.2); /* Change this color as needed */
+}

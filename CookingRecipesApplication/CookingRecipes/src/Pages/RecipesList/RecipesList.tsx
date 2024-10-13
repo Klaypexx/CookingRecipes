@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BaseButton from '../../Components/Button/BaseButton/BaseButton';
+import SortButton from '../../Components/Button/SortButton/SortButton';
 import SearchForm from '../../Components/Form/SearchForm/SearchForm';
 import RecipesListBlock from '../../Components/Recipe/RecipesList/RecipesList';
 import Spinner from '../../Components/Spinner/Spinner';
@@ -113,6 +114,20 @@ const RecipesList = () => {
         <div className={styles.searchBox}>
           <SearchForm text onSubmit={handleSearchSubmit} />
           <MiniTagsList values={tagsValues} />
+        </div>
+      </section>
+
+      <section className={styles.paramSection}>
+        <div className={styles.paramBox}>
+          <div className={styles.filterBox}>
+            <div className={styles.filterButtonBox}>
+              <BaseButton buttonText="Фильтры" className={styles.paramButton} />
+            </div>
+            {/* <FilterPopup /> */}
+          </div>
+          <div className={styles.sortBox}>
+            <SortButton />
+          </div>
         </div>
       </section>
 
