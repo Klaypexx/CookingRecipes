@@ -13,6 +13,7 @@ import RecipeService from '../../Services/RecipeService';
 import TagService from '../../Services/TagService';
 import useAuthStore from '../../Stores/useAuthStore';
 import useModalStore from '../../Stores/useModalStore';
+import useSearchStore from '../../Stores/useSearchStore';
 import RecipeListValues from '../../Types/RecipeListValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './RecipeList.module.css';
@@ -24,7 +25,7 @@ const RecipesList = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
-  const [searchString, setSearchString] = useState('');
+  const { searchString, setSearchString } = useSearchStore();
   const { isAuth, setAuth } = useModalStore();
   const { isAuthorized } = useAuthStore();
   const navigation = useNavigate();
@@ -40,12 +41,28 @@ const RecipesList = () => {
       return;
     }
     setLoading(true);
-    setSearchString('');
     setRecipeValues([]);
     setPageNumber(1);
   }, [isAuthorized]);
 
   useEffect(() => {
+    const fetchRecipes = async () => {
+      await RecipeService.GetRecipes(1, searchString).then((res) => {
+        if (res) {
+          setIsLoadButton(!res.response.data.isLastRecipes);
+          setRecipeValues(() => [...res.response.data.recipes]);
+          setLoading(false);
+        }
+      });
+    };
+    fetchRecipes();
+  }, [searchString]);
+
+  useEffect(() => {
+    if (isFirstMount) {
+      setIsFirstMount(false);
+      return;
+    }
     const fetchRecipes = async () => {
       await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
         if (res) {
@@ -75,12 +92,6 @@ const RecipesList = () => {
     }
     setPageNumber(1);
     setSearchString(value.searchString);
-    await RecipeService.GetRecipes(1, value.searchString).then((res) => {
-      if (res) {
-        setIsLoadButton(!res.response.data.isLastRecipes);
-        setRecipeValues(() => [...res.response.data.recipes]);
-      }
-    });
   };
 
   const handlePaginationClick = () => {
