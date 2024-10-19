@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { RECIPES_SORT_BY } from '../../../Constants/recipe';
+import useRecipeStore from '../../../Stores/useRecipeStore';
 import BaseButton from '../BaseButton/BaseButton';
 import styles from './SortButton.module.css';
 
 const SortButton = () => {
   const [showSelect, setShowSelect] = useState(false);
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const { sortString, setSortString } = useRecipeStore();
   const listBoxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -28,24 +29,29 @@ const SortButton = () => {
     }
   };
 
-  const handleItemClick = (item: string, index: number) => {
-    console.log(item);
-    setActiveIndex(index);
+  const handleItemClick = (key: string, index: number) => {
+    console.log(key);
+    setSortString(key);
     setShowSelect(false);
   };
 
   return (
     <div className={styles.sortButtonBox} ref={listBoxRef}>
-      <BaseButton buttonText="Сортировать" className={styles.paramButton} onClick={toggleSelect} />
+      <BaseButton
+        primary={sortString != '' && sortString != 'Name'}
+        buttonText="Сортировка"
+        className={styles.paramButton}
+        onClick={toggleSelect}
+      />
       {showSelect && (
         <div className={styles.listBox}>
-          {RECIPES_SORT_BY.map((item, index) => (
+          {Object.entries(RECIPES_SORT_BY).map(([key, value], index) => (
             <div
               key={index}
-              className={`${styles.listElement} ${activeIndex === index ? styles.active : ''}`}
-              onClick={() => handleItemClick(item, index)}
+              className={`${styles.listElement} ${sortString === key ? styles.active : ''}`}
+              onClick={() => handleItemClick(key, index)}
             >
-              <p>{item}</p>
+              <p>{value}</p>
             </div>
           ))}
         </div>

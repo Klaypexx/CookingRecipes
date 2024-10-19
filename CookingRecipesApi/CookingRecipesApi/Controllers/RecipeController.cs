@@ -70,7 +70,12 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [Route( "" )]
-    public async Task<IActionResult> GetRecipes( [FromQuery] int pageNumber = 1, [FromQuery] string searchString = "" )
+    public async Task<IActionResult> GetRecipes(
+        [FromQuery] string timeFilter,
+        [FromQuery] string portionFilter,
+        [FromQuery] string sortBy = "Name",
+        [FromQuery] string searchString = "",
+        [FromQuery] int pageNumber = 1 )
     {
         int authorId = 0;
         if ( User.Identity.IsAuthenticated )
@@ -78,7 +83,9 @@ public class RecipeController : ControllerBase
             authorId = AuthorId;
         }
 
-        Result<RecipesData<OverviewRecipe>> result = await _recipeFacade.GetRecipes( authorId, pageNumber, searchString );
+        FilterData filterBy = new( timeFilter, portionFilter );
+
+        Result<RecipesData<OverviewRecipe>> result = await _recipeFacade.GetRecipes( authorId, pageNumber, searchString, sortBy, filterBy );
 
         if ( !result.IsSuccess )
         {

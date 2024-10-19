@@ -5,7 +5,13 @@ import useModalStore from '../../../Stores/useModalStore';
 import BaseModalProps from '../../../Types/BaseModalProps';
 import styles from './BaseModal.module.css';
 
-const BaseModal: React.FC<BaseModalProps> = ({ primary, headerClassName, haederText, hasAccountText, children }) => {
+const BaseModal: React.FC<BaseModalProps> = ({
+  accountModule,
+  headerClassName,
+  haederText,
+  hasAccountText,
+  children,
+}) => {
   const { isLogin, isRegister, setLogin, setRegister, unsetAll } = useModalStore();
 
   const handleExit = () => {
@@ -27,7 +33,7 @@ const BaseModal: React.FC<BaseModalProps> = ({ primary, headerClassName, haederT
             </button>
             <h3 className={classNames(headerClassName)}>{haederText}</h3>
             {children}
-            {primary ? (
+            {accountModule ? (
               <div className={styles.accountBlock}>
                 <p className={styles.hasAccount} onClick={handlerRedirection}>
                   {hasAccountText}

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
-import useSearchStore from '../../../Stores/useSearchStore';
+import useRecipeStore from '../../../Stores/useRecipeStore';
 import MiniTagsListProps from '../../../Types/MiniTagsListProps';
 import styles from './MiniTagsList.module.css';
 
 const MiniTagsList: React.FC<MiniTagsListProps> = ({ className, values }) => {
-  const { setSearchString } = useSearchStore();
+  const { setSearchString } = useRecipeStore();
 
   const handleClick = (value: string) => {
     setSearchString(value);

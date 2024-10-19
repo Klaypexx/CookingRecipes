@@ -1,4 +1,5 @@
-﻿using Domain.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using Recipe = Domain.Recipes.Entities.Recipe;
 
 namespace Application.Recipes.Repositories;
 
@@ -7,7 +8,7 @@ public interface IRecipeRepository
     Task CreateRecipe( Recipe recipe );
     void UpdateRecipe( Recipe recipe );
     void RemoveRecipe( Recipe recipe );
-    Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount, string searchString );
+    Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount, string searchString, string sortBy, FilterData filterBy );
     Task<IReadOnlyList<Recipe>> GetFavouriteRecipeByAuthorId( int authorId, int skipRange, int pageAmount );
     Task<IReadOnlyList<Recipe>> GetRecipeByAuthorId( int authorId, int skipRange, int pageAmount );
     Task<Recipe> GetMostLikedRecipe();

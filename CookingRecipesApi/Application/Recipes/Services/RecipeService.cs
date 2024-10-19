@@ -64,11 +64,11 @@ public class RecipeService : IRecipeService
         _recipeRepository.RemoveRecipe( recipe );
     }
 
-    public async Task<RecipesData<OverviewRecipe>> GetRecipes( int authorId, int pageNumber, string searchString )
+    public async Task<RecipesData<OverviewRecipe>> GetRecipes( int authorId, int pageNumber, string searchString, string sortBy, FilterData filterBy )
     {
         int skipRange = ( pageNumber - 1 ) * ( _pageAmount - 1 );
 
-        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, _pageAmount, searchString.ToLower() );
+        IReadOnlyList<RecipeDomain> recipes = await _recipeRepository.GetRecipes( skipRange, _pageAmount, searchString.ToLower(), sortBy, filterBy );
 
         bool isLastRecipes = recipes.Count <= 4;
 

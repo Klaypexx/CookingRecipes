@@ -1,5 +1,6 @@
-﻿using Application.Recipes.Repositories;
-using Domain.Recipes.Entities;
+﻿using Application.Recipes.Entities;
+using Application.Recipes.Repositories;
+using Recipe = Domain.Recipes.Entities.Recipe;
 using Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,22 +30,50 @@ public class RecipeRepository : IRecipeRepository
         _entities.Remove( recipe );
     }
 
-    public async Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount, string searchString )
+    public async Task<IReadOnlyList<Recipe>> GetRecipes( int skipRange, int pageAmount, string searchString, string sortBy, FilterData filterBy )
     {
-        return await _entities.Include( recipe => recipe.Tags )
-             .ThenInclude( recipeTag => recipeTag.Tag )
-             .Include( recipe => recipe.Author )
-             .Include( recipe => recipe.Likes )
-             .Include( recipe => recipe.FavouriteRecipes )
-             .AsSplitQuery()
-             .Where( recipe => string.IsNullOrEmpty( searchString )
-                    || recipe.Name.ToLower().Contains( searchString )
-                    || recipe.Tags.Any( tag => tag.Tag.Name.ToLower().Contains( searchString ) ) )
-             .OrderBy( e => e.Id )
-             .Skip( skipRange )
-             .Take( pageAmount )
-             .ToListAsync();
+        IQueryable<Recipe> query = _entities.Include( recipe => recipe.Tags )
+            .ThenInclude( recipeTag => recipeTag.Tag )
+            .Include( recipe => recipe.Author )
+            .Include( recipe => recipe.Likes )
+            .Include( recipe => recipe.FavouriteRecipes )
+            .AsSplitQuery();
+
+        if ( !string.IsNullOrEmpty( searchString ) )
+        {
+            string lowerSearchString = searchString.ToLower();
+            query = query.Where( recipe =>
+                recipe.Name.ToLower().Contains( lowerSearchString ) ||
+                recipe.Tags.Any( tag => tag.Tag.Name.ToLower().Contains( lowerSearchString ) ) );
+        }
+
+        if ( !string.IsNullOrEmpty( filterBy.Time ) && int.TryParse( filterBy.Time, out int cookingTime ) )
+        {
+            query = query.Where( recipe => recipe.CookingTime <= cookingTime );
+        }
+
+        // Проверка и фильтрация по количеству порций
+        if ( !string.IsNullOrEmpty( filterBy.Portion ) && int.TryParse( filterBy.Portion, out int portion ) )
+        {
+            query = query.Where( recipe => recipe.Portion == portion );
+        }
+
+        // Сортировка
+        query = sortBy switch
+        {
+            "Likes" => query.OrderByDescending( r => r.Likes.Count ),
+            "CookingTime" => query.OrderByDescending( r => r.CookingTime ),
+            "Portion" => query.OrderByDescending( r => r.Portion ),
+            "Name" => query.OrderBy( r => r.Name ),
+            _ => query.OrderBy( r => r.Id )
+        };
+
+        return await query
+            .Skip( skipRange )
+            .Take( pageAmount )
+            .ToListAsync();
     }
+
 
     public async Task<IReadOnlyList<Recipe>> GetFavouriteRecipeByAuthorId( int authorId, int skipRange, int pageAmount )
     {

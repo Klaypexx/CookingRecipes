@@ -1,5 +1,5 @@
 export default interface BaseModalProps {
-  primary?: boolean;
+  accountModule?: boolean;
   headerClassName?: string | string[];
   haederText?: string;
   hasAccountText?: string;

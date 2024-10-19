@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { handleError } from '../Helpers/ErrorHandler';
 import FavouriteRecipeResponseValues from '../Types/FavouriteRecipeResponseValues';
+import FilterValues from '../Types/FilterValues';
 import MostLikedRecipeResponseValue from '../Types/MostLikedRecipeResponseValue';
 import RecipeByIdResponseValues from '../Types/RecipeByIdResponseValues';
 import RecipeResponseValues from '../Types/RecipeResponseValues';
@@ -12,7 +13,7 @@ const endpoints = {
   create: '/recipes/',
   update: '/recipes/',
   remove: '/recipes/',
-  getRecipes: '/recipes?pageNumber=',
+  getRecipes: '/recipes?',
   getFavouriteRecipes: '/recipes/favourites?pageNumber=',
   getUserRecipes: './recipes/userRecipes?pageNumber=',
   getMostLikedRecipe: '/recipes/liked',
@@ -57,10 +58,10 @@ const removeRecipe = async (recipeId: string) => {
   }
 };
 
-const GetRecipes = async (pageNumber: number, searchString: string) => {
+const GetRecipes = async (pageNumber: number, searchString: string, sortBy: string, filterString: FilterValues) => {
   try {
     const response: AxiosResponse<RecipesDataResponse<RecipeResponseValues>, any> = await api.get(
-      `${endpoints.getRecipes}${pageNumber}&searchString=${searchString}`,
+      `${endpoints.getRecipes}timeFilter=${filterString.time}&portionFilter=${filterString.portion}&sortBy=${sortBy}&searchString=${searchString}&pageNumber=${pageNumber}`,
     );
     return { response };
   } catch (error) {

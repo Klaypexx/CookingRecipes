@@ -3,7 +3,7 @@ import chefIcon from '../../../resources/icons/ic-chef.svg';
 import cookIcon from '../../../resources/icons/ic-cook.svg';
 import feastIcon from '../../../resources/icons/ic-feast.svg';
 import bookIcon from '../../../resources/icons/ic-menu.svg';
-import useSearchStore from '../../../Stores/useSearchStore';
+import useRecipeStore from '../../../Stores/useRecipeStore';
 import TagsListProps from '../../../Types/TagsListProps';
 import BaseTagsBlock from '../BaseTagsBlock/BaseTagsBlock';
 import styles from './TagsList.module.css';
@@ -33,7 +33,7 @@ const tagsData = [
 
 const TagsList: React.FC<TagsListProps> = ({ text, className }) => {
   const navigation = useNavigate();
-  const { setSearchString } = useSearchStore();
+  const { setSearchString } = useRecipeStore();
 
   const handleClick = (value: string) => {
     setSearchString(value);

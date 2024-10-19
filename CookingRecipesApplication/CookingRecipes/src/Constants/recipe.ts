@@ -13,9 +13,24 @@ export const STEPS_DESCRIPTION_MAX_WORDS = 300;
 export const INGREDIENTS_NAME_MAX_WORDS = 20;
 export const INGREDIENTS_PRODUCT_MAX_WORDS = 300;
 
-export const RECIPES_SORT_BY: string[] = [
-  'По умолчанию',
-  'По количеству лайков',
-  'По времени приготовления',
-  'По количеству персон',
-];
+export const RECIPES_SORT_BY = {
+  Name: 'По умолчанию',
+  Likes: 'По количеству лайков',
+  CookingTime: 'По времени приготовления',
+  Portion: 'По количеству персон',
+};
+
+export const TIME_FILTER = {
+  15: 'До 15 минут',
+  30: 'До 30 минут',
+  40: 'До 40 минут',
+  60: 'До часа',
+};
+
+export const PORTION_FILTER = {
+  1: 'для 1',
+  2: 'для 2',
+  3: 'для 3',
+  4: 'для 4',
+  5: 'для 5',
+};

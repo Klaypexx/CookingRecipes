@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useSearchStore from '../../../Stores/useSearchStore';
+import useRecipeStore from '../../../Stores/useRecipeStore';
 import SearchBlockValues from '../../../Types/SearchBlockValues';
 import SearchFormProps from '../../../Types/SearchFormProps';
 import BaseButton from '../../Button/BaseButton/BaseButton';
@@ -8,7 +8,7 @@ import BaseForm from '../BaseForm/BaseForm';
 import styles from './SearchForm.module.css';
 
 const SearchForm: React.FC<SearchFormProps> = ({ text, onSubmit }) => {
-  const { searchString } = useSearchStore();
+  const { searchString } = useRecipeStore();
   const [initialValues, setInitialValues] = useState<SearchBlockValues>({ searchString: searchString });
 
   useEffect(() => {

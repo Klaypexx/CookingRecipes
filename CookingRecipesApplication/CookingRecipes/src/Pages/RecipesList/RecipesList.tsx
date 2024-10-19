@@ -13,7 +13,7 @@ import RecipeService from '../../Services/RecipeService';
 import TagService from '../../Services/TagService';
 import useAuthStore from '../../Stores/useAuthStore';
 import useModalStore from '../../Stores/useModalStore';
-import useSearchStore from '../../Stores/useSearchStore';
+import useRecipeStore from '../../Stores/useRecipeStore';
 import RecipeListValues from '../../Types/RecipeListValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './RecipeList.module.css';
@@ -25,9 +25,10 @@ const RecipesList = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoadButton, setIsLoadButton] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
-  const { searchString, setSearchString } = useSearchStore();
+  const { searchString, sortString, filterString, setSearchString } = useRecipeStore();
   const { isAuth, setAuth } = useModalStore();
   const { isAuthorized } = useAuthStore();
+  const { isFilter, setFilter } = useModalStore();
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -47,33 +48,17 @@ const RecipesList = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      await RecipeService.GetRecipes(1, searchString).then((res) => {
+      await RecipeService.GetRecipes(1, searchString, sortString, filterString).then((res) => {
         if (res) {
           setIsLoadButton(!res.response.data.isLastRecipes);
           setRecipeValues(() => [...res.response.data.recipes]);
+          setPageNumber(1);
           setLoading(false);
         }
       });
     };
     fetchRecipes();
-  }, [searchString]);
-
-  useEffect(() => {
-    if (isFirstMount) {
-      setIsFirstMount(false);
-      return;
-    }
-    const fetchRecipes = async () => {
-      await RecipeService.GetRecipes(pageNumber, searchString).then((res) => {
-        if (res) {
-          setIsLoadButton(!res.response.data.isLastRecipes);
-          setRecipeValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
-          setLoading(false);
-        }
-      });
-    };
-    fetchRecipes();
-  }, [pageNumber, isAuthorized]);
+  }, [searchString, sortString, filterString, isAuthorized]);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -95,6 +80,16 @@ const RecipesList = () => {
   };
 
   const handlePaginationClick = () => {
+    const fetchRecipes = async () => {
+      await RecipeService.GetRecipes(pageNumber + 1, searchString, sortString, filterString).then((res) => {
+        if (res) {
+          setIsLoadButton(!res.response.data.isLastRecipes);
+          setRecipeValues((prevValues) => [...prevValues, ...res.response.data.recipes]);
+          setLoading(false);
+        }
+      });
+    };
+    fetchRecipes();
     setPageNumber((pageNumber) => pageNumber + 1);
   };
 
@@ -105,6 +100,10 @@ const RecipesList = () => {
       return;
     }
     navigation('/recipes/create');
+  };
+
+  const onFilterButtonClick = () => {
+    setFilter(isFilter);
   };
 
   return (
@@ -132,9 +131,13 @@ const RecipesList = () => {
         <div className={styles.paramBox}>
           <div className={styles.filterBox}>
             <div className={styles.filterButtonBox}>
-              <BaseButton buttonText="Фильтры" className={styles.paramButton} />
+              <BaseButton
+                primary={filterString.portion != '' || filterString.time != ''}
+                buttonText="Фильтры"
+                className={styles.paramButton}
+                onClick={onFilterButtonClick}
+              />
             </div>
-            {/* <FilterPopup /> */}
           </div>
           <div className={styles.sortBox}>
             <SortButton />

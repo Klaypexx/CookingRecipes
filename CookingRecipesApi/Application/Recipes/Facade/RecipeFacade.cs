@@ -107,11 +107,11 @@ public class RecipeFacade : IRecipeFacade
         }
     }
 
-    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int authorId, int pageNumber, string searchString )
+    public async Task<Result<RecipesData<OverviewRecipe>>> GetRecipes( int authorId, int pageNumber, string searchString, string sortBy, FilterData filterBy )
     {
         try
         {
-            RecipesData<OverviewRecipe> recipeData = await _recipeService.GetRecipes( authorId, pageNumber, searchString );
+            RecipesData<OverviewRecipe> recipeData = await _recipeService.GetRecipes( authorId, pageNumber, searchString, sortBy, filterBy );
 
             return new Result<RecipesData<OverviewRecipe>>( recipeData );
         }

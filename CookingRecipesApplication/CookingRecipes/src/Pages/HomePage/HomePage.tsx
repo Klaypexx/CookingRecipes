@@ -8,7 +8,7 @@ import MiniTagsList from '../../Components/Tags/MiniTagsList/MiniTagsList';
 import TagsList from '../../Components/Tags/TagsList/TagsList';
 import RecipeService from '../../Services/RecipeService';
 import TagService from '../../Services/TagService';
-import useSearchStore from '../../Stores/useSearchStore';
+import useRecipeStore from '../../Stores/useRecipeStore';
 import HomePageRecipeValues from '../../Types/HomePageRecipeValues';
 import SearchBlockValues from '../../Types/SearchBlockValues';
 import styles from './HomePage.module.css';
@@ -17,7 +17,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [recipeValues, setRecipeVaues] = useState<HomePageRecipeValues | null>();
   const [tagsValue, setTagsValue] = useState<string[]>([]);
-  const { setSearchString } = useSearchStore();
+  const { setSearchString } = useRecipeStore();
   const navigation = useNavigate();
 
   useEffect(() => {
